@@ -19,28 +19,33 @@ function Register() {
         <h2 className='text-black text-5xl font-bold font-dancing mb-6 text-center'>Register</h2>
         <form className='relative'>
           <div className='mb-4'>
+            <div className='absolute -top-[12px] left-3 font-dancing'>Email</div>
             <input
               type='email'
               id='email'
-              placeholder='Enter your email...'
+              placeholder='acd@gmail.com'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
             />
           </div>
 
           <div className='mb-4'>
+            <div className='absolute top-[54px] left-3 font-dancing'>Name</div>
+
             <input
               type='text'
               id='email'
-              placeholder='Enter your name...'
+              placeholder='name'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
             />
           </div>
 
           <div className='mb-4 relative'>
+            <div className='absolute -top-[12px] left-3 font-dancing'>Password</div>
+
             <input
               type={showPassword ? 'text' : 'password'}
               id='password'
-              placeholder='Enter your password...'
+              placeholder='***********'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
             />
             <span
@@ -62,10 +67,12 @@ function Register() {
           </div>
 
           <div className='mb-4 relative'>
+            <div className='absolute -top-[12px] left-3 font-dancing'>Confirm Password</div>
+
             <input
               type={showPassword ? 'text' : 'password'}
               id='password'
-              placeholder='Confirm your password...'
+              placeholder='***********'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
             />
             <span
