@@ -1,10 +1,57 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import left_login from '../assets/left_login.png'
 import right_login from '../assets/right_login.png'
 import { useState } from 'react'
+import axios from 'axios'
+import { FaSpinner } from 'react-icons/fa'
+import { useForm } from 'react-hook-form'
+import { ErrorMessage } from '@hookform/error-message'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false)
+  const [loading, setLoading] = useState(false)
+
+  const navigate = useNavigate()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm()
+
+  const onSubmit = async (data) => {
+    setLoading(true)
+
+    try {
+      const response = await axios.post('https://jssatsproject.azurewebsites.net/api/login', {
+        username: data.username,
+        password: data.password
+      })
+
+      const user = response.data
+      if (user && user.token) {
+        localStorage.setItem('token', user.token)
+        localStorage.setItem('role', user.role)
+        localStorage.setItem('staffId', user.staffId)
+        localStorage.setItem('name', user.name)
+
+        switch (user.role) {
+          case 'admin':
+            navigate('/')
+            break
+          default:
+            break
+        }
+      }
+      // eslint-disable-next-line no-unused-vars
+    } catch (error) {
+      toast.error('Invalid email or password')
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className='h-screen flex flex-col items-center justify-center'>
@@ -17,14 +64,28 @@ function Login() {
 
       <div className='absolute bg-white p-8 rounded-3xl shadow-md w-full max-w-md bg-opacity-5 backdrop-blur-0 border border-gray-300'>
         <h2 className='text-black text-5xl font-bold font-dancing mb-6 text-center'>Login</h2>
-        <form className='relative'>
-          <div className='mb-4'>
+
+        <form className='relative' onSubmit={handleSubmit(onSubmit)} noValidate>
+          <div className='mb-6'>
             <div className='absolute -top-[12px] left-3 font-dancing'>Email</div>
             <input
               type='email'
               id='email'
               placeholder='abcd@gmail.com'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              {...register('username', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^\S+@\S+\.\S+$/,
+                  message: 'Invalid email format'
+                }
+              })}
+            />
+            <ErrorMessage
+              errors={errors}
+              name='username'
+              as='p'
+              className='text-red-500 text-sm transition-all duration-200'
             />
           </div>
 
@@ -35,6 +96,13 @@ function Login() {
               id='password'
               placeholder='***********'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              {...register('password', {
+                required: 'Password is required',
+                minLength: {
+                  value: 6,
+                  message: 'Password must be at least 6 characters'
+                }
+              })}
             />
             <span
               className='absolute right-3 top-[0.7rem] cursor-pointer text-gray-300'
@@ -52,6 +120,8 @@ function Login() {
                 </svg>
               )}
             </span>
+
+            <ErrorMessage errors={errors} name='password' as='p' className='text-red-500 text-sm' />
           </div>
 
           <div className='flex items-center justify-between mb-6'>
@@ -63,8 +133,17 @@ function Login() {
               Forgot password?
             </a>
           </div>
-          <button type='submit' className='w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold'>
-            Sign in
+
+          <button
+            className={`w-full flex items-center justify-center bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold ${
+              loading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={loading}
+          >
+            <div className='flex items-center space-x-2'>
+              {loading && <FaSpinner className='animate-spin' />}
+              <span>Sign in</span>
+            </div>
           </button>
         </form>
 

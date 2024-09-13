@@ -1,10 +1,52 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import left_login from '../assets/left_login.png'
 import right_login from '../assets/right_login.png'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import axios from 'axios'
+import { FaSpinner } from 'react-icons/fa'
 
 function Register() {
   const [showPassword, setShowPassword] = useState(false)
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch
+  } = useForm()
+
+  const onSubmit = async (data) => {
+    setLoading(true)
+
+    try {
+      const response = await axios.post('https://example.com/api/register', {
+        email: data.email,
+        name: data.name,
+        password: data.password
+      })
+      if (response.data.success) {
+        toast.success('Registration successful! Redirecting to login...')
+
+        setTimeout(() => {
+          navigate('/login')
+        }, 2000)
+      }
+      // eslint-disable-next-line no-unused-vars
+    } catch (error) {
+      toast.error('Registration failed. Please try again.', {
+        position: toast.POSITION.TOP_RIGHT
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const password = watch('password')
 
   return (
     <div className='h-screen flex flex-col items-center justify-center'>
@@ -17,7 +59,8 @@ function Register() {
 
       <div className='absolute bg-white p-8 rounded-3xl shadow-md w-full max-w-md bg-opacity-5 backdrop-blur-none border border-gray-300'>
         <h2 className='text-black text-5xl font-bold font-dancing mb-6 text-center'>Register</h2>
-        <form className='relative'>
+
+        <form className='relative' onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className='mb-4'>
             <div className='absolute -top-[12px] left-3 font-dancing'>Email</div>
             <input
@@ -25,28 +68,43 @@ function Register() {
               id='email'
               placeholder='acd@gmail.com'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              {...register('email', {
+                required: 'Email is required',
+                pattern: {
+                  value: /^\S+@\S+\.\S+$/,
+                  message: 'Invalid email format'
+                }
+              })}
             />
+            {errors.email && <p className='text-red-500 text-sm'>{errors.email.message}</p>}
           </div>
 
-          <div className='mb-4'>
-            <div className='absolute top-[54px] left-3 font-dancing'>Name</div>
-
+          <div className='mb-4 relative'>
+            <div className='absolute -top-[12px] left-3 font-dancing'>Username</div>
             <input
               type='text'
-              id='email'
-              placeholder='name'
+              id='name'
+              placeholder='Name'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              {...register('name', { required: 'Name is required' })}
             />
+            {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>}
           </div>
 
           <div className='mb-4 relative'>
             <div className='absolute -top-[12px] left-3 font-dancing'>Password</div>
-
             <input
               type={showPassword ? 'text' : 'password'}
               id='password'
               placeholder='***********'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              {...register('password', {
+                required: 'Password is required',
+                minLength: {
+                  value: 6,
+                  message: 'Password must be at least 6 characters'
+                }
+              })}
             />
             <span
               className='absolute right-3 top-[0.7rem] cursor-pointer text-gray-300'
@@ -64,16 +122,20 @@ function Register() {
                 </svg>
               )}
             </span>
+            {errors.password && <p className='text-red-500 text-sm'>{errors.password.message}</p>}
           </div>
 
           <div className='mb-4 relative'>
             <div className='absolute -top-[12px] left-3 font-dancing'>Confirm Password</div>
-
             <input
               type={showPassword ? 'text' : 'password'}
-              id='password'
+              id='confirm_password'
               placeholder='***********'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              {...register('confirm_password', {
+                required: 'Confirm password is required',
+                validate: (value) => value === password || 'Passwords do not match'
+              })}
             />
             <span
               className='absolute right-3 top-[0.7rem] cursor-pointer text-gray-300'
@@ -91,18 +153,24 @@ function Register() {
                 </svg>
               )}
             </span>
+            {errors.confirm_password && <p className='text-red-500 text-sm'>{errors.confirm_password.message}</p>}
           </div>
 
           <button
-            type='submit'
-            className='w-full bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold mt-2'
+            className={`w-full flex items-center justify-center bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold ${
+              loading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+            disabled={loading}
           >
-            Register
+            <div className='flex items-center space-x-2'>
+              {loading && <FaSpinner className='animate-spin' />}
+              <span>Register</span>
+            </div>
           </button>
         </form>
 
         <div className='text-gray-400 mt-6 text-center'>
-          if you have an account?
+          If you have an account?
           <Link to='/login' className='text-red-500 ml-1'>
             Login
           </Link>
