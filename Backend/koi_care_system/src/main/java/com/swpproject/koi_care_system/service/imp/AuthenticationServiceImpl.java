@@ -65,7 +65,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .issuer("phuoc.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli()
+                        Instant.now().plus(10, ChronoUnit.SECONDS).toEpochMilli()
                 ))
                 .claim("customeClaim", "Custom")
                 .build();
