@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        dancing: ['Forte', 'Myriad Variable Concept']
+        dancing: ['Forte', 'cMyriad Variable Concept']
       }
     }
   },
