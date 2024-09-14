@@ -5,6 +5,7 @@ import Login from './pages/Login'
 import Register from './pages/Register'
 import path from './constants/path'
 import { ToastContainer } from 'react-toastify'
+import HomePage from './pages/HomePage'
 
 function App() {
   const routeElements = useRoutes([
@@ -19,6 +20,10 @@ function App() {
     {
       path: path.register,
       element: <Register />
+    },
+    {
+      path: path.homepage,
+      element: <HomePage />
     }
   ])
 
