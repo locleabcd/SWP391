@@ -1,9 +1,10 @@
 package com.swpproject.koi_care_system.dto;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -11,14 +12,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class UserDTO {
-
-	@Size(min = 3, message = "USERNAME_INVALID")
-	 String username;
-	@Size(min = 8, message = "USER_PASSWORD")
-	 String password;
-	@Email
-	 String email;
-
-	
-
+    Long id;
+    String username;
+    @Email
+    String email;
+    Set<String> roles;
 }

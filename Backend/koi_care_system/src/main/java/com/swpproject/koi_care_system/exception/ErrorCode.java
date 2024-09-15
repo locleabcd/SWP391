@@ -10,11 +10,11 @@ public enum ErrorCode {
 	USERNAME_INVALID(1002,"Username must be at least 3 character"),
 	USER_PASSWORD(1003,"User password must at least 8 character"),
 	USER_NOT_EXISTED(1004,"User not available"),
-	UNAUTHENTICATED(1005,"User unauthenticated")
+	UNAUTHENTICATED(1005, "User unauthenticated"),
+	NO_ROLES(1006, "User has no roles")
 	;
-	
-	
-	
+
+
 	private int code;
 	private String message;
 	

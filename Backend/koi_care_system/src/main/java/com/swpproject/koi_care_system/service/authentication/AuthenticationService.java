@@ -6,12 +6,13 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.swpproject.koi_care_system.exception.AppException;
+import com.swpproject.koi_care_system.exception.ErrorCode;
+import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
 import com.swpproject.koi_care_system.payload.request.IntrospectRequest;
 import com.swpproject.koi_care_system.payload.response.AuthenticationResponse;
 import com.swpproject.koi_care_system.payload.response.IntrospectResponse;
-import com.swpproject.koi_care_system.exception.AppException;
-import com.swpproject.koi_care_system.exception.ErrorCode;
 import com.swpproject.koi_care_system.repository.UserRepository;
 import com.swpproject.koi_care_system.service.AuthenticationServiceImpl;
 import lombok.AccessLevel;
@@ -20,7 +21,6 @@ import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,6 +35,7 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationService implements AuthenticationServiceImpl {
     UserRepository userRepository;
+    PasswordEncoder passwordEncoder;
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -44,32 +45,31 @@ public class AuthenticationService implements AuthenticationServiceImpl {
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
 
         if (!authenticated) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
-        var token = generateToken(request.getUsername());
+        var token = generateToken(user);
         return AuthenticationResponse.builder()
                 .token(token)
                 .isAuthenticated(true)
                 .build();
     }
 
-    public String generateToken(String username) {
+    public String generateToken(User user) {
         // Create HMAC signer
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
         // Create JWT claims set
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(username)
+                .subject(user.getUsername())
                 .issuer("phuoc.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
                         Instant.now().plus(3, ChronoUnit.MINUTES).toEpochMilli()
                 ))
-                .claim("customeClaim", "Custom")
+                .claim("scope", buildScope(user))
                 .build();
 
         // Create the payload
@@ -104,5 +104,12 @@ public class AuthenticationService implements AuthenticationServiceImpl {
                 .build();
     }
 
-
+    private String buildScope(User user) {
+        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+            throw new AppException(ErrorCode.NO_ROLES);
+        }
+        return user.getRoles().stream().findFirst().orElseThrow(() -> new AppException(ErrorCode.NO_ROLES));
+    }
 }
+
+

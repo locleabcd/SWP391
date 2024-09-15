@@ -2,10 +2,11 @@ package com.swpproject.koi_care_system.service.user;
 
 
 import com.swpproject.koi_care_system.dto.UserDTO;
-import com.swpproject.koi_care_system.models.User;
+import com.swpproject.koi_care_system.enums.Role;
 import com.swpproject.koi_care_system.exception.AppException;
 import com.swpproject.koi_care_system.exception.ErrorCode;
 import com.swpproject.koi_care_system.mapper.UserMapper;
+import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.repository.UserRepository;
@@ -13,10 +14,10 @@ import com.swpproject.koi_care_system.service.UserServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -26,6 +27,7 @@ public class UserService implements UserServiceImpl {
 
     UserRepository userRepo;
     UserMapper userMapper;
+    PasswordEncoder passwordEncoder;
 
     public UserDTO createUser(CreateUserRequest request) {
 
@@ -34,8 +36,12 @@ public class UserService implements UserServiceImpl {
             throw new AppException(ErrorCode.USER_EXISTED);
         }
         User user = userMapper.maptoUser(request);
-        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);//strength to show how password encode complex
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+
+        //HashSet is used to save user roles and ensure that there are no duplicate roles
+        HashSet<String> roles = new HashSet<>();
+        roles.add(Role.MEMBER.name());
+        user.setRoles(roles);
 
         return userMapper.maptoUserDTO(userRepo.save(user));
 
