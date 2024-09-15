@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "react-intersection-observer": "^9.13.1"
+  }
+}
