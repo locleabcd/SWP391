@@ -6,8 +6,10 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.swpproject.koi_care_system.dto.UserDTO;
+import com.swpproject.koi_care_system.enums.ErrorCode;
 import com.swpproject.koi_care_system.exception.AppException;
-import com.swpproject.koi_care_system.exception.ErrorCode;
+import com.swpproject.koi_care_system.mapper.UserMapper;
 import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
 import com.swpproject.koi_care_system.payload.request.IntrospectRequest;
@@ -36,6 +38,7 @@ import java.util.Date;
 public class AuthenticationService implements AuthenticationServiceImpl {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
+    UserMapper userMapper;
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -51,7 +54,11 @@ public class AuthenticationService implements AuthenticationServiceImpl {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
         var token = generateToken(user);
+        UserDTO userDTO = userMapper.maptoUserDTO(user);
         return AuthenticationResponse.builder()
+                .id(userDTO.getId())
+                .username(userDTO.getUsername())
+                .roles(userDTO.getRoles())
                 .token(token)
                 .isAuthenticated(true)
                 .build();

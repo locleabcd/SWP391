@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.exception;
 
+import com.swpproject.koi_care_system.enums.ErrorCode;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
