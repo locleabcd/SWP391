@@ -1,11 +1,11 @@
 import { useRoutes } from 'react-router-dom'
 import './App.css'
-import Home from './pages/Home'
-import Login from './pages/Login'
-import Register from './pages/Register'
 import path from './constants/path'
 import { ToastContainer } from 'react-toastify'
-import HomePage from './pages/HomePage'
+import Home from './pages/Home/Home'
+import Login from './pages/Login/Login'
+import Register from './pages/Register/Register'
+import Member from './pages/Member/Member'
 
 function App() {
   const routeElements = useRoutes([
@@ -22,8 +22,8 @@ function App() {
       element: <Register />
     },
     {
-      path: path.homepage,
-      element: <HomePage />
+      path: path.member,
+      element: <Member />
     }
   ])
 
