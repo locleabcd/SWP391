@@ -3,7 +3,7 @@ package com.swpproject.koi_care_system.controller;
 import com.swpproject.koi_care_system.dto.OrderDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.model.Order;
-import com.swpproject.koi_care_system.response.ApiResponse;
+import com.swpproject.koi_care_system.dto.response.ApiResponse;
 import com.swpproject.koi_care_system.service.order.IOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

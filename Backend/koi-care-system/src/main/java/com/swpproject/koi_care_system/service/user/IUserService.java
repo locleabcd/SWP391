@@ -2,8 +2,8 @@ package com.swpproject.koi_care_system.service.user;
 
 import com.swpproject.koi_care_system.dto.UserDto;
 import com.swpproject.koi_care_system.model.User;
-import com.swpproject.koi_care_system.request.CreateUserRequest;
-import com.swpproject.koi_care_system.request.UserUpdateRequest;
+import com.swpproject.koi_care_system.dto.request.CreateUserRequest;
+import com.swpproject.koi_care_system.dto.request.UserUpdateRequest;
 
 public interface IUserService {
 

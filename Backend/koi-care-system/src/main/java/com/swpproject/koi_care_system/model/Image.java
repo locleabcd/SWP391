@@ -27,4 +27,12 @@ public class Image {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @ManyToOne
+    @JoinColumn(name="koifish_id")
+    private KoiFish koiFish;
+
+    @ManyToOne
+    @JoinColumn(name="koiPond_id")
+    private KoiPond koiPond;
 }
