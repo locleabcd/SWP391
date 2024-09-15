@@ -5,8 +5,8 @@ import com.swpproject.koi_care_system.exceptions.AlreadyExistsException;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.model.User;
 import com.swpproject.koi_care_system.repository.UserRepository;
-import com.swpproject.koi_care_system.request.CreateUserRequest;
-import com.swpproject.koi_care_system.request.UserUpdateRequest;
+import com.swpproject.koi_care_system.dto.request.CreateUserRequest;
+import com.swpproject.koi_care_system.dto.request.UserUpdateRequest;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -44,6 +44,11 @@ public class UserService implements IUserService {
         return  userRepository.findById(userId).map(existingUser ->{
             existingUser.setFirstName(request.getFirstName());
             existingUser.setLastName(request.getLastName());
+            existingUser.setPhone(request.getPhone());
+            existingUser.setEmail(request.getEmail());
+            existingUser.setAddress(request.getAddress());
+            existingUser.setGender(request.getGender());
+            existingUser.setStatus(request.getStatus());
             return userRepository.save(existingUser);
         }).orElseThrow(() -> new ResourceNotFoundException("User not found!"));
 

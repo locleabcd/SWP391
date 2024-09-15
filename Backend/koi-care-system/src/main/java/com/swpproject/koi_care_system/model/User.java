@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -21,7 +22,11 @@ public class User {
     private String firstName;
     private String lastName;
     @NaturalId
+    private String phone;
     private String email;
+    private String address;
+    private int gender;
+    private String status;
     private String password;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)

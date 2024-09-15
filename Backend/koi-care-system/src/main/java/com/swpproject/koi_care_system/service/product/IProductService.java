@@ -1,8 +1,8 @@
 package com.swpproject.koi_care_system.service.product;
 import com.swpproject.koi_care_system.dto.ProductDto;
 import com.swpproject.koi_care_system.model.Product;
-import com.swpproject.koi_care_system.request.AddProductRequest;
-import com.swpproject.koi_care_system.request.ProductUpdateRequest;
+import com.swpproject.koi_care_system.dto.request.AddProductRequest;
+import com.swpproject.koi_care_system.dto.request.ProductUpdateRequest;
 
 
 import java.util.List;

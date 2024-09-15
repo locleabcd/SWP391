@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.request;
+package com.swpproject.koi_care_system.dto.request;
 
 import com.swpproject.koi_care_system.model.Category;
 import lombok.Data;

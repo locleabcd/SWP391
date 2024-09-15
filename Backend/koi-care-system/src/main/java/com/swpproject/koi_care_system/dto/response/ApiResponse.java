@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.response;
+package com.swpproject.koi_care_system.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

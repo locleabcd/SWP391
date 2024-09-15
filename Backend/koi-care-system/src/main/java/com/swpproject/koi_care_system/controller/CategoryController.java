@@ -4,7 +4,7 @@ package com.swpproject.koi_care_system.controller;
 import com.swpproject.koi_care_system.exceptions.AlreadyExistsException;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.model.Category;
-import com.swpproject.koi_care_system.response.ApiResponse;
+import com.swpproject.koi_care_system.dto.response.ApiResponse;
 import com.swpproject.koi_care_system.service.category.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
