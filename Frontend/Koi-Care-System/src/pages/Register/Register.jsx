@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
-import left_login from '../assets/left_login.png'
-import right_login from '../assets/right_login.png'
+import left_login from '../../assets/left_login.png'
+import right_login from '../../assets/right_login.png'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -26,7 +26,7 @@ function Register() {
     try {
       const response = await axios.post('https://example.com/api/register', {
         email: data.email,
-        name: data.name,
+        username: data.username,
         password: data.password
       })
       if (response.data.success) {
@@ -86,7 +86,7 @@ function Register() {
               id='name'
               placeholder='Name'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
-              {...register('name', { required: 'Name is required' })}
+              {...register('username', { required: 'Name is required' })}
             />
             {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>}
           </div>

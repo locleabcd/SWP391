@@ -1,6 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
-import left_login from '../assets/left_login.png'
-import right_login from '../assets/right_login.png'
+import left_login from '../../assets/left_login.png'
+import right_login from '../../assets/right_login.png'
 import { useState } from 'react'
 import axios from 'axios'
 import { FaSpinner } from 'react-icons/fa'
@@ -34,12 +34,16 @@ function Login() {
       if (user && user.token) {
         localStorage.setItem('token', user.token)
         localStorage.setItem('role', user.role)
-        localStorage.setItem('staffId', user.staffId)
-        localStorage.setItem('name', user.name)
 
         switch (user.role) {
           case 'admin':
-            navigate('/')
+            navigate('/member')
+            break
+          case 'shop':
+            navigate('/shop')
+            break
+          case 'member':
+            navigate('/member')
             break
           default:
             break
@@ -47,7 +51,7 @@ function Login() {
       }
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      toast.error('Invalid email or password')
+      toast.error('Invalid username or password')
     } finally {
       setLoading(false)
     }
@@ -66,27 +70,16 @@ function Login() {
         <h2 className='text-black text-5xl font-bold font-dancing mb-6 text-center'>Login</h2>
 
         <form className='relative' onSubmit={handleSubmit(onSubmit)} noValidate>
-          <div className='mb-6'>
-            <div className='absolute -top-[12px] left-3 font-dancing'>Email</div>
+          <div className='mb-4 relative'>
+            <div className='absolute -top-[12px] left-3 font-dancing'>Username</div>
             <input
-              type='email'
-              id='email'
-              placeholder='abcd@gmail.com'
+              type='text'
+              id='username'
+              placeholder='Name'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
-              {...register('username', {
-                required: 'Email is required',
-                pattern: {
-                  value: /^\S+@\S+\.\S+$/,
-                  message: 'Invalid email format'
-                }
-              })}
+              {...register('username', { required: 'Name is required' })}
             />
-            <ErrorMessage
-              errors={errors}
-              name='username'
-              as='p'
-              className='text-red-500 text-sm transition-all duration-200'
-            />
+            {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>}
           </div>
 
           <div className='mb-4 relative'>
