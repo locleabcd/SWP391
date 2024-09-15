@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.dto.response;
+package com.swpproject.koi_care_system.payload.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,6 +8,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class IntrospectResponse {
-    boolean valid;
+public class IntrospectRequest {
+    String token;
 }

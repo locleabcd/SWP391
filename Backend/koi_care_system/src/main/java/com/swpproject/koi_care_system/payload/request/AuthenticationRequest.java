@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.dto.request;
+package com.swpproject.koi_care_system.payload.request;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,6 +8,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class IntrospectRequest {
-    String token;
+public class AuthenticationRequest {
+    String username;
+    String password;
 }

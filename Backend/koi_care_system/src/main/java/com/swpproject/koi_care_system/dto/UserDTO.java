@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.dto.request;
+package com.swpproject.koi_care_system.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;

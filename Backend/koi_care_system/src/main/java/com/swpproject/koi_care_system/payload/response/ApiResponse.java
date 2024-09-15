@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.dto.request;
+package com.swpproject.koi_care_system.payload.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

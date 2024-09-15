@@ -1,12 +1,12 @@
 package com.swpproject.koi_care_system.controllers;
 
 import com.nimbusds.jose.JOSEException;
-import com.swpproject.koi_care_system.dto.request.ApiResponse;
-import com.swpproject.koi_care_system.dto.request.AuthenticationRequest;
-import com.swpproject.koi_care_system.dto.request.IntrospectRequest;
-import com.swpproject.koi_care_system.dto.response.AuthenticationResponse;
-import com.swpproject.koi_care_system.dto.response.IntrospectResponse;
-import com.swpproject.koi_care_system.service.AuthenticationService;
+import com.swpproject.koi_care_system.payload.response.ApiResponse;
+import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
+import com.swpproject.koi_care_system.payload.request.IntrospectRequest;
+import com.swpproject.koi_care_system.payload.response.AuthenticationResponse;
+import com.swpproject.koi_care_system.payload.response.IntrospectResponse;
+import com.swpproject.koi_care_system.service.AuthenticationServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +22,7 @@ import java.text.ParseException;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class AuthenticationController {
-    AuthenticationService authService;
+    AuthenticationServiceImpl authService;
 
     @PostMapping("/login")
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){

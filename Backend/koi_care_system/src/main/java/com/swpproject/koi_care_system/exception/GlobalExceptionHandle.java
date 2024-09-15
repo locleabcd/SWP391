@@ -1,6 +1,6 @@
 package com.swpproject.koi_care_system.exception;
 
-import com.swpproject.koi_care_system.dto.request.ApiResponse;
+import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,7 +11,7 @@ public class GlobalExceptionHandle {
 
 	@ExceptionHandler(value = Exception.class)
 	ResponseEntity<ApiResponse> handlingRuntimeException(Exception exception) {
-	    ApiResponse<Object> apiResponse = new ApiResponse<>();
+	    ApiResponse apiResponse = new ApiResponse<>();
 	
 		apiResponse.setCode(9999);
 		apiResponse.setMessage(exception.getMessage());
@@ -24,7 +24,7 @@ public class GlobalExceptionHandle {
 		ApiResponse apiResponse = new ApiResponse<>();
 	
 		apiResponse.setCode(errorCode.getCode());
-		apiResponse.setMessage(exception.getMessage());
+		apiResponse.setMessage(errorCode.getMessage());
 
 	
 		return ResponseEntity.badRequest().body(apiResponse);

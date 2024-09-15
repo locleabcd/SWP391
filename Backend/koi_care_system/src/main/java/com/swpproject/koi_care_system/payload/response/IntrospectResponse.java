@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.dto.response;
+package com.swpproject.koi_care_system.payload.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +8,6 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class AuthenticationResponse {
-    String token;
-    boolean isAuthenticated;
+public class IntrospectResponse {
+    boolean valid;
 }

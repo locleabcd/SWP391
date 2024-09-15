@@ -1,13 +1,15 @@
-package com.swpproject.koi_care_system.service.imp;
+package com.swpproject.koi_care_system.service.user;
 
 
-import com.swpproject.koi_care_system.dto.request.UserDTO;
-import com.swpproject.koi_care_system.entity.User;
+import com.swpproject.koi_care_system.dto.UserDTO;
+import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.exception.AppException;
 import com.swpproject.koi_care_system.exception.ErrorCode;
 import com.swpproject.koi_care_system.mapper.UserMapper;
+import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
+import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.repository.UserRepository;
-import com.swpproject.koi_care_system.service.UserService;
+import com.swpproject.koi_care_system.service.UserServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,12 +22,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UserServiceImpl implements UserService {
+public class UserService implements UserServiceImpl {
 
     UserRepository userRepo;
     UserMapper userMapper;
 
-    public UserDTO createUser(UserDTO request) {
+    public UserDTO createUser(CreateUserRequest request) {
 
 
         if (userRepo.existsByUsername(request.getUsername())) {
@@ -49,7 +51,7 @@ public class UserServiceImpl implements UserService {
         return userMapper.maptoUserDTO(userRepo.findById(userID).orElseThrow(() -> new RuntimeException("User Not Found")));
     }
 
-    public UserDTO updateUserByID(Long id, UserDTO request) {
+    public UserDTO updateUserByID(Long id, UpdateUserRequest request) {
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         userMapper.updateUser(user, request);

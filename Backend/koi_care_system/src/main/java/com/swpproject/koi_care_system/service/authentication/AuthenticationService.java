@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.service.imp;
+package com.swpproject.koi_care_system.service.authentication;
 
 
 import com.nimbusds.jose.*;
@@ -6,14 +6,14 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.swpproject.koi_care_system.dto.request.AuthenticationRequest;
-import com.swpproject.koi_care_system.dto.request.IntrospectRequest;
-import com.swpproject.koi_care_system.dto.response.AuthenticationResponse;
-import com.swpproject.koi_care_system.dto.response.IntrospectResponse;
+import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
+import com.swpproject.koi_care_system.payload.request.IntrospectRequest;
+import com.swpproject.koi_care_system.payload.response.AuthenticationResponse;
+import com.swpproject.koi_care_system.payload.response.IntrospectResponse;
 import com.swpproject.koi_care_system.exception.AppException;
 import com.swpproject.koi_care_system.exception.ErrorCode;
 import com.swpproject.koi_care_system.repository.UserRepository;
-import com.swpproject.koi_care_system.service.AuthenticationService;
+import com.swpproject.koi_care_system.service.AuthenticationServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -33,7 +33,7 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AuthenticationServiceImpl implements AuthenticationService {
+public class AuthenticationService implements AuthenticationServiceImpl {
     UserRepository userRepository;
 
     @NonFinal
@@ -58,8 +58,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     }
 
     public String generateToken(String username) {
+        // Create HMAC signer
         JWSHeader header = new JWSHeader(JWSAlgorithm.HS512);
 
+        // Create JWT claims set
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(username)
                 .issuer("phuoc.com")
@@ -70,8 +72,11 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .claim("customeClaim", "Custom")
                 .build();
 
+        // Create the payload
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
 
+        // Create the JWS object and sign it
+        //JWT  three parts: header, payload, signature
         JWSObject jwsObject = new JWSObject(header, payload);
 
         try {
@@ -87,14 +92,15 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
         var token = request.getToken();
 
+        // Create HMAC verifier with Signer Key
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
         SignedJWT signedJWT = SignedJWT.parse(token);
 
-        Date exprityTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+        Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
 
         var verified = signedJWT.verify(verifier);
         return IntrospectResponse.builder()
-                .valid(verified && exprityTime.after(new Date()))
+                .valid(verified && expirationTime.after(new Date()))//check if the token is valid and not expired
                 .build();
     }
 
