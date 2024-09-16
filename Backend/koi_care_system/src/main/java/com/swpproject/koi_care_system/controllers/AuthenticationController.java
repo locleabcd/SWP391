@@ -6,7 +6,7 @@ import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
 import com.swpproject.koi_care_system.payload.request.IntrospectRequest;
 import com.swpproject.koi_care_system.payload.response.AuthenticationResponse;
 import com.swpproject.koi_care_system.payload.response.IntrospectResponse;
-import com.swpproject.koi_care_system.service.AuthenticationServiceImpl;
+import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,7 +22,7 @@ import java.text.ParseException;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE,makeFinal = true)
 public class AuthenticationController {
-    AuthenticationServiceImpl authService;
+    IAuthenticationService authService;
 
     @PostMapping("/login")
     ApiResponse<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request){

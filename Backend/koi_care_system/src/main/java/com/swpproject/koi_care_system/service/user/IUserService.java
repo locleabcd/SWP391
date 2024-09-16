@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.service;
+package com.swpproject.koi_care_system.service.user;
 
 import com.swpproject.koi_care_system.dto.UserDTO;
 import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
@@ -7,7 +7,7 @@ import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import java.util.List;
 
 
-public interface UserServiceImpl {
+public interface IUserService {
     UserDTO createUser(CreateUserRequest request);
 
     List<UserDTO> getListUser();

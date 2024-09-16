@@ -5,7 +5,7 @@ import com.swpproject.koi_care_system.dto.UserDTO;
 import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.UserServiceImpl;
+import com.swpproject.koi_care_system.service.user.IUserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
 
-    UserServiceImpl userService;
+    IUserService userService;
 
     @PostMapping("/register")
     ApiResponse<UserDTO> createUser(@RequestBody @Valid CreateUserRequest request) {

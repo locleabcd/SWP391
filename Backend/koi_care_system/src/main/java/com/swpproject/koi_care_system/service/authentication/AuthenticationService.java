@@ -6,15 +6,14 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.swpproject.koi_care_system.exception.AppException;
-import com.swpproject.koi_care_system.exception.ErrorCode;
+import com.swpproject.koi_care_system.exceptions.AppException;
+import com.swpproject.koi_care_system.exceptions.ErrorCode;
 import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
 import com.swpproject.koi_care_system.payload.request.IntrospectRequest;
 import com.swpproject.koi_care_system.payload.response.AuthenticationResponse;
 import com.swpproject.koi_care_system.payload.response.IntrospectResponse;
 import com.swpproject.koi_care_system.repository.UserRepository;
-import com.swpproject.koi_care_system.service.AuthenticationServiceImpl;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -33,7 +32,7 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class AuthenticationService implements AuthenticationServiceImpl {
+public class AuthenticationService implements IAuthenticationService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
 

@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.exception;
+package com.swpproject.koi_care_system.exceptions;
 
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import org.springframework.http.ResponseEntity;

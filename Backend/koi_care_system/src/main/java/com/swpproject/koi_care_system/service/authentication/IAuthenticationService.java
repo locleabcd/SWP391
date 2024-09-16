@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.service;
+package com.swpproject.koi_care_system.service.authentication;
 
 import com.nimbusds.jose.JOSEException;
 import com.swpproject.koi_care_system.models.User;
@@ -9,7 +9,7 @@ import com.swpproject.koi_care_system.payload.response.IntrospectResponse;
 
 import java.text.ParseException;
 
-public interface AuthenticationServiceImpl {
+public interface IAuthenticationService {
     AuthenticationResponse authenticate(AuthenticationRequest request);
 
     String generateToken(User user);
