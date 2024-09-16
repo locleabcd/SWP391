@@ -4,9 +4,6 @@ import com.nimbusds.jose.JOSEException;
 import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
 import com.swpproject.koi_care_system.payload.request.IntrospectRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.payload.response.AuthenticationResponse;
-import com.swpproject.koi_care_system.payload.response.IntrospectResponse;
-import com.swpproject.koi_care_system.service.AuthenticationServiceImpl;
 import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +28,7 @@ public class AuthenticationController {
         return ApiResponse.builder()
                 .data(result)
                 .build();
+    }
 
     @PostMapping("/introspect")
     ApiResponse authenticate(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
