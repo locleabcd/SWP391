@@ -7,6 +7,7 @@ import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.payload.response.AuthenticationResponse;
 import com.swpproject.koi_care_system.payload.response.IntrospectResponse;
 import com.swpproject.koi_care_system.service.AuthenticationServiceImpl;
+import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -22,18 +23,20 @@ import java.text.ParseException;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
-    AuthenticationServiceImpl authService;
+    IAuthenticationService authService;
 
     @PostMapping("/login")
-    AuthenticationResponse authenticate(@RequestBody AuthenticationRequest request) {
-        return authService.authenticate(request);
-    }
+    ApiResponse authenticate(@RequestBody AuthenticationRequest request){
+        var result = authService.authenticate(request);
+        return ApiResponse.builder()
+                .data(result)
+                .build();
 
     @PostMapping("/introspect")
-    ApiResponse<IntrospectResponse> authenticate(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
+    ApiResponse authenticate(@RequestBody IntrospectRequest request) throws ParseException, JOSEException {
         var result = authService.introspect(request);
-        return ApiResponse.<IntrospectResponse>builder()
-                .result(result)
+        return ApiResponse.builder()
+                .data(result)
                 .build();
     }
 }

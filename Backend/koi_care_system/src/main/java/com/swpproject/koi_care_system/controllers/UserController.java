@@ -1,11 +1,10 @@
 package com.swpproject.koi_care_system.controllers;
 
-
 import com.swpproject.koi_care_system.dto.UserDTO;
 import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.UserServiceImpl;
+import com.swpproject.koi_care_system.service.user.IUserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,47 +22,47 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
 
-    UserServiceImpl userService;
+    IUserService userService;
 
     @PostMapping("/register")
-    ApiResponse<UserDTO> createUser(@RequestBody @Valid CreateUserRequest request) {
-        ApiResponse<UserDTO> apiResponse = new ApiResponse<>();
+    ApiResponse createUser(@RequestBody @Valid CreateUserRequest request) {
+        ApiResponse apiResponse = new ApiResponse();
 
-        apiResponse.setResult(userService.createUser(request));
+        apiResponse.setData(userService.createUser(request));
 
         return apiResponse;
     }
 
     @GetMapping
-    ApiResponse<List<UserDTO>> getUsers() {
+    ApiResponse getUsers() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         log.info("User: {}", authentication.getName());
         authentication.getAuthorities().forEach(a -> log.info("Role: {}", a.getAuthority()));
-        ApiResponse<List<UserDTO>> apiResponse = new ApiResponse<>();
+        ApiResponse apiResponse = new ApiResponse();
 
-        apiResponse.setResult(userService.getListUser());
+        apiResponse.setData(userService.getListUser());
         return apiResponse;
     }
 
     @GetMapping("/{id}")
-    ApiResponse<UserDTO> findUser(@PathVariable Long id) {
-        ApiResponse<UserDTO> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(userService.findUserByID(id));
+    ApiResponse findUser(@PathVariable Long id) {
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setData(userService.findUserByID(id));
         return apiResponse;
     }
 
     @PutMapping("/{id}")
-    ApiResponse<UserDTO> updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
-        return ApiResponse.<UserDTO>builder()
-                .result(userService.updateUserByID(id, request))
+    ApiResponse updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
+        return ApiResponse.builder()
+                .data(userService.updateUserByID(id, request))
                 .build();
     }
 
     @DeleteMapping("/{id}")
-    ApiResponse<String> deleteUser(@PathVariable Long id) {
+    ApiResponse deleteUser(@PathVariable Long id) {
         userService.deleteUserByID(id);
-        return ApiResponse.<String>builder()
-                .result("User has been deleted")
+        return ApiResponse.builder()
+                .data("User has been deleted")
                 .build();
     }
 
