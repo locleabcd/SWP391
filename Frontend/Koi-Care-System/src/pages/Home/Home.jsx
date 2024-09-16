@@ -9,10 +9,6 @@ import { Link as ScrollLink } from 'react-scroll'
 
 function Home() {
 
-  useEffect(() => {
-    AOS.init({duration:800, offset:300, delay:400, })
-  })
-
   return (
     <div>
       {/* homepage 1  */}
