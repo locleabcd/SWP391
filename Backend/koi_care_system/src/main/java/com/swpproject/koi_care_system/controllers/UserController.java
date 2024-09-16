@@ -19,7 +19,7 @@ import java.util.List;
 public class UserController {
 
 	 UserService userService;
-
+	 @CrossOrigin(origins = "http://localhost:5173")
 	@PostMapping("/register")
 	ApiResponse<UserDTO> createUser(@RequestBody @Valid UserDTO request) {
 		ApiResponse<UserDTO> apiResponse = new ApiResponse<>();

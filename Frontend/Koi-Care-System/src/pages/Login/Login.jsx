@@ -25,29 +25,32 @@ function Login() {
     setLoading(true)
 
     try {
-      const response = await axios.post('https://jssatsproject.azurewebsites.net/api/login', {
+      const response = await axios.post('http://localhost:8080/api/auth/login', {
         username: data.username,
         password: data.password
       })
 
-      const user = response.data
-      if (user && user.token) {
-        localStorage.setItem('token', user.token)
-        localStorage.setItem('role', user.role)
+      // const user = response.data
+      // if (user && user.token) {
+      //   localStorage.setItem('token', user.token)
+      //   localStorage.setItem('role', user.role)
 
-        switch (user.role) {
-          case 'admin':
-            navigate('/member')
-            break
-          case 'shop':
-            navigate('/shop')
-            break
-          case 'member':
-            navigate('/member')
-            break
-          default:
-            break
-        }
+      //   switch (user.role) {
+      //     case 'admin':
+      //       navigate('/member')
+      //       break
+      //     case 'shop':
+      //       navigate('/shop')
+      //       break
+      //     case 'member':
+      //       navigate('/member')
+      //       break
+      //     default:
+      //       break
+      //   }
+      // }
+      if (response.data.code === 0) {
+        navigate('/member')
       }
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
@@ -92,8 +95,8 @@ function Login() {
               {...register('password', {
                 required: 'Password is required',
                 minLength: {
-                  value: 6,
-                  message: 'Password must be at least 6 characters'
+                  value: 8,
+                  message: 'Password must be at least 7 characters'
                 }
               })}
             />

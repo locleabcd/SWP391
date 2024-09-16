@@ -22,25 +22,27 @@ function Register() {
 
   const onSubmit = async (data) => {
     setLoading(true)
+    console.log('Submitting data:', data)
 
     try {
-      const response = await axios.post('https://example.com/api/register', {
-        email: data.email,
+      const response = await axios.post('http://localhost:8080/api/users/register', {
         username: data.username,
+        email: data.email,
         password: data.password
       })
-      if (response.data.success) {
+
+      if (response.data.code === 1000) {
         toast.success('Registration successful! Redirecting to login...')
 
         setTimeout(() => {
           navigate('/login')
-        }, 2000)
+        }, 1000)
+      } else {
+        toast.error('Registration failed')
       }
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
-      toast.error('Registration failed. Please try again.', {
-        position: toast.POSITION.TOP_RIGHT
-      })
+      toast.error('Registration failed')
     } finally {
       setLoading(false)
     }
@@ -88,7 +90,7 @@ function Register() {
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
               {...register('username', { required: 'Name is required' })}
             />
-            {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>}
+            {errors.username && <p className='text-red-500 text-sm'>{errors.username.message}</p>}
           </div>
 
           <div className='mb-4 relative'>
@@ -101,8 +103,8 @@ function Register() {
               {...register('password', {
                 required: 'Password is required',
                 minLength: {
-                  value: 6,
-                  message: 'Password must be at least 6 characters'
+                  value: 8,
+                  message: 'Password must be at least 7 characters'
                 }
               })}
             />
