@@ -1,14 +1,18 @@
+package com.swpproject.koi_care_system.service.product;
+
 import com.swpproject.koi_care_system.dto.ImageDto;
 import com.swpproject.koi_care_system.dto.ProductDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
+import com.swpproject.koi_care_system.mapper.ImageMapper;
+import com.swpproject.koi_care_system.mapper.ProductMapper;
 import com.swpproject.koi_care_system.models.Category;
 import com.swpproject.koi_care_system.models.Image;
 import com.swpproject.koi_care_system.models.Product;
 import com.swpproject.koi_care_system.repository.CategoryRepository;
 import com.swpproject.koi_care_system.repository.ImageRepository;
 import com.swpproject.koi_care_system.repository.ProductRepository;
-import com.swpproject.koi_care_system.dto.request.AddProductRequest;
-import com.swpproject.koi_care_system.dto.request.ProductUpdateRequest;
+import com.swpproject.koi_care_system.payload.request.AddProductRequest;
+import com.swpproject.koi_care_system.payload.request.ProductUpdateRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;

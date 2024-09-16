@@ -2,7 +2,7 @@ package com.swpproject.koi_care_system.controllers;
 
 import com.swpproject.koi_care_system.dto.OrderDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
-import com.swpproject.koi_care_system.model.Order;
+import com.swpproject.koi_care_system.models.Order;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.order.IOrderService;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/orders")
+@RequestMapping("/orders")
 public class OrderController {
     private final IOrderService orderService;
 

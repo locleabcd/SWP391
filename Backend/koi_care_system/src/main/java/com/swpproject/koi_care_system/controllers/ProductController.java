@@ -3,9 +3,9 @@ package com.swpproject.koi_care_system.controllers;
 
 import com.swpproject.koi_care_system.dto.ProductDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
-import com.swpproject.koi_care_system.model.Product;
-import com.swpproject.koi_care_system.dto.request.AddProductRequest;
-import com.swpproject.koi_care_system.dto.request.ProductUpdateRequest;
+import com.swpproject.koi_care_system.models.Product;
+import com.swpproject.koi_care_system.payload.request.AddProductRequest;
+import com.swpproject.koi_care_system.payload.request.ProductUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/products")
+@RequestMapping("/products")
 public class ProductController {
     private final IProductService productService;
 

@@ -1,7 +1,7 @@
 package com.swpproject.koi_care_system.service.koipond;
 
-import com.swpproject.koi_care_system.dto.request.AddKoiPondRequest;
-import com.swpproject.koi_care_system.dto.request.KoiPondUpdateRequest;
+import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
+import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
 import com.swpproject.koi_care_system.models.KoiPond;
 
 public class KoiPondService implements IKoiPondService {

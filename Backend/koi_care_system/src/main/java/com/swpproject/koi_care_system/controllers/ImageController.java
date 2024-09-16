@@ -2,7 +2,7 @@ package com.swpproject.koi_care_system.controllers;
 
 import com.swpproject.koi_care_system.dto.ImageDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
-import com.swpproject.koi_care_system.model.Image;
+import com.swpproject.koi_care_system.models.Image;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.image.IImageService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/images")
+@RequestMapping("/images")
 public class ImageController {
     private final IImageService imageService;
 
