@@ -1,8 +1,6 @@
 import homepageImage from '../../assets/homepage.png'
 import logo from '../../assets/logo.png'
 import { Link } from 'react-router-dom'
-// example anh demo ->>
-import demo from '../../assets/left_login.png'
 import Homepage from '../../components/Homepage/Homepage'
 import About from '../../components/About/About'
 import Feature from '../../components/Features/Feature'
@@ -10,6 +8,11 @@ import { Link as ScrollLink } from 'react-scroll'
 
 
 function Home() {
+
+  useEffect(() => {
+    AOS.init({duration:800, offset:300, delay:400, })
+  })
+
   return (
     <div>
       {/* homepage 1  */}
@@ -20,7 +23,7 @@ function Home() {
         {/* header */}
         <header className=' shadow large fixed w-full z-10 bg-white shadow-gray-300'>
           {/* container for logo and nav */}
-          <div className='container mx-auto flex justify-between items-center py-1 pb-15'>
+          <div className='container  mx-auto flex justify-between items-center py-1 pb-15'>
             {/* logo */}
             <div className='flex items-center'>
               <button className='p-1 ml-6 rounded-md '>
