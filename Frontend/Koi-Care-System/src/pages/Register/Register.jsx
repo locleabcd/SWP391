@@ -1,12 +1,11 @@
 import { Link, useNavigate } from 'react-router-dom'
-import left_login from '../../assets/left_login.png'
-import right_login from '../../assets/right_login.png'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
 import { FaSpinner } from 'react-icons/fa'
+import backgroundVideo from '../../assets/0917(1).mp4'
 
 function Register() {
   const [showPassword, setShowPassword] = useState(false)
@@ -25,7 +24,7 @@ function Register() {
     console.log('Submitting data:', data)
 
     try {
-      const response = await axios.post('http://localhost:8080/api/users/register', {
+      const response = await axios.post('https://koi-care-system.azurewebsites.net/api/users/register', {
         username: data.username,
         email: data.email,
         password: data.password
@@ -52,14 +51,9 @@ function Register() {
 
   return (
     <div className='h-screen flex flex-col items-center justify-center'>
-      <div className='relative top-0 left-0 w-full'>
-        <div className='flex w-full h-screen justify-center items-center object-cover'>
-          <img src={left_login} alt='left_login' className='relative top-36 right-44 z-10' />
-          <img src={right_login} alt='right_login' className='relative bottom-16 left-10' />
-        </div>
-      </div>
+      <video className='absolute top-0 left-0 w-full h-full object-cover' src={backgroundVideo} autoPlay loop muted />
 
-      <div className='absolute bg-white p-8 rounded-3xl shadow-md w-full max-w-md bg-opacity-5 backdrop-blur-none border border-gray-300'>
+      <div className='absolute bg-white p-8 rounded-3xl shadow-md w-full max-w-md bg-opacity-30 backdrop-blur-0 border border-gray-300'>
         <h2 className='text-black text-5xl font-bold font-dancing mb-6 text-center'>Register</h2>
 
         <form className='relative' onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -69,7 +63,7 @@ function Register() {
               type='email'
               id='email'
               placeholder='acd@gmail.com'
-              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
               {...register('email', {
                 required: 'Email is required',
                 pattern: {
@@ -87,7 +81,7 @@ function Register() {
               type='text'
               id='name'
               placeholder='Name'
-              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
               {...register('username', { required: 'Name is required' })}
             />
             {errors.username && <p className='text-red-500 text-sm'>{errors.username.message}</p>}
@@ -99,7 +93,7 @@ function Register() {
               type={showPassword ? 'text' : 'password'}
               id='password'
               placeholder='***********'
-              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
               {...register('password', {
                 required: 'Password is required',
                 minLength: {
@@ -133,7 +127,7 @@ function Register() {
               type={showPassword ? 'text' : 'password'}
               id='confirm_password'
               placeholder='***********'
-              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
               {...register('confirm_password', {
                 required: 'Confirm password is required',
                 validate: (value) => value === password || 'Passwords do not match'
@@ -171,9 +165,9 @@ function Register() {
           </button>
         </form>
 
-        <div className='text-gray-400 mt-6 text-center'>
+        <div className='text-black font-bold mt-6 text-center'>
           If you have an account?
-          <Link to='/login' className='text-red-500 ml-1'>
+          <Link to='/login' className='text-red-500 font-bold ml-2'>
             Login
           </Link>
         </div>

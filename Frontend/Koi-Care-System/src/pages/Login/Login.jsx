@@ -1,6 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom'
-import left_login from '../../assets/left_login.png'
-import right_login from '../../assets/right_login.png'
 import { useState } from 'react'
 import axios from 'axios'
 import { FaSpinner } from 'react-icons/fa'
@@ -8,10 +6,13 @@ import { useForm } from 'react-hook-form'
 import { ErrorMessage } from '@hookform/error-message'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import backgroundVideo from '../../assets/0917(1).mp4'
+import ReCAPTCHA from 'react-google-recaptcha'
 
 function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [captcha, setCaptcha] = useState(null)
 
   const navigate = useNavigate()
 
@@ -24,33 +25,36 @@ function Login() {
   const onSubmit = async (data) => {
     setLoading(true)
 
+    if (!captcha) {
+      toast.error('Please complete reCAPTCHA')
+      setLoading(false)
+      return
+    }
+
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/login', {
+      const response = await axios.post('https://koi-care-system.azurewebsites.net/api/auth/login', {
         username: data.username,
         password: data.password
       })
 
-      // const user = response.data
-      // if (user && user.token) {
-      //   localStorage.setItem('token', user.token)
-      //   localStorage.setItem('role', user.role)
+      const user = response.data
+      if (user && user.token) {
+        localStorage.setItem('token', user.token)
+        localStorage.setItem('role', user.roles)
 
-      //   switch (user.role) {
-      //     case 'admin':
-      //       navigate('/member')
-      //       break
-      //     case 'shop':
-      //       navigate('/shop')
-      //       break
-      //     case 'member':
-      //       navigate('/member')
-      //       break
-      //     default:
-      //       break
-      //   }
-      // }
-      if (response.data.code === 0) {
-        navigate('/member')
+        switch (user.role) {
+          case 'ADMIN':
+            navigate('/admin')
+            break
+          case 'shop':
+            navigate('/shop')
+            break
+          case 'MEMBER':
+            navigate('/member')
+            break
+          default:
+            break
+        }
       }
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
@@ -62,14 +66,9 @@ function Login() {
 
   return (
     <div className='h-screen flex flex-col items-center justify-center'>
-      <div className='relative top-0 left-0 w-full'>
-        <div className='flex w-full h-screen justify-center items-center object-cover'>
-          <img src={left_login} alt='left_login' className='relative top-36 right-44 z-10' />
-          <img src={right_login} alt='right_login' className='relative bottom-16 left-10' />
-        </div>
-      </div>
+      <video className='absolute top-0 left-0 w-full h-full object-cover' src={backgroundVideo} autoPlay loop muted />
 
-      <div className='absolute bg-white p-8 rounded-3xl shadow-md w-full max-w-md bg-opacity-5 backdrop-blur-0 border border-gray-300'>
+      <div className='absolute bg-white p-8 rounded-3xl shadow-md w-full max-w-md bg-opacity-30 backdrop-blur-0 border border-gray-300'>
         <h2 className='text-black text-5xl font-bold font-dancing mb-6 text-center'>Login</h2>
 
         <form className='relative' onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -79,7 +78,7 @@ function Login() {
               type='text'
               id='username'
               placeholder='Name'
-              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
               {...register('username', { required: 'Name is required' })}
             />
             {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>}
@@ -91,7 +90,7 @@ function Login() {
               type={showPassword ? 'text' : 'password'}
               id='password'
               placeholder='***********'
-              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
               {...register('password', {
                 required: 'Password is required',
                 minLength: {
@@ -120,12 +119,14 @@ function Login() {
             <ErrorMessage errors={errors} name='password' as='p' className='text-red-500 text-sm' />
           </div>
 
-          <div className='flex items-center justify-between mb-6'>
+          <ReCAPTCHA sitekey='6Lf_-EUqAAAAACdtnX38OBQj-ok8Kt51EPQQ5cxy' onChange={(cap) => setCaptcha(cap)} />
+
+          <div className='flex items-center justify-between mb-2'>
             <label className='inline-flex items-center text-gray-400'>
               <input type='checkbox' className='form-checkbox text-blue-500 rounded' />
-              <span className='ml-2'>Remember me</span>
+              <span className='ml-2 text-black font-bold'>Remember me</span>
             </label>
-            <a href='#' className='text-red-500 cursor-pointer'>
+            <a href='#' className='text-black font-bold cursor-pointer mt-2'>
               Forgot password?
             </a>
           </div>
@@ -134,31 +135,32 @@ function Login() {
             className={`w-full flex items-center justify-center bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold ${
               loading ? 'opacity-50 cursor-not-allowed' : ''
             }`}
-            disabled={loading}
+            disabled={loading && !captcha}
           >
             <div className='flex items-center space-x-2'>
               {loading && <FaSpinner className='animate-spin' />}
+
               <span>Sign in</span>
             </div>
           </button>
         </form>
 
-        <div className='flex items-center mb-4 mt-4'>
+        <div className='flex items-center mb-2 mt-2'>
           <div className='flex-1 h-1 w-1 bg-gray-300'></div>
-          <div className='text-gray-400 text-lg px-3'>or</div>
+          <div className='text-gray-400 font-bold text-lg px-3'>or</div>
           <div className='flex-1 h-1 w-1 bg-gray-300'></div>
         </div>
 
-        <div className='flex items-center justify-between mt-4'>
-          <button className='flex items-center justify-center bg-white border hover:bg-white border-gray-300 text-gray-800 w-full py-2 rounded-lg mr-2'>
+        <div className='flex items-center justify-between mt-2'>
+          <button className='flex items-center justify-center bg-white border hover:bg-gray-100 border-gray-300 text-gray-800 w-full py-3 rounded-lg mr-2'>
             <img src='https://www.google.com/favicon.ico' alt='Google' className='h-5 mr-2' />
             Sign in with Google
           </button>
         </div>
 
-        <div className='text-gray-400 mt-4 text-center'>
+        <div className='text-black font-bold mt-2 text-center'>
           Do not have an account?
-          <Link to='/register' className='text-red-500 ml-1'>
+          <Link to='/register' className='text-red-500 ml-1 font-bold'>
             Sign up
           </Link>
         </div>
