@@ -17,4 +17,5 @@ public class CreateUserRequest {
     String password;
     @Email
     String email;
+    boolean status;
 }

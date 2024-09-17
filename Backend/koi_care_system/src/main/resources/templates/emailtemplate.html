@@ -1,0 +1,67 @@
+<table class="body-wrap"
+       style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;"
+       bgcolor="#f6f6f6" xmlns:th="http://www.thymeleaf.org">
+    <tbody>
+    <tr>
+        <td valign="top"></td>
+        <td class="container" width="600" valign="top">
+            <div class="content" style="max-width: 600px; padding: 20px;">
+                <table class="main" width="100%" cellpadding="0" cellspacing="0" bgcolor="#fff">
+                    <tbody>
+                    <tr>
+                        <td class=""
+                            style="font-size: 16px; color: #fff; text-align: center; background-color: #f1556c; padding: 20px;">
+                            <h2 style="font-size:32px;color:#fff;">Koi Care Company</h2> <br>
+                            <span style="margin-top: 10px;display: block;">Please Verify Your Email</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-wrap" style="padding: 20px;" valign="top">
+                            <table width="100%">
+                                <tbody>
+                                <tr>
+                                    <td class="content-block" valign="top">
+                                        Hello <strong th:text="${name}">Name</strong>,
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content-block" valign="top">
+                                        <p>There's just one more tiny step you need to take to achieve all these amazing
+                                            things. Please click below to verify your new account:</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content-block" valign="top" style="text-align: center;">
+                                        <img src="https://i.pinimg.com/originals/51/e0/03/51e0036cb8b5fc490c68d3566aeff840.jpg"
+                                             alt="Welcome Image"
+                                             style="width: 300px; display: block; margin: 0 auto 35px;">
+                                        <a class="btn-primary" th:href="${url}"
+                                           style="color: #FFF; text-decoration: none; font-weight: bold; background-color: #f1556c; padding: 8px 16px; border-radius: 5px;">Verify
+                                            My Account</a>
+                                        <p style="margin-top: 20px; color: #333;">Thanks for choosing <b>Our</b>
+                                            Company.</p>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="footer" style="color: #999; padding: 20px;">
+                                <table width="100%">
+                                    <tbody>
+                                    <tr>
+                                        <td class="aligncenter content-block" align="center" style="padding-top: 10px;">
+                                            &copy; Koi Care Company. All rights reserved.
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </td>
+        <td valign="top"></td>
+    </tr>
+    </tbody>
+</table>

@@ -32,6 +32,7 @@ public class ApplicationInitConfig {
                         .username("admin")
                         .password(passwordEncoder.encode("admin"))
                         .email("admin@gmail.com")
+                        .status(true)
                         .roles(roles)
                         .build();
 

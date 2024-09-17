@@ -26,7 +26,6 @@ public class SecurityConfig {
     private final String[] PUBLIC_ENDPOINTS = {
             "/users/register",
             "/auth/login",
-            "/auth/introspect"
     };
     @Value("${jwt.signerKey}")
     private String signerKey;
@@ -35,10 +34,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
+        //Protected from CSRF attacks, but we are not using it in this project so disable it
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
         httpSecurity
                 .authorizeRequests(request ->
                         request
                                 .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/auth/verify").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users").hasAuthority("ROLE_ADMIN")
                                 .anyRequest().authenticated());
 
@@ -49,8 +51,7 @@ public class SecurityConfig {
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter()))
         );
 
-        //Protected from CSRF attacks, but we are not using it in this project so disable it
-        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+
         return httpSecurity.build();
     }
 

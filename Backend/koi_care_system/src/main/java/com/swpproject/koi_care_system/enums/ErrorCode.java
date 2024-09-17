@@ -11,7 +11,11 @@ public enum ErrorCode {
     USER_PASSWORD(1003, "User password must at least 8 character"),
     USER_NOT_EXISTED(1004, "User not available"),
     UNAUTHENTICATED(1005, "User unauthenticated"),
-    NO_ROLES(1006, "User has no roles");
+    NO_ROLES(1006, "User has no roles"),
+    EMAIL_EXISTED(1007, "Email Existed"),
+    SENDMAIL_FAILED(1008, "Send mail failed"),
+    INVALID_TOKEN(1009, "Invalid Token"),
+    TOKEN_EXPIRED(1010, "Token Expired");
 
 
     private int code;

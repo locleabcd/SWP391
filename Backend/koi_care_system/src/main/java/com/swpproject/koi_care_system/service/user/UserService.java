@@ -10,6 +10,8 @@ import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.repository.UserRepository;
+import com.swpproject.koi_care_system.service.authentication.AuthenticationService;
+import com.swpproject.koi_care_system.service.email.EmailService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -27,24 +29,33 @@ public class UserService implements IUserService {
     UserRepository userRepo;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
+    EmailService emailService;
+    AuthenticationService authenticationService;
 
     public UserDTO createUser(CreateUserRequest request) {
 
 
         if (userRepo.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
+        } else if (userRepo.existsByEmail(request.getEmail())) {
+            throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
         User user = userMapper.maptoUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-
         //HashSet is used to save user roles and ensure that there are no duplicate roles
         HashSet<String> roles = new HashSet<>();
-        roles.add(Role.MEMBER.name());
+        roles.add(Role.GUEST.name());
         user.setRoles(roles);
+        //Verify user code email
+        user.setStatus(false);
+
+        var token = authenticationService.generateToken(user);
+        emailService.send(user.getUsername(), user.getEmail(), "Welocome New User, Your Verify Email", token);
 
         return userMapper.maptoUserDTO(userRepo.save(user));
 
     }
+
 
     public List<UserDTO> getListUser() {
         return userRepo.findAll().stream()
@@ -65,5 +76,16 @@ public class UserService implements IUserService {
 
     public void deleteUserByID(Long id) {
         userRepo.deleteById(id);
+    }
+
+    @Override
+    public void verifyUser(String email, String token) {
+        User user = userRepo.findByEmail(email)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        user.setStatus(true);
+        HashSet<String> roles = new HashSet<>();
+        roles.add(Role.MEMBER.name());
+        user.setRoles(roles);
+        userRepo.save(user);
     }
 }

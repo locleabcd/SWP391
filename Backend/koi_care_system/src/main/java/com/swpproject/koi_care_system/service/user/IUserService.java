@@ -17,4 +17,6 @@ public interface IUserService {
     UserDTO updateUserByID(Long id, UpdateUserRequest request);
 
     void deleteUserByID(Long id);
+
+    void verifyUser(String email, String token);
 }

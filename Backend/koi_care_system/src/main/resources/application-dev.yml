@@ -12,13 +12,12 @@ spring:
       hibernate:
         format_sql: true
     open-in-view: true
-  spring:
-    mail:
-      host: smtp.gmail.com
-      port: 587
-      username: storephuoc@gmail.com
-      password: ncux oxqc ldqu leih
-      properties:
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: storephuoc@gmail.com
+    password: ncux oxqc ldqu leih
+    properties:
         mail:
           smtp:
             auth: true
