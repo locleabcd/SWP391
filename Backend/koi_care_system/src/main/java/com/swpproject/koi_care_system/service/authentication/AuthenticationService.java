@@ -12,9 +12,7 @@ import com.swpproject.koi_care_system.exceptions.AppException;
 import com.swpproject.koi_care_system.mapper.UserMapper;
 import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
-import com.swpproject.koi_care_system.payload.request.IntrospectRequest;
 import com.swpproject.koi_care_system.payload.response.AuthenticationResponse;
-import com.swpproject.koi_care_system.payload.response.IntrospectResponse;
 import com.swpproject.koi_care_system.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +27,7 @@ import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+
 
 @Slf4j
 @Service
@@ -52,8 +51,13 @@ public class AuthenticationService implements IAuthenticationService {
         if (!authenticated) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
-        var token = generateToken(user);
         UserDTO userDTO = userMapper.maptoUserDTO(user);
+
+        if (userDTO.getRoles().equals("GUEST")) {
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
+        var token = generateToken(user);
+
         return AuthenticationResponse.builder()
                 .id(userDTO.getId())
                 .username(userDTO.getUsername())
@@ -73,7 +77,7 @@ public class AuthenticationService implements IAuthenticationService {
                 .issuer("phuoc.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(3, ChronoUnit.MINUTES).toEpochMilli()
+                        Instant.now().plus(30, ChronoUnit.MINUTES).toEpochMilli()
                 ))
                 .claim("scope", buildScope(user))
                 .build();
@@ -95,8 +99,7 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     @Override
-    public IntrospectResponse introspect(IntrospectRequest request) throws JOSEException, ParseException {
-        var token = request.getToken();
+    public boolean verificationToken(String token) throws JOSEException, ParseException {
 
         // Create HMAC verifier with Signer Key
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());
@@ -104,10 +107,21 @@ public class AuthenticationService implements IAuthenticationService {
 
         Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
 
-        var verified = signedJWT.verify(verifier);
-        return IntrospectResponse.builder()
-                .valid(verified && expirationTime.after(new Date()))//check if the token is valid and not expired
-                .build();
+        // Verify the token with signer key
+        boolean verified = signedJWT.verify(verifier);
+        //check if the token is unexpired
+        boolean unexpired = expirationTime.after(new Date());
+
+        if (verified && unexpired) {
+            return true;
+        }
+        if (!verified) {
+            throw new AppException(ErrorCode.INVALID_TOKEN);
+        }
+        if (!unexpired) {
+            throw new AppException(ErrorCode.TOKEN_EXPIRED);
+        }
+        return false;//check if the token is valid and not unexpired
     }
 
     private String buildScope(User user) {

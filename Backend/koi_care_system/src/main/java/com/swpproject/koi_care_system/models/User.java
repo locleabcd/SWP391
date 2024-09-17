@@ -31,5 +31,7 @@ public class User {
     @Column(nullable = false)
     Set<String> roles;
 
+    boolean status;
+
 
 }

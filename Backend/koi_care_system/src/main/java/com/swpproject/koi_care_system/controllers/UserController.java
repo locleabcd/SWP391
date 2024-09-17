@@ -1,6 +1,5 @@
 package com.swpproject.koi_care_system.controllers;
 
-import com.swpproject.koi_care_system.dto.UserDTO;
 import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
@@ -10,10 +9,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -27,7 +23,6 @@ public class UserController {
     @PostMapping("/register")
     ApiResponse createUser(@RequestBody @Valid CreateUserRequest request) {
         ApiResponse apiResponse = new ApiResponse();
-
         apiResponse.setData(userService.createUser(request));
 
         return apiResponse;
@@ -35,11 +30,7 @@ public class UserController {
 
     @GetMapping
     ApiResponse getUsers() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info("User: {}", authentication.getName());
-        authentication.getAuthorities().forEach(a -> log.info("Role: {}", a.getAuthority()));
         ApiResponse apiResponse = new ApiResponse();
-
         apiResponse.setData(userService.getListUser());
         return apiResponse;
     }

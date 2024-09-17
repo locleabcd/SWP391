@@ -26,7 +26,6 @@ public class SecurityConfig {
     private final String[] PUBLIC_ENDPOINTS = {
             "/users/register",
             "/auth/login",
-            "/auth/introspect"
     };
     @Value("${jwt.signerKey}")
     private String signerKey;
@@ -35,10 +34,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
+        //Protected from CSRF attacks, but we are not using it in this project so disable it
+
         httpSecurity
-                .authorizeRequests(request ->
+                .authorizeHttpRequests(request ->
                         request
                                 .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                                .requestMatchers(HttpMethod.GET, "/auth/verify").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/users").hasAuthority("ROLE_ADMIN")
                                 .anyRequest().authenticated());
 
@@ -51,6 +53,15 @@ public class SecurityConfig {
 
         //Protected from CSRF attacks, but we are not using it in this project so disable it
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
+        // Enable CORS
+        httpSecurity.cors(cors -> cors.configurationSource(request -> {
+            var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+            corsConfiguration.setAllowedOrigins(java.util.List.of("*"));
+            corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            corsConfiguration.setAllowedHeaders(java.util.List.of("*"));
+            return corsConfiguration;
+        }));
+
         return httpSecurity.build();
     }
 

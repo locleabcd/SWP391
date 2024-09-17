@@ -10,5 +10,8 @@ import java.util.Optional;
 public interface UserRepository extends JpaRepository<User, Long> {
 	boolean existsByUsername(String username); //JPA auto query SQL to check duplicated
 												//Username when field is username -- UserName when field is "userName" caution
+												boolean existsByEmail(String email);
 	Optional<User> findByUsername(String username);
+
+	Optional<User> findByEmail(String email);
 }
