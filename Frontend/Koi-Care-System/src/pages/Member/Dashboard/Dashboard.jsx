@@ -1,4 +1,4 @@
-import logo from '../../assets/logo.png'
+import logo from '../../../assets/logo.png'
 import { useState } from 'react'
 import { IoFishOutline } from 'react-icons/io5'
 import { GiAquarium } from 'react-icons/gi'
@@ -9,7 +9,7 @@ import { CgCalculator } from 'react-icons/cg'
 import { IoStatsChartSharp } from 'react-icons/io5'
 import { FaRegNewspaper } from 'react-icons/fa'
 
-function Member() {
+function Dashboard() {
   const [isOpen, setIsOpen] = useState(false)
 
   const toggleList = () => {
@@ -296,4 +296,4 @@ function Member() {
   )
 }
 
-export default Member
+export default Dashboard

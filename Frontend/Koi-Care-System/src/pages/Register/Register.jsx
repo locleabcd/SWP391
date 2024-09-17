@@ -30,7 +30,7 @@ function Register() {
         password: data.password
       })
 
-      if (response.data.code === 1000) {
+      if (response.status === 200) {
         toast.success('Registration successful! Redirecting to login...')
 
         setTimeout(() => {

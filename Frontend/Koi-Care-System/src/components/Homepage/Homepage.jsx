@@ -3,7 +3,7 @@ function Home() {
     <div className='content-homepage'>
       {/* content home page  */}
       <div className='flex justify-start items-center h-full'>
-        <div className='flex flex-col items-center mr-auto ml-10 pt-36 w-1/2'>
+        <div className='flex flex-col items-center mr-auto ml-10 pt-56 w-1/2'>
           <h1 className='text-5xl font-bold text-black mb-4'>Koi Care System</h1>
           <p className='text-gray-600 text-lg font-medium mb-8'>
             Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet

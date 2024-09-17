@@ -37,23 +37,26 @@ function Login() {
         password: data.password
       })
 
-      const user = response.data
+      const user = response.data.data
       if (user && user.token) {
         localStorage.setItem('token', user.token)
         localStorage.setItem('role', user.roles)
+        if (user.roles && user.roles.length > 0) {
+          const role = user.roles[0]
 
-        switch (user.role) {
-          case 'ADMIN':
-            navigate('/admin')
-            break
-          case 'shop':
-            navigate('/shop')
-            break
-          case 'MEMBER':
-            navigate('/member')
-            break
-          default:
-            break
+          switch (role) {
+            case 'ADMIN':
+              navigate('/admin')
+              break
+            case 'SHOP':
+              navigate('/shop')
+              break
+            case 'MEMBER':
+              navigate('/member')
+              break
+            default:
+              break
+          }
         }
       }
       // eslint-disable-next-line no-unused-vars
