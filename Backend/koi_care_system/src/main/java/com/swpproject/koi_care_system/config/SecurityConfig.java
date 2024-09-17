@@ -50,6 +50,13 @@ public class SecurityConfig {
                         jwtConfigurer.decoder(jwtDecoder())
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter()))
         );
+        httpSecurity.cors(cors -> cors.configurationSource(request -> {
+            var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+            corsConfiguration.setAllowedOrigins(java.util.List.of("*"));
+            corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+            corsConfiguration.setAllowedHeaders(java.util.List.of("*"));
+            return corsConfiguration;
+        }));
 
 
         return httpSecurity.build();

@@ -1,9 +1,9 @@
 spring:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: root
-    url: jdbc:mysql://localhost:3306/koi-care-system
-    password: 12345
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    username: koicaresystem@koicaresystem
+    url: jdbc:sqlserver://koicaresystem.database.windows.net:1433;database=koi-care-system;user=koicaresystem@koicaresystem;password=Applicaion123;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    password: Application123
   jpa:
     hibernate:
       ddl-auto: update
