@@ -5,8 +5,12 @@ export default {
     extend: {
       fontFamily: {
         dancing: ['Forte', 'cMyriad Variable Concept']
+      },
+      colors: {
+        'custom-dark': '#24303F'
       }
     }
   },
-  plugins: []
+  // eslint-disable-next-line no-undef
+  plugins: [require('tailwind-scrollbar')]
 }

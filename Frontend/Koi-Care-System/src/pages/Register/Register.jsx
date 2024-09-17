@@ -31,11 +31,7 @@ function Register() {
       })
 
       if (response.status === 200) {
-        toast.success('Registration successful! Redirecting to login...')
-
-        setTimeout(() => {
-          navigate('/login')
-        }, 1000)
+        navigate('/verifyPending')
       } else {
         toast.error('Registration failed')
       }

@@ -26,7 +26,7 @@ function Login() {
     setLoading(true)
 
     if (!captcha) {
-      toast.error('Please complete reCAPTCHA')
+      toast.warn('Please complete reCAPTCHA')
       setLoading(false)
       return
     }

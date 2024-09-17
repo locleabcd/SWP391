@@ -1,4 +1,3 @@
-import logo from '../../assets/logo.png'
 import { useState } from 'react'
 import { IoFishOutline } from 'react-icons/io5'
 import { GiAquarium } from 'react-icons/gi'
@@ -8,32 +7,40 @@ import { FaHandPointRight } from 'react-icons/fa'
 import { CgCalculator } from 'react-icons/cg'
 import { IoStatsChartSharp } from 'react-icons/io5'
 import { FaRegNewspaper } from 'react-icons/fa'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import path from '../../constants/path'
+import { useDarkMode } from '../DarkModeContext'
 
 function LeftSideBar() {
   const [isOpen, setIsOpen] = useState(false)
+
+  const { isDarkMode } = useDarkMode()
 
   const toggleList = () => {
     setIsOpen(!isOpen)
   }
 
+  const handleLogout = () => {
+    localStorage.clear()
+  }
+
   return (
-    <div className='w-1/6 bg-white text-black shadow-xl rounded-md h-screen overflow-y-auto'>
+    <div
+      className={`w-1/6 ${
+        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+      } shadow-xl h-screen overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-300`}
+    >
       {/* logo  */}
-      <div className='flex justify-center items-center mb-4'>
-        <button className='pt-2 rounded-md '>
-          <img className='w-12 animate-spin' src={logo} alt='Logo' />
-        </button>
-        <a href='#' className='pt-1 text-xl font-bold text-black'>
-          Koi Care System
-        </a>
-      </div>
+
       {/* sidebar content */}
       <div className='flex flex-col justify-center items-center m-2'>
         {/* member account */}
-        <div
-          className='hover:text-white hover:bg-red-500 min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center'
+        <NavLink
+          to={path.profile}
+          className={({ isActive }) => {
+            const active = isActive ? 'bg-red-500 text-white' : ''
+            return `hover:text-white ${active} hover:bg-red-500 min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+          }}
           onClick={toggleList}
         >
           {/* left section */}
@@ -69,12 +76,19 @@ function LeftSideBar() {
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='m19.5 8.25-7.5 7.5-7.5-7.5' />
           </svg>
-        </div>
+        </NavLink>
 
         {isOpen && (
-          <div className='w-full'>
+          <div className='w-full pl-6'>
             <ul>
-              <li className='hover:text-white hover:bg-red-500 min-w-full py-4 px-8 cursor-pointer rounded-lg flex items-center'>
+              <NavLink
+                to={path.profile}
+                end
+                className={({ isActive }) => {
+                  const active = isActive ? 'bg-slate-200' : ''
+                  return ` ${active} mt-2 min-w-full py-4 pl-4 pr-8 cursor-pointer rounded-lg flex items-center`
+                }}
+              >
                 {/* icon image */}
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -93,27 +107,15 @@ function LeftSideBar() {
                   />
                 </svg>
                 <span className='font-semibold '>Profile</span>
-              </li>
-              <li className='hover:text-white hover:bg-red-500 min-w-full py-4 px-8 cursor-pointer rounded-lg flex items-center'>
-                {/* icon image */}
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth='1.5'
-                  stroke='currentColor'
-                  className='w-7 mr-3'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15'
-                  />
-                </svg>
-
-                <span className='font-semibold '>Logout</span>
-              </li>
-              <li className='hover:text-white hover:bg-red-500 min-w-full py-4 px-8 cursor-pointer rounded-lg flex items-center'>
+              </NavLink>
+              <NavLink
+                to={path.shopCart}
+                end
+                className={({ isActive }) => {
+                  const active = isActive ? 'bg-slate-200' : ''
+                  return ` ${active} hover:bg-slate-200 mt-2 min-w-full py-4 pl-4 pr-8 cursor-pointer rounded-lg flex items-center`
+                }}
+              >
                 {/* icon image */}
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -130,8 +132,31 @@ function LeftSideBar() {
                   />
                 </svg>
 
-                <span className='font-semibold '>Shop Cart</span>
-              </li>
+                <span className='font-semibold'>Shop Cart</span>
+              </NavLink>
+              <Link
+                onClick={handleLogout}
+                to={path.login}
+                end
+                className='hover:bg-slate-200 mt-2 min-w-full py-4 pl-4 pr-8 cursor-pointer rounded-lg flex items-center'
+              >
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  className='w-7 mr-3'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15'
+                  />
+                </svg>
+
+                <span className='font-semibold '>Logout</span>
+              </Link>
             </ul>
           </div>
         )}

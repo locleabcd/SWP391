@@ -1,14 +1,22 @@
+import { useDarkMode } from '../../components/DarkModeContext'
+import Header from '../../components/Member/Header'
 import LeftSideBar from '../../components/Member/LeftSideBar'
 
 function Member() {
+  const { isDarkMode } = useDarkMode()
+
   return (
     <div>
       {/* member page */}
-      <div className='min-h-screen px-3 py-3 flex bg-gray-100 gap-5'>
-        {/* sidebar */}
+      <Header />
+      <div className='min-h-screen flex bg-gray-100'>
         <LeftSideBar />
         {/* dashboard page  */}
-        <div className='w-5/6 bg-white text-black shadow-xl rounded-md flex flex-col'>
+        <div
+          className={`w-5/6 ${
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+          }  shadow-xl rounded-md flex flex-col`}
+        >
           {/* 4 ô trên  */}
           <div className='h-1/4  m-2 flex flex-row gap-2'>
             {/* item  */}

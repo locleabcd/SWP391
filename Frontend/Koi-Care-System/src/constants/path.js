@@ -5,6 +5,8 @@ const path = {
   member: '/member',
   admin: '/admin',
   shop: '/shop',
+  verify: '/verifyPending',
+  verifySuccess: '/verify',
   myAccount: '/member/myAccount',
   profile: '/member/myAccount/profile',
   shopCart: '/member/myAccount/shopCart',

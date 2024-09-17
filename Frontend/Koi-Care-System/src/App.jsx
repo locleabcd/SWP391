@@ -19,6 +19,9 @@ import MyAccount from './pages/Member/MyAccount/MyAccount'
 import Profile from './pages/Member/MyAccount/Profile/Profile'
 import ShopCart from './pages/Member/MyAccount/ShopCart/ShopCart'
 import MyPond from './pages/Member/MyPond/MyPond'
+import VerifyEmail from './pages/VerifyEmail/VerifyEmail'
+import VerifySuccess from './pages/VerifyEmail/VerifySuccess'
+import { DarkModeProvider } from './components/DarkModeContext'
 
 function App() {
   const routeElements = useRoutes([
@@ -33,6 +36,14 @@ function App() {
     {
       path: path.register,
       element: <Register />
+    },
+    {
+      path: path.verify,
+      element: <VerifyEmail />
+    },
+    {
+      path: path.verifySuccess,
+      element: <VerifySuccess />
     },
     {
       path: path.member,
@@ -98,8 +109,10 @@ function App() {
 
   return (
     <>
-      {routeElements}
-      <ToastContainer />
+      <DarkModeProvider>
+        {routeElements}
+        <ToastContainer />
+      </DarkModeProvider>
     </>
   )
 }
