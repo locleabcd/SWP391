@@ -4,7 +4,7 @@ const path = {
   register: '/register',
   member: '/member',
   admin: '/admin',
-  shop: 'shop',
+  shop: '/shop',
   myAccount: '/member/myAccount',
   profile: '/member/myAccount/profile',
   shopCart: '/member/myAccount/shopCart',

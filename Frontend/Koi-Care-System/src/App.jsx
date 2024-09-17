@@ -15,6 +15,10 @@ import FoodCalculator from './pages/Member/FoodCalculator/FoodCalculator'
 import SaltCalculator from './pages/Member/SaltCalculator/SaltCalculator'
 import Statistics from './pages/Member/Statistics/Statistics'
 import News from './pages/Member/News/News'
+import MyAccount from './pages/Member/MyAccount/MyAccount'
+import Profile from './pages/Member/MyAccount/Profile/Profile'
+import ShopCart from './pages/Member/MyAccount/ShopCart/ShopCart'
+import MyPond from './pages/Member/MyPond/MyPond'
 
 function App() {
   const routeElements = useRoutes([
@@ -35,12 +39,30 @@ function App() {
       element: <Member />,
       children: [
         {
+          path: path.myAccount,
+          element: <MyAccount />,
+          children: [
+            {
+              path: path.profile,
+              element: <Profile />
+            },
+            {
+              path: path.shopCart,
+              element: <ShopCart />
+            }
+          ]
+        },
+        {
           path: path.dashboard,
           element: <Dashboard />
         },
         {
-          path: path.myPond,
+          path: path.myKoi,
           element: <MyKoi />
+        },
+        {
+          path: path.myPond,
+          element: <MyPond />
         },
         {
           path: path.waterParameters,
