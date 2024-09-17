@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-//@Table(name="KoiFish")
 public class KoiFish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +29,17 @@ public class KoiFish {
     private String breeder;
     private Double price;
 
+    @OneToOne
+    @JoinColumn(name="koiFish_id")
+    private Image imageList;
+
+    @ManyToOne
+    @JoinColumn(name="koiPond_id")
+    private KoiPond koiPond;
+
     @OneToMany(mappedBy = "koiFish",cascade = CascadeType.ALL,orphanRemoval = true)
-    List<Image> imageList;
+    List<GrowHistory> growHistoryList;
 
-
+    @OneToMany(mappedBy = "koiFish",cascade = CascadeType.ALL,orphanRemoval = true)
+    List<Remark> remarkList;
 }

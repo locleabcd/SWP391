@@ -22,6 +22,17 @@ public class KoiPond {
     private Double depth;
     private int skimmer;
     private Double pumpCapacity;
-    @OneToMany(mappedBy = "koiPond", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Image> imageList;
+    @OneToOne
+    @JoinColumn(name="product_id")
+    private Image imageList;
+
+    @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL,orphanRemoval = false)
+    List<KoiFish> koiFishList;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL,orphanRemoval = true)
+    List<WaterParametersHistory> waterParametersHistoryList;
 }

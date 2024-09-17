@@ -29,14 +29,16 @@ public class AuthenticationController {
     }
 
     @GetMapping("/verify")
-    ApiResponse verifyUserEmail(@RequestParam String email, @RequestParam String token) throws ParseException, JOSEException {
+    public String verifyUserEmail(@RequestParam String email, @RequestParam String token) throws ParseException, JOSEException {
         var result = authService.verificationToken(token);
         if (result) {
             userService.verifyUser(email, token);
         }
-        return ApiResponse.builder()
-                .message("Verify token")
-                .data(result)
-                .build();
+        return "<html>"
+                + "<head>"
+                + "<meta http-equiv='refresh' content='0;url=http://localhost:5173/verify'>"
+                + "</head>"
+                + "<body></body>"
+                + "</html>";
     }
 }

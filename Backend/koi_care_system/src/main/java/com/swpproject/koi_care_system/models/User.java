@@ -33,5 +33,12 @@ public class User {
 
     boolean status;
 
+    @OneToOne
+    @JoinColumn(name="user_id")
+    Image image;
+
+
+
+
 
 }
