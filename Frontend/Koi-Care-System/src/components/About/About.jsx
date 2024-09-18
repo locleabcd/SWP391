@@ -1,16 +1,15 @@
 import demo from '../../assets/left_login.png'
-import AOS from "aos"
+import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { useEffect } from 'react'
 
 function About() {
-
   useEffect(() => {
-    AOS.init({duration:800, offset:100, delay:200, })
+    AOS.init({ duration: 800, offset: 100, delay: 200 })
   })
 
   return (
-    <div className='flex h-[90vh]' data-aos="fade-up">
+    <div className='flex h-[90vh]' data-aos='fade-up'>
       {/* left content */}
       <div className='w-2/5 flex flex-col items-center justify-center h-full py-10'>
         <div className='flex flex-col justify-center ml-10 py-10 px-5 font-medium'>
