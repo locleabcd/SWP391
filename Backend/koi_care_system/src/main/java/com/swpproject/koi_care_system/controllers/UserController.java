@@ -9,6 +9,8 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -21,40 +23,42 @@ public class UserController {
     IUserService userService;
 
     @PostMapping("/register")
-    ApiResponse createUser(@RequestBody @Valid CreateUserRequest request) {
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(userService.createUser(request));
-
-        return apiResponse;
+    public ResponseEntity<ApiResponse> createUser(@RequestBody @Valid CreateUserRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
+                .message("User has been created")
+                .data(userService.createUser(request))
+                .build());
     }
 
     @GetMapping
-    ApiResponse getUsers() {
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(userService.getListUser());
-        return apiResponse;
+    public ResponseEntity<ApiResponse> getUsers() {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("List of users")
+                .data(userService.getListUser())
+                .build());
     }
 
     @GetMapping("/{id}")
-    ApiResponse findUser(@PathVariable Long id) {
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setData(userService.findUserByID(id));
-        return apiResponse;
+    public ResponseEntity<ApiResponse> findUser(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("User found")
+                .data(userService.findUserByID(id))
+                .build());
     }
 
     @PutMapping("/{id}")
-    ApiResponse updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
-        return ApiResponse.builder()
+    public ResponseEntity<ApiResponse> updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("User has been updated")
                 .data(userService.updateUserByID(id, request))
-                .build();
+                .build());
     }
 
     @DeleteMapping("/{id}")
-    ApiResponse deleteUser(@PathVariable Long id) {
-        userService.deleteUserByID(id);
-        return ApiResponse.builder()
-                .data("User has been deleted")
-                .build();
+    public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long id) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("User has been deleted")
+                .build());
     }
 
 }

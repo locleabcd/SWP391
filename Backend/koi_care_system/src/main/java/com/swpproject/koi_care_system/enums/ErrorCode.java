@@ -15,7 +15,8 @@ public enum ErrorCode {
     EMAIL_EXISTED(1007, "Email Existed"),
     SENDMAIL_FAILED(1008, "Send mail failed"),
     INVALID_TOKEN(1009, "Invalid Token"),
-    TOKEN_EXPIRED(1010, "Token Expired");
+    TAG_EXISTED(1009, "Tag Existed"),
+    ;
 
 
     private int code;

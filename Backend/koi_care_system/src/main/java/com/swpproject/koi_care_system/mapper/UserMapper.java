@@ -14,6 +14,7 @@ public interface UserMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "roles", ignore = true)
+    @Mapping(target = "status", constant = "false")
     User maptoUser(CreateUserRequest createUserRequest);
 
     UserDTO maptoUserDTO(User user);

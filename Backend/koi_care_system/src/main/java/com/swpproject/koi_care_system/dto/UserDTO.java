@@ -17,4 +17,5 @@ public class UserDTO {
     @Email
     String email;
     Set<String> roles;
+    boolean status;
 }

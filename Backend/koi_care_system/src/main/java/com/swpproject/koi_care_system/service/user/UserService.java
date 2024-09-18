@@ -15,6 +15,8 @@ import com.swpproject.koi_care_system.service.email.EmailService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -47,7 +49,6 @@ public class UserService implements IUserService {
         roles.add(Role.GUEST.name());
         user.setRoles(roles);
         //Verify user code email
-        user.setStatus(false);
 
         var token = authenticationService.generateToken(user);
         emailService.send(user.getUsername(), user.getEmail(), "Welocome New User, Your Verify Email", token);
@@ -56,13 +57,15 @@ public class UserService implements IUserService {
 
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserDTO> getListUser() {
         return userRepo.findAll().stream()
                 .map(userMapper::maptoUserDTO).toList();
 
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostAuthorize("returnObject.username == authentication.username")
     public UserDTO findUserByID(Long userID) {
         return userMapper.maptoUserDTO(userRepo.findById(userID).orElseThrow(() -> new RuntimeException("User Not Found")));
     }
@@ -75,7 +78,9 @@ public class UserService implements IUserService {
     }
 
     public void deleteUserByID(Long id) {
-        userRepo.deleteById(id);
+        userRepo.findById(id).ifPresentOrElse(userRepo::delete, () -> {
+            throw new RuntimeException("User not found");
+        });
     }
 
     @Override

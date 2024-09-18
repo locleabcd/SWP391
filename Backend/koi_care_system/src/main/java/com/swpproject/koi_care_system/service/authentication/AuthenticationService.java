@@ -6,8 +6,8 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.swpproject.koi_care_system.dto.UserDTO;
 import com.swpproject.koi_care_system.enums.ErrorCode;
+import com.swpproject.koi_care_system.enums.Role;
 import com.swpproject.koi_care_system.exceptions.AppException;
 import com.swpproject.koi_care_system.mapper.UserMapper;
 import com.swpproject.koi_care_system.models.User;
@@ -51,19 +51,18 @@ public class AuthenticationService implements IAuthenticationService {
         if (!authenticated) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
-        UserDTO userDTO = userMapper.maptoUserDTO(user);
 
-        if (userDTO.getRoles().equals("GUEST")) {
+        if (user.getRoles().contains(Role.GUEST.name())) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
         var token = generateToken(user);
 
         return AuthenticationResponse.builder()
-                .id(userDTO.getId())
-                .username(userDTO.getUsername())
-                .roles(userDTO.getRoles())
+                .id(user.getId())
+                .username(user.getUsername())
+                .roles(user.getRoles())
                 .token(token)
-                .isAuthenticated(true)
+                .authenticated(true)
                 .build();
     }
 
@@ -118,9 +117,7 @@ public class AuthenticationService implements IAuthenticationService {
         if (!verified) {
             throw new AppException(ErrorCode.INVALID_TOKEN);
         }
-        if (!unexpired) {
-            throw new AppException(ErrorCode.TOKEN_EXPIRED);
-        }
+
         return false;//check if the token is valid and not unexpired
     }
 
