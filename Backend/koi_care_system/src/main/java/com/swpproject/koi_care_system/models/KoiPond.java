@@ -23,8 +23,8 @@ public class KoiPond {
     private int skimmer;
     private Double pumpCapacity;
     @OneToOne
-    @JoinColumn(name="product_id")
-    private Image imageList;
+    @JoinColumn(name="image_id")
+    private Image image;
 
     @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL,orphanRemoval = false)
     List<KoiFish> koiFishList;
@@ -35,4 +35,17 @@ public class KoiPond {
 
     @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL,orphanRemoval = true)
     List<WaterParametersHistory> waterParametersHistoryList;
+
+    public KoiPond(Long id, String name, int drainCount, Double depth, int skimmer, Double pumpCapacity,User user, Image image) {
+        this.id = id;
+        this.name = name;
+        this.drainCount = drainCount;
+        this.depth = depth;
+        this.skimmer = skimmer;
+        this.pumpCapacity = pumpCapacity;
+        this.image = image;
+        this.user = user;
+    }
+
+
 }

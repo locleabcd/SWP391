@@ -27,16 +27,36 @@ public class ImageController {
     private final IImageService imageService;
 
 
-    @PostMapping("/upload")
-    public ResponseEntity<ApiResponse> saveImages(@RequestParam List<MultipartFile> files, @RequestParam Long productId) {
+    @PostMapping("/product/upload")
+    public ResponseEntity<ApiResponse> saveProductImages(@RequestParam List<MultipartFile> files, @RequestParam Long productId) {
         try {
-            List<ImageDto> imageDtos = imageService.saveImages(productId, files);
+            List<ImageDto> imageDtos = imageService.saveProductImages(productId, files);
             return ResponseEntity.ok(new ApiResponse("Upload success!", imageDtos));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Upload failed!", e.getMessage()));
         }
 
     }
+    @PostMapping("/koipond/upload")
+    public ResponseEntity<ApiResponse> saveKoiPondImages(@RequestParam MultipartFile files, @RequestParam Long koiPondId) {
+        try {
+            ImageDto imageDtos = imageService.saveKoiPondImages(koiPondId, files);
+            return ResponseEntity.ok(new ApiResponse("Upload success!", imageDtos));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Upload failed!", e.getMessage()));
+        }
+
+    }
+//    @PostMapping("/koifish/upload")
+//    public ResponseEntity<ApiResponse> saveKoiFishImages(@RequestParam MultipartFile files, @RequestParam Long koiFishId) {
+//        try {
+//            ImageDto imageDtos = imageService.saveKoiFishImages(koiFishId, files);
+//            return ResponseEntity.ok(new ApiResponse("Upload success!", imageDtos));
+//        } catch (Exception e) {
+//            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Upload failed!", e.getMessage()));
+//        }
+//
+//    }
 
     @GetMapping("/image/download/{imageId}")
     public ResponseEntity<Resource> downloadImage(@PathVariable Long imageId) throws SQLException {

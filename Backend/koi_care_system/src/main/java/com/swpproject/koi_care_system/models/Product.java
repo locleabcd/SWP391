@@ -33,7 +33,6 @@ public class Product {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "issue_id")
-
     private Issue issue;
 
     @ManyToOne(cascade = CascadeType.ALL)

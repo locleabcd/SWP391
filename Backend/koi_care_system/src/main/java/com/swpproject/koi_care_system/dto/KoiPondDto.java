@@ -1,15 +1,18 @@
-package com.swpproject.koi_care_system.payload.request;
+package com.swpproject.koi_care_system.dto;
 
 import com.swpproject.koi_care_system.models.Image;
-import lombok.Data;
+import lombok.*;
 
 @Data
-public class KoiPondUpdateRequest {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class KoiPondDto {
     private Long id;
     private String name;
     private int drainCount;
     private Double depth;
     private int skimmer;
     private Double pumpCapacity;
-    private Image image;
+    private ImageDto image;
 }

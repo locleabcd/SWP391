@@ -9,6 +9,9 @@ import java.util.List;
 public interface IImageService {
     Image getImageById(Long id);
     void deleteImageById(Long id);
-    List<ImageDto> saveImages(Long productId, List<MultipartFile> files);
+    List<ImageDto> saveProductImages(Long productId, List<MultipartFile> files);
+    ImageDto saveKoiPondImages(Long koiPondID, MultipartFile file);
+//    ImageDto saveKoiFishImages(Long koiFishID,MultipartFile file);
+
     void updateImage(MultipartFile file,  Long imageId);
 }

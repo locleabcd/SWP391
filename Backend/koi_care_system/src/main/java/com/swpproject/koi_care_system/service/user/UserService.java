@@ -67,6 +67,19 @@ public class UserService implements IUserService {
         return userMapper.maptoUserDTO(userRepo.findById(userID).orElseThrow(() -> new RuntimeException("User Not Found")));
     }
 
+    @Override
+    public Long getUserIdByUsername(String username) {
+        User user = userRepo.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        return user.getId();
+    }
+
+    @Override
+    public User getUserByUsername(String username) {
+        return userRepo.findByUsername(username)
+                .orElseThrow(()-> new RuntimeException("User not found"));
+    }
+
     public UserDTO updateUserByID(Long id, UpdateUserRequest request) {
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -87,5 +100,10 @@ public class UserService implements IUserService {
         roles.add(Role.MEMBER.name());
         user.setRoles(roles);
         userRepo.save(user);
+    }
+
+    @Override
+    public UserDTO convertToDto(User user) {
+        return userMapper.maptoUserDTO(user);
     }
 }

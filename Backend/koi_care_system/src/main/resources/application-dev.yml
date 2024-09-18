@@ -3,7 +3,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
     url: jdbc:mysql://localhost:3306/koi-care-system
-    password: admingit ad
+    password: admin
   jpa:
     hibernate:
       ddl-auto: update
