@@ -1,5 +1,4 @@
 import { useRoutes } from 'react-router-dom'
-import './App.css'
 import path from './constants/path'
 import { ToastContainer } from 'react-toastify'
 import Home from './pages/Home/Home'
@@ -47,63 +46,59 @@ function App() {
     },
     {
       path: path.member,
-      element: <Member />,
-      children: [
-        {
-          path: path.myAccount,
-          element: <MyAccount />,
-          children: [
-            {
-              path: path.profile,
-              element: <Profile />
-            },
-            {
-              path: path.shopCart,
-              element: <ShopCart />
-            }
-          ]
-        },
-        {
-          path: path.dashboard,
-          element: <Dashboard />
-        },
-        {
-          path: path.myKoi,
-          element: <MyKoi />
-        },
-        {
-          path: path.myPond,
-          element: <MyPond />
-        },
-        {
-          path: path.waterParameters,
-          element: <WaterParameters />
-        },
-        {
-          path: path.reminders,
-          element: <Reminders />
-        },
-        {
-          path: path.recommendations,
-          element: <Recommendations />
-        },
-        {
-          path: path.foodCalculator,
-          element: <FoodCalculator />
-        },
-        {
-          path: path.saltCalculator,
-          element: <SaltCalculator />
-        },
-        {
-          path: path.statistics,
-          element: <Statistics />
-        },
-        {
-          path: path.news,
-          element: <News />
-        }
-      ]
+      element: <Member />
+    },
+    {
+      path: path.myAccount,
+      element: <MyAccount />
+    },
+    {
+      path: path.profile,
+      element: <Profile />
+    },
+    {
+      path: path.shopCart,
+      element: <ShopCart />
+    },
+    {
+      path: path.dashboard,
+      element: <Dashboard />
+    },
+    {
+      path: path.myKoi,
+      element: <MyKoi />
+    },
+    {
+      path: path.myPond,
+      element: <MyPond />
+    },
+    {
+      path: path.waterParameters,
+      element: <WaterParameters />
+    },
+    {
+      path: path.reminders,
+      element: <Reminders />
+    },
+    {
+      path: path.recommendations,
+      element: <Recommendations />
+    },
+    {
+      path: path.foodCalculator,
+      element: <FoodCalculator />
+    },
+    {
+      path: path.saltCalculator,
+      element: <SaltCalculator />
+    },
+    {
+      path: path.statistics,
+      element: <Statistics />
+    },
+    {
+      path: path.news,
+      element: <News />
     }
   ])
 

@@ -15,7 +15,7 @@ function Home() {
         style={{ backgroundImage: `url(${homepageImage})` }}
       >
         {/* header */}
-        <header className=' shadow large fixed w-full z-10 bg-white shadow-gray-300'>
+        <div className=' shadow large fixed w-full z-10 bg-white shadow-gray-300'>
           {/* container for logo and nav */}
           <div className='container  mx-auto flex justify-between items-center py-1 pb-15'>
             {/* logo */}
@@ -77,7 +77,7 @@ function Home() {
               </ul>
             </nav>
           </div>
-        </header>
+        </div>
         <div id='home'>
           <Homepage />
         </div>

@@ -15,21 +15,9 @@ function Member() {
         <div
           className={`w-5/6 ${
             isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-          }  shadow-xl rounded-md flex flex-col`}
+          }  shadow-xl flex flex-col`}
         >
-          {/* 4 ô trên  */}
-          <div className='h-1/4  m-2 flex flex-row gap-2'>
-            {/* item  */}
-            <div className='flex-1 bg-white border border-gray-200 shadow-sm rounded-md'></div>
-            <div className='flex-1 bg-white border border-gray-200 shadow-sm rounded-md'></div>
-            <div className='flex-1 bg-white border border-gray-200 shadow-sm rounded-md'></div>
-            <div className='flex-1 bg-white border border-gray-200 shadow-sm rounded-md'></div>
-          </div>
-
-          <div className='h-3/4 flex flex-row gap-2 '>
-            <div className='flex-3 bg-white border border-gray-200 shadow-sm rounded-md'> </div>
-            <div className='flex-1 bg-white border border-gray-200 shadow-sm rounded-md'> </div>
-          </div>
+          ádasdasdasdsdfsdfsf
         </div>
       </div>
     </div>

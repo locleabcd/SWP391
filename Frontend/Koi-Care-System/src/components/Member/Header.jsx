@@ -1,6 +1,6 @@
 import { useDarkMode } from '../../components/DarkModeContext'
 import logo from '../../assets/logo.png'
-
+import '../../App.css'
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
 
@@ -20,7 +20,7 @@ function Header() {
             <div className='switch-checkbox'>
               <label className='switch'>
                 <input type='checkbox' checked={isDarkMode} onChange={toggleDarkMode} />
-                <span className='slider round'> </span>
+                <span className='slider round'></span>
               </label>
             </div>
           </div>
