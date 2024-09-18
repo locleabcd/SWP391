@@ -8,16 +8,16 @@ function Member() {
   return (
     <div>
       {/* member page */}
-      <Header />
-      <div className='min-h-screen flex bg-gray-100'>
+      <div className='min-h-screen flex'>
         <LeftSideBar />
+
         {/* dashboard page  */}
         <div
           className={`w-5/6 ${
-            isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-100 text-black'
           }  shadow-xl flex flex-col`}
         >
-          ádasdasdasdsdfsdfsf
+          <Header />
         </div>
       </div>
     </div>
