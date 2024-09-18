@@ -9,14 +9,17 @@ function Header() {
       <div className='flex items-center justify-between p-2'>
         <div className='flex justify-center items-center'>
           <button className='pt-2 rounded-md'>
-            <img className='w-16 animate-spin' src={logo} alt='Logo' />
+            <img className='w-14 animate-slow-spin' src={logo} alt='Logo' />
           </button>
-          <a href='#' className='pt-1 text-xl font-bold'>
+          <a href='#' className='pt-2 text-xl font-bold'>
             Koi Care System
           </a>
         </div>
         <div>
           <div className='container'>
+            <div className=''>
+              
+            </div>
             <div className='switch-checkbox'>
               <label className='switch'>
                 <input type='checkbox' checked={isDarkMode} onChange={toggleDarkMode} />

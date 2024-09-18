@@ -21,7 +21,7 @@ function Home() {
             {/* logo */}
             <div className='flex items-center'>
               <button className='p-1 ml-6 rounded-md '>
-                <img className='w-12 animate-spin' src={logo} alt='Logo' />
+                <img className='w-12 animate-slow-spin' src={logo} alt='Logo' />
               </button>
               <a href='#' className=' text-xl font-bold text-gray-800'>
                 Koi Care System

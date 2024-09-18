@@ -8,6 +8,9 @@ export default {
       },
       colors: {
         'custom-dark': '#24303F'
+      },
+      animation: {
+        'slow-spin': 'spin 4s linear infinite',
       }
     }
   },
