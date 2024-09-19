@@ -6,12 +6,20 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
+import java.util.Set;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TagDto {
-    int tagId;
-    String tagName;
-    String tagDescription;
+public class BlogDto {
+
+    String blogTitle;
+    String blogContent;
+    String blogImage;
+    Date blogDate;
+    UserDTO user;
+    Set<TagDto> tags;
+
 }

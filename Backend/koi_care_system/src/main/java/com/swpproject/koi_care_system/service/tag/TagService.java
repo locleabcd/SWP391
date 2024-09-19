@@ -5,8 +5,8 @@ import com.swpproject.koi_care_system.enums.ErrorCode;
 import com.swpproject.koi_care_system.exceptions.AppException;
 import com.swpproject.koi_care_system.mapper.TagMapper;
 import com.swpproject.koi_care_system.models.Tag;
-import com.swpproject.koi_care_system.payload.request.CreateTagRequest;
-import com.swpproject.koi_care_system.payload.request.UpdateTagRequest;
+import com.swpproject.koi_care_system.payload.request.TagCreateRequest;
+import com.swpproject.koi_care_system.payload.request.TagUpdateRequest;
 import com.swpproject.koi_care_system.repository.TagRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,18 +24,18 @@ public class TagService implements ITagService {
     TagMapper tagMapper;
 
     @Override
-    public TagDto createTag(CreateTagRequest request) {
+    public TagDto createTag(TagCreateRequest request) {
         if (tagRepository.existsByTagName(request.getTagName())) {
             throw new AppException(ErrorCode.TAG_EXISTED);
+        } else if (tagRepository.existsByTagDescription(request.getTagDescription())) {
+            throw new AppException(ErrorCode.TAG_DESCRIPTION_EXISTED);
         }
         Tag tag = tagMapper.maptoTag(request);
-        tag.setTagName(request.getTagName());
-
         return tagMapper.maptoTagDto(tagRepository.save(tag));
     }
 
     @Override
-    public TagDto updateTag(int id, UpdateTagRequest request) {
+    public TagDto updateTag(int id, TagUpdateRequest request) {
         Tag tag = tagRepository.findById(id).orElseThrow(() -> new RuntimeException("Tag not found"));
         tagMapper.updateTag(tag, request);
         return tagMapper.maptoTagDto(tagRepository.save(tag));

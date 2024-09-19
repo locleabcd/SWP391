@@ -6,11 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UpdateTagRequest {
-    String tagName;
+public class BlogUpdateRequest {
 
+    String blogTitle;
+    String blogContent;
+    String blogImage;
+    String blogDate;
+    Set<Integer> tagIds;
 }

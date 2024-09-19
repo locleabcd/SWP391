@@ -1,9 +1,10 @@
 package com.swpproject.koi_care_system.controllers;
 
-import com.swpproject.koi_care_system.payload.request.CreateTagRequest;
-import com.swpproject.koi_care_system.payload.request.UpdateTagRequest;
+import com.swpproject.koi_care_system.payload.request.TagCreateRequest;
+import com.swpproject.koi_care_system.payload.request.TagUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.tag.TagService;
+import com.swpproject.koi_care_system.service.tag.ITagService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,25 +14,25 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/tag")
 @RequiredArgsConstructor
 public class TagController {
-    private final TagService tagService;
+    private final ITagService tagService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createTag(@RequestBody CreateTagRequest createTagRequest) {
+    public ResponseEntity<ApiResponse> createTag(@RequestBody TagCreateRequest tagCreateRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
                 .message("Tag has been created")
-                .data(tagService.createTag(createTagRequest))
+                .data(tagService.createTag(tagCreateRequest))
                 .build());
     }
 
-    @PutMapping("/{tagId}")
-    public ResponseEntity<ApiResponse> updateTag(@PathVariable int tagId, @RequestBody UpdateTagRequest updateTagRequest) {
+    @PutMapping("/update/{tagId}")
+    public ResponseEntity<ApiResponse> updateTag(@PathVariable int tagId, @RequestBody @Valid TagUpdateRequest tagUpdateRequest) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("Tag has been updated")
-                .data(tagService.updateTag(tagId, updateTagRequest))
+                .data(tagService.updateTag(tagId, tagUpdateRequest))
                 .build());
     }
 
-    @GetMapping("/{tagId}")
+    @GetMapping("/getID/{tagId}")
     public ResponseEntity<ApiResponse> getTagById(@PathVariable int tagId) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("Tag found")
@@ -47,7 +48,7 @@ public class TagController {
                 .build());
     }
 
-    @DeleteMapping("/{tagId}")
+    @DeleteMapping("/delete /{tagId}")
     public ResponseEntity<ApiResponse> deleteTag(@PathVariable int tagId) {
         tagService.deleteTag(tagId);
         return ResponseEntity.ok(ApiResponse.builder()
