@@ -24,10 +24,8 @@ public class UserController {
     ApiResponse createUser(@RequestBody @Valid CreateUserRequest request) {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(userService.createUser(request));
-
         return apiResponse;
     }
-
     @GetMapping
     ApiResponse getUsers() {
         ApiResponse apiResponse = new ApiResponse();

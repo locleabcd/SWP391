@@ -1,6 +1,5 @@
 package com.swpproject.koi_care_system.dto;
 
-import com.swpproject.koi_care_system.models.Image;
 import lombok.*;
 
 @Data
@@ -14,5 +13,5 @@ public class KoiPondDto {
     private Double depth;
     private int skimmer;
     private Double pumpCapacity;
-    private ImageDto image;
+    private String imageUrl;
 }

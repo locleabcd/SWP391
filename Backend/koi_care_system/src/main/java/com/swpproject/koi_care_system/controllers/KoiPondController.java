@@ -7,14 +7,12 @@ import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.payload.response.AuthenticationResponse;
 import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import com.swpproject.koi_care_system.service.user.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,7 +36,6 @@ public class KoiPondController {
             String username = authentication.getName();
             User user = userService.getUserByUsername(username);
             koiPondRequest.setUser(user);
-
             KoiPond koiPond = koiPondService.addKoiPond(koiPondRequest);
             KoiPondDto koiPondDto = koiPondService.convertToDto(koiPond);
             return ResponseEntity.ok(new ApiResponse("Add Koi pond success!", koiPondDto));
@@ -57,7 +54,7 @@ public class KoiPondController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error",INTERNAL_SERVER_ERROR));
         }
     }
-    @GetMapping("/{id}/koipond")
+    @GetMapping("/koipond/{id}")
     public ResponseEntity<ApiResponse> getKoiPondByID(@PathVariable Long id){
         try{
             KoiPond theKoiPond = koiPondService.getKoiPondById(id);
@@ -74,7 +71,6 @@ public class KoiPondController {
             return ResponseEntity.ok(new ApiResponse("Found",null));
         }catch(ResourceNotFoundException e){
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
-
         }
     }
     @PutMapping("/koipond/{id}/update")

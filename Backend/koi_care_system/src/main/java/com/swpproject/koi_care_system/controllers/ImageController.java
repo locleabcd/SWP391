@@ -37,26 +37,6 @@ public class ImageController {
         }
 
     }
-    @PostMapping("/koipond/upload")
-    public ResponseEntity<ApiResponse> saveKoiPondImages(@RequestParam MultipartFile files, @RequestParam Long koiPondId) {
-        try {
-            ImageDto imageDtos = imageService.saveKoiPondImages(koiPondId, files);
-            return ResponseEntity.ok(new ApiResponse("Upload success!", imageDtos));
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Upload failed!", e.getMessage()));
-        }
-
-    }
-//    @PostMapping("/koifish/upload")
-//    public ResponseEntity<ApiResponse> saveKoiFishImages(@RequestParam MultipartFile files, @RequestParam Long koiFishId) {
-//        try {
-//            ImageDto imageDtos = imageService.saveKoiFishImages(koiFishId, files);
-//            return ResponseEntity.ok(new ApiResponse("Upload success!", imageDtos));
-//        } catch (Exception e) {
-//            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Upload failed!", e.getMessage()));
-//        }
-//
-//    }
 
     @GetMapping("/image/download/{imageId}")
     public ResponseEntity<Resource> downloadImage(@PathVariable Long imageId) throws SQLException {

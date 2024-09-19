@@ -9,9 +9,10 @@ public class AddKoiPondRequest {
     private Long id;
     private String name;
     private int drainCount;
+    private int volume;
     private Double depth;
     private int skimmer;
     private Double pumpCapacity;
     private User user;
-    private Image image;
+    private String imageUrl;
 }

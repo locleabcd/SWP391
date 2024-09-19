@@ -14,8 +14,6 @@ public interface ImageMapper {
     @Mapping(target = "fileType", ignore = true)
     @Mapping(target = "image", ignore = true)
     @Mapping(target = "product", ignore = true)
-    @Mapping(target = "koiFish", ignore = true)
-    @Mapping(target = "koiPond", ignore = true)
     Image toEntity(ImageDto imageDto);
 }
 
