@@ -1,0 +1,27 @@
+.cn8jz {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.cp14x:is(.dark *) {
+  color: rgb(156 163 175 / 0.8);
+}
+
+.c1bco:is(.dark *) {
+  display: none;
+}
+
+.cbm9w {
+  fill: currentColor;
+}
+
+.cukve:hover:is(.dark *) {
+  background-color: rgb(55 65 81 / 0.5);
+}

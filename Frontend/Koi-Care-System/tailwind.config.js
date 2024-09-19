@@ -10,10 +10,23 @@ export default {
         'custom-dark': '#24303F'
       },
       animation: {
-        'slow-spin': 'spin 4s linear infinite',
+        'slow-spin': 'spin 4s linear infinite'
       }
     }
   },
   // eslint-disable-next-line no-undef
-  plugins: [require('tailwind-scrollbar')]
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.no-scroll-bar': {
+          /* Ẩn thanh cuộn nhưng vẫn có thể cuộn */
+          'scrollbar-width': 'none' /* Firefox */,
+          '-ms-overflow-style': 'none' /* IE and Edge */
+        },
+        '.no-scroll-bar::-webkit-scrollbar': {
+          display: 'none' /* Safari and Chrome */
+        }
+      })
+    }
+  ]
 }
