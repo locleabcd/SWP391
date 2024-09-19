@@ -1,12 +1,68 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import axios from 'axios'
+import { useForm } from 'react-hook-form'
+import { FaSpinner } from 'react-icons/fa'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
   const [ponds, setPonds] = useState([])
+  const [isFormVisible, setIsFormVisible] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+
+  const toggleFormVisibility = () => {
+    setIsFormVisible(!isFormVisible)
+  }
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm()
+
+  const onSubmit = async (data) => {
+    setIsLoading(true) // Bắt đầu loading spinner
+    setIsSubmitting(true)
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      // eslint-disable-next-line no-unused-vars
+      const res = await axios.post(
+        'https://koi-care-system.azurewebsites.net/api/koiponds/create',
+        {
+          name: data.name,
+          drainCount: data.drainCount,
+          depth: data.depth,
+          skimmer: data.skimmer,
+          pumpCapacity: data.pumpCapacity,
+          imageUrl: data.imageUrl,
+          volume: data.volume
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      setIsFormVisible(false)
+      setTimeout(async () => {
+        setIsLoading(false)
+        setIsSubmitting(false)
+        getPond()
+      }, 2000)
+    } catch (error) {
+      console.log(error)
+      setIsLoading(false)
+    }
+    setIsLoading(false)
+  }
 
   const getPond = async () => {
     try {
@@ -43,7 +99,187 @@ function MyPond() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <div className='p-4 w-full'>
+          <svg
+            xmlns='http://www.w3.org/2000/svg'
+            fill='none'
+            viewBox='0 0 24 24'
+            strokeWidth={1.5}
+            stroke='currentColor'
+            className='fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer'
+            onClick={toggleFormVisibility}
+          >
+            <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
+          </svg>
+
+          <div className='p-4 w-full mt-6'>
+            {isFormVisible && (
+              <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
+                <div className='bg-white min-w-[80vh] m-auto p-6 rounded-lg shadow-lg transform transition-transform duration-300 ease-out translate-y-0'>
+                  <form onSubmit={handleSubmit(onSubmit)} noValidate className=''>
+                    <div className='flex justify-between mb-5'>
+                      <svg
+                        onClick={toggleFormVisibility}
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='size-10 text-red-500 cursor-pointer'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                        />
+                      </svg>
+                      <button type='submit'>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={1.5}
+                          stroke='currentColor'
+                          className='size-10 text-green-500 cursor-pointer'
+                        >
+                          <path
+                            strokeLinecap='round'
+                            strokeLinejoin='round'
+                            d='M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <h3 className='mb-5 text-2xl font-bold'>Add a pond</h3>
+                    <div className='grid grid-cols-2 grid-rows-4 gap-4'>
+                      <div
+                        id='imageSingle'
+                        className='dropzone single-dropzone mb-6 col-span-1 row-span-2 h-full flex justify-center shadow-xl'
+                      >
+                        <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            width={16}
+                            height={16}
+                            fill='currentColor'
+                            className='mx-auto text-gray-500 inline-block w-10 h-10'
+                            viewBox='0 0 16 16'
+                          >
+                            <path
+                              fillRule='evenodd'
+                              d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
+                            />
+                            <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
+                          </svg>
+                          <div className='py-3'>
+                            <span>Choose images here</span>
+                          </div>
+
+                          <input
+                            type='file'
+                            accept='image/jpg'
+                            className=''
+                            {...register('image', {
+                              required: 'Please select an image'
+                            })}
+                          />
+                        </label>
+                      </div>
+
+                      {/* Show error if the image is not uploaded */}
+                      {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>}
+
+                      <div className='mb-4 relative col-span-1'>
+                        <label htmlFor='name' className='absolute -top-[12px] left-3 text-red-500'>
+                          Name:
+                        </label>
+                        <input
+                          type='text'
+                          id='name'
+                          placeholder='Enter volume'
+                          className='w-full p-3 bg-white border border-red-500 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          {...register('name')}
+                        />
+                        {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>}
+                      </div>
+
+                      <div className='mb-4 relative col-span-1'>
+                        <label htmlFor='volume' className='absolute -top-[12px] left-3 text-orange-500'>
+                          Volume:
+                        </label>
+                        <input
+                          type='text'
+                          id='volume'
+                          placeholder='Enter volume'
+                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          {...register('volume')}
+                        />
+                        {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>}
+                      </div>
+
+                      <div className='mb-4 relative col-span-1'>
+                        <label htmlFor='depth' className='absolute -top-[12px] left-3 text-orange-500'>
+                          Depth (m):
+                        </label>
+                        <input
+                          type='text'
+                          id='depth'
+                          placeholder='Enter depth in meters'
+                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          {...register('depth')}
+                        />
+                        {errors.depth && <p className='text-red-500 text-sm'>{errors.depth.message}</p>}
+                      </div>
+
+                      {/* Second row with 3 inputs, full width */}
+                      <div className='mb-4 relative col-span-1'>
+                        <label htmlFor='drainCount' className='absolute -top-[12px] left-3 text-orange-500'>
+                          Drain Count:
+                        </label>
+                        <input
+                          type='text'
+                          id='drainCount'
+                          placeholder='Enter drain count'
+                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          {...register('drainCount')}
+                        />
+                        {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>}
+                      </div>
+
+                      <div className='mb-4 relative col-span-1'>
+                        <label htmlFor='skimmerCount' className='absolute -top-[12px] left-3 text-orange-500'>
+                          Skimmer Count:
+                        </label>
+                        <input
+                          type='text'
+                          id='skimmerCount'
+                          placeholder='Enter skimmer count'
+                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          {...register('skimmerCount')}
+                        />
+                        {errors.skimmerCount && <p className='text-red-500 text-sm'>{errors.skimmerCount.message}</p>}
+                      </div>
+
+                      <div className='mb-4 relative col-span-1'>
+                        <label htmlFor='pumpCapacity' className='absolute -top-[12px] left-3 text-orange-500'>
+                          Pumping Capacity (l/h):
+                        </label>
+                        <input
+                          type='text'
+                          id='pumpCapacity'
+                          placeholder='Enter pumping capacity in l/h'
+                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          {...register('pumpCapacity')}
+                        />
+                        {errors.pumpCapacity && <p className='text-red-500 text-sm'>{errors.pumpCapacity.message}</p>}
+                      </div>
+                    </div>
+                  </form>
+
+                  {/* Close Button */}
+                </div>
+              </div>
+            )}
+
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
               {ponds.map((pond) => (
                 <div key={pond.id} className='border p-4 rounded-lg shadow'>
@@ -51,6 +287,10 @@ function MyPond() {
                   <div className='flex'>
                     <h3 className='text-base w-36'>Pond:</h3>
                     <h3 className='text-base font-semibold'>{pond.name}</h3>
+                  </div>
+                  <div className='flex'>
+                    <h3 className='text-base w-36'>Volume:</h3>
+                    <h3 className='text-base font-semibold'>{pond.volume}l</h3>
                   </div>
                   <div className='flex'>
                     <h3 className='text-base w-36'>Drain Count:</h3>
@@ -68,9 +308,32 @@ function MyPond() {
                     <h3 className='text-base w-36'>Pump Capacity:</h3>
                     <h3 className='text-base font-semibold'>{pond.pumpCapacity}L/min</h3>
                   </div>
+                  <button>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='size-6'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z'
+                      />
+                    </svg>
+                  </button>
                 </div>
               ))}
             </div>
+
+            {isLoading && (
+              <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+                <FaSpinner className='animate-spin text-green-500 text-4xl' />
+                <p>Creating pond</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
