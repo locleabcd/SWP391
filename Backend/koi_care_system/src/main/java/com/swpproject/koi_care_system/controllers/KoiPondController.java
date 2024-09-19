@@ -10,6 +10,7 @@ import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import com.swpproject.koi_care_system.service.user.IUserService;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -68,7 +69,7 @@ public class KoiPondController {
     public ResponseEntity<ApiResponse> deleteKoiPond(@PathVariable Long id){
         try{
             koiPondService.deleteKoiPond(id);
-            return ResponseEntity.ok(new ApiResponse("Found",null));
+            return ResponseEntity.ok(new ApiResponse("Delete success!",null));
         }catch(ResourceNotFoundException e){
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }

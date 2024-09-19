@@ -10,6 +10,7 @@ public class KoiPondDto {
     private Long id;
     private String name;
     private int drainCount;
+    private int volume;
     private Double depth;
     private int skimmer;
     private Double pumpCapacity;

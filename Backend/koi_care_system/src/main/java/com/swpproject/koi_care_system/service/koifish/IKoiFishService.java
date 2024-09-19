@@ -2,7 +2,6 @@ package com.swpproject.koi_care_system.service.koifish;
 
 import com.swpproject.koi_care_system.dto.KoiFishDto;
 import com.swpproject.koi_care_system.models.KoiFish;
-import com.swpproject.koi_care_system.models.KoiPond;
 import com.swpproject.koi_care_system.payload.request.AddKoiFishRequest;
 import com.swpproject.koi_care_system.payload.request.KoiFishUpdateRequest;
 
@@ -15,14 +14,15 @@ public interface IKoiFishService {
     KoiFish getKoiFishById(Long id);
 
     List<KoiFish> getKoiFishByKoiPond(Long koiPondId);
+    List<KoiFish> getAllFishByUserId(Long userId);
 
     void deleteKoiFish(Long id);
 
     KoiFish updateKoiFish(KoiFishUpdateRequest koiFishUpdateRequest, Long koiFishId);
 
-    List<KoiFishDto> getConvertedKoiPonds (List<KoiFish> koiFishs);
+    List<KoiFishDto> getConvertedKoiPonds (List<KoiFish> koiFishList);
 
-    KoiFishDto convertToDto(KoiPond koiPond);
+    KoiFishDto convertToDto(KoiFish koiFish);
 
 
 }

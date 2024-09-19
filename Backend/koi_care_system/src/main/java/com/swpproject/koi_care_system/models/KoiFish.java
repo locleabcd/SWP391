@@ -29,6 +29,7 @@ public class KoiFish {
     private String breeder;
     private Double price;
     private String status;
+    private String imageUrl;
     @ManyToOne
     @JoinColumn(name="koiPond_id")
     private KoiPond koiPond;
@@ -39,7 +40,7 @@ public class KoiFish {
     @OneToMany(mappedBy = "koiFish",cascade = CascadeType.ALL,orphanRemoval = true)
     List<Remark> remarkList;
 
-    public KoiFish(Long id,String name, String physique, int age, Double length, Double weight, String gender, String variety, Date pondDate, String breeder, Double price, String status, KoiPond koiPond) {
+    public KoiFish(Long id,String name, String physique, int age, Double length, Double weight, String gender, String variety, Date pondDate, String breeder, Double price, KoiPond koiPond, String imageUrl) {
         this.id = id;
         this.name = name;
         this.physique = physique;
@@ -51,7 +52,7 @@ public class KoiFish {
         this.pondDate = pondDate;
         this.breeder = breeder;
         this.price = price;
-        this.status = status;
         this.koiPond = koiPond;
+        this.imageUrl = imageUrl;
     }
 }

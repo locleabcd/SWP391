@@ -12,4 +12,5 @@ public class KoiPondUpdateRequest {
     private int skimmer;
     private Double pumpCapacity;
     private String imageUrl;
+
 }
