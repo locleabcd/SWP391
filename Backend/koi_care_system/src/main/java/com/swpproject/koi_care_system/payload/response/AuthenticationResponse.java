@@ -3,8 +3,6 @@ package com.swpproject.koi_care_system.payload.response;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,7 +11,7 @@ import java.util.Set;
 public class AuthenticationResponse {
     Long id;
     String username;
-    Set<String> roles;
+    String role;
     String token;
     boolean authenticated;
 }

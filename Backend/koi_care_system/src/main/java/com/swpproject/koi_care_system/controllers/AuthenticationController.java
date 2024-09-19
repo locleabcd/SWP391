@@ -3,8 +3,9 @@ package com.swpproject.koi_care_system.controllers;
 import com.nimbusds.jose.JOSEException;
 import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.authentication.AuthenticationService;
+import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
 import com.swpproject.koi_care_system.service.user.UserService;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -17,11 +18,11 @@ import java.text.ParseException;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
-    AuthenticationService authService;
+    IAuthenticationService authService;
     UserService userService;
 
     @PostMapping("/login")
-    ApiResponse authenticate(@RequestBody AuthenticationRequest request){
+    ApiResponse authenticate(@RequestBody @Valid AuthenticationRequest request) {
         var result = authService.authenticate(request);
         return ApiResponse.builder()
                 .data(result)

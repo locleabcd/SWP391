@@ -10,17 +10,17 @@ import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.repository.UserRepository;
-import com.swpproject.koi_care_system.service.authentication.AuthenticationService;
-import com.swpproject.koi_care_system.service.email.EmailService;
+import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
+import com.swpproject.koi_care_system.service.email.IEmailService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -31,8 +31,8 @@ public class UserService implements IUserService {
     UserRepository userRepo;
     UserMapper userMapper;
     PasswordEncoder passwordEncoder;
-    EmailService emailService;
-    AuthenticationService authenticationService;
+    IEmailService emailService;
+    IAuthenticationService authenticationService;
 
     public UserDTO createUser(CreateUserRequest request) {
 
@@ -44,10 +44,7 @@ public class UserService implements IUserService {
         }
         User user = userMapper.maptoUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        //HashSet is used to save user roles and ensure that there are no duplicate roles
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.GUEST.name());
-        user.setRoles(roles);
+        user.setRole(Role.GUEST.name());
         //Verify user code email
 
         var token = authenticationService.generateToken(user);
@@ -57,15 +54,19 @@ public class UserService implements IUserService {
 
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<UserDTO> getListUser() {
         return userRepo.findAll().stream()
                 .map(userMapper::maptoUserDTO).toList();
-
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
-    @PostAuthorize("returnObject.username == authentication.username")
+    public UserDTO getMyInfo() {
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+        return userMapper.maptoUserDTO(userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException("User Not Found")));
+    }
+
+    @PostAuthorize("returnObject.username == authentication.name")
     public UserDTO findUserByID(Long userID) {
         return userMapper.maptoUserDTO(userRepo.findById(userID).orElseThrow(() -> new RuntimeException("User Not Found")));
     }
@@ -88,9 +89,7 @@ public class UserService implements IUserService {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         user.setStatus(true);
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.MEMBER.name());
-        user.setRoles(roles);
+        user.setRole(Role.MEMBER.name());
         userRepo.save(user);
     }
 }

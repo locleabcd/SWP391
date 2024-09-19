@@ -9,7 +9,6 @@ import com.nimbusds.jwt.SignedJWT;
 import com.swpproject.koi_care_system.enums.ErrorCode;
 import com.swpproject.koi_care_system.enums.Role;
 import com.swpproject.koi_care_system.exceptions.AppException;
-import com.swpproject.koi_care_system.mapper.UserMapper;
 import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
 import com.swpproject.koi_care_system.payload.response.AuthenticationResponse;
@@ -36,7 +35,6 @@ import java.util.Date;
 public class AuthenticationService implements IAuthenticationService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
-    UserMapper userMapper;
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -52,7 +50,7 @@ public class AuthenticationService implements IAuthenticationService {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
 
-        if (user.getRoles().contains(Role.GUEST.name())) {
+        if (user.getRole().equals(Role.GUEST.name())) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
         var token = generateToken(user);
@@ -60,7 +58,7 @@ public class AuthenticationService implements IAuthenticationService {
         return AuthenticationResponse.builder()
                 .id(user.getId())
                 .username(user.getUsername())
-                .roles(user.getRoles())
+                .role(user.getRole())
                 .token(token)
                 .authenticated(true)
                 .build();
@@ -122,10 +120,10 @@ public class AuthenticationService implements IAuthenticationService {
     }
 
     private String buildScope(User user) {
-        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+        if (user.getRole() == null || user.getRole().isEmpty()) {
             throw new AppException(ErrorCode.NO_ROLES);
         }
-        return user.getRoles().stream().findFirst().orElseThrow(() -> new AppException(ErrorCode.NO_ROLES));
+        return user.getRole();
     }
 }
 

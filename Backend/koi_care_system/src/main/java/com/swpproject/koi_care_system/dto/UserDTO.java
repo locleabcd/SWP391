@@ -4,8 +4,6 @@ import jakarta.validation.constraints.Email;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Set;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,6 +14,6 @@ public class UserDTO {
     String username;
     @Email
     String email;
-    Set<String> roles;
+    String role;
     boolean status;
 }

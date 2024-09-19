@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -29,9 +30,10 @@ public class User {
     String email;
 
     @Column(nullable = false)
-    Set<String> roles;
+    String role;
 
     boolean status;
 
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<Blog> blogs = new HashSet<>();
 }

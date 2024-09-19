@@ -46,7 +46,7 @@ public class UserController {
                 .build());
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse> updateUser(@PathVariable Long id, @RequestBody UpdateUserRequest request) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("User has been updated")
@@ -54,8 +54,9 @@ public class UserController {
                 .build());
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long id) {
+        userService.deleteUserByID(id);
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("User has been deleted")
                 .build());

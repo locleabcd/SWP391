@@ -26,7 +26,7 @@ public class SecurityConfig {
     private final String[] PUBLIC_ENDPOINTS = {
             "/users/register",
             "/auth/login",
-            "tag/create",
+
     };
     @Value("${jwt.signerKey}")
     private String signerKey;
