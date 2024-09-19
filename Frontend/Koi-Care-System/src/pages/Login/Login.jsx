@@ -41,6 +41,8 @@ function Login() {
       if (user && user.token) {
         localStorage.setItem('token', user.token)
         localStorage.setItem('role', user.roles)
+        localStorage.setItem('id', user.id)
+        localStorage.setItem('name', user.username)
         if (user.roles && user.roles.length > 0) {
           const role = user.roles[0]
 

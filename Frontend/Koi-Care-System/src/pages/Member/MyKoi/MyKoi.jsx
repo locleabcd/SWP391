@@ -7,16 +7,15 @@ function MyKoi() {
 
   return (
     <div>
-      {/* member page */}
-      <Header />
-      <div className='min-h-screen flex bg-gray-100'>
+      <div className='h-screen flex'>
         <LeftSideBar />
+
         <div
-          className={`w-5/6 ${
-            isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-          }  shadow-xl flex flex-col`}
+          className={`relative ${
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-100 text-black'
+          } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
-          ádasdasdasdsdfsdfsfaaaaaaaaa
+          <Header />
         </div>
       </div>
     </div>

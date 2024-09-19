@@ -15,23 +15,21 @@ function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
 
   return (
-    <div className={`w-1/6 ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} shadow-xl h-min-screen`}>
-      {/* logo  */}
-
-      {/* sidebar content */}
-      <div className='flex flex-col justify-center items-center m-2'>
-        <div className='flex justify-center items-center'>
-          <button className='pt-2 rounded-md'>
-            <img className='w-14 animate-slow-spin' src={logo} alt='Logo' />
-          </button>
-          <a href='#' className='pt-1 text-xl font-bold'>
-            Koi Care System
-          </a>
-        </div>
-        <div>
-          <hr className='my-4 border-gray-300 w-full' />
-          <p className='pb-1 pr-32'>Features</p>
-
+    <div
+      className={`absolute top-0 left-0 z-999 flex h-screen w-[265px] flex-col no-scroll-bar overflow-y-auto ${
+        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+      } shadow-sm duration-300 ease-linear lg:static lg:translate-x-0 -translate-x-full`}
+    >
+      <div className='flex justify-center items-center'>
+        <button className='pt-2 rounded-md'>
+          <img className='w-14 animate-slow-spin' src={logo} alt='Logo' />
+        </button>
+        <a href='#' className='pt-1 text-xl font-bold'>
+          Koi Care System
+        </a>
+      </div>
+      <div className='flex flex-col justify-center items-center mt-6'>
+        <div className=''>
           {/* sidebar items  */}
           <NavLink
             to={path.dashboard}

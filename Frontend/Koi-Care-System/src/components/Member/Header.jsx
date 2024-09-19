@@ -17,17 +17,48 @@ function Header() {
     localStorage.clear()
   }
 
+  const name = localStorage.getItem('name')
+  const role = localStorage.getItem('role')
+
   return (
-    <div className={`${isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-100 text-black'} shadow-sm`}>
-      <div className='flex items-center justify-end p-2'>
-        <div className='search-box mr-5'>
-          <input
-            type='text'
-            className='w-80 max-w-sm p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-400'
-            placeholder='Search'
-          />
-        </div>
-        <div className='mr-10 flex justify-center items-center'>
+    <div
+      className={`${
+        isDarkMode ? 'bg-custom-dark text-white border-b border-gray-700' : 'bg-white text-black'
+      } sticky top-0 p-3 justify-end z-999 flex w-full  drop-shadow-1`}
+    >
+      <div className='flex items-center justify-end ml-4'>
+        <div className='mr-4 flex justify-center items-center gap-2'>
+          <button
+            className={`${
+              isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
+            } p-[16px] rounded-full`}
+          >
+            <span className='cn8jz'>Search</span>
+            <svg
+              className='cp14x ch0mp cbm9w'
+              width={16}
+              height={16}
+              viewBox='0 0 16 16'
+              xmlns='http://www.w3.org/2000/svg'
+            >
+              <path d='M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7ZM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5Z' />
+              <path d='m13.314 11.9 2.393 2.393a.999.999 0 1 1-1.414 1.414L11.9 13.314a8.019 8.019 0 0 0 1.414-1.414Z' />
+            </svg>
+          </button>
+
+          <button
+            type='button'
+            data-dropdown-toggle='notification-dropdown'
+            className={`${
+              isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
+            } p-[12px] rounded-full`}
+          >
+            <span className='sr-only'>View notifications</span>
+            <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
+              <path d='M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z' />
+            </svg>
+          </button>
+
           <div>
             <input
               type='checkbox'
@@ -73,8 +104,8 @@ function Header() {
           <div className='my-account'>
             <button onClick={toggleList} className='flex items-center p-2 rounded-md space-x-2'>
               <div className='flex flex-col'>
-                <p className='text-sm font-medium'>User Name</p>
-                <p className='text-xs text-gray-500'>Member</p>
+                <p className='text-sm font-medium'>{name}</p>
+                <p className='text-xs text-gray-500'>{role}</p>
               </div>
               <div className='ml-auto flex items-center space-x-1'>
                 <div>

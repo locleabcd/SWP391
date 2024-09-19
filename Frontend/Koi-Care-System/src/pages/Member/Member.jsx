@@ -8,14 +8,13 @@ function Member() {
   return (
     <div>
       {/* member page */}
-      <div className='min-h-screen flex'>
+      <div className='h-screen flex'>
         <LeftSideBar />
 
-        {/* dashboard page  */}
         <div
-          className={`w-5/6 ${
+          className={`relative ${
             isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-100 text-black'
-          }  shadow-xl flex flex-col`}
+          } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
         </div>
