@@ -7,7 +7,8 @@ export default {
         dancing: ['Forte', 'cMyriad Variable Concept']
       },
       colors: {
-        'custom-dark': '#24303F'
+        'custom-dark': '#24303F',
+        'custom-Beige': '#EBDDCB'
       },
       animation: {
         'slow-spin': 'spin 4s linear infinite'

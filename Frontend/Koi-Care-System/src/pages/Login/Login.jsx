@@ -40,27 +40,26 @@ function Login() {
       const user = response.data.data
       if (user && user.token) {
         localStorage.setItem('token', user.token)
-        localStorage.setItem('role', user.roles)
+        localStorage.setItem('role', user.role)
         localStorage.setItem('id', user.id)
         localStorage.setItem('name', user.username)
-        if (user.roles && user.roles.length > 0) {
-          const role = user.roles[0]
+        const role = user.role
 
-          switch (role) {
-            case 'ADMIN':
-              navigate('/admin')
-              break
-            case 'SHOP':
-              navigate('/shop')
-              break
-            case 'MEMBER':
-              navigate('/member')
-              break
-            default:
-              break
-          }
+        switch (role) {
+          case 'ADMIN':
+            navigate('/admin')
+            break
+          case 'SHOP':
+            navigate('/shop')
+            break
+          case 'MEMBER':
+            navigate('/member')
+            break
+          default:
+            break
         }
       }
+
       // eslint-disable-next-line no-unused-vars
     } catch (error) {
       toast.error('Invalid username or password')
@@ -74,28 +73,28 @@ function Login() {
       <video className='absolute top-0 left-0 w-full h-full object-cover' src={backgroundVideo} autoPlay loop muted />
 
       <div className='absolute bg-white p-8 rounded-3xl shadow-md w-full max-w-md bg-opacity-30 backdrop-blur-0 border border-gray-300'>
-        <h2 className='text-black text-5xl font-bold font-dancing mb-6 text-center'>Login</h2>
+        <h2 className='text-black text-5xl font-bold mb-6 text-center'>Login</h2>
 
         <form className='relative' onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className='mb-4 relative'>
-            <div className='absolute -top-[12px] left-3 font-dancing'>Username</div>
+            <div className='absolute -top-[12px] left-3 font-semibold bg-custom-Beige'>Username</div>
             <input
               type='text'
               id='username'
               placeholder='Name'
-              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none transition-colors duration-200'
               {...register('username', { required: 'Name is required' })}
             />
             {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>}
           </div>
 
           <div className='mb-4 relative'>
-            <div className='absolute -top-[12px] left-3 font-dancing'>Password</div>
+            <div className='absolute -top-[12px] left-3 bg-custom-Beige'>Password</div>
             <input
               type={showPassword ? 'text' : 'password'}
               id='password'
               placeholder='***********'
-              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
+              className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none transition-colors duration-200'
               {...register('password', {
                 required: 'Password is required',
                 minLength: {
