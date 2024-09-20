@@ -18,10 +18,10 @@ public interface IBlogService {
     BlogDto getBlogById(int id);
 
     //Get all Blogs by tagName
-    List<BlogDto> getBlogByTag(String tagName);
+    List<BlogDto> getBlogByTag(int tagId);
 
     //Get all Blogs by username
-    List<BlogDto> getBlogByUsername(String username);
+    List<BlogDto> getBlogByUsername(long userId);
 
     //Search Blogs
     List<BlogDto> searchBlogs(String keyword);

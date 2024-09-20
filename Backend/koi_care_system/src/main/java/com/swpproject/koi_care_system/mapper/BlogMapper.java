@@ -18,8 +18,9 @@ public interface BlogMapper {
 
     BlogDto mapToBlogDto(Blog blog);
 
-    @Mapping(target = "user", ignore = true)
     @Mapping(target = "tags", ignore = true)
+    @Mapping(target = "user", ignore = true)
     @Mapping(target = "blogId", ignore = true)
     void updateBlog(@MappingTarget Blog blog, BlogUpdateRequest request);
+
 }

@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.controllers;
 
+import com.swpproject.koi_care_system.dto.BlogDto;
 import com.swpproject.koi_care_system.payload.request.BlogCreateRequest;
 import com.swpproject.koi_care_system.payload.request.BlogUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/blog")
@@ -60,19 +63,31 @@ public class BlogController {
                 .build());
     }
 
-    @GetMapping("/getByUser")
-    public ResponseEntity<ApiResponse> getBlogsByUser(String username) {
+    @GetMapping("/getByUser/{userId}")
+    public ResponseEntity<ApiResponse> getBlogsByUser(@PathVariable long userId) {
+        List<BlogDto> blogDtos = blogService.getBlogByUsername(userId);
+        if (blogDtos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.builder()
+                    .message("No blogs found")
+                    .build());
+        }
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("List of blogs")
-                .data(blogService.getBlogByUsername(username))
+                .data(blogDtos)
                 .build());
     }
 
-    @GetMapping("/getByTag")
-    public ResponseEntity<ApiResponse> getBlogsByTag(String tagName) {
+    @GetMapping("/getByTag/{tagId}")
+    public ResponseEntity<ApiResponse> getBlogsByTag(@PathVariable int tagId) {
+        List<BlogDto> blogDtos = blogService.getBlogByTag(tagId);
+        if (blogDtos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.builder()
+                    .message("No blogs found")
+                    .build());
+        }
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("List of blogs")
-                .data(blogService.getBlogByTag(tagName))
+                .data(blogDtos)
                 .build());
     }
 

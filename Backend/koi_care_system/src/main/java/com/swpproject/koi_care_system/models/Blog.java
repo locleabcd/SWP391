@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -27,7 +27,7 @@ public class Blog {
     @Column(name = "blog_image", nullable = false)
     String blogImage;
     @Column(name = "blog_date", nullable = false)
-    Date blogDate;
+    LocalDate blogDate;
 
     @ManyToMany
     @JoinTable(

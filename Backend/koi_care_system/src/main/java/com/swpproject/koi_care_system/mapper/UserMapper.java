@@ -23,6 +23,5 @@ public interface UserMapper {
     @Mapping(target = "blogs", ignore = true)
     @Mapping(target = "email", ignore = true)
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "role", ignore = true)
     void updateUser(@MappingTarget User user, UpdateUserRequest updateUserRequest);
 }

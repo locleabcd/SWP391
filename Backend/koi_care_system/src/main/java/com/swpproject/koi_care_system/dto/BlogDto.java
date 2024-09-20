@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Getter
@@ -18,7 +18,7 @@ public class BlogDto {
     String blogTitle;
     String blogContent;
     String blogImage;
-    Date blogDate;
+    LocalDate blogDate;
     UserDTO user;
     Set<TagDto> tags;
 

@@ -54,7 +54,7 @@ public class UserService implements IUserService {
 
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserDTO> getListUser() {
         return userRepo.findAll().stream()
                 .map(userMapper::maptoUserDTO).toList();
@@ -74,6 +74,7 @@ public class UserService implements IUserService {
     public UserDTO updateUserByID(Long id, UpdateUserRequest request) {
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
         userMapper.updateUser(user, request);
         return userMapper.maptoUserDTO(userRepo.save(user));
     }

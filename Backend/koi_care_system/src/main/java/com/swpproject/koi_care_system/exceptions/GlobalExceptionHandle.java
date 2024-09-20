@@ -2,7 +2,9 @@ package com.swpproject.koi_care_system.exceptions;
 
 import com.swpproject.koi_care_system.enums.ErrorCode;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -42,6 +44,11 @@ public class GlobalExceptionHandle {
 		}
 	
 		return ResponseEntity.badRequest().body(apiResponse);
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException ex) {
+		return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
 	}
 
 }
