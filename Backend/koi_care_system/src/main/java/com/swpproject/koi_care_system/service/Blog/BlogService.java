@@ -104,6 +104,7 @@ public class BlogService implements IBlogService {
 
     @Override
     public List<BlogDto> searchBlogs(String keyword) {
-        return List.of();
+        List<Blog> blogs = blogRepository.findByBlogTitleContaining(keyword);
+        return blogs.stream().map(blogMapper::mapToBlogDto).toList();
     }
 }

@@ -91,8 +91,8 @@ public class BlogController {
                 .build());
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<ApiResponse> searchBlogs(String keyword) {
+    @GetMapping("/search/{keyword}")
+    public ResponseEntity<ApiResponse> searchBlogs(@PathVariable String keyword) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("List of blogs")
                 .data(blogService.searchBlogs(keyword))
