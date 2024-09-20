@@ -28,7 +28,7 @@ function MyPond() {
     setIsEditFormVisible(!isEditFormVisible)
     setIsEditFormVisible(false)
     setCurrentPond(null)
-    reset()
+    reset(ponds)
   }
 
   const toggleEditFormVisibility = (pond) => {
@@ -46,44 +46,6 @@ function MyPond() {
     reset
   } = useForm()
 
-  const onSubmit = async (data) => {
-    setIsLoading(true)
-    setIsSubmitting(true)
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
-
-      // eslint-disable-next-line no-unused-vars
-      const res = await axios.post(
-        'https://koi-care-system.azurewebsites.net/api/koiponds/create',
-        {
-          name: data.name,
-          drainCount: data.drainCount,
-          depth: data.depth,
-          skimmer: data.skimmerCount,
-          pumpCapacity: data.pumpCapacity,
-          imageUrl: data.imageUrl,
-          volume: data.volume
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      )
-      setIsAddFormVisible(false) // Close Add form after submit
-      getPond()
-      reset()
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsSubmitting(false)
-      setIsLoading(false)
-    }
-  }
-
   const getPond = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -97,7 +59,6 @@ function MyPond() {
         }
       })
 
-      console.log(res.data.data)
       setPonds(res.data.data)
     } catch (error) {
       console.error('Error fetching ponds:', error)
@@ -108,7 +69,85 @@ function MyPond() {
     getPond()
   }, [])
 
+  const onSubmit = async (data) => {
+    setIsLoading(true)
+    setIsSubmitting(true)
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+      if (currentPond) {
+        await upDatePond(data, currentPond.id)
+      } else {
+        await axios.post(
+          'https://koi-care-system.azurewebsites.net/api/koiponds/create',
+          {
+            name: data.name,
+            drainCount: data.drainCount,
+            depth: data.depth,
+            skimmer: data.skimmer,
+            pumpCapacity: data.pumpCapacity,
+            imageUrl: data.imageUrl,
+            volume: data.volume
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+      }
+      setIsAddFormVisible(false)
+      getPond()
+      reset()
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsSubmitting(false)
+      setIsLoading(false)
+    }
+  }
+
+  const upDatePond = async (data, id) => {
+    setIsLoading(true)
+    setIsSubmitting(true)
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const res = await axios.put(
+        `https://koi-care-system.azurewebsites.net/api/koiponds/koipond/${id}/update`,
+        {
+          name: data.name,
+          drainCount: data.drainCount,
+          depth: data.depth,
+          skimmer: data.skimmer,
+          pumpCapacity: data.pumpCapacity,
+          imageUrl: data.imageUrl,
+          volume: data.volume
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      setIsEditFormVisible(false)
+      getPond()
+      reset()
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsSubmitting(false)
+      setIsLoading(false)
+    }
+  }
+
   const deletePond = async (id) => {
+    setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -121,9 +160,11 @@ function MyPond() {
       })
       reset()
       getPond()
-      setIsEditFormVisible(false) // Close Edit form after deletion
+      setIsEditFormVisible(false)
     } catch (error) {
       console.error('Error deleting pond:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -135,7 +176,7 @@ function MyPond() {
         <div
           className={`relative ${
             isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-100 text-black'
-          } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
+          } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
           <svg
@@ -147,14 +188,13 @@ function MyPond() {
             className='fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer'
             onClick={() => {
               toggleAddFormVisibility()
-              reset()
             }}
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
 
-          <div className='p-4 w-full mt-6'>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+          <div className='p-4 w-full mt-2 ml-2'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
               {ponds.map((pond) => (
                 <div
                   key={pond.id}
@@ -165,29 +205,29 @@ function MyPond() {
                   }}
                 >
                   <img src={pond.imageUrl} alt={pond.name} className='w-full h-44 object-cover mb-4 rounded-md' />
-                  <div className='flex'>
-                    <h3 className='text-base w-36'>Pond:</h3>
+                  <div className='flex w-full'>
+                    <h3 className='text-base w-40'>Pond:</h3>
                     <h3 className='text-base font-semibold'>{pond.name}</h3>
                   </div>
                   <div className='flex'>
-                    <h3 className='text-base w-36'>Volume:</h3>
-                    <h3 className='text-base font-semibold'>{pond.volume}l</h3>
+                    <h3 className='text-base w-40'>Volume:</h3>
+                    <h3 className='text-base font-semibold'>{pond.volume} l</h3>
                   </div>
                   <div className='flex'>
-                    <h3 className='text-base w-36'>Drain Count:</h3>
+                    <h3 className='text-base w-40'>Drain Count:</h3>
                     <h3 className='text-base font-semibold'>{pond.drainCount}</h3>
                   </div>
                   <div className='flex'>
-                    <h3 className='text-base w-36'>Depth:</h3>
-                    <h3 className='text-base font-semibold'>{pond.depth}m</h3>
+                    <h3 className='text-base w-40'>Depth:</h3>
+                    <h3 className='text-base font-semibold'>{pond.depth} m</h3>
                   </div>
                   <div className='flex'>
-                    <h3 className='text-base w-36'>Skimmer:</h3>
+                    <h3 className='text-base w-40'>Skimmer Count:</h3>
                     <h3 className='text-base font-semibold'>{pond.skimmer}</h3>
                   </div>
                   <div className='flex'>
-                    <h3 className='text-base w-36'>Pump Capacity:</h3>
-                    <h3 className='text-base font-semibold'>{pond.pumpCapacity}L/min</h3>
+                    <h3 className='text-base w-40'>Pump Capacity:</h3>
+                    <h3 className='text-base font-semibold'>{pond.pumpCapacity} L/min</h3>
                   </div>
                 </div>
               ))}
@@ -236,7 +276,7 @@ function MyPond() {
                     <div className='grid grid-cols-2 grid-rows-4 gap-4'>
                       <div
                         id='imageSingle'
-                        className='dropzone single-dropzone mb-6 col-span-1 row-span-2 h-full flex justify-center shadow-xl'
+                        className='mb-6 col-span-1 row-span-2 h-full flex justify-center border border-black'
                       >
                         <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
                           <svg
@@ -259,8 +299,8 @@ function MyPond() {
 
                           <input
                             type='file'
-                            accept='image/jpg'
-                            className=''
+                            accept='image/*'
+                            className='hidden'
                             {...register('image', {
                               required: 'Please select an image'
                             })}
@@ -268,89 +308,105 @@ function MyPond() {
                         </label>
                       </div>
 
-                      {/* Show error if the image is not uploaded */}
                       {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>}
 
                       <div className='mb-4 relative col-span-1'>
-                        <label htmlFor='name' className='absolute -top-[12px] left-3 text-red-500'>
+                        <label
+                          htmlFor='name'
+                          className='absolute block -top-[12px] bg-white left-3 text-red-500 font-semibold'
+                        >
                           Name:
                         </label>
                         <input
                           type='text'
                           id='name'
-                          placeholder='Enter volume'
-                          className='w-full p-3 bg-white border border-red-500 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          placeholder='Enter name'
+                          className='w-full p-3 bg-white border border-black  rounded-lg focus:outline-none transition-colors duration-200'
                           {...register('name')}
                         />
-                        {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>}
+                        {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>}
                       </div>
 
                       <div className='mb-4 relative col-span-1'>
-                        <label htmlFor='volume' className='absolute -top-[12px] left-3 text-orange-500'>
+                        <label
+                          htmlFor='volume'
+                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                        >
                           Volume:
                         </label>
                         <input
                           type='text'
                           id='volume'
                           placeholder='Enter volume'
-                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
                           {...register('volume')}
                         />
                         {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>}
                       </div>
 
                       <div className='mb-4 relative col-span-1'>
-                        <label htmlFor='depth' className='absolute -top-[12px] left-3 text-orange-500'>
+                        <label
+                          htmlFor='depth'
+                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                        >
                           Depth (m):
                         </label>
                         <input
                           type='text'
                           id='depth'
                           placeholder='Enter depth in meters'
-                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
                           {...register('depth')}
                         />
                         {errors.depth && <p className='text-red-500 text-sm'>{errors.depth.message}</p>}
                       </div>
 
-                      {/* Second row with 3 inputs, full width */}
                       <div className='mb-4 relative col-span-1'>
-                        <label htmlFor='drainCount' className='absolute -top-[12px] left-3 text-orange-500'>
+                        <label
+                          htmlFor='drainCount'
+                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                        >
                           Drain Count:
                         </label>
                         <input
                           type='text'
                           id='drainCount'
                           placeholder='Enter drain count'
-                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
                           {...register('drainCount')}
                         />
                         {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>}
                       </div>
 
                       <div className='mb-4 relative col-span-1'>
-                        <label htmlFor='skimmerCount' className='absolute -top-[12px] left-3 text-orange-500'>
+                        <label
+                          htmlFor='skimmerCount'
+                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                        >
                           Skimmer Count:
                         </label>
                         <input
                           type='text'
                           id='skimmerCount'
                           placeholder='Enter skimmer count'
-                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
-                          {...register('skimmerCount')}
+                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
+                          {...register('skimmer')}
                         />
-                        {errors.skimmerCount && <p className='text-red-500 text-sm'>{errors.skimmerCount.message}</p>}
+                        {errors.skimmer && <p className='text-red-500 text-sm'>{errors.skimmer.message}</p>}
                       </div>
 
                       <div className='mb-4 relative col-span-1'>
-                        <label htmlFor='pumpCapacity' className='absolute -top-[12px] left-3 text-orange-500'>
+                        <label
+                          htmlFor='pumpCapacity'
+                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                        >
                           Pumping Capacity (l/h):
                         </label>
                         <input
                           type='text'
                           id='pumpCapacity'
                           placeholder='Enter pumping capacity in l/h'
-                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
                           {...register('pumpCapacity')}
                         />
                         {errors.pumpCapacity && <p className='text-red-500 text-sm'>{errors.pumpCapacity.message}</p>}
@@ -404,7 +460,7 @@ function MyPond() {
                     <div className='grid grid-cols-2 grid-rows-4 gap-4'>
                       <div
                         id='imageSingle'
-                        className='dropzone single-dropzone mb-6 col-span-1 row-span-2 h-full flex justify-center shadow-xl'
+                        className='mb-6 col-span-1 row-span-2 h-full flex justify-center border border-black'
                       >
                         <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
                           <svg
@@ -425,57 +481,58 @@ function MyPond() {
                             <span>Choose images here</span>
                           </div>
 
-                          <input
-                            type='file'
-                            accept='image/jpg'
-                            className=''
-                            {...register('image', {
-                              required: 'Please select an image'
-                            })}
-                          />
+                          <input type='file' accept='image/*' className='hidden' {...register('image')} />
                         </label>
                       </div>
 
-                      {/* Show error if the image is not uploaded */}
                       {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>}
 
                       <div className='mb-4 relative col-span-1'>
-                        <label htmlFor='name' className='absolute -top-[12px] left-3 text-red-500'>
+                        <label
+                          htmlFor='name'
+                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                        >
                           Name:
                         </label>
                         <input
                           type='text'
                           id='name'
                           placeholder='Enter volume'
-                          className='w-full p-3 bg-white border border-red-500 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none  transition-colors duration-200'
                           {...register('name')}
                         />
                         {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>}
                       </div>
 
                       <div className='mb-4 relative col-span-1'>
-                        <label htmlFor='volume' className='absolute -top-[12px] left-3 text-orange-500'>
+                        <label
+                          htmlFor='volume'
+                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                        >
                           Volume:
                         </label>
                         <input
                           type='text'
                           id='volume'
                           placeholder='Enter volume'
-                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
                           {...register('volume')}
                         />
                         {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>}
                       </div>
 
                       <div className='mb-4 relative col-span-1'>
-                        <label htmlFor='depth' className='absolute -top-[12px] left-3 text-orange-500'>
+                        <label
+                          htmlFor='depth'
+                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                        >
                           Depth (m):
                         </label>
                         <input
                           type='text'
                           id='depth'
                           placeholder='Enter depth in meters'
-                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
                           {...register('depth')}
                         />
                         {errors.depth && <p className='text-red-500 text-sm'>{errors.depth.message}</p>}
@@ -483,42 +540,51 @@ function MyPond() {
 
                       {/* Second row with 3 inputs, full width */}
                       <div className='mb-4 relative col-span-1'>
-                        <label htmlFor='drainCount' className='absolute -top-[12px] left-3 text-orange-500'>
+                        <label
+                          htmlFor='drainCount'
+                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                        >
                           Drain Count:
                         </label>
                         <input
                           type='text'
                           id='drainCount'
                           placeholder='Enter drain count'
-                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
                           {...register('drainCount')}
                         />
                         {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>}
                       </div>
 
                       <div className='mb-4 relative col-span-1'>
-                        <label htmlFor='skimmerCount' className='absolute -top-[12px] left-3 text-orange-500'>
+                        <label
+                          htmlFor='skimmerCount'
+                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                        >
                           Skimmer Count:
                         </label>
                         <input
                           type='text'
                           id='skimmerCount'
                           placeholder='Enter skimmer count'
-                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
-                          {...register('skimmerCount')}
+                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
+                          {...register('skimmer')}
                         />
-                        {errors.skimmerCount && <p className='text-red-500 text-sm'>{errors.skimmerCount.message}</p>}
+                        {errors.skimmer && <p className='text-red-500 text-sm'>{errors.skimmer.message}</p>}
                       </div>
 
                       <div className='mb-4 relative col-span-1'>
-                        <label htmlFor='pumpCapacity' className='absolute -top-[12px] left-3 text-orange-500'>
+                        <label
+                          htmlFor='pumpCapacity'
+                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                        >
                           Pumping Capacity (l/h):
                         </label>
                         <input
                           type='text'
                           id='pumpCapacity'
                           placeholder='Enter pumping capacity in l/h'
-                          className='w-full p-3 bg-white border border-orange-300 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors duration-200'
+                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
                           {...register('pumpCapacity')}
                         />
                         {errors.pumpCapacity && <p className='text-red-500 text-sm'>{errors.pumpCapacity.message}</p>}

@@ -128,11 +128,11 @@ function Header() {
             </button>
             {isOpen && (
               <div
-                className={`absolute right-10 w-44 border border-gray-300 shadow-lg ${
+                className={`absolute right-10 w-44 border border-gray-300 shadow-lg${
                   isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
                 }`}
               >
-                <NavLink to={path.profile} end className=' px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'>
+                <NavLink to={path.profile} end className=' px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center '>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -151,7 +151,7 @@ function Header() {
                 </NavLink>
                 <NavLink
                   to={path.shopCart}
-                  className='block px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'
+                  className=' px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'
                 >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -172,7 +172,7 @@ function Header() {
                 <Link
                   onClick={handleLogout}
                   to={path.login}
-                  className='block px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'
+                  className='px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'
                 >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
