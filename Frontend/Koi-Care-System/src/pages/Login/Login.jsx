@@ -40,11 +40,11 @@ function Login() {
       const user = response.data.data
       if (user && user.token) {
         localStorage.setItem('token', user.token)
-        localStorage.setItem('role', user.roles)
+        localStorage.setItem('role', user.role)
         localStorage.setItem('id', user.id)
         localStorage.setItem('name', user.username)
-        if (user.roles && user.roles.length > 0) {
-          const role = user.roles[0]
+        
+          const role = user.role
 
           switch (role) {
             case 'ADMIN':
@@ -57,8 +57,7 @@ function Login() {
               navigate('/member')
               break
             default:
-              break
-          }
+              break         
         }
       }
       // eslint-disable-next-line no-unused-vars
