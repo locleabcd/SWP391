@@ -93,9 +93,15 @@ public class BlogController {
 
     @GetMapping("/search/{keyword}")
     public ResponseEntity<ApiResponse> searchBlogs(@PathVariable String keyword) {
+        List<BlogDto> blogDtos = blogService.searchBlogs(keyword);
+        if (blogDtos.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.builder()
+                    .message("No blogs found")
+                    .build());
+        }
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("List of blogs")
-                .data(blogService.searchBlogs(keyword))
+                .data(blogDtos)
                 .build());
     }
 
