@@ -60,6 +60,7 @@ function MyPond() {
       })
 
       setPonds(res.data.data)
+      console.log(res.data.data)
     } catch (error) {
       console.error('Error fetching ponds:', error)
     }
@@ -77,6 +78,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
+
       if (currentPond) {
         await upDatePond(data, currentPond.id)
       } else {
@@ -93,7 +95,8 @@ function MyPond() {
           },
           {
             headers: {
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data'
             }
           }
         )
@@ -175,7 +178,7 @@ function MyPond() {
 
         <div
           className={`relative ${
-            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-100 text-black'
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
@@ -198,7 +201,9 @@ function MyPond() {
               {ponds.map((pond) => (
                 <div
                   key={pond.id}
-                  className='border p-4 rounded-lg shadow cursor-pointer'
+                  className={`${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } border p-4 rounded-lg shadow cursor-pointer`}
                   onClick={() => {
                     toggleEditFormVisibility(pond)
                     reset(pond)
@@ -301,7 +306,7 @@ function MyPond() {
                             type='file'
                             accept='image/*'
                             className='hidden'
-                            {...register('image', {
+                            {...register('imageUrl', {
                               required: 'Please select an image'
                             })}
                           />

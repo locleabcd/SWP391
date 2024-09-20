@@ -21,6 +21,7 @@ import MyPond from './pages/Member/MyPond/MyPond'
 import VerifyEmail from './pages/VerifyEmail/VerifyEmail'
 import VerifySuccess from './pages/VerifyEmail/VerifySuccess'
 import { DarkModeProvider } from './components/DarkModeContext'
+import NewsDetail from './pages/Member/News/NewsDetail'
 
 function App() {
   const routeElements = useRoutes([
@@ -99,6 +100,10 @@ function App() {
     {
       path: path.news,
       element: <News />
+    },
+    {
+      path: path.newsDetails,
+      element: <NewsDetail />
     }
   ])
 

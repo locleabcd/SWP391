@@ -19,7 +19,8 @@ const path = {
   foodCalculator: '/member/foodCalculator',
   saltCalculator: '/member/saltCalculator',
   statistics: '/member/statistics',
-  news: '/member/news'
+  news: '/member/news',
+  newsDetails: '/member/news/:id'
 }
 
 export default path

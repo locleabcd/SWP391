@@ -270,7 +270,6 @@ function LeftSideBar() {
                 </div>
               </NavLink>
             </div>
-            <span className='font-semibold'>News and blogs</span>
           </div>
         </div>
       )}
