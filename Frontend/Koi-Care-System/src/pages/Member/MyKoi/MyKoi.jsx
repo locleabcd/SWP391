@@ -14,6 +14,7 @@ function MyKoi() {
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [ponds, setPonds] = useState([])
+  
 
   useEffect(() => {
     AOS.init({ duration: 800, offset: 100, delay: 300 });
@@ -33,8 +34,8 @@ function MyKoi() {
 
    
 
-  const onSubmit = async (data, id) => {
-    
+  const onSubmit = async (data) => {
+    console.log('onSubmit:', data);
     setIsLoading(true);
     setIsSubmitting(true);
     try {
@@ -42,10 +43,12 @@ function MyKoi() {
       if (!token) {
         throw new Error('No token found');
       }
-      
+      //const id = data.data.koiPond.id
+      console.log(data)
       const res = await axios.post(
-        `https://koi-care-system.azurewebsites.net/api/koifishs/koipond/create`,
+        `https://koi-care-system.azurewebsites.net/api/koifishs/create`,
         {
+          // ...data,
           name: data.name,
           physique: data.physique,
           age: data.age,
@@ -56,13 +59,12 @@ function MyKoi() {
           pondDate: data.pondDate,
           breeder: data.breeder,
           price: data.price,
-          koiPond: data.koiPond,
-          imageUrl: data.imageUrl,
-          status: data.status,
+          koiPondId : data.pondId
         },
         {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data"
           },
         }
       );
@@ -90,7 +92,7 @@ function MyKoi() {
         }
       })
 
-      console.log(res.data.data)
+      console.log('data', res.data)
       setPonds(res.data.data)
     } catch (error) {
       console.error('Error fetching ponds:', error)
@@ -111,7 +113,6 @@ function MyKoi() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log('Fetched Koi:', res.data.data);
       setKois(res.data.data);
     } catch (error) {
       console.error('Error fetching koi:', error);
@@ -143,7 +144,7 @@ function MyKoi() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer"
+              className="fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer z-50"
               onClick={toggleAddFormVisibility}
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -168,11 +169,7 @@ function MyKoi() {
                   <div className="flex">
                     <h3 className="text-base w-32">Length:</h3>
                     <h3 className="text-base font-semibold">{koi.length} cm</h3>
-                  </div>
-                  <div className="flex">
-                    <h3 className="text-base w-32">Pond Name:</h3>
-                    <h3 className="text-base font-semibold">{koi.pondName}</h3>
-                  </div>
+                  </div>                  
                 </div>
               ))}
             </div>
@@ -182,7 +179,7 @@ function MyKoi() {
       </div>
 
       {isAddFormVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50" data-aos="fade-up">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50" >
           <div className="bg-white min-w-[100vh] mb-auto p-6 rounded-lg shadow-lg">
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className="flex justify-between mb-5">
@@ -216,7 +213,7 @@ function MyKoi() {
               <div className="grid grid-cols-2 grid-rows-8 gap-2 ">
                 <div
                   id='imageSingle'
-                  className='dropzone single-dropzone mb-6 col-span-1 row-span-2 h-full flex justify-center shadow-xl'
+                  className=' mb-6 col-span-1 row-span-2 h-full flex justify-center shadow-xl'
                 >
                   <label htmlFor='imageUrl' className='flex flex-col items-center justify-center text-center cursor-pointer'>
                     <svg
@@ -239,16 +236,16 @@ function MyKoi() {
 
                     <input
                       type='file'
-                      accept='image/jpg'
+                      accept='image/*'
                       className=''
-                      {...register('imageUrl', 
-                      // { required: 'Please select an image'}
+                      {...register('file', 
+                      //  { required: 'Please select an image'}
                       )}
                     />
                   </label>
                 </div>
                 {/* Show error if the image is not uploaded */}
-                {/* {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>} */}
+                
                 <div className="relative col-span-1 ">
                   <label htmlFor='name' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
                     Name
@@ -388,13 +385,13 @@ function MyKoi() {
                 </div>
 
                 <div className="relative col-span-1 mb-2 mt-2">
-                  <label className="absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white" htmlFor="koiPond">
+                  <label className="absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white" htmlFor="id">
                     Pond
                   </label>
                   <select
-                    id="koiPond"
+                    id="pondId"
                     className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"
-                    {...register('koiPond')}
+                    {...register('pondId', { required: 'Please select a pond' }) }
                   >
                     <option value="">Select a pond</option>
                     {ponds.map((pond) => (
@@ -405,19 +402,7 @@ function MyKoi() {
                   </select>
                 </div>
 
-                <div className="relative col-span-1 mb-2 mt-2">
-                  <label className="absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white" htmlFor="status">
-                   Status
-                  </label>
-                  <input
-                    type='text'
-                    id="status"
-                    value="alive"
-                    readOnly  
-                    className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"   
-                    {...register('status')}            
-                  />       
-                </div> 
+                 
               </div>
             </form>
           </div>
