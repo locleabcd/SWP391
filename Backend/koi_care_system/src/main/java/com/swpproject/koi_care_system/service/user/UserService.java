@@ -48,7 +48,7 @@ public class UserService implements IUserService {
         //Verify user code email
 
         var token = authenticationService.generateToken(user);
-        emailService.send(user.getUsername(), user.getEmail(), "Welocome New User, Your Verify Email", token);
+        emailService.send(user.getUsername(), user.getEmail(), "Welcome New User, Your Verify Email", token);
 
         return userMapper.maptoUserDTO(userRepo.save(user));
 

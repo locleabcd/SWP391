@@ -22,7 +22,8 @@ public class Blog {
 
     @Column(name = "blog_title", nullable = false)
     String blogTitle;
-    @Column(name = "blog_content", nullable = false)
+    @Lob//Large Object
+    @Column(name = "blog_content", nullable = false, columnDefinition = "TEXT")
     String blogContent;
     @Column(name = "blog_image", nullable = false)
     String blogImage;
