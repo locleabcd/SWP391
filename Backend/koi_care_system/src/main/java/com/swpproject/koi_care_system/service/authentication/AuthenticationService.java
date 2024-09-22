@@ -143,13 +143,17 @@ public class AuthenticationService implements IAuthenticationService {
 
     @Override
     public boolean verifyUserOtp(String email, String otp) {
-        var user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        if (user != null) {
-            boolean result = otpService.verifyOtp(email, otp);
-            if (result) {
-                otpService.deleteOtp(email);
-                return true;
-            }
+        return otpService.verifyOtp(email, otp);
+    }
+
+    @Override
+    public boolean resetPassword(String email, String password, String otp) {
+        if (otpService.verifyOtp(email, otp)) {
+            var user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+            user.setPassword(passwordEncoder.encode(password));
+            userRepository.save(user);
+            otpService.deleteOtp(email);
+            return true;
         }
         return false;
     }

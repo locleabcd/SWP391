@@ -24,36 +24,43 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
-
     private final String[] PUBLIC_ENDPOINTS = {
             "/users/register",
             "/auth/login",
             "/auth/forgotPassword/**",
             "/auth/verifyOtp/**",
-
+            "/auth/resetPassword/**",
+            "/oauth2/**"
     };
+
     @Value("${jwt.signerKey}")
     private String signerKey;
-
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 
-        //Protected from CSRF attacks, but we are not using it in this project so disable it
+        // Disable CSRF since we are not using session-based authentication
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
+
+        // Permit access to public endpoints and protect all others
         httpSecurity
-                .authorizeRequests(request ->
+                .authorizeHttpRequests(request ->
                         request
                                 .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                                 .requestMatchers(HttpMethod.GET, "/auth/verify").permitAll()
-                                .anyRequest().authenticated());
+                                .anyRequest().authenticated())
+                .oauth2Login(oauth2Login -> oauth2Login.loginPage("/oauth2/login")
+                        .defaultSuccessUrl("/oauth2/verify", true)
+                        .failureUrl("/oauth2/login?error=true"));
 
-        //Configure JWT decoder
+        // Configure JWT-based security
         httpSecurity.oauth2ResourceServer(
                 oauth2 -> oauth2.jwt(jwtConfigurer ->
                         jwtConfigurer.decoder(jwtDecoder())
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter()))
         );
+
+        // Enable CORS for all domains
         httpSecurity.cors(cors -> cors.configurationSource(request -> {
             var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
             corsConfiguration.setAllowedOrigins(java.util.List.of("*"));
@@ -62,17 +69,16 @@ public class SecurityConfig {
             return corsConfiguration;
         }));
 
-
         return httpSecurity.build();
     }
 
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {
-        //Create a JWT granted authorities converter
+        // Create JWT granted authorities converter
         JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
 
-        //Create a JWT authentication converter
+        // Create JWT authentication converter
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
         return jwtAuthenticationConverter;
@@ -80,11 +86,11 @@ public class SecurityConfig {
 
     @Bean
     JwtDecoder jwtDecoder() {
-        //Create a secret key
+        // Create secret key
         SecretKeySpec secretKeySpec = new SecretKeySpec(signerKey.getBytes(), "HS512");
         return NimbusJwtDecoder
                 .withSecretKey(secretKeySpec)
-                .macAlgorithm(MacAlgorithm.HS512)//create a JWT decoder
+                .macAlgorithm(MacAlgorithm.HS512)
                 .build();
     }
 
@@ -93,4 +99,3 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(10);
     }
 }
-

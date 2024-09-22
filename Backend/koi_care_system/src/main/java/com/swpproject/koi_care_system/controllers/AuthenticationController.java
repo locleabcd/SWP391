@@ -65,4 +65,13 @@ public class AuthenticationController {
                 .data(result)
                 .build());
     }
+
+    @PostMapping("/resetPassword/{email}/{password}/{otp}")
+    ResponseEntity<ApiResponse> resetPassword(@PathVariable String email, @PathVariable String password, @PathVariable String otp) {
+        var result = authService.resetPassword(email, password, otp);
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("Reset password")
+                .data(result)
+                .build());
+    }
 }

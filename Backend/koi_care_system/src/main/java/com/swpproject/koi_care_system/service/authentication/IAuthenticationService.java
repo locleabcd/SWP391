@@ -17,4 +17,6 @@ public interface IAuthenticationService {
     boolean forgotPassword(String email);
 
     boolean verifyUserOtp(String email, String otp);
+
+    boolean resetPassword(String email, String password, String otp);
 }
