@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import Header from '../../../components/Member/Header'
 import { useDarkMode } from '../../../components/DarkModeContext'
-import { formatDistanceToNow } from 'date-fns'
 
 function NewsDetail() {
   const [newDetail, setNewsDetail] = useState([])
@@ -41,21 +40,21 @@ function NewsDetail() {
       <LeftSideBar />
       <div
         className={`relative ${
-          isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-300 text-black'
+          isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'
         } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
-        <div className=' flex flex-col justify-center items-center py-10 px-20'>
+        <div className=' flex flex-col justify-center items-center py-10 px-60'>
           <div
             className={`${
               isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-            } px-20 py-5 border border-gray-500 rounded-lg`}
+            } px-5 py-5 border border-gray-500 rounded-lg`}
           >
             <h1 className='text-3xl font-semibold flex justify-start'>{newDetail.blogTitle}</h1>
             <div className='flex items-center mt-5'>
-              <p>{newDetail.user?.username}</p>
+              <p>{newDetail.user?.username} </p>
               <div>
-                <p>&bull; {newDetail.blogDate}</p>
+                <p> &bull; {newDetail.blogDate}</p>
               </div>
               {/* {newDetail.tags.map((tag) => (
               <span key={tag?.tagId} className='text-sm font-semibold text-gray-700 mr-1'>
@@ -121,22 +120,38 @@ function NewsDetail() {
               </div>
             </div>
 
-            <p className='py-5 border-b border-gray-300'>{newDetail.blogContent}</p>
+            <p className='py-5 indent-8 text-justify'>{newDetail.blogContent}</p>
+            <p className='py-5 border-b border-gray-300 indent-8 text-justify'>
+              Koi fish are longer so they are less suitable for aquariums and more suitable for ponds. Goldfish with
+              their shorter size are more compatible for aquariums though they live well in ponds as well. Koi fish are
+              bred to look beautiful when being seen from the top because they are intended as pond fish. Earlier
+              goldfish were bred as pond fish but they were later bred to look beautiful from side view because they are
+              meant to be kept in aquarium. Most types of fancy goldfish have abnormal body structure that make them
+              prone to get swim bladder disease while none of the koi bred have this abnormality. Both are carps but
+              belong to different species. Both specieses can produce hybrid offsprings but the offsprings are
+              infertile/sterile (Unable to reproduce.). Both fish can live together with no problem. Koi will migrate
+              significant distances to reach their preferred spawning grounds — flooded meadows and stagnant marshy
+              areas. The breeding season is in the spring, around May or June. Females reproduce for the first time when
+              they are between 4 and 6 years old, males when they are between 3 and 5 years old. Once they reach sexual
+              maturity, they will breed every year. They attach their sticky eggs to water plants or any object
+              submerged in the water. The young hatch as larvae and stay in warm, shallow flooded areas until they are
+              large enough to brave more open waterways.
+            </p>
 
             <div className='flex border-b py-4 border-gray-300 items-center gap-2'>
               <img
                 src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
                 className='w-10 h-10 rounded-full border border-gray-300'
               />
-              <div>
+              <div className='w-full'>
                 <div className='flex justify-between items-center'>
                   <div className='flex items-center'>
-                    {newDetail.tags?.map((tag) => (
-                      <span key={tag.tagId} className='text-sm font-semibold text-gray-700 mr-1'>
-                        {tag.tagName}
-                      </span>
-                    ))}
                     <div>
+                      {newDetail.tags?.map((tag) => (
+                        <span key={tag.tagId} className='text-sm font-semibold text-gray-700 mr-1'>
+                          {tag.tagName}
+                        </span>
+                      ))}
                       <p>{newDetail?.user?.username}</p>
                     </div>
                   </div>

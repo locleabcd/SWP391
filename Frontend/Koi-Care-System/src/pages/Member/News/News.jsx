@@ -92,7 +92,8 @@ function News() {
                         </span>
                       ))}
                       <p className='font-semibold text-sm'>
-                        &bull; {formatDistanceToNow(new Date(blog.blogDate), { addSuffix: true })}
+                        &bull;{' '}
+                        {formatDistanceToNow(new Date(blog.blogDate), { addSuffix: true }).replace(/^about /, '')}
                       </p>
                     </div>
                   </div>
@@ -100,10 +101,10 @@ function News() {
 
                 <div className='p-5 border-b border-gray-300'>
                   <Link to={`/member/news/${blog.blogId}`}>
-                    <img src={blog.blogImage} alt={blog.blogTitle} className='w-full h-72 object-cover rounded-md' />
+                    <img src={blog.blogImage} alt={blog.blogTitle} className='w-full h-44 object-cover rounded-md' />
                     <div className='mt-4'>
                       <h2 className='text-xl font-bold'>{blog.blogTitle}</h2>
-                      <p className='line-clamp-3 text-justify mt-4'>{blog.blogContent}</p>
+                      <p className='line-clamp-3 text-justify mt-4 tracking-tighter'>{blog.blogContent}</p>
                     </div>
                   </Link>
                 </div>
