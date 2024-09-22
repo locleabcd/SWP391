@@ -22,6 +22,9 @@ import VerifyEmail from './pages/VerifyEmail/VerifyEmail'
 import VerifySuccess from './pages/VerifyEmail/VerifySuccess'
 import { DarkModeProvider } from './components/DarkModeContext'
 import NewsDetail from './pages/Member/News/NewsDetail'
+import Email from './pages/RecoveryPassword/Email'
+import OTP from './pages/OTP/OTP'
+import ResetPassword from './pages/ResetPassword/ResetPassword'
 
 function App() {
   const routeElements = useRoutes([
@@ -44,6 +47,18 @@ function App() {
     {
       path: path.verifySuccess,
       element: <VerifySuccess />
+    },
+    {
+      path: path.email,
+      element: <Email />
+    },
+    {
+      path: path.otp,
+      element: <OTP />
+    },
+    {
+      path: path.resetPassword,
+      element: <ResetPassword />
     },
     {
       path: path.member,

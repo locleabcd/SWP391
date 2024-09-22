@@ -91,7 +91,11 @@ function Register() {
               placeholder='***********'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors duration-200'
               {...register('password', {
-                required: 'Password is required'
+                required: 'Password is required',
+                minLength: {
+                  value: 8,
+                  message: 'Password must be at least 8 characters'
+                }
               })}
             />
             <span

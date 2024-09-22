@@ -96,11 +96,7 @@ function Login() {
               placeholder='***********'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none transition-colors duration-200'
               {...register('password', {
-                required: 'Password is required',
-                minLength: {
-                  value: 8,
-                  message: 'Password must be at least 7 characters'
-                }
+                required: 'Password is required'
               })}
             />
             <span
@@ -130,9 +126,9 @@ function Login() {
               <input type='checkbox' className='form-checkbox text-blue-500 rounded' />
               <span className='ml-2 text-black font-bold'>Remember me</span>
             </label>
-            <a href='#' className='text-black font-bold cursor-pointer mt-2'>
+            <Link to='/email' className='text-black font-bold cursor-pointer mt-2'>
               Forgot password?
-            </a>
+            </Link>
           </div>
 
           <button
