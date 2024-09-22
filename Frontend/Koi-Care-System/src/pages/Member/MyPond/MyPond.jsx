@@ -6,6 +6,8 @@ import LeftSideBar from '../../../components/Member/LeftSideBar'
 import axios from 'axios'
 import { set, useForm } from 'react-hook-form'
 import { FaSpinner } from 'react-icons/fa'
+import 'aos/dist/aos.css'
+import AOS from 'aos'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
@@ -38,6 +40,10 @@ function MyPond() {
       setIsAddFormVisible(false)
     }
   }
+
+  useEffect(() => {
+    AOS.init({ duration: 800, offset: 100, delay: 300 })
+  })
 
   const {
     register,
@@ -77,6 +83,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
+
       if (currentPond) {
         await upDatePond(data, currentPond.id)
       } else {
@@ -93,7 +100,8 @@ function MyPond() {
           },
           {
             headers: {
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data'
             }
           }
         )
@@ -131,6 +139,7 @@ function MyPond() {
         },
         {
           headers: {
+            'Content-Type': 'multipart/form-data',
             Authorization: `Bearer ${token}`
           }
         }
@@ -175,7 +184,7 @@ function MyPond() {
 
         <div
           className={`relative ${
-            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-100 text-black'
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
@@ -185,7 +194,7 @@ function MyPond() {
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer'
+            className='fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer z-50'
             onClick={() => {
               toggleAddFormVisibility()
             }}
@@ -193,12 +202,14 @@ function MyPond() {
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
 
-          <div className='p-4 w-full mt-2 ml-2'>
+          <div className='p-4 w-full mt-2 ml-2' data-aos='fade-up'>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
               {ponds.map((pond) => (
                 <div
                   key={pond.id}
-                  className='border p-4 rounded-lg shadow cursor-pointer'
+                  className={`${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } border p-4 rounded-lg shadow cursor-pointer`}
                   onClick={() => {
                     toggleEditFormVisibility(pond)
                     reset(pond)
@@ -301,7 +312,7 @@ function MyPond() {
                             type='file'
                             accept='image/*'
                             className='hidden'
-                            {...register('image', {
+                            {...register('imageUrl', {
                               required: 'Please select an image'
                             })}
                           />

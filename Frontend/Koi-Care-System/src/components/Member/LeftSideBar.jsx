@@ -22,7 +22,7 @@ function LeftSideBar() {
       {/* open close button  */}
       <div className='relative '>
       { isClosed ? 
-      ( <button className={`absolute left-0 top-6 p-1 z-50 ${
+      ( <button className={`absolute left-0 top-6 p-1 z-20 ${
         isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} `} onClick={() => setClosed(false)}>
         <svg xmlns="http://www.w3.org/2000/svg" 
           fill="none" viewBox="0 0 24 24" 
@@ -34,7 +34,7 @@ function LeftSideBar() {
           d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5" />
         </svg>
       </button> ) : 
-      ( <button className={`absolute left-72 top-6 p-1 z-50 ${
+      ( <button className={`absolute left-72 top-6 p-1 z-20 ${
           isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} `} onClick={() => setClosed(true)}>
           <svg xmlns="http://www.w3.org/2000/svg" 
             fill="none" 

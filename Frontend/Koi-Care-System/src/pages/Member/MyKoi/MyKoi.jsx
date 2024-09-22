@@ -43,6 +43,20 @@ function MyKoi() {
       if (!token) {
         throw new Error('No token found');
       }
+      const koiData = {
+        name: data.name || null,
+        physique: data.physique || null,
+        age: data.age ? parseInt(data.age) : null, // Ensure age is an integer or null
+        length: data.length ? parseFloat(data.length) : null, // Ensure length is a float or null
+        weight: data.weight ? parseFloat(data.weight) : null, // Ensure weight is a float or null
+        gender: data.gender || null,
+        variety: data.variety || null,
+        pondDate: data.pondDate || null,
+        breeder: data.breeder || null,
+        price: data.price ? parseFloat(data.price) : null, // Ensure price is a float or null
+        koiPondId: data.pondId || null,
+        file: data.file || null
+      };
       //const id = data.data.koiPond.id
       console.log(data)
       const res = await axios.post(
@@ -59,7 +73,8 @@ function MyKoi() {
           pondDate: data.pondDate,
           breeder: data.breeder,
           price: data.price,
-          koiPondId : data.pondId
+          koiPondId : data.pondId,
+          file : data.file
         },
         {
           headers: {
@@ -144,7 +159,7 @@ function MyKoi() {
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
-              className="fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer z-50"
+              className="fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer z-10"
               onClick={toggleAddFormVisibility}
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -153,7 +168,7 @@ function MyKoi() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2">
               {kois.map((koi) => (
                 <div key={koi.id} className="border p-4 rounded-lg shadow">
-                  <img src={koi.imageUrl} alt={koi.name} className="w-full h-40 object-cover mb-4 rounded-md" />
+                  <img src={koi.imageUrl} alt={koi.name} className="w-full h-40 object-cover mb-4 rounded-md z-0" />
                   <div className="flex">
                     <h3 className="text-base w-32">Koi Name:</h3>
                     <h3 className="text-base font-semibold">{koi.name}</h3>
@@ -169,7 +184,15 @@ function MyKoi() {
                   <div className="flex">
                     <h3 className="text-base w-32">Length:</h3>
                     <h3 className="text-base font-semibold">{koi.length} cm</h3>
-                  </div>                  
+                  </div>  
+                  <div className="flex">
+                    <h3 className="text-base w-32">koiID:</h3>
+                    <h3 className="text-base font-semibold">{koi.id}</h3>
+                  </div> 
+                  <div className="flex">
+                    <h3 className="text-base w-32">pondID:</h3>
+                    <h3 className="text-base font-semibold">{koi.koiPond.id}</h3>
+                  </div>                                
                 </div>
               ))}
             </div>
@@ -179,8 +202,8 @@ function MyKoi() {
       </div>
 
       {isAddFormVisible && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50" >
-          <div className="bg-white min-w-[100vh] mb-auto p-6 rounded-lg shadow-lg">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 " >
+          <div className="bg-white min-w-[100vh] mb-auto mt-auto p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto no-scroll-bar">
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className="flex justify-between mb-5">
                 <svg
@@ -210,41 +233,42 @@ function MyKoi() {
               </div>
 
               <h3 className="mb-5 text-2xl font-bold">Add a Koi</h3>
-              <div className="grid grid-cols-2 grid-rows-8 gap-2 ">
-                <div
-                  id='imageSingle'
-                  className=' mb-6 col-span-1 row-span-2 h-full flex justify-center shadow-xl'
-                >
-                  <label htmlFor='imageUrl' className='flex flex-col items-center justify-center text-center cursor-pointer'>
-                    <svg
-                      xmlns='http://www.w3.org/2000/svg'
-                      width={12}
-                      height={12}
-                      fill='currentColor'
-                      className='mx-auto text-gray-500 inline-block w-10 h-10'
-                      viewBox='0 0 16 16'
-                    >
-                    <path
-                      fillRule='evenodd'
-                      d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
-                    />
-                    <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
-                    </svg>
-                    <div className='py-3'>
-                      <span>Choose images here</span>
-                    </div>
+              <div className='grid grid-cols-2 grid-rows-4 gap-4'>
+                      <div
+                        id='file'
+                        className='mb-6 col-span-1 row-span-2 h-full flex justify-center border border-black'
+                      >
+                        <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            width={16}
+                            height={16}
+                            fill='currentColor'
+                            className='mx-auto text-gray-500 inline-block w-10 h-10'
+                            viewBox='0 0 16 16'
+                          >
+                            <path
+                              fillRule='evenodd'
+                              d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
+                            />
+                            <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
+                          </svg>
+                          <div className='py-3'>
+                            <span>Choose images here</span>
+                          </div>
 
-                    <input
-                      type='file'
-                      accept='image/*'
-                      className=''
-                      {...register('file', 
-                      //  { required: 'Please select an image'}
-                      )}
-                    />
-                  </label>
-                </div>
-                {/* Show error if the image is not uploaded */}
+                          <input
+                            type='file'
+                            accept='image/*'
+                            className='hidden'
+                            {...register('file', {
+                              required: 'Please select an image'
+                            })}
+                          />
+                        </label>
+                      </div>
+
+                      {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>}
                 
                 <div className="relative col-span-1 ">
                   <label htmlFor='name' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
@@ -385,7 +409,7 @@ function MyKoi() {
                 </div>
 
                 <div className="relative col-span-1 mb-2 mt-2">
-                  <label className="absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white" htmlFor="id">
+                  <label className="absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white" htmlFor="pondId">
                     Pond
                   </label>
                   <select
@@ -400,7 +424,10 @@ function MyKoi() {
                       </option>
                     ))}
                   </select>
+                  {errors.pondId && <p className="absolute -bottom-[14px] left-3 text-red-500 text-sm">{errors.pondId.message}</p>}
                 </div>
+
+                
 
                  
               </div>
