@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
@@ -22,22 +24,45 @@ public class AuthenticationController {
     UserService userService;
 
     @PostMapping("/login")
-    ApiResponse authenticate(@RequestBody @Valid AuthenticationRequest request) {
+    ResponseEntity<ApiResponse> authenticate(@RequestBody @Valid AuthenticationRequest request) {
         var result = authService.authenticate(request);
-        return ApiResponse.builder()
+        return ResponseEntity.ok(ApiResponse.builder()
                 .data(result)
-                .build();
+                .build());
     }
 
     @GetMapping("/verify")
-    ApiResponse verifyUserEmail(@RequestParam String email, @RequestParam String token) throws ParseException, JOSEException {
+    ResponseEntity<ApiResponse> verifyUserEmail(@RequestParam String email, @RequestParam String token) throws ParseException, JOSEException {
         var result = authService.verificationToken(token);
         if (result) {
             userService.verifyUser(email, token);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.builder()
+                    .message("Invalid or expired token")
+                    .data(false)
+                    .build());
         }
-        return ApiResponse.builder()
+        return ResponseEntity.ok(ApiResponse.builder()
                 .message("Verify token")
+                .data(true)
+                .build());
+    }
+
+    @PostMapping("/forgotPassword/{email}")
+    ResponseEntity<ApiResponse> forgotPassword(@PathVariable String email) {
+        var result = authService.forgotPassword(email);
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("Forgot password")
                 .data(result)
-                .build();
+                .build());
+    }
+
+    @PostMapping("/verifyOtp/{email}/{otp}")
+    ResponseEntity<ApiResponse> verifyOtp(@PathVariable String email, @PathVariable String otp) {
+        var result = authService.verifyUserOtp(email, otp);
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("Verify otp")
+                .data(result)
+                .build());
     }
 }

@@ -16,7 +16,8 @@ public enum ErrorCode {
     SENDMAIL_FAILED(1008, "Send mail failed"),
     INVALID_TOKEN(1009, "Invalid Token"),
     TAG_EXISTED(1009, "Tag Existed"),
-    TAG_DESCRIPTION_EXISTED(1010, "Tag Duplicated Description");
+    TAG_DESCRIPTION_EXISTED(1010, "Tag Duplicated Description"),
+    INVALID_OTP(1011, "Invalid OTP for email");
 
 
     private int code;

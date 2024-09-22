@@ -13,4 +13,8 @@ public interface IAuthenticationService {
     String generateToken(User user);
 
     boolean verificationToken(String token) throws JOSEException, ParseException;
+
+    boolean forgotPassword(String email);
+
+    boolean verifyUserOtp(String email, String otp);
 }
