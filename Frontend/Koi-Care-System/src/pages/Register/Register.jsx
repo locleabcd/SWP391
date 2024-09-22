@@ -50,11 +50,11 @@ function Register() {
       <video className='absolute top-0 left-0 w-full h-full object-cover' src={backgroundVideo} autoPlay loop muted />
 
       <div className='absolute bg-white p-8 rounded-3xl shadow-md w-full max-w-md bg-opacity-30 backdrop-blur-0 border border-gray-300'>
-        <h2 className='text-black text-5xl font-bold font-dancing mb-6 text-center'>Register</h2>
+        <h2 className='text-black text-5xl font-bold mb-6 text-center'>Register</h2>
 
         <form className='relative' onSubmit={handleSubmit(onSubmit)} noValidate>
           <div className='mb-4'>
-            <div className='absolute -top-[12px] left-3 font-dancing'>Email</div>
+            <div className='absolute -top-[12px] left-3 font-semibold bg-custom-Beige'>Email</div>
             <input
               type='email'
               id='email'
@@ -72,7 +72,7 @@ function Register() {
           </div>
 
           <div className='mb-4 relative'>
-            <div className='absolute -top-[12px] left-3 font-dancing'>Username</div>
+            <div className='absolute -top-[12px] left-3 font-semibold bg-custom-Beige'>Username</div>
             <input
               type='text'
               id='name'
@@ -84,7 +84,7 @@ function Register() {
           </div>
 
           <div className='mb-4 relative'>
-            <div className='absolute -top-[12px] left-3 font-dancing'>Password</div>
+            <div className='absolute -top-[12px] left-3 font-semibold bg-custom-Beige'>Password</div>
             <input
               type={showPassword ? 'text' : 'password'}
               id='password'
@@ -114,7 +114,7 @@ function Register() {
           </div>
 
           <div className='mb-4 relative'>
-            <div className='absolute -top-[12px] left-3 font-dancing'>Confirm Password</div>
+            <div className='absolute -top-[12px] left-3 font-semibold bg-custom-be'>Confirm Password</div>
             <input
               type={showPassword ? 'text' : 'password'}
               id='confirm_password'

@@ -12,8 +12,10 @@
   "dependencies": {
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@hookform/error-message": "^2.0.1",
+    "antd": "^5.20.6",
     "aos": "^2.3.4",
     "axios": "^1.7.7",
+    "date-fns": "^4.1.0",
     "font-awesome": "^4.7.0",
     "heroicons": "^2.1.5",
     "react": "^18.3.1",

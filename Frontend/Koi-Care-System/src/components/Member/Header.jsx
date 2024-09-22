@@ -23,8 +23,10 @@ function Header() {
   return (
     <div
       className={`${
-        isDarkMode ? 'bg-custom-dark text-white border-b border-gray-700' : 'bg-white text-black'
-      } sticky top-0 p-3 justify-end z-999 flex w-full  drop-shadow-1 z-10`}
+        isDarkMode
+          ? 'bg-custom-dark text-white border-b border-gray-700'
+          : 'bg-white text-black border-b border-gray-200'
+      } sticky top-0 p-3 justify-end z-999 flex w-full duration-200 ease-linear`}
     >
       <div className='flex items-center justify-end ml-4'>
         <div className='mr-4 flex justify-center items-center gap-2'>
@@ -128,7 +130,7 @@ function Header() {
             </button>
             {isOpen && (
               <div
-                className={`absolute right-10 w-44 border border-gray-300 shadow-lg z-50 ${
+                className={`absolute right-10 z-10 w-44 border border-gray-300 shadow-lg ${
                   isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
                 }`}
               >

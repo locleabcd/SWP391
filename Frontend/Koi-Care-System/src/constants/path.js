@@ -20,7 +20,8 @@ const path = {
   saltCalculator: '/member/saltCalculator',
   statistics: '/member/statistics',
   news: '/member/news',
-  policy: '/policy'
+  policy: '/policy',
+  newsDetails: '/member/news/:id'
 }
 
 export default path
