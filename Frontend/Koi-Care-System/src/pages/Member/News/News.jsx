@@ -76,7 +76,7 @@ function News() {
                 key={index}
                 className={`${
                   isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                } mb-4 border rounded shadow-sm`}
+                } mb-4 border rounded-lg shadow-sm`}
               >
                 <div className='flex border-b px-5 py-4 border-gray-300 items-center gap-2'>
                   <img

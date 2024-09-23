@@ -18,12 +18,13 @@ function OTP() {
 
   const resendOTP = () => {
     if (disable) return
+    setLoading(true)
     axios
       .post(`https://koi-care-system.azurewebsites.net/api/auth/forgotPassword/${email}`)
-      .then(() => setDisable(true))
-      .catch((error) => {
-        console.error('Error:', error)
-        toast.error('An error occurred. Please try again later.')
+      .then(() => {
+        setDisable(true)
+        setTimer(60)
+        toast.success('A new OTP has been sent to your email.')
       })
       .finally(() => setLoading(false))
   }
@@ -33,8 +34,11 @@ function OTP() {
     localStorage.setItem('otp', otp)
     axios
       .post(`https://koi-care-system.azurewebsites.net/api/auth/verifyOtp/${email}/${otp}`)
-      .then(() => navigate('/resetPassword'))
-      .then(toast.success('input OTP success'))
+      .then(() => {
+        navigate('/resetPassword')
+        toast.success('input OTP success')
+      })
+      .catch(() => toast.error('input OTP fail !!'))
   }
 
   useEffect(() => {
@@ -61,7 +65,7 @@ function OTP() {
           <div className='w-16 h-16'>
             <input
               maxLength='1'
-              className='w-full h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
+              className='w-full font-bold h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
               type='text'
               onChange={(e) => {
                 setOTPinput([e.target.value, OTPinput[1], OTPinput[2], OTPinput[3], OTPinput[4], OTPinput[5]])
@@ -71,7 +75,7 @@ function OTP() {
           <div className='w-16 h-16'>
             <input
               maxLength='1'
-              className='w-full h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
+              className='w-full font-bold h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
               type='text'
               onChange={(e) => {
                 setOTPinput([OTPinput[0], e.target.value, OTPinput[2], OTPinput[3], OTPinput[4], OTPinput[5]])
@@ -81,7 +85,7 @@ function OTP() {
           <div className='w-16 h-16'>
             <input
               maxLength='1'
-              className='w-full h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
+              className='w-full font-bold h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
               type='text'
               onChange={(e) => {
                 setOTPinput([OTPinput[0], OTPinput[1], e.target.value, OTPinput[3], OTPinput[4], OTPinput[5]])
@@ -91,7 +95,7 @@ function OTP() {
           <div className='w-16 h-16'>
             <input
               maxLength='1'
-              className='w-full h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
+              className='w-full font-bold h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
               type='text'
               onChange={(e) => {
                 setOTPinput([OTPinput[0], OTPinput[1], OTPinput[2], e.target.value, OTPinput[4], OTPinput[5]])
@@ -101,7 +105,7 @@ function OTP() {
           <div className='w-16 h-16'>
             <input
               maxLength='1'
-              className='w-full h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
+              className='w-full font-bold h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
               type='text'
               onChange={(e) => {
                 setOTPinput([OTPinput[0], OTPinput[1], OTPinput[2], OTPinput[3], e.target.value, OTPinput[5]])
@@ -111,7 +115,7 @@ function OTP() {
           <div className='w-16 h-16'>
             <input
               maxLength='1'
-              className='w-full h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
+              className='w-full font-bold h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
               type='text'
               onChange={(e) => {
                 setOTPinput([OTPinput[0], OTPinput[1], OTPinput[2], OTPinput[3], OTPinput[4], e.target.value])
@@ -144,6 +148,12 @@ function OTP() {
             {disable ? `Resend OTP in ${timerCount}s` : 'Resend OTP'}
           </Link>
         </div>
+
+        {/* <div className='text-black font-bold mt-2 text-center'>
+          <Link to='/email' className='text-black ml-1 font-bold'>
+            Back to input email
+          </Link>
+        </div> */}
       </div>
     </div>
   )

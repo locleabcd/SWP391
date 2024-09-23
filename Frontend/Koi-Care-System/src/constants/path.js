@@ -6,6 +6,7 @@ const path = {
   admin: '/admin',
   shop: '/shop',
   email: '/email',
+  policy: '/policy',
   otp: '/otp',
   resetPassword: '/resetPassword',
   verify: '/verifyPending',

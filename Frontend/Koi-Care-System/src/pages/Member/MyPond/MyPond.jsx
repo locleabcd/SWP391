@@ -11,6 +11,7 @@ import AOS from 'aos'
 function MyPond() {
   const { isDarkMode } = useDarkMode()
   const [ponds, setPonds] = useState([])
+  const [koi, setKoi] = useState([])
   const [isFormVisible, setIsFormVisible] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -18,6 +19,14 @@ function MyPond() {
   const [isEditFormVisible, setIsEditFormVisible] = useState(false)
   const [currentPond, setCurrentPond] = useState(null)
   const [baseImage, setBaseImage] = useState('')
+  const [koiCounts, setKoiCounts] = useState({})
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm()
 
   const toggleAddFormVisibility = () => {
     setIsAddFormVisible(!isAddFormVisible)
@@ -30,6 +39,7 @@ function MyPond() {
     setIsEditFormVisible(!isEditFormVisible)
     setIsEditFormVisible(false)
     setCurrentPond(null)
+    setBaseImage(null)
     reset(ponds)
   }
 
@@ -41,14 +51,6 @@ function MyPond() {
       reset()
     }
   }
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    reset
-  } = useForm()
 
   const getPond = async () => {
     try {
@@ -62,7 +64,7 @@ function MyPond() {
           Authorization: `Bearer ${token}`
         }
       })
-
+      console.log(res.data.data)
       setPonds(res.data.data)
     } catch (error) {
       console.error('Error fetching ponds:', error)
@@ -90,13 +92,14 @@ function MyPond() {
           depth: data.depth,
           skimmer: data.skimmer,
           pumpCapacity: data.pumpCapacity,
+          file: data.file[0],
           imageUrl: data.imageUrl,
           volume: data.volume
         },
         {
           headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
           }
         }
       )
@@ -142,28 +145,28 @@ function MyPond() {
         throw new Error('No token found')
       }
 
-      const formData = {
-        name: data.name,
-        drainCount: data.drainCount,
-        depth: data.depth,
-        skimmer: data.skimmer,
-        pumpCapacity: data.pumpCapacity,
-        file: data.file[0],
-        volume: data.volume
-      }
-
-      // console.log('Sending formData:', formData)
-
       if (currentPond) {
         await upDatePond(data, currentPond.id)
         reset()
       } else {
-        await axios.post('https://koi-care-system.azurewebsites.net/api/koiponds/create', formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
+        await axios.post(
+          'https://koi-care-system.azurewebsites.net/api/koiponds/create',
+          {
+            name: data.name,
+            drainCount: data.drainCount,
+            depth: data.depth,
+            skimmer: data.skimmer,
+            pumpCapacity: data.pumpCapacity,
+            file: data.file[0],
+            volume: data.volume
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data'
+            }
           }
-        })
+        )
       }
       setIsAddFormVisible(false)
       getPond()
@@ -175,6 +178,47 @@ function MyPond() {
       setIsLoading(false)
     }
   }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setBaseImage(reader.result)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const getKoi = async (id) => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/koifishs/koipond/${id}/allKoi`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      const koiCount = res.data.data.length // Get the number of koi fish
+      setKoiCounts((prevCounts) => ({
+        ...prevCounts,
+        [id]: koiCount // Store the koi count for this pond
+      }))
+    } catch (error) {
+      console.error(`Error fetching koi for pond ${id}:`, error)
+    }
+  }
+
+  useEffect(() => {
+    if (ponds.length > 0) {
+      ponds.forEach((pond) => {
+        getKoi(pond.id) // Automatically fetch koi data for each pond
+      })
+    }
+  }, [ponds])
 
   return (
     <div>
@@ -219,6 +263,12 @@ function MyPond() {
                     <h3 className='text-base w-40'>Pond:</h3>
                     <h3 className='text-base font-semibold'>{pond.name}</h3>
                   </div>
+                  <div className='flex w-full'>
+                    <h3 className='text-base w-40'>Number of fish:</h3>
+                    <h3 className='text-base font-semibold'>
+                      {koiCounts[pond.id] !== undefined ? koiCounts[pond.id] : 'Loading...'}
+                    </h3>{' '}
+                  </div>
                   <div className='flex'>
                     <h3 className='text-base w-40'>Volume:</h3>
                     <h3 className='text-base font-semibold'>{pond.volume} l</h3>
@@ -245,7 +295,7 @@ function MyPond() {
 
             {isAddFormVisible && (
               <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
-                <div className='bg-white min-w-[80vh] m-auto p-6 rounded-lg shadow-lg'>
+                <div className=' bg-white min-w-[80vh] m-auto p-6 rounded-lg shadow-lg'>
                   {/* Form for adding pond */}
                   <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className='flex justify-between mb-5'>
@@ -255,7 +305,11 @@ function MyPond() {
                         viewBox='0 0 24 24'
                         strokeWidth={1.5}
                         stroke='currentColor'
-                        onClick={toggleAddFormVisibility}
+                        onClick={() => {
+                          reset()
+                          setBaseImage(null)
+                          toggleAddFormVisibility()
+                        }}
                         className='size-10 text-red-500 cursor-pointer'
                       >
                         <path
@@ -286,30 +340,64 @@ function MyPond() {
                     <div className='grid grid-cols-2 grid-rows-4 gap-4'>
                       <div
                         id='imageSingle'
-                        className='mb-6 col-span-1 row-span-2 h-full flex justify-center border border-black'
+                        className='mb-6 col-span-1 row-span-2 h-full w-full flex rounded-lg  items-center justify-center border border-black'
                       >
-                        <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            width={16}
-                            height={16}
-                            fill='currentColor'
-                            className='mx-auto text-gray-500 inline-block w-10 h-10'
-                            viewBox='0 0 16 16'
-                          >
-                            <path
-                              fillRule='evenodd'
-                              d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
+                        {baseImage ? (
+                          <div className='pre-upload max-w-[40vw] relative max-h-[124px] w-full h-full'>
+                            <img src={baseImage} alt='Preview' className='absolute w-full h-full object-cover' />
+                            <input
+                              type='file'
+                              id='upload-input'
+                              className='absolute top-10 h-20 opacity-0'
+                              accept='image/*'
+                              {...register('file')}
+                              onChange={handleImageChange}
                             />
-                            <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
-                          </svg>
-                          <div className='py-3'>
-                            <span>Choose images here</span>
-                          </div>
 
-                          <input type='file' id='upload-input' className='' accept='image/*' {...register('file')} />
-                          {/* <img src={baseImage} alt='Preview' className='w-full h-40 object-cover' /> */}
-                        </label>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              strokeWidth={1.5}
+                              stroke='currentColor'
+                              className='size-8 absolute text-white -top-7 -right-4 rounded-full bg-red-500'
+                              onClick={() => setBaseImage(null)}
+                            >
+                              <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
+                            </svg>
+                          </div>
+                        ) : (
+                          <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
+                            <div className='relative'>
+                              <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                width={16}
+                                height={16}
+                                fill='currentColor'
+                                className='mx-auto text-gray-500 inline-block w-10 h-10'
+                                viewBox='0 0 16 16'
+                              >
+                                <path
+                                  fillRule='evenodd'
+                                  d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
+                                />
+                                <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
+                              </svg>
+                              <div className='py-3'>
+                                <span>Choose images here</span>
+                              </div>
+                            </div>
+
+                            <input
+                              type='file'
+                              id='upload-input'
+                              className='absolute ml-20 opacity-0'
+                              accept='image/*'
+                              {...register('file')}
+                              onChange={handleImageChange}
+                            />
+                          </label>
+                        )}
                       </div>
 
                       {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>}
@@ -464,29 +552,64 @@ function MyPond() {
                     <div className='grid grid-cols-2 grid-rows-4 gap-4'>
                       <div
                         id='imageSingle'
-                        className='mb-6 col-span-1 row-span-2 h-full flex justify-center border border-black'
+                        className='mb-6 col-span-1 row-span-2 h-full w-full flex  items-center justify-center border border-black'
                       >
-                        <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            width={16}
-                            height={16}
-                            fill='currentColor'
-                            className='mx-auto text-gray-500 inline-block w-10 h-10'
-                            viewBox='0 0 16 16'
-                          >
-                            <path
-                              fillRule='evenodd'
-                              d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
+                        {baseImage ? (
+                          <div className='pre-upload max-w-[40vw] relative max-h-[124px] w-full h-full'>
+                            <img src={baseImage} alt='Preview' className='absolute w-full h-full object-cover' />
+                            <input
+                              type='file'
+                              id='upload-input'
+                              className='absolute top-10 h-20 opacity-0'
+                              accept='image/*'
+                              {...register('file')}
+                              onChange={handleImageChange}
                             />
-                            <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
-                          </svg>
-                          <div className='py-3'>
-                            <span>Choose images here</span>
-                          </div>
 
-                          <input type='file' ref={register} className='hidden' {...register('file')} />
-                        </label>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              strokeWidth={1.5}
+                              stroke='currentColor'
+                              className='size-8 absolute text-white -top-7 -right-4 rounded-full bg-red-500'
+                              onClick={() => setBaseImage(null)}
+                            >
+                              <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
+                            </svg>
+                          </div>
+                        ) : (
+                          <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
+                            <div className='relative'>
+                              <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                width={16}
+                                height={16}
+                                fill='currentColor'
+                                className='mx-auto text-gray-500 inline-block w-10 h-10'
+                                viewBox='0 0 16 16'
+                              >
+                                <path
+                                  fillRule='evenodd'
+                                  d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
+                                />
+                                <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
+                              </svg>
+                              <div className='py-3'>
+                                <span>Choose images here</span>
+                              </div>
+                            </div>
+
+                            <input
+                              type='file'
+                              id='upload-input'
+                              className='absolute ml-20 opacity-0'
+                              accept='image/*'
+                              {...register('file')}
+                              onChange={handleImageChange}
+                            />
+                          </label>
+                        )}
                       </div>
 
                       {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>}
@@ -621,8 +744,7 @@ function MyPond() {
 
             {isLoading && (
               <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-                <FaSpinner className='animate-spin text-green-500 text-4xl' />
-                <p>Creating pond</p>
+                <FaSpinner className='animate-spin text-green-500 text-6xl' />
               </div>
             )}
           </div>

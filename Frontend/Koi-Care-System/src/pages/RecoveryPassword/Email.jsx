@@ -3,6 +3,8 @@ import { FaSpinner } from 'react-icons/fa'
 import { Link, useNavigate } from 'react-router-dom'
 import backgroundVideo from '../../assets/0917(1).mp4'
 import axios from 'axios'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function Email() {
   const [loading, setLoading] = useState(false)
@@ -15,6 +17,7 @@ function Email() {
     axios
       .post(`https://koi-care-system.azurewebsites.net/api/auth/forgotPassword/${email}`)
       .then(() => navigate('/otp'))
+      .then(() => toast.success('A new OTP has been sent to your email.'))
       .finally(() => setLoading(false))
   }
 
@@ -29,7 +32,7 @@ function Email() {
           <div className='absolute -top-[12px] left-3 font-semibold bg-custom-Beige'>Email</div>
           <input
             onChange={(e) => setEmail(e.target.value)}
-            type='text'
+            type='email'
             id='username'
             placeholder='abcd@gmail.com'
             className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none transition-colors duration-200'
@@ -45,7 +48,7 @@ function Email() {
           <div className='flex items-center space-x-2'>
             {loading && <FaSpinner className='animate-spin' />}
 
-            <span>Sign in</span>
+            <span>Send OTP</span>
           </div>
         </button>
 

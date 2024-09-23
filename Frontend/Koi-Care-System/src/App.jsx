@@ -25,6 +25,7 @@ import NewsDetail from './pages/Member/News/NewsDetail'
 import Email from './pages/RecoveryPassword/Email'
 import OTP from './pages/OTP/OTP'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
+import Policy from './pages/Member/Policy/Policy'
 
 function App() {
   const routeElements = useRoutes([
@@ -39,6 +40,10 @@ function App() {
     {
       path: path.register,
       element: <Register />
+    },
+    {
+      path: path.policy,
+      element: <Policy />
     },
     {
       path: path.verify,

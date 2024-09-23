@@ -48,7 +48,7 @@ function NewsDetail() {
           <div
             className={`${
               isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-            } px-5 py-5 border border-gray-500 rounded-lg`}
+            } px-5 py-5 shadow-sm rounded-lg`}
           >
             <h1 className='text-3xl font-semibold flex justify-start'>{newDetail.blogTitle}</h1>
             <div className='flex items-center mt-5'>
