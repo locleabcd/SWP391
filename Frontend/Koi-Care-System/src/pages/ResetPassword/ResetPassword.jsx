@@ -15,7 +15,6 @@ function ResetPassword() {
     setLoading(true)
     setError(null)
 
-    // Basic validation
     if (password.length < 8) {
       setError('Password must be at least 8 characters long')
       setLoading(false)
@@ -29,7 +28,6 @@ function ResetPassword() {
     }
 
     setTimeout(() => {
-      // Simulate successful password change
       setLoading(false)
       navigate('/login')
     }, 2000)

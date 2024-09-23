@@ -148,7 +148,7 @@ function MyPond() {
         depth: data.depth,
         skimmer: data.skimmer,
         pumpCapacity: data.pumpCapacity,
-        file: data.file[0], // Send base64 image
+        file: data.file[0],
         volume: data.volume
       }
 
