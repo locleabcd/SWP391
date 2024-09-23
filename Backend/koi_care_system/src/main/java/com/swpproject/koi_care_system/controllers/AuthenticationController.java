@@ -2,6 +2,7 @@ package com.swpproject.koi_care_system.controllers;
 
 import com.nimbusds.jose.JOSEException;
 import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
+import com.swpproject.koi_care_system.payload.request.ResetPasswordRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
 import com.swpproject.koi_care_system.service.user.UserService;
@@ -66,12 +67,13 @@ public class AuthenticationController {
                 .build());
     }
 
-    @PostMapping("/resetPassword/{email}/{password}/{otp}")
-    ResponseEntity<ApiResponse> resetPassword(@PathVariable String email, @PathVariable String password, @PathVariable String otp) {
-        var result = authService.resetPassword(email, password, otp);
+    @PostMapping("/resetPassword")
+    ResponseEntity<ApiResponse> resetPassword(@RequestBody @Valid ResetPasswordRequest request) {
+        var result = authService.resetPassword(request.getEmail(), request.getNewPassword(), request.getOtp());
         return ResponseEntity.ok(ApiResponse.builder()
-                .message("Reset password")
+                .message("Reset password successful")
                 .data(result)
                 .build());
     }
+
 }
