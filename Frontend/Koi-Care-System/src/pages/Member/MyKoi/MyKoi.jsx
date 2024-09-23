@@ -425,11 +425,7 @@ function MyKoi() {
                     ))}
                   </select>
                   {errors.pondId && <p className="absolute -bottom-[14px] left-3 text-red-500 text-sm">{errors.pondId.message}</p>}
-                </div>
-
-                
-
-                 
+                </div>            
               </div>
             </form>
           </div>
