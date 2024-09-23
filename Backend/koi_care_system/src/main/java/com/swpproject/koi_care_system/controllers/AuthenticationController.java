@@ -24,7 +24,7 @@ public class AuthenticationController {
     IAuthenticationService authService;
     UserService userService;
 
-    @PostMapping("/login")
+    @PostMapping("/loginKoiCare")
     ResponseEntity<ApiResponse> authenticate(@RequestBody @Valid AuthenticationRequest request) {
         var result = authService.authenticate(request);
         return ResponseEntity.ok(ApiResponse.builder()
@@ -32,7 +32,7 @@ public class AuthenticationController {
                 .build());
     }
 
-    @GetMapping("/verify")
+    @GetMapping("/verifyEmail")
     ResponseEntity<ApiResponse> verifyUserEmail(@RequestParam String email, @RequestParam String token) throws ParseException, JOSEException {
         var result = authService.verificationToken(token);
         if (result) {

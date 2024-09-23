@@ -26,11 +26,10 @@ public class SecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS = {
             "/users/register",
-            "/auth/login",
+            "/auth/loginKoiCare",
             "/auth/forgotPassword/**",
             "/auth/verifyOtp/**",
-            "/auth/resetPassword/**",
-            "/oauth2/**"
+            "/auth/resetPassword",
     };
 
     @Value("${jwt.signerKey}")
@@ -44,14 +43,15 @@ public class SecurityConfig {
 
         // Permit access to public endpoints and protect all others
         httpSecurity
-                .authorizeHttpRequests(request ->
-                        request
-                                .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                                .requestMatchers(HttpMethod.GET, "/auth/verify").permitAll()
-                                .anyRequest().authenticated())
-                .oauth2Login(oauth2Login -> oauth2Login.loginPage("/oauth2/login")
-                        .defaultSuccessUrl("/oauth2/verify", true)
-                        .failureUrl("/oauth2/login?error=true"));
+                .authorizeHttpRequests(request -> request
+                        // Allow access to Google login page without authentication
+                        .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/verifyEmail").permitAll()
+                        .anyRequest().authenticated());
+        httpSecurity.oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
+                .defaultSuccessUrl("/profile", true)
+                .failureUrl("/login?error=true")
+        );
 
         // Configure JWT-based security
         httpSecurity.oauth2ResourceServer(
