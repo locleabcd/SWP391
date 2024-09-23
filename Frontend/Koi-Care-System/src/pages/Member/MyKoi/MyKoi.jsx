@@ -164,7 +164,7 @@ function MyKoi() {
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
             </svg>        
-          <div className="p-4 w-full mt-4" data-aos="fade-up">
+          <div className="p-4 w-full mt-4 z-0">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2">
               {kois.map((koi) => (
                 <div key={koi.id} className="border p-4 rounded-lg shadow">
@@ -203,9 +203,9 @@ function MyKoi() {
 
       {isAddFormVisible && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 " >
-          <div className="bg-white min-w-[100vh] mb-auto mt-auto p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto no-scroll-bar">
+          <div className="bg-white min-w-[100vh] mb-auto mt-auto p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto no-scroll-bar" data-aos="fade-up">
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
-              <div className="flex justify-between mb-5">
+              <div className="flex justify-between mb-5" >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"

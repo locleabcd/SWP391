@@ -6,7 +6,6 @@ import LeftSideBar from '../../../components/Member/LeftSideBar'
 import axios from 'axios'
 import { set, useForm } from 'react-hook-form'
 import { FaSpinner } from 'react-icons/fa'
-import 'aos/dist/aos.css'
 import AOS from 'aos'
 
 function MyPond() {
@@ -18,6 +17,7 @@ function MyPond() {
   const [isAddFormVisible, setIsAddFormVisible] = useState(false)
   const [isEditFormVisible, setIsEditFormVisible] = useState(false)
   const [currentPond, setCurrentPond] = useState(null)
+  const [baseImage, setBaseImage] = useState('')
 
   const toggleAddFormVisibility = () => {
     setIsAddFormVisible(!isAddFormVisible)
@@ -38,17 +38,15 @@ function MyPond() {
       setCurrentPond(pond)
       setIsEditFormVisible(true)
       setIsAddFormVisible(false)
+      reset()
     }
   }
-
-  useEffect(() => {
-    AOS.init({ duration: 800, offset: 100, delay: 300 })
-  })
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
     reset
   } = useForm()
 
@@ -74,48 +72,6 @@ function MyPond() {
   useEffect(() => {
     getPond()
   }, [])
-
-  const onSubmit = async (data) => {
-    setIsLoading(true)
-    setIsSubmitting(true)
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
-
-      if (currentPond) {
-        await upDatePond(data, currentPond.id)
-      } else {
-        await axios.post(
-          'https://koi-care-system.azurewebsites.net/api/koiponds/create',
-          {
-            name: data.name,
-            drainCount: data.drainCount,
-            depth: data.depth,
-            skimmer: data.skimmer,
-            pumpCapacity: data.pumpCapacity,
-            imageUrl: data.imageUrl,
-            volume: data.volume
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data'
-            }
-          }
-        )
-      }
-      setIsAddFormVisible(false)
-      getPond()
-      reset()
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsSubmitting(false)
-      setIsLoading(false)
-    }
-  }
 
   const upDatePond = async (data, id) => {
     setIsLoading(true)
@@ -145,8 +101,8 @@ function MyPond() {
         }
       )
       setIsEditFormVisible(false)
-      getPond()
       reset()
+      getPond()
     } catch (error) {
       console.log(error)
     } finally {
@@ -177,6 +133,49 @@ function MyPond() {
     }
   }
 
+  const onSubmit = async (data) => {
+    setIsLoading(true)
+    setIsSubmitting(true)
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const formData = {
+        name: data.name,
+        drainCount: data.drainCount,
+        depth: data.depth,
+        skimmer: data.skimmer,
+        pumpCapacity: data.pumpCapacity,
+        file: data.file[0], // Send base64 image
+        volume: data.volume
+      }
+
+      // console.log('Sending formData:', formData)
+
+      if (currentPond) {
+        await upDatePond(data, currentPond.id)
+        reset()
+      } else {
+        await axios.post('https://koi-care-system.azurewebsites.net/api/koiponds/create', formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+      }
+      setIsAddFormVisible(false)
+      getPond()
+      reset()
+    } catch (error) {
+      console.log(error)
+    } finally {
+      setIsSubmitting(false)
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div>
       <div className='h-screen flex'>
@@ -202,7 +201,7 @@ function MyPond() {
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
 
-          <div className='p-4 w-full mt-2 ml-2' data-aos='fade-up'>
+          <div className='p-4 w-full mt-2 ml-2'>
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
               {ponds.map((pond) => (
                 <div
@@ -308,14 +307,8 @@ function MyPond() {
                             <span>Choose images here</span>
                           </div>
 
-                          <input
-                            type='file'
-                            accept='image/*'
-                            className='hidden'
-                            {...register('imageUrl', {
-                              required: 'Please select an image'
-                            })}
-                          />
+                          <input type='file' id='upload-input' className='' accept='image/*' {...register('file')} />
+                          {/* <img src={baseImage} alt='Preview' className='w-full h-40 object-cover' /> */}
                         </label>
                       </div>
 
@@ -492,7 +485,7 @@ function MyPond() {
                             <span>Choose images here</span>
                           </div>
 
-                          <input type='file' accept='image/*' className='hidden' {...register('image')} />
+                          <input type='file' ref={register} className='hidden' {...register('file')} />
                         </label>
                       </div>
 
