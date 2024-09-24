@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class BlogDto {
-
+    String blogId;
     String blogTitle;
     String blogContent;
     String blogImage;

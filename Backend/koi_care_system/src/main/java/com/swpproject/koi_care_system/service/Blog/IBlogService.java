@@ -13,7 +13,7 @@ public interface IBlogService {
 
     void deleteBlog(int id);
 
-    List<BlogDto> getAllBlogs();
+    List<BlogDto> getAllBlogs(int pageNumber, int pageSize, String sortBy, String sortDir);
 
     BlogDto getBlogById(int id);
 

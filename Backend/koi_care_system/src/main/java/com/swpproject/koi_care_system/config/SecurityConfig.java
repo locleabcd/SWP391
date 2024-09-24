@@ -33,7 +33,7 @@ public class SecurityConfig {
     };
 
     @Value("${jwt.signerKey}")
-    private String signerKey;
+    protected String signerKey;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {

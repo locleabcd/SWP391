@@ -2,7 +2,6 @@ package com.swpproject.koi_care_system.exceptions;
 
 import com.swpproject.koi_care_system.enums.ErrorCode;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -24,10 +23,12 @@ public class GlobalExceptionHandle {
 	ResponseEntity<ApiResponse> handlingAppException(AppException exception) {
 		ErrorCode errorCode = exception.getErrorCode();
 		ApiResponse apiResponse = new ApiResponse();
+
+        apiResponse.setData(errorCode);
 		apiResponse.setMessage(errorCode.getMessage());
 
-	
-		return ResponseEntity.badRequest().body(apiResponse);
+
+        return ResponseEntity.status(errorCode.getStatus()).body(apiResponse);
 	}
 	
 	@ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -46,9 +47,11 @@ public class GlobalExceptionHandle {
 		return ResponseEntity.badRequest().body(apiResponse);
 	}
 
-	@ExceptionHandler(AccessDeniedException.class)
+    @ExceptionHandler(value = AccessDeniedException.class)
 	public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException ex) {
-		return new ResponseEntity<>("Access Denied", HttpStatus.FORBIDDEN);
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+
+        return ResponseEntity.status(errorCode.getStatus()).body(errorCode.getMessage());
 	}
 
 }
