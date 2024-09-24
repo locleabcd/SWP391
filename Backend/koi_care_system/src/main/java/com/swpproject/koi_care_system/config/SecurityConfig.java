@@ -47,7 +47,13 @@ public class SecurityConfig {
                         // Allow access to Google login page without authentication
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/verifyEmail").permitAll()
-                        .anyRequest().authenticated());
+                        .anyRequest().authenticated()
+                );
+        httpSecurity.formLogin(form -> form
+                .loginPage("/login")
+                .permitAll()
+
+        );
         httpSecurity.oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
                 .defaultSuccessUrl("/profile", true)
                 .failureUrl("/login?error=true")

@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class LoginGoogleController {
 
+    @GetMapping("/login")
+    public String login() {
+        return "loginGG";
+    }
+
     @GetMapping("/profile")
     public String profile(OAuth2AuthenticationToken token, Model model) {
         model.addAttribute("name", token.getPrincipal().getAttributes().get("name"));
