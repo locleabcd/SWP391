@@ -10,7 +10,7 @@ public class LoginGoogleController {
 
     @GetMapping("/login")
     public String login() {
-        return "loginGG";
+        return "login";
     }
 
     @GetMapping("/profile")

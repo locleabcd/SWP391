@@ -46,18 +46,23 @@ public class SecurityConfig {
                 .authorizeHttpRequests(request -> request
                         // Allow access to Google login page without authentication
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.GET, "/auth/verifyEmail").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/auth/verifyEmail",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html",
+                                "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()
                 );
-        httpSecurity.formLogin(form -> form
-                .loginPage("/login")
-                .permitAll()
+        httpSecurity
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .permitAll())
+                .oauth2Login(oauth -> oauth
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/profile", true)
+                        .failureUrl("/login?error=true")
+                );
 
-        );
-        httpSecurity.oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
-                .defaultSuccessUrl("/profile", true)
-                .failureUrl("/login?error=true")
-        );
 
         // Configure JWT-based security
         httpSecurity.oauth2ResourceServer(
