@@ -21,11 +21,12 @@ import MyPond from './pages/Member/MyPond/MyPond'
 import VerifyEmail from './pages/VerifyEmail/VerifyEmail'
 import VerifySuccess from './pages/VerifyEmail/VerifySuccess'
 import { DarkModeProvider } from './components/DarkModeContext'
+import Policy from './pages/Policy/Policy'
 import NewsDetail from './pages/Member/News/NewsDetail'
 import Email from './pages/RecoveryPassword/Email'
 import OTP from './pages/OTP/OTP'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
-import Policy from './pages/Member/Policy/Policy'
+import KoiDetail from './pages/Member/MyKoi/KoiDetail'
 
 function App() {
   const routeElements = useRoutes([
@@ -124,6 +125,10 @@ function App() {
     {
       path: path.newsDetails,
       element: <NewsDetail />
+    },
+    {
+      path: path.koiDetail,
+      element: <KoiDetail />
     }
   ])
 

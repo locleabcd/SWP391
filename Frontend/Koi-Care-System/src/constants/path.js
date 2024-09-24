@@ -24,7 +24,8 @@ const path = {
   saltCalculator: '/member/saltCalculator',
   statistics: '/member/statistics',
   news: '/member/news',
-  newsDetails: '/member/news/:id'
+  newsDetails: '/member/news/:id',
+  koiDetail: '/member/myKoi/:id'
 }
 
 export default path

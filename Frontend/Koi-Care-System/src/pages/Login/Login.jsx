@@ -25,11 +25,11 @@ function Login() {
   const onSubmit = async (data) => {
     setLoading(true)
 
-    if (!captcha) {
-      toast.warn('Please complete reCAPTCHA')
-      setLoading(false)
-      return
-    }
+    // if (!captcha) {
+    //   toast.warn('Please complete reCAPTCHA')
+    //   setLoading(false)
+    //   return
+    // }
 
     try {
       const response = await axios.post('https://koi-care-system.azurewebsites.net/api/auth/login', {
@@ -43,20 +43,21 @@ function Login() {
         localStorage.setItem('role', user.role)
         localStorage.setItem('id', user.id)
         localStorage.setItem('name', user.username)
-        const role = user.role
+        
+          const role = user.role
 
-        switch (role) {
-          case 'ADMIN':
-            navigate('/admin')
-            break
-          case 'SHOP':
-            navigate('/shop')
-            break
-          case 'MEMBER':
-            navigate('/member')
-            break
-          default:
-            break
+          switch (role) {
+            case 'ADMIN':
+              navigate('/admin')
+              break
+            case 'SHOP':
+              navigate('/shop')
+              break
+            case 'MEMBER':
+              navigate('/member')
+              break
+            default:
+              break         
         }
       }
 

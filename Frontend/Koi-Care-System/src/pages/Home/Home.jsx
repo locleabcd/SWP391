@@ -32,6 +32,7 @@ function Home() {
               <ul className='flex space-x-8'>
                 <li>
                   <ScrollLink
+                    to='home'
                     smooth={true}
                     duration={500}
                     spy={true}
@@ -43,6 +44,7 @@ function Home() {
                 </li>
                 <li>
                   <ScrollLink
+                    to='features'
                     smooth={true}
                     duration={500}
                     spy={true}
@@ -54,6 +56,7 @@ function Home() {
                 </li>
                 <li>
                   <ScrollLink
+                    to='about'
                     smooth={true}
                     duration={500}
                     spy={true}
@@ -75,16 +78,16 @@ function Home() {
             </nav>
           </div>
         </div>
-        <div>
+        <div id='home'>
           <Homepage />
         </div>
       </div>
 
-      <div>
+      <div id='features'>
         <Feature />
       </div>
 
-      <div>
+      <div id='about'>
         <About />
       </div>
 
