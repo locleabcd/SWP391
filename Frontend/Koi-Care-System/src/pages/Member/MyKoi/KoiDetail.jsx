@@ -1,76 +1,76 @@
-import { useDarkMode } from '../../../components/DarkModeContext';
-import Header from '../../../components/Member/Header';
-import LeftSideBar from '../../../components/Member/LeftSideBar';
-import { useParams, useNavigate  } from "react-router-dom";
-import axios from 'axios';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
-import { MdSystemUpdateAlt } from "react-icons/md";
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-unused-vars */
+import { useDarkMode } from '../../../components/DarkModeContext'
+import Header from '../../../components/Member/Header'
+import LeftSideBar from '../../../components/Member/LeftSideBar'
+import { useNavigate, useParams } from 'react-router-dom'
+import axios from 'axios'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { Link } from 'react-router-dom'
+import { MdSystemUpdateAlt } from 'react-icons/md'
 import { FaSpinner } from 'react-icons/fa'
 
 function KoiDetails() {
-  const { isDarkMode } = useDarkMode();
-  const { id } = useParams();
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isEditFormVisible, setIsEditFormVisible] = useState(false);
-  const [koi, setKoi] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const { isDarkMode } = useDarkMode()
+  const { id } = useParams()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isEditFormVisible, setIsEditFormVisible] = useState(false)
+  const [koi, setKoi] = useState(null)
+  const [isLoading, setIsLoading] = useState(true)
   const [ponds, setPonds] = useState([])
-  
+  const navigate = useNavigate()
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
-  } = useForm();
+    reset
+  } = useForm()
 
   const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  };
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }
+    return new Date(dateString).toLocaleDateString(undefined, options)
+  }
 
   const toggleCloseForm = () => {
-    setIsEditFormVisible(false);
-  };
+    setIsEditFormVisible(false)
+  }
 
   const toggleEditFormVisibility = (koi) => {
-    setIsEditFormVisible(true);
-    reset(koi); 
-  };
+    setIsEditFormVisible(true)
+    reset(koi)
+  }
 
   const getKoi = async () => {
-    setIsLoading(true);
+    setIsLoading(true)
     try {
-      const token = localStorage.getItem('token');
-      const userId = localStorage.getItem('id');
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
       if (!token) {
-        throw new Error('No token found');
+        throw new Error('No token found')
       }
 
-      const res = await axios.get(
-        `https://koi-care-system.azurewebsites.net/api/koifishs/user/${userId}/allKoi`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/koifishs/user/${userId}/allKoi`, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      );
+      })
 
-      const allKois = res.data.data;
-      const koiDetails = allKois.find(koi => koi.id.toString() === id);
-      setKoi(koiDetails);
+      const allKois = res.data.data
+      const koiDetails = allKois.find((koi) => koi.id.toString() === id)
+      setKoi(koiDetails)
     } catch (error) {
-      console.error('Error fetching koi:', error);
-      alert('Failed to load koi details, please try again later.');
+      console.error('Error fetching koi:', error)
+      alert('Failed to load koi details, please try again later.')
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    getKoi();
-  }, []);
+    getKoi()
+  }, [])
 
   const getPond = async () => {
     try {
@@ -89,7 +89,7 @@ function KoiDetails() {
       setPonds(res.data.data)
     } catch (error) {
       console.error('Error fetching ponds:', error)
-      alert('Failed to load ponds, please try again later.');
+      alert('Failed to load ponds, please try again later.')
     }
   }
 
@@ -98,12 +98,12 @@ function KoiDetails() {
   }, [])
 
   const updateKoi = async (data, id) => {
-    setIsLoading(true);
-    setIsSubmitting(true);
+    setIsLoading(true)
+    setIsSubmitting(true)
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token')
       if (!token) {
-        throw new Error('No token found');
+        throw new Error('No token found')
       }
       const res = await axios.put(
         `https://koi-care-system.azurewebsites.net/api/koifishs/koifish/${id}/update`,
@@ -116,36 +116,35 @@ function KoiDetails() {
           pondDate: data.pondDate,
           breeder: data.breeder,
           price: data.price,
-          koiPondId : data.pondId,
-          file : data.file[0],
-          status : data.status,
+          koiPondId: data.pondId,
+          file: data.file[0],
+          status: data.status,
           imageUrl: data.imageUrl
         },
         {
           headers: {
             'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${token}`,
-          },
+            Authorization: `Bearer ${token}`
+          }
         }
-      );
+      )
 
-      setIsEditFormVisible(false);
-      reset();
-      getKoi();
+      setIsEditFormVisible(false)
+      reset()
+      getKoi()
     } catch (error) {
-      console.log(error);
+      console.log(error)
     } finally {
-      setIsSubmitting(false);
-      setIsLoading(false);
-      
+      setIsSubmitting(false)
+      setIsLoading(false)
     }
-  };
+  }
 
   const deleteKoi = async (id) => {
-    const isConfirmed = window.confirm("Are you sure to delete koi");
+    const isConfirmed = window.confirm('Are you sure to delete koi')
     if (!isConfirmed) {
-    return;
-  }
+      return
+    }
     setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
@@ -160,7 +159,7 @@ function KoiDetails() {
       reset()
       getPond()
       setIsEditFormVisible(false)
-      navigate('/member/myKoi')   
+      navigate('/member/myKoi')
     } catch (error) {
       console.error('Error deleting pond:', error)
     } finally {
@@ -169,13 +168,15 @@ function KoiDetails() {
   }
 
   const onSubmit = (data) => {
-    updateKoi(data, id);
-  };
+    updateKoi(data, id)
+  }
 
   if (isLoading) {
-    return  <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-              <FaSpinner className='animate-spin text-green-500 text-4xl' />
-            </div>; 
+    return (
+      <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+        <FaSpinner className='animate-spin text-green-500 text-4xl' />
+      </div>
+    )
   }
 
   return (
@@ -183,18 +184,22 @@ function KoiDetails() {
       <div className='h-screen flex'>
         <LeftSideBar />
         <div
-          className={`relative ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'} shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
+          className={`relative ${
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'
+          } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
           <div className='flex justify-between items-center'>
             <Link to={`/member/myKoi`}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6 ml-3">
-                <path fillRule="evenodd" d="M11.03 3.97a.75.75 0 0 1 0 1.06l-6.22 6.22H21a.75.75 0 0 1 0 1.5H4.81l6.22 6.22a.75.75 0 1 1-1.06 1.06l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 0 1 1.06 0Z" clipRule="evenodd" />
+              <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-6 ml-3'>
+                <path
+                  fillRule='evenodd'
+                  d='M11.03 3.97a.75.75 0 0 1 0 1.06l-6.22 6.22H21a.75.75 0 0 1 0 1.5H4.81l6.22 6.22a.75.75 0 1 1-1.06 1.06l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 0 1 1.06 0Z'
+                  clipRule='evenodd'
+                />
               </svg>
             </Link>
-            <h1 className="p-4 text-center font-semibold text-2xl text-black ">
-              Koi Details
-            </h1>
+            <h1 className='p-4 text-center font-semibold text-2xl text-black '>Koi Details</h1>
             <button>
               <MdSystemUpdateAlt className='size-7 mr-3' onClick={() => toggleEditFormVisibility(koi)} />
             </button>
@@ -245,196 +250,218 @@ function KoiDetails() {
                       id='file'
                       className='mb-6  col-span-1 row-span-2 h-full flex justify-center border border-black'
                     >
-                    <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        width={16}
-                        height={16}
-                        fill='currentColor'
-                        className='mx-auto text-gray-500 inline-block w-10 h-10'
-                        viewBox='0 0 16 16'
-                      >
-                      <path
-                        fillRule='evenodd'
-                        d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
-                      />
-                      <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
-                      </svg>
-                      <div className='py-3'>
-                        <span>Choose images here</span>
-                        </div>
-                          <input
-                            type='file'
-                            accept='image/*'
-                            className='hidden'
-                            ref={register}
-                            {...register('file')}
+                      <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          width={16}
+                          height={16}
+                          fill='currentColor'
+                          className='mx-auto text-gray-500 inline-block w-10 h-10'
+                          viewBox='0 0 16 16'
+                        >
+                          <path
+                            fillRule='evenodd'
+                            d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
                           />
-                        </label>
-                      </div>
-                      <div className="relative col-span-1 ">
-                        <label htmlFor='name' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
-                          Name
-                        </label>
-                        <input
-                          type="text"
-                          id="name"
-                          className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"
-                          {...register('name')}
-                        />
-                      </div>
-                      <div className="relative col-span-1 ">
-                        <label htmlFor='physique' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
-                          Physique
-                        </label>
-                        <input
-                          type="text"
-                          id="physique"
-                          className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"
-                          {...register('physique')}
-                        />
-                      </div>
-                      <div className="relative col-span-1 ">
-                        <label htmlFor='age' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
-                        Age
-                        </label>
-                        <input
-                          type="number"
-                          id="age"
-                          className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"
-                          {...register('age')}
-                        />
-                      </div>
-                      <div className="relative col-span-1 ">
-                        <label htmlFor='gender' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
-                        Gender
-                        </label>
-                        <input
-                          type="text"
-                          id="gender"
-                          className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"
-                          {...register('gender')}
-                        />
-                      </div>
-                      <div className="relative col-span-1 ">
-                        <label htmlFor='variety' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
-                        Variety
-                        </label>
-                        <input
-                          type="text"
-                          id="variety"
-                          className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"
-                          {...register('variety')}
-                        />
-                      </div>
-                      <div className="relative col-span-1 ">
-                        <label htmlFor='pondDate' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
-                        In pond since
-                        </label>
-                        <input
-                          type="date"
-                          id="pondDate"
-                          className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"
-                          {...register('pondDate')}
-                          defaultValue={koi.pondDate}
-                        />
-                      </div>
-                      <div className="relative col-span-1 ">
-                        <label htmlFor='breeder' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
-                        Breeder
-                        </label>
-                        <input
-                          type="text"
-                          id="breeder"
-                          className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"
-                          {...register('breeder')}
-                        />
-                      </div>
-                      <div className="relative col-span-1 ">
-                        <label htmlFor='price' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
-                        Price
-                        </label>
-                        <input
-                          type="text"
-                          id="price"
-                          className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"
-                          {...register('price')}
-                        />
-                      </div>
-                      <div className="relative col-span-1 ">
-                        <label htmlFor='status' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
-                        Status
-                        </label>
-                        <select
-                          id="status"
-                          className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"
-                          {...register('status') }   
-                          defaultValue={koi.status}                    
-                        >
-                            <option> 
-                              Alive 
-                            </option>
-                            <option> 
-                              Dead
-                            </option>                       
-                        </select>
-                      </div>
-                      <div className="relative col-span-1 mt-[1.5px]">
-                        <label className="absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white" htmlFor="pondId">
-                          Pond 
-                        </label>
-                        <select
-                          id="pondId"
-                          className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"
-                          {...register('pondId') }
-                          defaultValue={koi.koiPond.id}
-                        >
-                          
-                          {ponds.map((pond) => (
-                            <option key={pond.id} value={pond.id}> 
-                              {pond.name} 
-                            </option>
-                          ))}
-                        </select>
-                        {errors.pondId && <p className="absolute -bottom-[14px] left-3 text-red-500 text-sm">{errors.pondId.message}</p>}
-                      </div>
-                  </div>               
-                </form>
-                  <div className='flex justify-center items-center'>
-                    <button className='mx-auto ' onClick={() => deleteKoi(koi.id)}>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        strokeWidth={1.5}
-                        stroke='currentColor'
-                        className='size-10 mx-auto p-2 rounded-full bg-red-500 text-white cursor-pointer mt-5'
+                          <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
+                        </svg>
+                        <div className='py-3'>
+                          <span>Choose images here</span>
+                        </div>
+                        <input type='file' accept='image/*' className='hidden' ref={register} {...register('file')} />
+                      </label>
+                    </div>
+                    <div className='relative col-span-1 '>
+                      <label
+                        htmlFor='name'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                       >
-                        <path
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          d='m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z'
-                        />
-                      </svg>
-                    </button> 
+                        Name
+                      </label>
+                      <input
+                        type='text'
+                        id='name'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('name')}
+                      />
+                    </div>
+                    <div className='relative col-span-1 '>
+                      <label
+                        htmlFor='physique'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
+                        Physique
+                      </label>
+                      <input
+                        type='text'
+                        id='physique'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('physique')}
+                      />
+                    </div>
+                    <div className='relative col-span-1 '>
+                      <label
+                        htmlFor='age'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
+                        Age
+                      </label>
+                      <input
+                        type='number'
+                        id='age'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('age')}
+                      />
+                    </div>
+                    <div className='relative col-span-1 '>
+                      <label
+                        htmlFor='gender'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
+                        Gender
+                      </label>
+                      <input
+                        type='text'
+                        id='gender'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('gender')}
+                      />
+                    </div>
+                    <div className='relative col-span-1 '>
+                      <label
+                        htmlFor='variety'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
+                        Variety
+                      </label>
+                      <input
+                        type='text'
+                        id='variety'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('variety')}
+                      />
+                    </div>
+                    <div className='relative col-span-1 '>
+                      <label
+                        htmlFor='pondDate'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
+                        In pond since
+                      </label>
+                      <input
+                        type='date'
+                        id='pondDate'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('pondDate')}
+                        defaultValue={koi.pondDate}
+                      />
+                    </div>
+                    <div className='relative col-span-1 '>
+                      <label
+                        htmlFor='breeder'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
+                        Breeder
+                      </label>
+                      <input
+                        type='text'
+                        id='breeder'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('breeder')}
+                      />
+                    </div>
+                    <div className='relative col-span-1 '>
+                      <label
+                        htmlFor='price'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
+                        Price
+                      </label>
+                      <input
+                        type='text'
+                        id='price'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('price')}
+                      />
+                    </div>
+                    <div className='relative col-span-1 '>
+                      <label
+                        htmlFor='status'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
+                        Status
+                      </label>
+                      <select
+                        id='status'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('status')}
+                        defaultValue={koi.status}
+                      >
+                        <option>Alive</option>
+                        <option>Dead</option>
+                      </select>
+                    </div>
+                    <div className='relative col-span-1 mt-[1.5px]'>
+                      <label
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        htmlFor='pondId'
+                      >
+                        Pond
+                      </label>
+                      <select
+                        id='pondId'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('pondId')}
+                        defaultValue={koi.koiPond.id}
+                      >
+                        {ponds.map((pond) => (
+                          <option key={pond.id} value={pond.id}>
+                            {pond.name}
+                          </option>
+                        ))}
+                      </select>
+                      {errors.pondId && (
+                        <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.pondId.message}</p>
+                      )}
+                    </div>
                   </div>
-                
-
+                </form>
+                <div className='flex justify-center items-center'>
+                  <button className='mx-auto ' onClick={() => deleteKoi(koi.id)}>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='size-10 mx-auto p-2 rounded-full bg-red-500 text-white cursor-pointer mt-5'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z'
+                      />
+                    </svg>
+                  </button>
+                </div>
               </div>
             </div>
           )}
-          
 
-          <div className="flex justify-around ">
+          <div className='flex justify-around '>
             {/* left content  */}
-            <div className={`${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} border flex justify-around p-4 rounded-xl shadow-lg w-2/5`}>
+            <div
+              className={`${
+                isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+              } border flex justify-around p-4 rounded-xl shadow-lg w-2/5`}
+            >
               {/* img left  */}
               <div>
-                <img className="w-full h-40 object-cover rounded-xl" src={koi.imageUrl} alt={koi.name} />
+                <img className='w-full h-40 object-cover rounded-xl' src={koi.imageUrl} alt={koi.name} />
               </div>
-              <div className="pl-3">
-                <h2 className="font-semibold text-2xl">{koi.name}</h2>
-                <p className="pb-3">Variety: {koi.variety}</p>
+              <div className='pl-3'>
+                <h2 className='font-semibold text-2xl'>{koi.name}</h2>
+                <p className='pb-3'>Variety: {koi.variety}</p>
                 <div className='flex p-3 gap-12 bg-gray-300 rounded-2xl'>
                   <div className='text-center '>
                     <h1 className='text-red-500'>Age</h1>
@@ -451,24 +478,29 @@ function KoiDetails() {
                 </div>
               </div>
             </div>
-            <div className={`${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} text-start border p-4 rounded-xl shadow-lg w-2/5`}>
-              <h2 className="font-semibold text-xl mb-2">Koi Description:</h2>
-              <p className="mb-4">
-                <strong>{koi.name}</strong> has been swimming in the pond "<strong>{koi.koiPond.name}</strong>" since {formatDate(koi.pondDate)}.
+            <div
+              className={`${
+                isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+              } text-start border p-4 rounded-xl shadow-lg w-2/5`}
+            >
+              <h2 className='font-semibold text-xl mb-2'>Koi Description:</h2>
+              <p className='mb-4'>
+                <strong>{koi.name}</strong> has been swimming in the pond "<strong>{koi.koiPond.name}</strong>" since{' '}
+                {formatDate(koi.pondDate)}.
               </p>
-              <p className="mb-4">
-                <strong>{koi.name}</strong> was bought for <strong>{koi.price}€</strong> and was bred by <strong>{koi.breeder}</strong>.
+              <p className='mb-4'>
+                <strong>{koi.name}</strong> was bought for <strong>{koi.price}€</strong> and was bred by{' '}
+                <strong>{koi.breeder}</strong>.
               </p>
-              <p className="mb-2">
+              <p className='mb-2'>
                 <strong>{koi.name}</strong> was <strong>{koi.status}</strong>.
               </p>
             </div>
           </div>
         </div>
-        
       </div>
     </div>
-  );
+  )
 }
 
-export default KoiDetails;
+export default KoiDetails

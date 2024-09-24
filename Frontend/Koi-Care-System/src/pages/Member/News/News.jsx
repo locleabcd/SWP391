@@ -4,12 +4,16 @@ import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import axios from 'axios'
 import { formatDistanceToNow } from 'date-fns'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function News() {
   const { isDarkMode } = useDarkMode()
   const [setTags] = useState([])
   const [blogs, setBlogs] = useState([])
+
+  const navigate = useNavigate()
 
   const getTag = async () => {
     try {
@@ -47,7 +51,19 @@ function News() {
       setBlogs(res.data.data)
       console.log(res.data.data)
     } catch (error) {
-      console.log('Error fetching blog:', error)
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          console.error('Unauthorized access - Token expired or invalid. Logging out...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('id')
+          toast.error('Token expired navigate to login')
+          navigate('/login')
+        } else {
+          console.error('Error fetching ponds:', error.response?.status, error.message)
+        }
+      } else {
+        console.error('An unexpected error occurred:', error)
+      }
     }
   }
 

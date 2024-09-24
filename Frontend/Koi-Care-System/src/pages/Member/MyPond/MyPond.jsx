@@ -3,10 +3,13 @@ import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { set, useForm } from 'react-hook-form'
 import { FaSpinner } from 'react-icons/fa'
 import AOS from 'aos'
+import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
@@ -20,6 +23,9 @@ function MyPond() {
   const [currentPond, setCurrentPond] = useState(null)
   const [baseImage, setBaseImage] = useState('')
   const [koiCounts, setKoiCounts] = useState({})
+  const [selectedFile, setSelectedFile] = useState(null)
+
+  const navigate = useNavigate()
 
   const {
     register,
@@ -67,7 +73,19 @@ function MyPond() {
       console.log(res.data.data)
       setPonds(res.data.data)
     } catch (error) {
-      console.error('Error fetching ponds:', error)
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          console.error('Unauthorized access - Token expired or invalid. Logging out...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('id')
+          toast.error('Token expired navigate to login')
+          navigate('/login')
+        } else {
+          console.error('Error fetching ponds:', error.response?.status, error.message)
+        }
+      } else {
+        console.error('An unexpected error occurred:', error)
+      }
     }
   }
 
@@ -75,42 +93,79 @@ function MyPond() {
     getPond()
   }, [])
 
-  const upDatePond = async (data, id) => {
+  const upDatePond = async (data, id = null) => {
     setIsLoading(true)
     setIsSubmitting(true)
+
     try {
       const token = localStorage.getItem('token')
       if (!token) {
         throw new Error('No token found')
       }
 
-      const res = await axios.put(
-        `https://koi-care-system.azurewebsites.net/api/koiponds/koipond/${id}/update`,
-        {
-          name: data.name,
-          drainCount: data.drainCount,
-          depth: data.depth,
-          skimmer: data.skimmer,
-          pumpCapacity: data.pumpCapacity,
-          file: data.file[0],
-          imageUrl: data.imageUrl,
-          volume: data.volume
-        },
-        {
+      if (id) {
+        const formData = new FormData()
+        formData.append('name', data.name)
+        formData.append('drainCount', data.drainCount)
+        formData.append('depth', data.depth)
+        formData.append('skimmer', data.skimmer)
+        formData.append('pumpCapacity', data.pumpCapacity)
+        formData.append('volume', data.volume)
+        formData.append('file', selectedFile)
+        formData.append('imageUrl', data.imageUrl)
+
+        await axios.put(`https://koi-care-system.azurewebsites.net/api/koiponds/koipond/${id}/update`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
           }
-        }
-      )
-      setIsEditFormVisible(false)
+        })
+      } else {
+        const formData = new FormData()
+        formData.append('name', data.name)
+        formData.append('drainCount', data.drainCount)
+        formData.append('depth', data.depth)
+        formData.append('skimmer', data.skimmer)
+        formData.append('pumpCapacity', data.pumpCapacity)
+        formData.append('volume', data.volume)
+        formData.append('file', selectedFile)
+        await axios.post('https://koi-care-system.azurewebsites.net/api/koiponds/create', formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+      }
+
       reset()
       getPond()
+      setIsAddFormVisible(false)
+      setIsEditFormVisible(false)
     } catch (error) {
-      console.log(error)
+      console.log('Error creating/updating pond:', error)
     } finally {
       setIsSubmitting(false)
       setIsLoading(false)
+    }
+  }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setBaseImage(reader.result)
+      }
+      reader.readAsDataURL(file)
+      setSelectedFile(file)
+    }
+  }
+
+  const onSubmit = async (data) => {
+    if (currentPond) {
+      upDatePond(data, currentPond.id)
+    } else {
+      upDatePond(data)
     }
   }
 
@@ -136,60 +191,6 @@ function MyPond() {
     }
   }
 
-  const onSubmit = async (data) => {
-    setIsLoading(true)
-    setIsSubmitting(true)
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
-
-      if (currentPond) {
-        await upDatePond(data, currentPond.id)
-        reset()
-      } else {
-        await axios.post(
-          'https://koi-care-system.azurewebsites.net/api/koiponds/create',
-          {
-            name: data.name,
-            drainCount: data.drainCount,
-            depth: data.depth,
-            skimmer: data.skimmer,
-            pumpCapacity: data.pumpCapacity,
-            file: data.file[0],
-            volume: data.volume
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data'
-            }
-          }
-        )
-      }
-      setIsAddFormVisible(false)
-      getPond()
-      reset()
-    } catch (error) {
-      console.log(error)
-    } finally {
-      setIsSubmitting(false)
-      setIsLoading(false)
-    }
-  }
-
-  const handleImageChange = (e) => {
-    const file = e.target.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setBaseImage(reader.result)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
-
   const getKoi = async (id) => {
     try {
       const token = localStorage.getItem('token')
@@ -202,10 +203,10 @@ function MyPond() {
         }
       })
 
-      const koiCount = res.data.data.length // Get the number of koi fish
+      const koiCount = res.data.data.length
       setKoiCounts((prevCounts) => ({
         ...prevCounts,
-        [id]: koiCount // Store the koi count for this pond
+        [id]: koiCount
       }))
     } catch (error) {
       console.error(`Error fetching koi for pond ${id}:`, error)
@@ -215,7 +216,7 @@ function MyPond() {
   useEffect(() => {
     if (ponds.length > 0) {
       ponds.forEach((pond) => {
-        getKoi(pond.id) // Automatically fetch koi data for each pond
+        getKoi(pond.id)
       })
     }
   }, [ponds])
@@ -237,7 +238,7 @@ function MyPond() {
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer z-50'
+            className='fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer'
             onClick={() => {
               toggleAddFormVisibility()
             }}
@@ -245,49 +246,56 @@ function MyPond() {
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
 
-          <div className='p-4 w-full mt-2 ml-2'>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4'>
+          <div className='p-4 w-full mt-2'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
               {ponds.map((pond) => (
                 <div
                   key={pond.id}
                   className={`${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } border p-4 rounded-lg shadow cursor-pointer`}
+                  } border rounded-xl shadow cursor-pointer`}
                   onClick={() => {
                     toggleEditFormVisibility(pond)
                     reset(pond)
                   }}
                 >
-                  <img src={pond.imageUrl} alt={pond.name} className='w-full h-44 object-cover mb-4 rounded-md' />
-                  <div className='flex w-full'>
-                    <h3 className='text-base w-40'>Pond:</h3>
-                    <h3 className='text-base font-semibold'>{pond.name}</h3>
-                  </div>
-                  <div className='flex w-full'>
-                    <h3 className='text-base w-40'>Number of fish:</h3>
-                    <h3 className='text-base font-semibold'>
-                      {koiCounts[pond.id] !== undefined ? koiCounts[pond.id] : 'Loading...'}
-                    </h3>{' '}
-                  </div>
-                  <div className='flex'>
-                    <h3 className='text-base w-40'>Volume:</h3>
-                    <h3 className='text-base font-semibold'>{pond.volume} l</h3>
-                  </div>
-                  <div className='flex'>
-                    <h3 className='text-base w-40'>Drain Count:</h3>
-                    <h3 className='text-base font-semibold'>{pond.drainCount}</h3>
-                  </div>
-                  <div className='flex'>
-                    <h3 className='text-base w-40'>Depth:</h3>
-                    <h3 className='text-base font-semibold'>{pond.depth} m</h3>
-                  </div>
-                  <div className='flex'>
-                    <h3 className='text-base w-40'>Skimmer Count:</h3>
-                    <h3 className='text-base font-semibold'>{pond.skimmer}</h3>
-                  </div>
-                  <div className='flex'>
-                    <h3 className='text-base w-40'>Pump Capacity:</h3>
-                    <h3 className='text-base font-semibold'>{pond.pumpCapacity} L/min</h3>
+                  <img
+                    src={pond.imageUrl}
+                    alt={pond.name}
+                    className='w-full h-60 object-cover rounded-t-xl overflow-hidden'
+                    style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
+                  />
+                  <div className='p-4'>
+                    <div className='flex w-full pl-3'>
+                      <h3 className='text-base w-52'>Pond:</h3>
+                      <h3 className='text-base font-semibold'>{pond.name}</h3>
+                    </div>
+                    <div className='flex w-full pl-3'>
+                      <h3 className='text-base w-52'>Number of fish:</h3>
+                      <h3 className='text-base font-semibold'>
+                        {koiCounts[pond.id] !== undefined ? koiCounts[pond.id] : 'Loading...'}
+                      </h3>{' '}
+                    </div>
+                    <div className='flex w-full pl-3'>
+                      <h3 className='text-base w-52'>Volume:</h3>
+                      <h3 className='text-base font-semibold'>{pond.volume} l</h3>
+                    </div>
+                    <div className='flex w-full pl-3'>
+                      <h3 className='text-base w-52'>Drain Count:</h3>
+                      <h3 className='text-base font-semibold'>{pond.drainCount}</h3>
+                    </div>
+                    <div className='flex w-full pl-3'>
+                      <h3 className='text-base w-52'>Depth:</h3>
+                      <h3 className='text-base font-semibold'>{pond.depth} m</h3>
+                    </div>
+                    <div className='flex w-full pl-3'>
+                      <h3 className='text-base w-52'>Skimmer Count:</h3>
+                      <h3 className='text-base font-semibold'>{pond.skimmer}</h3>
+                    </div>
+                    <div className='flex w-full pl-3'>
+                      <h3 className='text-base w-52'>Pump Capacity:</h3>
+                      <h3 className='text-base font-semibold'>{pond.pumpCapacity} L/min</h3>
+                    </div>
                   </div>
                 </div>
               ))}

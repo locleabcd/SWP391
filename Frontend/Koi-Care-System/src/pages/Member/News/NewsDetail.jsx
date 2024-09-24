@@ -1,14 +1,17 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import Header from '../../../components/Member/Header'
 import { useDarkMode } from '../../../components/DarkModeContext'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function NewsDetail() {
   const [newDetail, setNewsDetail] = useState([])
   const { id } = useParams()
   const { isDarkMode } = useDarkMode()
+  const navigate = useNavigate()
 
   const getBlogDetail = async () => {
     try {
@@ -27,7 +30,19 @@ function NewsDetail() {
       console.log('data', res.data.data)
       console.log('data', res.data.data.user.username)
     } catch (error) {
-      console.log('Error fetching blog detail:', error)
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          console.error('Unauthorized access - Token expired or invalid. Logging out...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('id')
+          toast.error('Token expired navigate to login')
+          navigate('/login')
+        } else {
+          console.error('Error fetching ponds:', error.response?.status, error.message)
+        }
+      } else {
+        console.error('An unexpected error occurred:', error)
+      }
     }
   }
 
