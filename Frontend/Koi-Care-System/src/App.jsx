@@ -26,6 +26,7 @@ import NewsDetail from './pages/Member/News/NewsDetail'
 import Email from './pages/RecoveryPassword/Email'
 import OTP from './pages/OTP/OTP'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
+import KoiDetail from './pages/Member/MyKoi/KoiDetail'
 
 function App() {
   const routeElements = useRoutes([
@@ -124,6 +125,10 @@ function App() {
     {
       path: path.newsDetails,
       element: <NewsDetail />
+    },
+    {
+      path: path.koiDetail,
+      element: <KoiDetail />
     }
   ])
 

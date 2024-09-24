@@ -6,6 +6,8 @@ import axios from 'axios';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { useForm } from 'react-hook-form';
+import { Link } from 'react-router-dom';
+import { FaSpinner } from 'react-icons/fa'
 
 function MyKoi() {
   const { isDarkMode } = useDarkMode();
@@ -43,21 +45,8 @@ function MyKoi() {
       if (!token) {
         throw new Error('No token found');
       }
-      const koiData = {
-        name: data.name || null,
-        physique: data.physique || null,
-        age: data.age ? parseInt(data.age) : null, // Ensure age is an integer or null
-        length: data.length ? parseFloat(data.length) : null, // Ensure length is a float or null
-        weight: data.weight ? parseFloat(data.weight) : null, // Ensure weight is a float or null
-        gender: data.gender || null,
-        variety: data.variety || null,
-        pondDate: data.pondDate || null,
-        breeder: data.breeder || null,
-        price: data.price ? parseFloat(data.price) : null, // Ensure price is a float or null
-        koiPondId: data.pondId || null,
-        file: data.file || null
-      };
-      //const id = data.data.koiPond.id
+      
+      
       console.log(data)
       const res = await axios.post(
         `https://koi-care-system.azurewebsites.net/api/koifishs/create`,
@@ -74,7 +63,7 @@ function MyKoi() {
           breeder: data.breeder,
           price: data.price,
           koiPondId : data.pondId,
-          file : data.file
+          file : data.file[0]
         },
         {
           headers: {
@@ -142,6 +131,11 @@ function MyKoi() {
     getPond()
   }, [])
 
+  if (isLoading) {
+    return  <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+              <FaSpinner className='animate-spin text-green-500 text-4xl' />
+            </div>; 
+  }
 
 
   return (
@@ -149,8 +143,8 @@ function MyKoi() {
       <div className="h-screen flex">
         <LeftSideBar />
         <div
-          className={`relative ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-100 text-black'} 
-          shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
+          className={`relative ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'} 
+           shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
             <svg
@@ -167,32 +161,38 @@ function MyKoi() {
           <div className="p-4 w-full mt-4 z-0">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2">
               {kois.map((koi) => (
-                <div key={koi.id} className="border p-4 rounded-lg shadow">
-                  <img src={koi.imageUrl} alt={koi.name} className="w-full h-40 object-cover mb-4 rounded-md z-0" />
-                  <div className="flex">
-                    <h3 className="text-base w-32">Koi Name:</h3>
-                    <h3 className="text-base font-semibold">{koi.name}</h3>
+                <div key={koi.id} className="border p-4 rounded-lg shadow bg-white" >
+                  <div>
+                    <Link to={`/member/myKoi/${koi.id}`}>
+                      <img src={koi.imageUrl} alt={koi.name} className="w-full h-40 object-cover mb-4 rounded-md z-0" />
+                      <div className="flex">
+                        <h3 className="text-base w-32">Koi Name:</h3>
+                        <h3 className="text-base font-semibold">{koi.name}</h3>
+                      </div>
+                      <div className="flex">
+                        <h3 className="text-base w-32">Age:</h3>
+                        <h3 className="text-base font-semibold">{koi.age} years</h3>
+                      </div>
+                      <div className="flex">
+                        <h3 className="text-base w-32">Variety:</h3>
+                        <h3 className="text-base font-semibold">{koi.variety}</h3>
+                      </div>
+                      <div className="flex">
+                        <h3 className="text-base w-32">Length:</h3>
+                        <h3 className="text-base font-semibold">{koi.length} cm</h3>
+                      </div>  
+                      <div className="flex">
+                        <h3 className="text-base w-32">koiID:</h3>
+                        <h3 className="text-base font-semibold">{koi.id}</h3>
+                      </div> 
+                      <div className="flex">
+                        <h3 className="text-base w-32">pondID:</h3>
+                        <h3 className="text-base font-semibold">{koi.koiPond.id}</h3>
+                      </div>
+                    </Link>
+                    
                   </div>
-                  <div className="flex">
-                    <h3 className="text-base w-32">Age:</h3>
-                    <h3 className="text-base font-semibold">{koi.age} years</h3>
-                  </div>
-                  <div className="flex">
-                    <h3 className="text-base w-32">Variety:</h3>
-                    <h3 className="text-base font-semibold">{koi.variety}</h3>
-                  </div>
-                  <div className="flex">
-                    <h3 className="text-base w-32">Length:</h3>
-                    <h3 className="text-base font-semibold">{koi.length} cm</h3>
-                  </div>  
-                  <div className="flex">
-                    <h3 className="text-base w-32">koiID:</h3>
-                    <h3 className="text-base font-semibold">{koi.id}</h3>
-                  </div> 
-                  <div className="flex">
-                    <h3 className="text-base w-32">pondID:</h3>
-                    <h3 className="text-base font-semibold">{koi.koiPond.id}</h3>
-                  </div>                                
+                                                  
                 </div>
               ))}
             </div>
@@ -260,10 +260,12 @@ function MyKoi() {
                           <input
                             type='file'
                             accept='image/*'
-                            className='hidden'
-                            {...register('file', {
-                              required: 'Please select an image'
-                            })}
+                            className=''
+                            {...register('file', 
+                            //   {
+                            //   required: 'Please select an image'
+                            // }
+                          )}
                           />
                         </label>
                       </div>
