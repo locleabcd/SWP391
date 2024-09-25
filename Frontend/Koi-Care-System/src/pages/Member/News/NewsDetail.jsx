@@ -17,7 +17,7 @@ function NewsDetail() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/blog/getID/${id}`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/blog/getID/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

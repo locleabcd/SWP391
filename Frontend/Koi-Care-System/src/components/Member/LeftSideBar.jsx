@@ -269,6 +269,25 @@ function LeftSideBar() {
                   <span className='font-semibold'>News and blogs</span>
                 </div>
               </NavLink>
+
+              <NavLink
+                to={path.about}
+                className={({ isActive }) => {
+                  const active = isActive ? 'bg-red-500 text-white' : ''
+                  return `hover:text-white ${active} mt-2 hover:bg-red-500 min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                }}
+              >
+                {/* left section */}
+                <div className='flex items-center'>
+                  {/* icon image */}
+                  <div className='w-7 h-7 mr-3'>
+                    <FaRegNewspaper className='w-full h-full' />
+                  </div>
+                  <span className='font-semibold'>About</span>
+                </div>
+              </NavLink>
+
+              
             </div>
           </div>
         </div>

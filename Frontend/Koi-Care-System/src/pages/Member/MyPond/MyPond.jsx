@@ -57,7 +57,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -83,7 +83,7 @@ function MyPond() {
       }
 
       const res = await axios.put(
-        `https://koi-care-system.azurewebsites.net/api/koiponds/koipond/${id}/update`,
+        `https://koicaresystem.azurewebsites.net/api/koiponds/koipond/${id}/update`,
         {
           name: data.name,
           drainCount: data.drainCount,
@@ -118,7 +118,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koi-care-system.azurewebsites.net/api/koiponds/koipond/${id}/delete`, {
+      await axios.delete(`https://koicaresystem.azurewebsites.net/api/koiponds/koipond/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -158,7 +158,7 @@ function MyPond() {
         await upDatePond(data, currentPond.id)
         reset()
       } else {
-        await axios.post('https://koi-care-system.azurewebsites.net/api/koiponds/create', formData, {
+        await axios.post('https://koicaresystem.azurewebsites.net/api/koiponds/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'

@@ -16,8 +16,8 @@ function KoiDetails() {
   const [isEditFormVisible, setIsEditFormVisible] = useState(false);
   const [koi, setKoi] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [ponds, setPonds] = useState([])
-  
+  const [ponds, setPonds] = useState([]);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -49,7 +49,7 @@ function KoiDetails() {
       }
 
       const res = await axios.get(
-        `https://koi-care-system.azurewebsites.net/api/koifishs/user/${userId}/allKoi`,
+        `https://koicaresystem.azurewebsites.net/api/koifishs/user/${userId}/allKoi`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -79,7 +79,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -106,7 +106,7 @@ function KoiDetails() {
         throw new Error('No token found');
       }
       const res = await axios.put(
-        `https://koi-care-system.azurewebsites.net/api/koifishs/koifish/${id}/update`,
+        `https://koicaresystem.azurewebsites.net/api/koifishs/koifish/${id}/update`,
         {
           name: data.name,
           physique: data.physique,
@@ -152,7 +152,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koi-care-system.azurewebsites.net/api/koifishs/koifish/${id}/delete`, {
+      await axios.delete(`https://koicaresystem.azurewebsites.net/api/koifishs/koifish/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -331,12 +331,20 @@ function KoiDetails() {
                         <label htmlFor='pondDate' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
                         In pond since
                         </label>
+                        {/* {
+                          (() => {
+                            var curr = new Date(koi.pondDate); // Chuyển koi.pondDate thành đối tượng Date
+                            curr.setDate(curr.getDate() + 3); // Cộng thêm 3 ngày
+                            var date = curr.toISOString().substring(0, 10); // Định dạng lại thành yyyy-mm-dd
+                            return date;
+                          })()
+                        } */}
                         <input
                           type="date"
                           id="pondDate"
                           className="mt-1 block w-full p-3 border border-black rounded-md shadow-sm"
                           {...register('pondDate')}
-                          defaultValue={koi.pondDate}
+                          defaultValue={new Date(koi.pondDate).toISOString().substring(0, 10)}
                         />
                       </div>
                       <div className="relative col-span-1 ">
@@ -454,7 +462,7 @@ function KoiDetails() {
             <div className={`${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} text-start border p-4 rounded-xl shadow-lg w-2/5`}>
               <h2 className="font-semibold text-xl mb-2">Koi Description:</h2>
               <p className="mb-4">
-                <strong>{koi.name}</strong> has been swimming in the pond "<strong>{koi.koiPond.name}</strong>" since {formatDate(koi.pondDate)}.
+                <strong>{koi.name}</strong> has been swimming in the pond "<strong>{koi.koiPond.name}</strong>" since <strong>{formatDate(koi.pondDate)}</strong>.
               </p>
               <p className="mb-4">
                 <strong>{koi.name}</strong> was bought for <strong>{koi.price}€</strong> and was bred by <strong>{koi.breeder}</strong>.

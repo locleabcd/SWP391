@@ -13,7 +13,7 @@ function Email() {
     setLoading(true)
     localStorage.setItem('email', email)
     axios
-      .post(`https://koi-care-system.azurewebsites.net/api/auth/forgotPassword/${email}`)
+      .post(`https://koicaresystem.azurewebsites.net/api/auth/forgotPassword/${email}`)
       .then(() => navigate('/otp'))
       .finally(() => setLoading(false))
   }

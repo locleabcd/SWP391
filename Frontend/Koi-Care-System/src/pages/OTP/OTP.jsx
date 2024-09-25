@@ -21,7 +21,7 @@ function OTP() {
     setLoading(true)
     if (disable) return
     axios
-      .post(`https://koi-care-system.azurewebsites.net/api/auth/forgotPassword/${email}/${otp}`)
+      .post(`https://koicaresystem.azurewebsites.net/api/auth/forgotPassword/${email}/${otp}`)
       .then(() => {
         setDisable(true)
         alert('A new OTP has been sent to your email.')
