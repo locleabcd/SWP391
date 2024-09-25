@@ -13,8 +13,14 @@ function News() {
   const { isDarkMode } = useDarkMode()
   const [setTags] = useState([])
   const [blogs, setBlogs] = useState([])
+  const [filterData, setFilterData] = useState([])
+  const [showButtons, setShowButtons] = useState(false)
 
   const navigate = useNavigate()
+
+  const toggleButtons = () => {
+    setShowButtons(!showButtons)
+  }
 
   const getTag = async () => {
     try {
@@ -69,6 +75,13 @@ function News() {
   }
 
   useEffect(() => {
+    fetch('https://koicaresystem.azurewebsites.net/api/blog/search').then((data) => {
+      // setBlogs(data)
+      // setFilterData(data)
+    })
+  })
+
+  useEffect(() => {
     getTag()
   }, [])
 
@@ -89,6 +102,58 @@ function News() {
           <Header />
           <div className='py-5 px-[30px] mx-auto'>
             <TopLayout text='News' />
+
+            <div className='w-full flex justify-end relative'>
+              <div className='search'>
+                <input type='text' placeholder='Search Here ...' />
+              </div>
+              <div className='cursor-pointer' onClick={toggleButtons}>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth={1.5}
+                  stroke='currentColor'
+                  className='w-8 h-8 mb-4 text-red-500'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75'
+                  />
+                </svg>
+
+                <div
+                  className={`absolute right-0 transition-all duration-500 -mt-3 border z-10 ease-in-out overflow-hidden ${
+                    showButtons ? 'max-h-50 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div
+                    className={`${
+                      isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                    } flex flex-col space-y-2 shadow-lg rounded-lg p-4`}
+                  >
+                    <button
+                      className={`${
+                        isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
+                      } btn py-2 px-4 rounded `}
+                    >
+                      Sorted by Name (A-Z)
+                    </button>
+                    <button
+                      className={`${
+                        isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
+                      } btn py-2 px-4 rounded `}
+                    >
+                      Sorted by Name (Z-A)
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Conditionally render the buttons */}
+            </div>
+
             <div className='py-3 grid grid-cols-3 gap-6 mt-2'>
               {blogs.map((blog, index) => (
                 <div
@@ -124,7 +189,7 @@ function News() {
                         <img
                           src={blog.blogImage}
                           alt={blog.blogTitle}
-                          className='w-full h-72 object-cover relative'
+                          className='w-full h-72 object-cover relative rounded-t-lg'
                           style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
                         />
                         <img
