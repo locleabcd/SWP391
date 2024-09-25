@@ -59,7 +59,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -88,7 +88,7 @@ function MyPond() {
         await upDatePond(data, currentPond.id)
       } else {
         await axios.post(
-          'https://koi-care-system.azurewebsites.net/api/koiponds/create',
+          'https://koicaresystem.azurewebsites.net/api/koiponds/create',
           {
             name: data.name,
             drainCount: data.drainCount,
@@ -127,7 +127,7 @@ function MyPond() {
       }
 
       const res = await axios.put(
-        `https://koi-care-system.azurewebsites.net/api/koiponds/koipond/${id}/update`,
+        `https://koicaresystem.azurewebsites.net/api/koiponds/koipond/${id}/update`,
         {
           name: data.name,
           drainCount: data.drainCount,
@@ -162,7 +162,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koi-care-system.azurewebsites.net/api/koiponds/koipond/${id}/delete`, {
+      await axios.delete(`https://koicaresystem.azurewebsites.net/api/koiponds/koipond/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -194,7 +194,7 @@ function MyPond() {
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer'
+            className='fixed z-50 bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer'
             onClick={() => {
               toggleAddFormVisibility()
             }}
