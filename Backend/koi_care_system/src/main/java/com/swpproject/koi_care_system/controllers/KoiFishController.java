@@ -7,7 +7,7 @@ import com.swpproject.koi_care_system.models.KoiPond;
 import com.swpproject.koi_care_system.payload.request.AddKoiFishRequest;
 import com.swpproject.koi_care_system.payload.request.KoiFishUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.image.ImageStorage;
+import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import com.swpproject.koi_care_system.service.koifish.IKoiFishService;
 import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import lombok.RequiredArgsConstructor;

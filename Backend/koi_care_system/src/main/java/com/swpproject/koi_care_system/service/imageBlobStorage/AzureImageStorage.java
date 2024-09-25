@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.service.image;
+package com.swpproject.koi_care_system.service.imageBlobStorage;
 
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;

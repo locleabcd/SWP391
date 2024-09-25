@@ -7,7 +7,7 @@ import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.image.ImageStorage;
+import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import com.swpproject.koi_care_system.service.user.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
-@RestController
+@Controller
 @RequestMapping("/koiponds")
 public class KoiPondController {
     private final IKoiPondService koiPondService;
@@ -54,7 +54,16 @@ public class KoiPondController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
     }
-
+    @GetMapping("/user/{userID}/koiponds")
+    public ResponseEntity<ApiResponse> getAllKoiPondByUserID(@PathVariable Long userID){
+        try{
+            List<KoiPond> koiPonds=koiPondService.getKoiPondByUserID(userID);
+            List<KoiPondDto> koiPondDtos = koiPondService.getConvertedKoiPonds(koiPonds);
+            return ResponseEntity.ok(new ApiResponse("Found!",koiPondDtos));
+        }catch (Exception e){
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error",INTERNAL_SERVER_ERROR));
+        }
+    }
     @GetMapping("/user/{userID}/koiponds/sorted-by-name")
     public ResponseEntity<ApiResponse> getSortedKoiPondsByUserID(@PathVariable Long userID, @RequestParam(defaultValue = "asc") String order) {
         try {
