@@ -25,7 +25,8 @@ const path = {
   statistics: '/member/statistics',
   news: '/member/news',
   newsDetails: '/member/news/:id',
-  koiDetail: '/member/myKoi/:id'
+  koiDetail: '/member/myKoi/:id',
+  aboutMember: '/member/about'
 }
 
 export default path
