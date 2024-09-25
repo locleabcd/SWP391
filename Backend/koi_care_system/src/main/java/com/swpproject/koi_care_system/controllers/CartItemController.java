@@ -1,9 +1,10 @@
-package com.swpproject.koi_care_system.controllers;
+package com.dailycodework.dreamshops.controller;
 
-import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
-import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.cart.ICartItemService;
-import com.swpproject.koi_care_system.service.cart.ICartService;
+import com.dailycodework.dreamshops.exceptions.ResourceNotFoundException;
+import com.dailycodework.dreamshops.response.ApiResponse;
+import com.dailycodework.dreamshops.service.cart.CartItemService;
+import com.dailycodework.dreamshops.service.cart.ICartItemService;
+import com.dailycodework.dreamshops.service.cart.ICartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/cartItems")
+@RequestMapping("${api.prefix}/cartItems")
 public class CartItemController {
     private final ICartItemService cartItemService;
     private final ICartService cartService;

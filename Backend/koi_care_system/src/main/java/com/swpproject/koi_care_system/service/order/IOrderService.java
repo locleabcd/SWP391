@@ -1,7 +1,7 @@
-package com.swpproject.koi_care_system.service.order;
+package com.dailycodework.dreamshops.service.order;
 
-import com.swpproject.koi_care_system.dto.OrderDto;
-import com.swpproject.koi_care_system.models.Order;
+import com.dailycodework.dreamshops.dto.OrderDto;
+import com.dailycodework.dreamshops.model.Order;
 
 import java.util.List;
 

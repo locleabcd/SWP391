@@ -1,9 +1,9 @@
-package com.swpproject.koi_care_system.service.category;
+package com.dailycodework.dreamshops.service.category;
 
-import com.swpproject.koi_care_system.exceptions.AlreadyExistsException;
-import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
-import com.swpproject.koi_care_system.models.Category;
-import com.swpproject.koi_care_system.repository.CategoryRepository;
+import com.dailycodework.dreamshops.exceptions.AlreadyExistsException;
+import com.dailycodework.dreamshops.exceptions.ResourceNotFoundException;
+import com.dailycodework.dreamshops.model.Category;
+import com.dailycodework.dreamshops.repository.CategoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

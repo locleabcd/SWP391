@@ -1,16 +1,11 @@
-package com.swpproject.koi_care_system.dto;
+package com.dailycodework.dreamshops.dto;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.util.Set;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
 public class CartDto {
     private Long cartId;
     private Set<CartItemDto> items;

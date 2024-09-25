@@ -1,7 +1,5 @@
 package com.swpproject.koi_care_system.payload.request;
-
 import com.swpproject.koi_care_system.models.Category;
-
 import lombok.Data;
 
 import java.math.BigDecimal;

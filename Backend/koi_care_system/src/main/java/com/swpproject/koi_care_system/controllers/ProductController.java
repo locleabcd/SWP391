@@ -1,13 +1,13 @@
-package com.swpproject.koi_care_system.controllers;
+package com.dailycodework.dreamshops.controller;
 
 
-import com.swpproject.koi_care_system.dto.ProductDto;
-import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
-import com.swpproject.koi_care_system.models.Product;
-import com.swpproject.koi_care_system.payload.request.AddProductRequest;
-import com.swpproject.koi_care_system.payload.request.ProductUpdateRequest;
-import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.product.IProductService;
+import com.dailycodework.dreamshops.dto.ProductDto;
+import com.dailycodework.dreamshops.exceptions.ResourceNotFoundException;
+import com.dailycodework.dreamshops.model.Product;
+import com.dailycodework.dreamshops.request.AddProductRequest;
+import com.dailycodework.dreamshops.request.ProductUpdateRequest;
+import com.dailycodework.dreamshops.response.ApiResponse;
+import com.dailycodework.dreamshops.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +19,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/products")
+@RequestMapping("${api.prefix}/products")
 public class ProductController {
     private final IProductService productService;
 
@@ -152,4 +152,6 @@ public class ProductController {
             return ResponseEntity.ok(new ApiResponse(e.getMessage(), null));
         }
     }
+
+
 }

@@ -1,17 +1,12 @@
-package com.swpproject.koi_care_system.dto;
+package com.dailycodework.dreamshops.dto;
 
-import lombok.*;
-import lombok.experimental.FieldDefaults;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
 public class OrderDto {
     private Long id;
     private Long userId;

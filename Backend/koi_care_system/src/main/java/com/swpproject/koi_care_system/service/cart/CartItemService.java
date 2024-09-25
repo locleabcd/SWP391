@@ -1,12 +1,12 @@
-package com.swpproject.koi_care_system.service.cart;
+package com.dailycodework.dreamshops.service.cart;
 
-import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
-import com.swpproject.koi_care_system.models.Cart;
-import com.swpproject.koi_care_system.models.CartItem;
-import com.swpproject.koi_care_system.models.Product;
-import com.swpproject.koi_care_system.repository.CartItemRepository;
-import com.swpproject.koi_care_system.repository.CartRepository;
-import com.swpproject.koi_care_system.service.product.IProductService;
+import com.dailycodework.dreamshops.exceptions.ResourceNotFoundException;
+import com.dailycodework.dreamshops.model.Cart;
+import com.dailycodework.dreamshops.model.CartItem;
+import com.dailycodework.dreamshops.model.Product;
+import com.dailycodework.dreamshops.repository.CartItemRepository;
+import com.dailycodework.dreamshops.repository.CartRepository;
+import com.dailycodework.dreamshops.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

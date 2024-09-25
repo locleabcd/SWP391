@@ -1,6 +1,7 @@
 package com.swpproject.koi_care_system.models;
 
 import jakarta.persistence.*;
+import jdk.dynalink.linker.LinkerServices;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -40,4 +41,8 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<Blog> blogs = new HashSet<>();
+
+
+
+
 }

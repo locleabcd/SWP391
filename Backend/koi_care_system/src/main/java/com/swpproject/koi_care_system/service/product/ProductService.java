@@ -1,17 +1,18 @@
 package com.swpproject.koi_care_system.service.product;
 
+
+import com.swpproject.koi_care_system.dto.ImageDto;
 import com.swpproject.koi_care_system.dto.ProductDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
-import com.swpproject.koi_care_system.mapper.ProductMapper;
 import com.swpproject.koi_care_system.models.Category;
+import com.swpproject.koi_care_system.models.Image;
 import com.swpproject.koi_care_system.models.Product;
-import com.swpproject.koi_care_system.repository.CategoryRepository;
-import com.swpproject.koi_care_system.repository.ProductRepository;
 import com.swpproject.koi_care_system.payload.request.AddProductRequest;
 import com.swpproject.koi_care_system.payload.request.ProductUpdateRequest;
-import lombok.AccessLevel;
+import com.swpproject.koi_care_system.repository.CategoryRepository;
+import com.swpproject.koi_care_system.repository.ImageRepository;
+import com.swpproject.koi_care_system.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,13 +20,15 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductService implements IProductService {
-    ProductRepository productRepository;
-    CategoryRepository categoryRepository;
-    ProductMapper productMapper;  // Inject ProductMapper
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
+    private final ImageRepository imageRepository;
 
+    @Override
     public Product addProduct(AddProductRequest request) {
+
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(() -> {
                     Category newCategory = new Category(request.getCategory().getName());
@@ -46,22 +49,26 @@ public class ProductService implements IProductService {
         );
     }
 
+
+    @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found!"));
     }
 
+    @Override
     public void deleteProductById(Long id) {
         productRepository.findById(id)
                 .ifPresentOrElse(productRepository::delete,
-                        () -> { throw new ResourceNotFoundException("Product not found!"); });
+                        () -> {throw new ResourceNotFoundException("Product not found!");});
     }
 
+    @Override
     public Product updateProduct(ProductUpdateRequest request, Long productId) {
         return productRepository.findById(productId)
-                .map(existingProduct -> updateExistingProduct(existingProduct, request))
-                .map(productRepository::save)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
+                .map(existingProduct -> updateExistingProduct(existingProduct,request))
+                .map(productRepository :: save)
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found!"));
     }
 
     private Product updateExistingProduct(Product existingProduct, ProductUpdateRequest request) {
@@ -73,41 +80,58 @@ public class ProductService implements IProductService {
 
         Category category = categoryRepository.findByName(request.getCategory().getName());
         existingProduct.setCategory(category);
-        return existingProduct;
+        return  existingProduct;
+
     }
 
+    @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
+    @Override
     public List<Product> getProductsByCategory(String category) {
         return productRepository.findByCategoryName(category);
     }
+
+    @Override
     public List<Product> getProductsByBrand(String brand) {
         return productRepository.findByBrand(brand);
     }
 
+    @Override
     public List<Product> getProductsByCategoryAndBrand(String category, String brand) {
         return productRepository.findByCategoryNameAndBrand(category, brand);
     }
 
+    @Override
     public List<Product> getProductsByName(String name) {
         return productRepository.findByName(name);
     }
 
+    @Override
     public List<Product> getProductsByBrandAndName(String brand, String name) {
         return productRepository.findByBrandAndName(brand, name);
     }
 
+    @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand, name);
     }
 
+    @Override
     public List<ProductDto> getConvertedProducts(List<Product> products) {
-        return products.stream().map(this::convertToDto).toList();
+      return products.stream().map(this::convertToDto).toList();
     }
 
+    @Override
     public ProductDto convertToDto(Product product) {
-        return productMapper.toDto(product);
+        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        List<Image> images = imageRepository.findByProductId(product.getId());
+        List<ImageDto> imageDtos = images.stream()
+                .map(image -> modelMapper.map(image, ImageDto.class))
+                .toList();
+        productDto.setImages(imageDtos);
+        return productDto;
     }
 }
