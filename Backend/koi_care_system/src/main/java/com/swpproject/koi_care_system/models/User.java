@@ -5,6 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -28,6 +29,9 @@ public class User {
 
     @Column(nullable = false)
     String email;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    List<KoiPond> koiPondList;
 
     @Column(nullable = false)
     String role;

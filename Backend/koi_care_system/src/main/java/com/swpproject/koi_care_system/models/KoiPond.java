@@ -22,6 +22,27 @@ public class KoiPond {
     private Double depth;
     private int skimmer;
     private Double pumpCapacity;
-    @OneToMany(mappedBy = "koiPond", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Image> imageList;
+    private int volume;
+    private String imageUrl;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL, orphanRemoval = true)
+    List<WaterParametersHistory> waterParametersHistoryList;
+
+    public KoiPond(Long id, String name, int drainCount, Double depth, int skimmer, Double pumpCapacity,int volume,User user, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.drainCount = drainCount;
+        this.depth = depth;
+        this.skimmer = skimmer;
+        this.pumpCapacity = pumpCapacity;
+        this.volume = volume;
+        this.imageUrl = imageUrl;
+        this.user = user;
+    }
+
+
 }

@@ -3,7 +3,6 @@ package com.swpproject.koi_care_system.dto;
 import com.swpproject.koi_care_system.models.Category;
 
 import lombok.*;
-import lombok.experimental.FieldDefaults;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class ProductDto {
     private Long id;
@@ -21,5 +19,4 @@ public class ProductDto {
     private int inventory;
     private String description;
     private Category category;
-    private List<ImageDto> images;
 }

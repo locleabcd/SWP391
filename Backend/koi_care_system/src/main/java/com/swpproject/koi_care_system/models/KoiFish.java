@@ -14,7 +14,6 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-//@Table(name="KoiFish")
 public class KoiFish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,9 +28,31 @@ public class KoiFish {
     private Date pondDate;
     private String breeder;
     private Double price;
+    private String status;
+    private String imageUrl;
+    @ManyToOne
+    @JoinColumn(name="koiPond_id")
+    private KoiPond koiPond;
 
     @OneToMany(mappedBy = "koiFish",cascade = CascadeType.ALL,orphanRemoval = true)
-    List<Image> imageList;
+    List<GrowHistory> growHistoryList;
 
+    @OneToMany(mappedBy = "koiFish",cascade = CascadeType.ALL,orphanRemoval = true)
+    List<Remark> remarkList;
 
+    public KoiFish(Long id,String name, String physique, int age, Double length, Double weight, String gender, String variety, Date pondDate, String breeder, Double price, KoiPond koiPond, String imageUrl) {
+        this.id = id;
+        this.name = name;
+        this.physique = physique;
+        this.age = age;
+        this.length = length;
+        this.weight = weight;
+        this.gender = gender;
+        this.variety = variety;
+        this.pondDate = pondDate;
+        this.breeder = breeder;
+        this.price = price;
+        this.koiPond = koiPond;
+        this.imageUrl = imageUrl;
+    }
 }

@@ -26,10 +26,6 @@ spring:
             connectiontimeout: 5000
             timeout: 5000
             writetimeout: 5000       #application doesn't wait if the SMTP server takes too long to respond.
-    thymeleaf:
-      cache: false
-      prefix: classpath:/templates/
-      suffix: .html
   security:
     oauth2:
       client:

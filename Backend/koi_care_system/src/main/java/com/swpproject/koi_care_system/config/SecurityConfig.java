@@ -55,12 +55,12 @@ public class SecurityConfig {
                 );
         httpSecurity
                 .formLogin(form -> form
-                        .loginPage("/login")
+                        .loginPage("http://localhost:5173/login")
                         .permitAll())
                 .oauth2Login(oauth -> oauth
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/profile", true)
-                        .failureUrl("/login?error=true")
+                        .loginPage("http://localhost:5173/login")
+                        .defaultSuccessUrl("http://localhost:5173/member", true)
+                        .failureUrl("http://localhost:5173/login?error=true")
                 );
 
 
