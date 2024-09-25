@@ -13,7 +13,6 @@ import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,7 +24,7 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/koifishs")
 public class KoiFishController {
     private final IKoiFishService koiFishService;
@@ -34,8 +33,8 @@ public class KoiFishController {
     private final ImageStorage imageStorage;
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createKoiFish(@RequestParam String name, @RequestParam String physique,
-         @RequestParam int age, @RequestParam Double length, @RequestParam Double weight, @RequestParam String gender,
-         @RequestParam String variety , @RequestParam Date pondDate, @RequestParam String breeder, @RequestParam Double price
+                                                     @RequestParam int age, @RequestParam Double length, @RequestParam Double weight, @RequestParam String gender,
+                                                     @RequestParam String variety , @RequestParam Date pondDate, @RequestParam String breeder, @RequestParam Double price
             , @RequestParam(required = false) MultipartFile file, @RequestParam Long koiPondId){
         try{
             KoiPond koiPond = koiPondService.getKoiPondById(koiPondId);
@@ -95,7 +94,7 @@ public class KoiFishController {
     }
     @PutMapping("/koifish/{id}/update")
     public ResponseEntity<ApiResponse> updateKoiFish(@PathVariable Long id, @RequestParam String name,
-             @RequestParam int age, @RequestParam String gender, @RequestParam String variety , @RequestParam Date pondDate, @RequestParam String breeder, @RequestParam Double price
+                                                     @RequestParam int age, @RequestParam String gender, @RequestParam String variety , @RequestParam Date pondDate, @RequestParam String breeder, @RequestParam Double price
             ,@RequestParam String imageUrl ,@RequestParam Long koiPondId,@RequestParam String status,@RequestParam(required = false) MultipartFile file){
         try{
             String imageUrlNew;
@@ -114,5 +113,5 @@ public class KoiFishController {
     }
 
 
-    
+
 }

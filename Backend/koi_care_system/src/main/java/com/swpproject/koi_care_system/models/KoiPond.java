@@ -24,6 +24,9 @@ public class KoiPond {
     private Double pumpCapacity;
     private int volume;
     private String imageUrl;
+    // Add this method
+    @Transient
+    private int numberOfFish;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -43,6 +46,4 @@ public class KoiPond {
         this.imageUrl = imageUrl;
         this.user = user;
     }
-
-
 }

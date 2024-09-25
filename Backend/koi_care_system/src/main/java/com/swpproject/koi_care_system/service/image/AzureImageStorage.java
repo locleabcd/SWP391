@@ -22,7 +22,7 @@ public class AzureImageStorage implements ImageStorage {
         try{
             String containerName = "koicare-blob";
             BlobContainerClient blobContainerClient= blobServiceClient.getBlobContainerClient(containerName);
-            String newImageName = UUID.randomUUID().toString() +originalImageName.substring(originalImageName.lastIndexOf("."));
+            String newImageName = UUID.randomUUID()+originalImageName.substring(originalImageName.lastIndexOf("."));
             BlobClient blobClient = blobContainerClient.getBlobClient(newImageName);
             blobClient.upload(data,length,true);
             return blobClient.getBlobUrl();

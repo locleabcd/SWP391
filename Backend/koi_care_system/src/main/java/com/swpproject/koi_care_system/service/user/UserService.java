@@ -97,9 +97,4 @@ public class UserService implements IUserService {
     public User findUserByUserName(String username) {
         return userRepo.findByUsername(username).orElseThrow(()-> new RuntimeException("User not found"));
     }
-
-    @Override
-    public UserDTO convertToDto(User user) {
-        return userMapper.maptoUserDTO(user);
-    }
 }

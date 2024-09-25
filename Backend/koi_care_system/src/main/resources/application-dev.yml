@@ -26,6 +26,11 @@ spring:
             connectiontimeout: 5000
             timeout: 5000
             writetimeout: 5000       #application doesn't wait if the SMTP server takes too long to respond.
+  cloud:
+    azure:
+      storage:
+        account-name: ${AZURE_STORAGE_ACCOUNT_NAME}
+        account-key: ${AZURE_STORAGE_ACCOUNT_KEY}
   security:
     oauth2:
       client:

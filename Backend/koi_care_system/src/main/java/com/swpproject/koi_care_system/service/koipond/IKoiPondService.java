@@ -14,11 +14,9 @@ public interface IKoiPondService {
     List<KoiPond> getKoiPondByUserID(Long userID);
     void deleteKoiPond(Long id);
     KoiPond updateKoiPond(KoiPondUpdateRequest koiPondUpdateRequest, Long koiPondId );
-
     List<KoiPondDto> getConvertedKoiPonds(List<KoiPond> koiPonds);
-
     KoiPondDto convertToDto(KoiPond koiPond);
-
+    KoiPond getKoiPondWithFishCount(Long koiPondId);
 
 
 
