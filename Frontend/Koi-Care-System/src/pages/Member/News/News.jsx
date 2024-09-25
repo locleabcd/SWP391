@@ -4,12 +4,16 @@ import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import axios from 'axios'
 import { formatDistanceToNow } from 'date-fns'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function News() {
   const { isDarkMode } = useDarkMode()
   const [setTags] = useState([])
   const [blogs, setBlogs] = useState([])
+
+  const navigate = useNavigate()
 
   const getTag = async () => {
     try {
@@ -47,7 +51,19 @@ function News() {
       setBlogs(res.data.data)
       console.log(res.data.data)
     } catch (error) {
-      console.log('Error fetching blog:', error)
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          console.error('Unauthorized access - Token expired or invalid. Logging out...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('id')
+          toast.error('Token expired navigate to login')
+          navigate('/login')
+        } else {
+          console.error('Error fetching ponds:', error.response?.status, error.message)
+        }
+      } else {
+        console.error('An unexpected error occurred:', error)
+      }
     }
   }
 
@@ -66,7 +82,7 @@ function News() {
 
         <div
           className={`relative ${
-            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'
+            isDarkMode ? 'bg-custom-light text-white' : 'bg-gray-200 text-black'
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
@@ -76,7 +92,7 @@ function News() {
                 key={index}
                 className={`${
                   isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                } mb-4 border rounded shadow-sm`}
+                } mb-4 border rounded-lg shadow-sm`}
               >
                 <div className='flex border-b px-5 py-4 border-gray-300 items-center gap-2'>
                   <img
@@ -87,7 +103,7 @@ function News() {
                     <p>{blog.user.username}</p>
                     <div className='flex justify-center items-center'>
                       {blog.tags.map((tag) => (
-                        <span key={tag.tagId} className='text-sm font-semibold text-gray-700 mr-1'>
+                        <span key={tag.tagId} className='text-sm font-semibold mr-1'>
                           {tag.tagName}
                         </span>
                       ))}
@@ -101,9 +117,14 @@ function News() {
 
                 <div className='p-5 border-b border-gray-300'>
                   <Link to={`/member/news/${blog.blogId}`}>
-                    <img src={blog.blogImage} alt={blog.blogTitle} className='w-full h-44 object-cover rounded-md' />
+                    <img
+                      src={blog.blogImage}
+                      alt={blog.blogTitle}
+                      className='w-full h-44 object-cover rounded-md'
+                      style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
+                    />
                     <div className='mt-4'>
-                      <h2 className='text-xl font-bold'>{blog.blogTitle}</h2>
+                      <h2 className='text-xl font-bold line-clamp-3'>{blog.blogTitle}</h2>
                       <p className='line-clamp-3 text-justify mt-4 tracking-tighter'>{blog.blogContent}</p>
                     </div>
                   </Link>

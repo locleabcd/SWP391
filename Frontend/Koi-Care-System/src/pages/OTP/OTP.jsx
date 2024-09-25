@@ -1,57 +1,53 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useEffect, useState } from 'react'
-import { FaSpinner } from 'react-icons/fa'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import backgroundVideo from '../../assets/0917(1).mp4'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { FaSpinner } from 'react-icons/fa'
 
 function OTP() {
-  const [loading, setLoading] = useState(false)
   const [OTPinput, setOTPinput] = useState([0, 0, 0, 0, 0, 0])
   const [timerCount, setTimer] = useState(60)
-  const [otp, setOtp] = useState('')
   const [disable, setDisable] = useState(true)
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(false)
 
   const email = localStorage.getItem('email')
 
   const resendOTP = () => {
-    setLoading(true)
     if (disable) return
+    setLoading(true)
     axios
-      .post(`https://koicaresystem.azurewebsites.net/api/auth/forgotPassword/${email}/${otp}`)
+      .post(`https://koicaresystem.azurewebsites.net/api/auth/forgotPassword/${email}`)
       .then(() => {
         setDisable(true)
-        alert('A new OTP has been sent to your email.')
         setTimer(60)
+        toast.success('A new OTP has been sent to your email.')
       })
-      .catch(console.log)
       .finally(() => setLoading(false))
   }
 
-  const verifyOTP = () => {
-    if (otp === OTPinput.join('')) {
-      navigate('/resetPassword')
-      toast.success('Navigate to reset password')
-    } else {
-      alert('The code you entered is incorrect. Please try again or resend the OTP.')
-    }
+  const verifyOTP = async () => {
+    const otp = OTPinput.join('')
+    localStorage.setItem('otp', otp)
+    axios
+      .post(`https://koicaresystem.azurewebsites.net/api/auth/verifyOtp/${email}/${otp}`)
+      .then(() => {
+        navigate('/resetPassword')
+        toast.success('input OTP success')
+      })
+      .catch(() => toast.error('input OTP fail !!'))
   }
-
-  useEffect(() => {
-    setOtp(OTPinput.join(''))
-  }, [OTPinput])
 
   useEffect(() => {
     let interval = setInterval(() => {
       setTimer((lastTimerCount) => {
-        if (lastTimerCount <= 1) {
-          clearInterval(interval)
-          setDisable(false)
-        }
-        return lastTimerCount > 0 ? lastTimerCount - 1 : 0
+        lastTimerCount <= 1 && clearInterval(interval)
+        if (lastTimerCount <= 1) setDisable(false)
+        if (lastTimerCount <= 0) return lastTimerCount
+        return lastTimerCount - 1
       })
     }, 1000)
     return () => clearInterval(interval)
@@ -66,27 +62,71 @@ function OTP() {
         <h5 className='text-black text-xl font-bold mb-6 text-center'>We have sent a code to your email {email}</h5>
 
         <div className='flex flex-row items-center justify-between mx-auto w-full mb-6'>
-          {OTPinput.map((_, index) => (
-            <div className='w-16 h-16' key={index}>
-              <input
-                maxLength='1'
-                className='w-full h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
-                type='text'
-                onChange={(e) => {
-                  const updatedOtp = [...OTPinput]
-                  updatedOtp[index] = e.target.value
-                  setOTPinput(updatedOtp)
-                }}
-              />
-            </div>
-          ))}
+          <div className='w-16 h-16'>
+            <input
+              maxLength='1'
+              className='w-full font-bold h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
+              type='text'
+              onChange={(e) => {
+                setOTPinput([e.target.value, OTPinput[1], OTPinput[2], OTPinput[3], OTPinput[4], OTPinput[5]])
+              }}
+            />
+          </div>
+          <div className='w-16 h-16'>
+            <input
+              maxLength='1'
+              className='w-full font-bold h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
+              type='text'
+              onChange={(e) => {
+                setOTPinput([OTPinput[0], e.target.value, OTPinput[2], OTPinput[3], OTPinput[4], OTPinput[5]])
+              }}
+            />
+          </div>
+          <div className='w-16 h-16'>
+            <input
+              maxLength='1'
+              className='w-full font-bold h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
+              type='text'
+              onChange={(e) => {
+                setOTPinput([OTPinput[0], OTPinput[1], e.target.value, OTPinput[3], OTPinput[4], OTPinput[5]])
+              }}
+            />
+          </div>
+          <div className='w-16 h-16'>
+            <input
+              maxLength='1'
+              className='w-full font-bold h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
+              type='text'
+              onChange={(e) => {
+                setOTPinput([OTPinput[0], OTPinput[1], OTPinput[2], e.target.value, OTPinput[4], OTPinput[5]])
+              }}
+            />
+          </div>
+          <div className='w-16 h-16'>
+            <input
+              maxLength='1'
+              className='w-full font-bold h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
+              type='text'
+              onChange={(e) => {
+                setOTPinput([OTPinput[0], OTPinput[1], OTPinput[2], OTPinput[3], e.target.value, OTPinput[5]])
+              }}
+            />
+          </div>
+          <div className='w-16 h-16'>
+            <input
+              maxLength='1'
+              className='w-full font-bold h-full flex items-center justify-center text-center px-5 outline-none rounded-xl border text-lg bg-gray-700 bg-transparent focus:ring-1 ring-red-600 border-gray-500 placeholder-gray-500'
+              type='text'
+              onChange={(e) => {
+                setOTPinput([OTPinput[0], OTPinput[1], OTPinput[2], OTPinput[3], OTPinput[4], e.target.value])
+              }}
+            />
+          </div>
         </div>
 
         <button
-          onClick={verifyOTP}
-          className={`w-full flex items-center justify-center bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold mb-6 ${
-            loading ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
+          onClick={() => verifyOTP()}
+          className='w-full flex items-center justify-center bg-red-600 hover:bg-red-700 text-white py-3 rounded-lg font-semibold mb-6'
         >
           <div className='flex items-center space-x-2'>
             {loading && <FaSpinner className='animate-spin' />}
@@ -94,20 +134,26 @@ function OTP() {
           </div>
         </button>
 
-        <div className='flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-gray-500'>
+        <div className='flex flex-row items-center justify-center text-center text-sm font-medium space-x-1 text-black'>
           <p className='text-black'>Didn't receive the code?</p>
-          <a
-            className='flex flex-row items-center'
+          <Link
+            className='flex flex-row items-center font-bold'
             style={{
-              color: disable ? 'gray' : 'blue',
+              color: disable ? 'black' : 'blue',
               cursor: disable ? 'not-allowed' : 'pointer',
               textDecoration: disable ? 'none' : 'underline'
             }}
-            onClick={resendOTP}
+            onClick={() => resendOTP()}
           >
             {disable ? `Resend OTP in ${timerCount}s` : 'Resend OTP'}
-          </a>
+          </Link>
         </div>
+
+        {/* <div className='text-black font-bold mt-2 text-center'>
+          <Link to='/email' className='text-black ml-1 font-bold'>
+            Back to input email
+          </Link>
+        </div> */}
       </div>
     </div>
   )

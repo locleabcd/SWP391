@@ -6,6 +6,7 @@ const path = {
   admin: '/admin',
   shop: '/shop',
   email: '/email',
+  policy: '/policy',
   otp: '/otp',
   resetPassword: '/resetPassword',
   verify: '/verifyPending',
@@ -23,7 +24,6 @@ const path = {
   saltCalculator: '/member/saltCalculator',
   statistics: '/member/statistics',
   news: '/member/news',
-  policy: '/policy',
   newsDetails: '/member/news/:id',
   koiDetail: '/member/myKoi/:id',
   about:'/member/about'

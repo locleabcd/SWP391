@@ -32,7 +32,7 @@ function Home() {
               <ul className='flex space-x-8'>
                 <li>
                   <ScrollLink
-                    to = 'home'
+                    to='home'
                     smooth={true}
                     duration={500}
                     spy={true}
@@ -44,7 +44,7 @@ function Home() {
                 </li>
                 <li>
                   <ScrollLink
-                    to = 'features'
+                    to='features'
                     smooth={true}
                     duration={500}
                     spy={true}
@@ -56,7 +56,7 @@ function Home() {
                 </li>
                 <li>
                   <ScrollLink
-                    to = 'about'
+                    to='about'
                     smooth={true}
                     duration={500}
                     spy={true}
@@ -92,35 +92,33 @@ function Home() {
       </div>
 
       {/* footer */}
-      <footer className="bg-gray-800 text-white py-6">
-          <div className="container mx-auto text-center">
-            <p className="mb-2">© 2024 Koi Care System.</p>
-            <p className="mb-2">Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh 700000</p>
-            <div className="flex justify-center ">
-            <p className="mb-2 px-3">
-              <a href="mailto:info@koicare.com" className="text-red-500 hover:underline">info@koicare.com</a>
-            </p>
-            <Link
-                    to='/policy'
-                    className='mb-2 px-3 underline'
-                  >
-                    policy
-                  </Link>
-            
-            </div>
-            <div className="flex justify-center space-x-4">
-              <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
-                <img src="../assets/facebook.png" alt="Facebook" className="w-6 h-6" />
-              </a>
-              <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer">
-                <img src="../assets/twitter.png" alt="Twitter" className="w-6 h-6" />
-              </a>
-              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
-                <img src="../assets/instagram.png" alt="Instagram" className="w-6 h-6" />
-              </a>
-            </div>
+      <footer className='bg-gray-800 text-white py-6'>
+        <div className='container mx-auto text-center'>
+          <p className='mb-2'>© 2024 Koi Care System.</p>
+          <p className='mb-2'>Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh 700000</p>
+          <p className='mb-2'>
+            <a href='mailto:info@koicare.com' className='text-red-500 hover:underline'>
+              info@koicare.com
+            </a>
+          </p>
+
+          <Link to='/policy' className='mb-2 px-3 underline'>
+            policy
+          </Link>
+
+          <div className='flex justify-center space-x-4'>
+            <a href='https://www.facebook.com' target='_blank' rel='noopener noreferrer'>
+              <img src='../assets/facebook.png' alt='Facebook' className='w-6 h-6' />
+            </a>
+            <a href='https://www.twitter.com' target='_blank' rel='noopener noreferrer'>
+              <img src='../assets/twitter.png' alt='Twitter' className='w-6 h-6' />
+            </a>
+            <a href='https://www.instagram.com' target='_blank' rel='noopener noreferrer'>
+              <img src='../assets/instagram.png' alt='Instagram' className='w-6 h-6' />
+            </a>
           </div>
-        </footer>
+        </div>
+      </footer>
     </div>
   )
 }
