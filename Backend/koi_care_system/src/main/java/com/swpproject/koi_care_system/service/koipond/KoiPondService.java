@@ -67,10 +67,6 @@ public class KoiPondService implements IKoiPondService {
             return koiPondRepository.save(oldKoiPond);
         }).orElseThrow(() -> new ResourceNotFoundException("Koi pond not found!"));
     }
-    @Override
-    public int numOfKoiFishInPond(KoiPond koiPond) {
-        return koiPond.getKoiFishList().size();
-    }
 
     @Override
     public List<KoiPondDto> getConvertedKoiPonds(List<KoiPond> koiPonds) {

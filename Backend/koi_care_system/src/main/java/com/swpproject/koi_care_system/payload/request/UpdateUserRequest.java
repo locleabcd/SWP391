@@ -14,4 +14,6 @@ public class UpdateUserRequest {
     String username;
     @Size(min = 8, message = "USER_PASSWORD")
     String password;
+    String role;
+    boolean status;
 }

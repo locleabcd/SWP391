@@ -15,10 +15,13 @@ import com.swpproject.koi_care_system.service.email.EmailService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 
 @Service
@@ -42,53 +45,45 @@ public class UserService implements IUserService {
         }
         User user = userMapper.maptoUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        //HashSet is used to save user roles and ensure that there are no duplicate roles
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.GUEST.name());
-        user.setRoles(roles);
+        user.setRole(Role.GUEST.name());
         //Verify user code email
-        user.setStatus(false);
 
         var token = authenticationService.generateToken(user);
-        emailService.send(user.getUsername(), user.getEmail(), "Welocome New User, Your Verify Email", token);
+        emailService.send(user.getUsername(), user.getEmail(), "Welcome New User, Your Verify Email", token);
 
         return userMapper.maptoUserDTO(userRepo.save(user));
 
     }
 
-
+    @PreAuthorize("hasRole('ADMIN')")
     public List<UserDTO> getListUser() {
         return userRepo.findAll().stream()
                 .map(userMapper::maptoUserDTO).toList();
-
     }
 
+    public UserDTO getMyInfo() {
+        var context = SecurityContextHolder.getContext();
+        String username = context.getAuthentication().getName();
+        return userMapper.maptoUserDTO(userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException("User Not Found")));
+    }
+
+    @PostAuthorize("returnObject.username == authentication.name")
     public UserDTO findUserByID(Long userID) {
         return userMapper.maptoUserDTO(userRepo.findById(userID).orElseThrow(() -> new RuntimeException("User Not Found")));
-    }
-
-    @Override
-    public Long getUserIdByUsername(String username) {
-        User user = userRepo.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        return user.getId();
-    }
-
-    @Override
-    public User getUserByUsername(String username) {
-        return userRepo.findByUsername(username)
-                .orElseThrow(()-> new RuntimeException("User not found"));
     }
 
     public UserDTO updateUserByID(Long id, UpdateUserRequest request) {
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
         userMapper.updateUser(user, request);
         return userMapper.maptoUserDTO(userRepo.save(user));
     }
 
     public void deleteUserByID(Long id) {
-        userRepo.deleteById(id);
+        userRepo.findById(id).ifPresentOrElse(userRepo::delete, () -> {
+            throw new RuntimeException("User not found");
+        });
     }
 
     @Override
@@ -96,10 +91,12 @@ public class UserService implements IUserService {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         user.setStatus(true);
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.MEMBER.name());
-        user.setRoles(roles);
+        user.setRole(Role.MEMBER.name());
         userRepo.save(user);
+    }
+    @Override
+    public User findUserByUserName(String username) {
+        return userRepo.findByUsername(username).orElseThrow(()-> new RuntimeException("User not found"));
     }
 
     @Override

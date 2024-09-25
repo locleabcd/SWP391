@@ -14,9 +14,7 @@ public interface IUserService {
     List<UserDTO> getListUser();
 
     UserDTO findUserByID(Long userID);
-    Long getUserIdByUsername(String username);
-
-    User getUserByUsername(String username);
+    User findUserByUserName(String username);
 
     UserDTO updateUserByID(Long id, UpdateUserRequest request);
 

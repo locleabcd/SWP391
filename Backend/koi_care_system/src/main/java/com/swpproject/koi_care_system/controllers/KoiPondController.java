@@ -7,16 +7,19 @@ import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
+import com.swpproject.koi_care_system.service.image.ImageStorage;
 import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import com.swpproject.koi_care_system.service.user.IUserService;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.module.ResolutionException;
 import java.util.List;
 
@@ -28,23 +31,29 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("/koiponds")
 public class KoiPondController {
     private final IKoiPondService koiPondService;
-    @Autowired
-    private IUserService userService;
+    private final IUserService userService;
+    private final ImageStorage imageStorage;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createKoiPond(@RequestBody AddKoiPondRequest koiPondRequest, Authentication authentication) {
-        try {
+    public ResponseEntity<ApiResponse> createKoiPond(@RequestParam String name, @RequestParam Double depth,@RequestParam int drainCount,
+         @RequestParam int volume,  @RequestParam int skimmer,@RequestParam Double pumpCapacity, @RequestParam(required = false) MultipartFile file, Authentication authentication) {
+
+        try{
+            String imageUrl;
+            try(InputStream inputStream = file.getInputStream()){
+                imageUrl = this.imageStorage.uploadImage(file.getOriginalFilename(), inputStream, file.getSize());
+            } catch (Exception e) {
+                imageUrl = "1234567";
+            }
             String username = authentication.getName();
-            User user = userService.getUserByUsername(username);
-            koiPondRequest.setUser(user);
-            KoiPond koiPond = koiPondService.addKoiPond(koiPondRequest);
+            User user = userService.findUserByUserName(username);
+            KoiPond koiPond = koiPondService.addKoiPond(new AddKoiPondRequest(name,drainCount,volume,depth,skimmer,pumpCapacity,user,imageUrl));
             KoiPondDto koiPondDto = koiPondService.convertToDto(koiPond);
             return ResponseEntity.ok(new ApiResponse("Add Koi pond success!", koiPondDto));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
     }
-
     @GetMapping("/user/{userID}/koiponds")
     public ResponseEntity<ApiResponse> getAllKoiPondByUserID(@PathVariable Long userID){
         try{
@@ -75,9 +84,16 @@ public class KoiPondController {
         }
     }
     @PutMapping("/koipond/{id}/update")
-    public ResponseEntity<ApiResponse> updateKoiPond(@PathVariable Long id,@RequestBody KoiPondUpdateRequest koiPond) {
+    public ResponseEntity<ApiResponse> updateKoiPond(@PathVariable Long id,@RequestParam String name, @RequestParam Double depth,@RequestParam int drainCount,
+             @RequestParam int volume,  @RequestParam int skimmer,@RequestParam Double pumpCapacity,@RequestParam String imageUrl,@RequestParam(required = false) MultipartFile file) {
         try {
-            KoiPond updatedKoiPond = koiPondService.updateKoiPond(koiPond, id);
+            String imageUrlNew;
+            try(InputStream inputStream = file.getInputStream()){
+                imageUrlNew = this.imageStorage.uploadImage(file.getOriginalFilename(), inputStream, file.getSize());
+            }catch (Exception e){
+                imageUrlNew = imageUrl;
+            }
+            KoiPond updatedKoiPond = koiPondService.updateKoiPond(new KoiPondUpdateRequest(name,drainCount,volume,depth,skimmer,pumpCapacity,imageUrlNew), id);
             KoiPondDto koiPondDto = koiPondService.convertToDto(updatedKoiPond);
             return ResponseEntity.ok(new ApiResponse("Update success!", koiPondDto));
         } catch (ResourceNotFoundException e) {

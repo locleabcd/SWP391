@@ -1,15 +1,11 @@
 package com.swpproject.koi_care_system.service.product;
 
-import com.swpproject.koi_care_system.dto.ImageDto;
 import com.swpproject.koi_care_system.dto.ProductDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
-import com.swpproject.koi_care_system.mapper.ImageMapper;
 import com.swpproject.koi_care_system.mapper.ProductMapper;
 import com.swpproject.koi_care_system.models.Category;
-import com.swpproject.koi_care_system.models.Image;
 import com.swpproject.koi_care_system.models.Product;
 import com.swpproject.koi_care_system.repository.CategoryRepository;
-import com.swpproject.koi_care_system.repository.ImageRepository;
 import com.swpproject.koi_care_system.repository.ProductRepository;
 import com.swpproject.koi_care_system.payload.request.AddProductRequest;
 import com.swpproject.koi_care_system.payload.request.ProductUpdateRequest;
@@ -27,9 +23,7 @@ import java.util.Optional;
 public class ProductService implements IProductService {
     ProductRepository productRepository;
     CategoryRepository categoryRepository;
-    ImageRepository imageRepository;
     ProductMapper productMapper;  // Inject ProductMapper
-    ImageMapper imageMapper;      // Inject ImageMapper
 
     public Product addProduct(AddProductRequest request) {
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
@@ -114,12 +108,6 @@ public class ProductService implements IProductService {
     }
 
     public ProductDto convertToDto(Product product) {
-        ProductDto productDto = productMapper.toDto(product);
-        List<Image> images = imageRepository.findByProductId(product.getId());
-        List<ImageDto> imageDtos = images.stream()
-                .map(imageMapper::toDto)
-                .toList();
-        productDto.setImages(imageDtos);
-        return productDto;
+        return productMapper.toDto(product);
     }
 }

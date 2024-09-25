@@ -4,12 +4,12 @@ server:
     context-path: /api
   error:
     include-message: always
-
 spring:
   profiles:
     active: dev
-    servlet:
-      multipart:
-        max-file-size: 50MB
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
 jwt:
-  signerKey: "UWOG67IDTlxApTrrn3ukTybaTHxvUyCuQ2FjMcTeRclpqNiPe9Yr3Fyt1j8zlvjn"
+  signerKey: "1Xt6QiR02nO30C3YVxkkG/qxQQ9sECaUY44pi2Do2SgF/OACYM7RKc/M+ED95TsX"

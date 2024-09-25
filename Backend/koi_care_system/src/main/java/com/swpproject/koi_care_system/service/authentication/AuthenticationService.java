@@ -6,23 +6,26 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.swpproject.koi_care_system.dto.UserDTO;
 import com.swpproject.koi_care_system.enums.ErrorCode;
+import com.swpproject.koi_care_system.enums.Role;
 import com.swpproject.koi_care_system.exceptions.AppException;
-import com.swpproject.koi_care_system.mapper.UserMapper;
 import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
 import com.swpproject.koi_care_system.payload.response.AuthenticationResponse;
 import com.swpproject.koi_care_system.repository.UserRepository;
+import com.swpproject.koi_care_system.service.email.IEmailService;
+import com.swpproject.koi_care_system.service.otp.IOtpService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -36,12 +39,14 @@ import java.util.Date;
 public class AuthenticationService implements IAuthenticationService {
     UserRepository userRepository;
     PasswordEncoder passwordEncoder;
-    UserMapper userMapper;
+    IEmailService emailService;
+    IOtpService otpService;
 
     @NonFinal
     @Value("${jwt.signerKey}")
     protected String SIGNER_KEY;
 
+    //Authenticate user
     @Override
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
@@ -51,19 +56,18 @@ public class AuthenticationService implements IAuthenticationService {
         if (!authenticated) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
-        UserDTO userDTO = userMapper.maptoUserDTO(user);
 
-        if (userDTO.getRoles().equals("GUEST")) {
+        if (user.getRole().equals(Role.GUEST.name())) {
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
         var token = generateToken(user);
 
         return AuthenticationResponse.builder()
-                .id(userDTO.getId())
-                .username(userDTO.getUsername())
-                .roles(userDTO.getRoles())
+                .id(user.getId())
+                .username(user.getUsername())
+                .role(user.getRole())
                 .token(token)
-                .isAuthenticated(true)
+                .authenticated(true)
                 .build();
     }
 
@@ -109,27 +113,62 @@ public class AuthenticationService implements IAuthenticationService {
 
         // Verify the token with signer key
         boolean verified = signedJWT.verify(verifier);
-        //check if the token is unexpired
-        boolean unexpired = expirationTime.after(new Date());
+        //check if the token is expired
+        boolean expired = expirationTime.before(new Date());//true if expired
 
-        if (verified && unexpired) {
+        if (verified && !expired) {
             return true;
         }
         if (!verified) {
             throw new AppException(ErrorCode.INVALID_TOKEN);
         }
-        if (!unexpired) {
-            throw new AppException(ErrorCode.TOKEN_EXPIRED);
-        }
+
         return false;//check if the token is valid and not unexpired
     }
 
+    //Enter email to get OTP
+    @Override
+    public boolean forgotPassword(String email) {
+        var user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        if (user != null) {
+            String otp = generateOtp();
+            otpService.saveOtp(email, otp);
+            emailService.sendOtp(user.getUsername(), user.getEmail(), "Forgot Password", otp);
+
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    public boolean verifyUserOtp(String email, String otp) {
+        return otpService.verifyOtp(email, otp);
+    }
+
+    @Override
+    public boolean resetPassword(String email, String password, String otp) {
+        if (otpService.verifyOtp(email, otp)) {
+            var user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+            user.setPassword(passwordEncoder.encode(password));
+            userRepository.save(user);
+            otpService.deleteOtp(email);
+            return true;
+        }
+        return false;
+    }
+
     private String buildScope(User user) {
-        if (user.getRoles() == null || user.getRoles().isEmpty()) {
+        if (user.getRole() == null || user.getRole().isEmpty()) {
             throw new AppException(ErrorCode.NO_ROLES);
         }
-        return user.getRoles().stream().findFirst().orElseThrow(() -> new AppException(ErrorCode.NO_ROLES));
+        return user.getRole();
+    }
+
+    private @NotNull String generateOtp() {
+        SecureRandom secureRandom = new SecureRandom();
+        int otp = secureRandom.nextInt(900000) + 100000; // Generates a number between 100000 and 999999
+        return String.valueOf(otp);
     }
 }
-
 

@@ -25,5 +25,6 @@ public class KoiFishDto {
     private String breeder;
     private Double price;
     private String imageUrl;
+    private KoiPondDto koiPond;
     private String status;
 }

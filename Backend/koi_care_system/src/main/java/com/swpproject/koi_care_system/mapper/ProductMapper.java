@@ -4,7 +4,7 @@ import com.swpproject.koi_care_system.dto.ProductDto;
 import com.swpproject.koi_care_system.models.Product;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring", uses = {ImageMapper.class})
+@Mapper(componentModel = "spring")
 public interface ProductMapper {
 
     ProductDto toDto(Product product);

@@ -15,8 +15,6 @@ public interface IKoiPondService {
     void deleteKoiPond(Long id);
     KoiPond updateKoiPond(KoiPondUpdateRequest koiPondUpdateRequest, Long koiPondId );
 
-    int numOfKoiFishInPond(KoiPond koiPond);
-
     List<KoiPondDto> getConvertedKoiPonds(List<KoiPond> koiPonds);
 
     KoiPondDto convertToDto(KoiPond koiPond);

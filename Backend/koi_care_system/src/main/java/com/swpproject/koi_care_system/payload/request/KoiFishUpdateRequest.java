@@ -17,4 +17,16 @@ public class KoiFishUpdateRequest {
     private KoiPond koiPond;
     private String imageUrl;
     private String status;
+    public KoiFishUpdateRequest(String name, int age, String gender, String variety, Date pondDate, String breeder, Double price, KoiPond koiPond, String imageUrl, String status) {
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.variety = variety;
+        this.pondDate = pondDate;
+        this.breeder = breeder;
+        this.price = price;
+        this.koiPond = koiPond;
+        this.imageUrl = imageUrl;
+        this.status = status;
+    }
 }

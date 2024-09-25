@@ -11,9 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Configuration
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -26,14 +23,12 @@ public class ApplicationInitConfig {
     public CommandLineRunner initRoles() {
         return args -> {
             if (!userRepository.existsByUsername("admin")) {
-                Set<String> roles = new HashSet<>();
-                roles.add(Role.ADMIN.name());
                 User admin = User.builder()
                         .username("admin")
                         .password(passwordEncoder.encode("admin"))
                         .email("admin@gmail.com")
                         .status(true)
-                        .roles(roles)
+                        .role(Role.ADMIN.name())
                         .build();
 
                 userRepository.save(admin);

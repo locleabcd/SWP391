@@ -5,6 +5,7 @@ import jdk.dynalink.linker.LinkerServices;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -34,10 +35,12 @@ public class User {
     List<KoiPond> koiPondList;
 
     @Column(nullable = false)
-    Set<String> roles;
+    String role;
 
     boolean status;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    Set<Blog> blogs = new HashSet<>();
 
 
 

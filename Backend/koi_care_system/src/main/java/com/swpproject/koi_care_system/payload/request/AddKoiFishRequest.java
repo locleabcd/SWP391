@@ -20,4 +20,19 @@ public class AddKoiFishRequest {
     private Double price;
     private KoiPond koiPond;
     private String imageUrl;
+    public AddKoiFishRequest(String name, String physique, int age, Double length, Double weight,
+                             String gender, String variety, Date pondDate, String breeder, Double price, KoiPond koiPond, String imageUrl) {
+        this.name = name;
+        this.physique = physique;
+        this.age = age;
+        this.length = length;
+        this.weight = weight;
+        this.gender = gender;
+        this.variety = variety;
+        this.pondDate = pondDate;
+        this.breeder = breeder;
+        this.price = price;
+        this.koiPond = koiPond;
+        this.imageUrl = imageUrl;
+    }
 }

@@ -1,0 +1,72 @@
+<table class="body-wrap"
+       style="font-family: 'Helvetica Neue',Helvetica,Arial,sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0;"
+       bgcolor="#f6f6f6" xmlns:th="http://www.thymeleaf.org">
+    <tbody>
+    <tr>
+        <td valign="top"></td>
+        <td class="container" width="600" valign="top">
+            <div class="content" style="max-width: 600px; padding: 20px;">
+                <table class="main" width="100%" cellpadding="0" cellspacing="0" bgcolor="#fff">
+                    <tbody>
+                    <tr>
+                        <td class=""
+                            style="font-size: 16px; color: #fff; text-align: center; background-color: #f1556c; padding: 20px;">
+                            <h2 style="font-size:32px;color:#fff;">Koi Care Company</h2> <br>
+                            <span style="margin-top: 10px;display: block;">Your One-Time Password (OTP)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="content-wrap" style="padding: 20px;" valign="top">
+                            <table width="100%">
+                                <tbody>
+                                <tr>
+                                    <td class="content-block" valign="top">
+                                        Hello <strong th:text="${name}">Name</strong>,
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content-block" valign="top">
+                                        <p>Please use the OTP below to complete your verification:</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content-block" valign="top" style="text-align: center;">
+                                        <p style="font-size: 22px; font-weight: bold; color: #333; margin:30px;">
+                                            <strong th:text="${otp}"></strong>
+                                        </p>
+                                        <p>Note: This OTP is valid for only 5 minutes.</p>
+                                        <p>If you did not request this OTP, please ignore this email.</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="content-block" valign="top" style="text-align: center;">
+                                        <img src="https://koicaresystemstorage.blob.core.windows.net/koi-image-container/ce458a0a-9b7a-4785-b018-266d3df777ce.jpg"
+                                             alt="OTP Verification Image"
+                                             style="width: 300px; display: block; margin: 0 auto 35px;">
+                                        <p style="margin-top: 20px; color: #333;">Thanks for choosing <b>Koi Care
+                                            Company</b>.</p>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                            <div class="footer" style="color: #999; padding: 20px;">
+                                <table width="100%">
+                                    <tbody>
+                                    <tr>
+                                        <td class="aligncenter content-block" align="center" style="padding-top: 10px;">
+                                            &copy; Koi Care Company. All rights reserved.
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </td>
+        <td valign="top"></td>
+    </tr>
+    </tbody>
+</table>

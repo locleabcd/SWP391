@@ -21,12 +21,13 @@ import static com.swpproject.koi_care_system.ultis.EmailUtils.getVerificationUrl
 @RequiredArgsConstructor
 public class EmailService implements IEmailService {
 
-    public static final String EMAIL_TEMPLATE = "emailtemplate";
+    private static final String EMAIL_TEMPLATE = "emailtemplate";
+    private static final String OTP_TEMPLATE = "otptemplate";
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
 
     @Value("${spring.mail.username}")
-    private String FROM_EMAIL;
+    protected String FROM_EMAIL;
 
     @Override
     @Async
@@ -49,7 +50,32 @@ public class EmailService implements IEmailService {
             // Send the email
             mailSender.send(mimeMessage);
 
-            System.out.println("Email sent successfully.");
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            throw new AppException(ErrorCode.SENDMAIL_FAILED);
+        }
+    }
+
+    @Override
+    public void sendOtp(String name, String to, String subject, String otp) {
+        try {
+            Context context = new Context();
+            context.setVariables(Map.of("name", name, "otp", otp));
+            String text = templateEngine.process(OTP_TEMPLATE, context);
+
+            // Create a MIME message
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+
+            // Use MimeMessageHelper to handle multipart and encoding
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, "UTF-8");
+            helper.setFrom(FROM_EMAIL); // From email
+            helper.setTo(to);           // Recipient
+            helper.setSubject(subject); // Email subject
+            helper.setText(text, true); // HTML content
+
+            // Send the email
+            mailSender.send(mimeMessage);
+
         } catch (MessagingException e) {
             e.printStackTrace();
             throw new AppException(ErrorCode.SENDMAIL_FAILED);

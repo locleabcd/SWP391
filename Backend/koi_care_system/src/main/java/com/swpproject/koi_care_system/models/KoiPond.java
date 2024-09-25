@@ -25,9 +25,6 @@ public class KoiPond {
     private int volume;
     private String imageUrl;
 
-    @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL, orphanRemoval = false)
-    List<KoiFish> koiFishList;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
