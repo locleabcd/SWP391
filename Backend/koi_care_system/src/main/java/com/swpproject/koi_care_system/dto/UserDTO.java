@@ -15,5 +15,6 @@ public class UserDTO {
     @Email
     String email;
     String role;
+    String token;
     boolean status;
 }

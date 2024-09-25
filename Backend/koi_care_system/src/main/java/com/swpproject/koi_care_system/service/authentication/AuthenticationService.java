@@ -6,12 +6,12 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import com.swpproject.koi_care_system.dto.UserDTO;
 import com.swpproject.koi_care_system.enums.ErrorCode;
 import com.swpproject.koi_care_system.enums.Role;
 import com.swpproject.koi_care_system.exceptions.AppException;
 import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
-import com.swpproject.koi_care_system.payload.response.AuthenticationResponse;
 import com.swpproject.koi_care_system.repository.UserRepository;
 import com.swpproject.koi_care_system.service.email.IEmailService;
 import com.swpproject.koi_care_system.service.otp.IOtpService;
@@ -48,7 +48,7 @@ public class AuthenticationService implements IAuthenticationService {
 
     //Authenticate user
     @Override
-    public AuthenticationResponse authenticate(AuthenticationRequest request) {
+    public UserDTO authenticate(AuthenticationRequest request) {
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
@@ -62,12 +62,13 @@ public class AuthenticationService implements IAuthenticationService {
         }
         var token = generateToken(user);
 
-        return AuthenticationResponse.builder()
+        return UserDTO.builder()
                 .id(user.getId())
                 .username(user.getUsername())
+                .email(user.getEmail())
                 .role(user.getRole())
                 .token(token)
-                .authenticated(true)
+                .status(true)
                 .build();
     }
 

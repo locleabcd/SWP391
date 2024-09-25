@@ -28,6 +28,7 @@ public class AuthenticationController {
     ResponseEntity<ApiResponse> authenticate(@RequestBody @Valid AuthenticationRequest request) {
         var result = authService.authenticate(request);
         return ResponseEntity.ok(ApiResponse.builder()
+                .message("Login successful")
                 .data(result)
                 .build());
     }
