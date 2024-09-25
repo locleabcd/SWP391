@@ -25,14 +25,14 @@ function Login() {
   const onSubmit = async (data) => {
     setLoading(true)
 
-    // if (!captcha) {
-    //   toast.warn('Please complete reCAPTCHA')
-    //   setLoading(false)
-    //   return
-    // }
+    if (!captcha) {
+      toast.warn('Please complete reCAPTCHA')
+      setLoading(false)
+      return
+    }
 
     try {
-      const response = await axios.post('https://koi-care-system.azurewebsites.net/api/auth/login', {
+      const response = await axios.post('https://koicaresystem.azurewebsites.net/api/auth/loginKoiCare', {
         username: data.username,
         password: data.password
       })
@@ -43,21 +43,21 @@ function Login() {
         localStorage.setItem('role', user.role)
         localStorage.setItem('id', user.id)
         localStorage.setItem('name', user.username)
-        
-          const role = user.role
 
-          switch (role) {
-            case 'ADMIN':
-              navigate('/admin')
-              break
-            case 'SHOP':
-              navigate('/shop')
-              break
-            case 'MEMBER':
-              navigate('/member')
-              break
-            default:
-              break         
+        const role = user.role
+
+        switch (role) {
+          case 'ADMIN':
+            navigate('/admin')
+            break
+          case 'SHOP':
+            navigate('/shop')
+            break
+          case 'MEMBER':
+            navigate('/member')
+            break
+          default:
+            break
         }
       }
 
@@ -153,10 +153,13 @@ function Login() {
         </div>
 
         <div className='flex items-center justify-between mt-2'>
-          <button className='flex items-center justify-center bg-white border hover:bg-gray-100 border-gray-300 text-gray-800 w-full py-3 rounded-lg mr-2'>
+          <Link
+            to='/oauth2/authorization/google'
+            className='flex items-center justify-center bg-white border hover:bg-gray-100 border-gray-300 text-gray-800 w-full py-3 rounded-lg mr-2'
+          >
             <img src='https://www.google.com/favicon.ico' alt='Google' className='h-5 mr-2' />
             Sign in with Google
-          </button>
+          </Link>
         </div>
 
         <div className='text-black font-bold mt-2 text-center'>

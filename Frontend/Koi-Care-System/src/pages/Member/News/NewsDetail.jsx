@@ -20,7 +20,7 @@ function NewsDetail() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/blog/getID/${id}`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/blog/getID/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -55,21 +55,20 @@ function NewsDetail() {
       <LeftSideBar />
       <div
         className={`relative ${
-          isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'
+          isDarkMode ? 'bg-custom-light text-white' : 'bg-gray-200 text-black'
         } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
-        <div className=' flex flex-col justify-center items-center py-10 px-60'>
+        <div className=' flex flex-col justify-center items-center py-10 px-72'>
           <div
             className={`${
               isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-            } px-5 py-5 shadow-sm rounded-lg`}
+            } px-10 py-5 shadow-sm rounded-lg`}
           >
-            <h1 className='text-3xl font-semibold flex justify-start'>{newDetail.blogTitle}</h1>
+            <h1 className='text-3xl font-semibold text-justify flex justify-start'>{newDetail.blogTitle}</h1>
             <div className='flex items-center mt-5'>
-              <p>{newDetail.user?.username} </p>
               <div>
-                <p> &bull; {newDetail.blogDate}</p>
+                <p> {newDetail.blogDate}</p>
               </div>
               {/* {newDetail.tags.map((tag) => (
               <span key={tag?.tagId} className='text-sm font-semibold text-gray-700 mr-1'>
@@ -78,7 +77,12 @@ function NewsDetail() {
             ))} */}
             </div>
             <div className='w-full mt-5'>
-              <img src={newDetail.blogImage} alt='blog' className='h-[50vh] w-full object-cover rounded-lg' />
+              <img
+                src={newDetail.blogImage}
+                alt='blog'
+                className='h-[50vh] w-full object-cover rounded-lg'
+                style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
+              />
             </div>
 
             <div className='py-5 flex w-full justify-between border-b border-gray-300'>
@@ -163,7 +167,7 @@ function NewsDetail() {
                   <div className='flex items-center'>
                     <div>
                       {newDetail.tags?.map((tag) => (
-                        <span key={tag.tagId} className='text-sm font-semibold text-gray-700 mr-1'>
+                        <span key={tag.tagId} className='text-sm font-semibold mr-1'>
                           {tag.tagName}
                         </span>
                       ))}
@@ -171,9 +175,8 @@ function NewsDetail() {
                     </div>
                   </div>
 
-                  <div className='flex items-center mt-5 text-slate-600 dark:text-slate-500 sm:ml-auto sm:mt-0'>
-                    {' '}
-                    Share this post:{' '}
+                  <div className='flex items-center mt-5 sm:ml-auto sm:mt-0'>
+                    Share this post:
                     <a
                       className='cursor-pointer flex items-center justify-center w-8 h-8 ml-2 border rounded-full sm:w-10 sm:h-10 dark:border-darkmode-400 text-slate-400 zoom-in'
                       href

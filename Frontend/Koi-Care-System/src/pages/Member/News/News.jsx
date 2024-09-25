@@ -22,7 +22,7 @@ function News() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/tag`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/tag`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -42,7 +42,7 @@ function News() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/blog`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/blog`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -82,7 +82,7 @@ function News() {
 
         <div
           className={`relative ${
-            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'
+            isDarkMode ? 'bg-custom-light text-white' : 'bg-gray-200 text-black'
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
@@ -103,7 +103,7 @@ function News() {
                     <p>{blog.user.username}</p>
                     <div className='flex justify-center items-center'>
                       {blog.tags.map((tag) => (
-                        <span key={tag.tagId} className='text-sm font-semibold text-gray-700 mr-1'>
+                        <span key={tag.tagId} className='text-sm font-semibold mr-1'>
                           {tag.tagName}
                         </span>
                       ))}
@@ -117,9 +117,14 @@ function News() {
 
                 <div className='p-5 border-b border-gray-300'>
                   <Link to={`/member/news/${blog.blogId}`}>
-                    <img src={blog.blogImage} alt={blog.blogTitle} className='w-full h-44 object-cover rounded-md' />
+                    <img
+                      src={blog.blogImage}
+                      alt={blog.blogTitle}
+                      className='w-full h-44 object-cover rounded-md'
+                      style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
+                    />
                     <div className='mt-4'>
-                      <h2 className='text-xl font-bold'>{blog.blogTitle}</h2>
+                      <h2 className='text-xl font-bold line-clamp-3'>{blog.blogTitle}</h2>
                       <p className='line-clamp-3 text-justify mt-4 tracking-tighter'>{blog.blogContent}</p>
                     </div>
                   </Link>

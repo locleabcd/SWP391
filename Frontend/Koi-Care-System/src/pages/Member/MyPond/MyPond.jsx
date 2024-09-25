@@ -65,7 +65,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -114,7 +114,7 @@ function MyPond() {
         formData.append('file', selectedFile)
         formData.append('imageUrl', data.imageUrl)
 
-        await axios.put(`https://koi-care-system.azurewebsites.net/api/koiponds/koipond/${id}/update`, formData, {
+        await axios.put(`https://koicaresystem.azurewebsites.net/api/koiponds/koipond/${id}/update`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -129,7 +129,7 @@ function MyPond() {
         formData.append('pumpCapacity', data.pumpCapacity)
         formData.append('volume', data.volume)
         formData.append('file', selectedFile)
-        await axios.post('https://koi-care-system.azurewebsites.net/api/koiponds/create', formData, {
+        await axios.post('https://koicaresystem.azurewebsites.net/api/koiponds/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -176,7 +176,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koi-care-system.azurewebsites.net/api/koiponds/koipond/${id}/delete`, {
+      await axios.delete(`https://koicaresystem.azurewebsites.net/api/koiponds/koipond/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -197,7 +197,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/koifishs/koipond/${id}/allKoi`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koifishs/koipond/${id}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -228,7 +228,7 @@ function MyPond() {
 
         <div
           className={`relative ${
-            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'
+            isDarkMode ? 'bg-custom-light text-white' : 'bg-gray-200 text-black'
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
@@ -246,14 +246,14 @@ function MyPond() {
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
 
-          <div className='p-4 w-full mt-2'>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
+          <div className='p-4 w-full'>
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 py-3'>
               {ponds.map((pond) => (
                 <div
                   key={pond.id}
                   className={`${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } border rounded-xl shadow cursor-pointer`}
+                  } rounded-xl shadow cursor-pointer`}
                   onClick={() => {
                     toggleEditFormVisibility(pond)
                     reset(pond)

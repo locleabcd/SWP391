@@ -106,7 +106,7 @@ function KoiDetails() {
         throw new Error('No token found')
       }
       const res = await axios.put(
-        `https://koi-care-system.azurewebsites.net/api/koifishs/koifish/${id}/update`,
+        `https://koicaresystem.azurewebsites.net/api/koifishs/koifish/${id}/update`,
         {
           name: data.name,
           physique: data.physique,
@@ -151,7 +151,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koi-care-system.azurewebsites.net/api/koifishs/koifish/${id}/delete`, {
+      await axios.delete(`https://koicaresystem.azurewebsites.net/api/koifishs/koifish/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

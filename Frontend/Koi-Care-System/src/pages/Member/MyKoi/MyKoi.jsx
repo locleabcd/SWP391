@@ -47,7 +47,7 @@ function MyKoi() {
       console.log(data)
       // eslint-disable-next-line no-unused-vars
       const res = await axios.post(
-        `https://koi-care-system.azurewebsites.net/api/koifishs/create`,
+        `https://koicaresystem.azurewebsites.net/api/koifishs/create`,
         {
           // ...data,
           name: data.name,
@@ -88,7 +88,7 @@ function MyKoi() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -109,7 +109,7 @@ function MyKoi() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/koifishs/user/${id}/allKoi`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koifishs/user/${id}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
