@@ -10,6 +10,7 @@ import AOS from 'aos'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import TopLayout from '../../../layouts/TopLayout'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
@@ -228,7 +229,7 @@ function MyPond() {
 
         <div
           className={`relative ${
-            isDarkMode ? 'bg-custom-light text-white' : 'bg-gray-200 text-black'
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
@@ -246,14 +247,16 @@ function MyPond() {
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
 
-          <div className='p-4 w-full'>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 py-3'>
+          <div className='py-5 px-[30px] mx-auto'>
+            <TopLayout text='My Pond' />
+
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-3'>
               {ponds.map((pond) => (
                 <div
                   key={pond.id}
                   className={`${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } rounded-xl shadow cursor-pointer`}
+                  } rounded-xl cursor-pointer border`}
                   onClick={() => {
                     toggleEditFormVisibility(pond)
                     reset(pond)

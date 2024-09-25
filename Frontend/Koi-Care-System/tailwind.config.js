@@ -9,7 +9,11 @@ export default {
       colors: {
         'custom-dark': '#24303F',
         'custom-Beige': '#EBDDCB',
-        'custom-light': '#1A222C'
+        'custom-light': '#1A222C',
+        'custom-layout-light': '#ECF2FF',
+        'custom-layout-dark': '#253662',
+        'custom-left-bar': '#5D87FF',
+        'custom-border': 'rgb(51, 63, 85)'
       },
       animation: {
         'slow-spin': 'spin 4s linear infinite'

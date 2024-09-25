@@ -8,6 +8,7 @@ import 'aos/dist/aos.css'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { FaSpinner } from 'react-icons/fa'
+import TopLayout from '../../../layouts/TopLayout'
 
 function MyKoi() {
   const { isDarkMode } = useDarkMode()
@@ -141,7 +142,7 @@ function MyKoi() {
       <div className='h-screen flex'>
         <LeftSideBar />
         <div
-          className={`relative ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'} 
+          className={`relative ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} 
            shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
@@ -156,7 +157,9 @@ function MyKoi() {
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
-          <div className='p-4 w-full mt-4 z-0'>
+          <div className='py-10 px-[30px] mx-auto'>
+            <TopLayout text='My Koi' />
+
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-2'>
               {kois.map((koi) => (
                 <div key={koi.id} className='border p-4 rounded-lg shadow bg-white'>
