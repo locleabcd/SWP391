@@ -7,7 +7,7 @@ import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.image.ImageStorage;
+import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import com.swpproject.koi_care_system.service.user.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +18,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.module.ResolutionException;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -36,8 +37,7 @@ public class KoiPondController {
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createKoiPond(@RequestParam String name, @RequestParam Double depth,@RequestParam int drainCount,
-         @RequestParam int volume,  @RequestParam int skimmer,@RequestParam Double pumpCapacity, @RequestParam(required = false) MultipartFile file, Authentication authentication) {
-
+                                                     @RequestParam int volume,  @RequestParam int skimmer,@RequestParam Double pumpCapacity, @RequestParam(required = false) MultipartFile file, Authentication authentication) {
         try{
             String imageUrl;
             try(InputStream inputStream = file.getInputStream()){
@@ -64,6 +64,57 @@ public class KoiPondController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error",INTERNAL_SERVER_ERROR));
         }
     }
+    @GetMapping("/user/{userID}/koiponds/sorted-by-name")
+    public ResponseEntity<ApiResponse> getSortedKoiPondsByUserID(@PathVariable Long userID, @RequestParam(defaultValue = "asc") String order) {
+        try {
+            List<KoiPond> koiPonds = koiPondService.getKoiPondByUserID(userID);
+            if ("desc".equalsIgnoreCase(order)) {
+                koiPonds.sort((a, b) -> b.getName().compareToIgnoreCase(a.getName()));
+            } else {
+                koiPonds.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
+            }
+            List<KoiPondDto> koiPondDtos = koiPondService.getConvertedKoiPonds(koiPonds);
+
+            return ResponseEntity.ok(new ApiResponse("Found and sorted!", koiPondDtos));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error", INTERNAL_SERVER_ERROR));
+        }
+    }
+    @GetMapping("/user/{userID}/koiponds/sorted-by-volume")
+    public ResponseEntity<ApiResponse> getSortedKoiPondsByUserIDAndVolume(@PathVariable Long userID, @RequestParam(defaultValue = "asc") String order) {
+        try {
+            List<KoiPond> koiPonds = koiPondService.getKoiPondByUserID(userID);
+
+            if ("desc".equalsIgnoreCase(order)) {
+                koiPonds.sort((a, b) -> Integer.compare(b.getVolume(), a.getVolume()));
+            } else {
+                koiPonds.sort(Comparator.comparingInt(KoiPond::getVolume));
+            }
+            List<KoiPondDto> koiPondDtos = koiPondService.getConvertedKoiPonds(koiPonds);
+            return ResponseEntity.ok(new ApiResponse("Found and sorted by volume!", koiPondDtos));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error", INTERNAL_SERVER_ERROR));
+        }
+    }
+    @GetMapping("/user/{userID}/koiponds/sorted-by-numberOfFish")
+    public ResponseEntity<ApiResponse> getSortedKoiPondsByUserIDAndNumberOfFish(@PathVariable Long userID, @RequestParam(defaultValue = "asc") String order) {
+        try {
+            List<KoiPond> koiPonds = koiPondService.getKoiPondByUserID(userID);
+            koiPonds = koiPonds.stream()
+                    .map(pond -> koiPondService.getKoiPondWithFishCount(pond.getId()))
+                    .collect(Collectors.toList());
+            if ("desc".equalsIgnoreCase(order)) {
+                koiPonds.sort((a, b) -> Integer.compare(b.getNumberOfFish(),a.getNumberOfFish()));
+            } else {
+                koiPonds.sort(Comparator.comparingInt(KoiPond::getNumberOfFish));
+            }
+            List<KoiPondDto> koiPondDtos = koiPondService.getConvertedKoiPonds(koiPonds);
+            return ResponseEntity.ok(new ApiResponse("Found and sorted by number of fish!", koiPondDtos));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error", INTERNAL_SERVER_ERROR));
+        }
+    }
+
     @GetMapping("/koipond/{id}")
     public ResponseEntity<ApiResponse> getKoiPondByID(@PathVariable Long id){
         try{
@@ -85,7 +136,7 @@ public class KoiPondController {
     }
     @PutMapping("/koipond/{id}/update")
     public ResponseEntity<ApiResponse> updateKoiPond(@PathVariable Long id,@RequestParam String name, @RequestParam Double depth,@RequestParam int drainCount,
-             @RequestParam int volume,  @RequestParam int skimmer,@RequestParam Double pumpCapacity,@RequestParam String imageUrl,@RequestParam(required = false) MultipartFile file) {
+                                                     @RequestParam int volume,  @RequestParam int skimmer,@RequestParam Double pumpCapacity,@RequestParam String imageUrl,@RequestParam(required = false) MultipartFile file) {
         try {
             String imageUrlNew;
             try(InputStream inputStream = file.getInputStream()){
