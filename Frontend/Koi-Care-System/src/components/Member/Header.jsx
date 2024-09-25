@@ -26,7 +26,7 @@ function Header() {
         isDarkMode
           ? 'bg-custom-dark text-white border-b border-gray-700'
           : 'bg-white text-black border-b border-gray-200'
-      } sticky top-0 p-3 justify-end z-999 flex w-full duration-200 ease-linear`}
+      } sticky top-0 p-3 justify-end z-20 flex w-full duration-200 ease-linear`}
     >
       <div className='flex items-center justify-end ml-4'>
         <div className='mr-4 flex justify-center items-center gap-2'>
@@ -134,7 +134,11 @@ function Header() {
                   isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
                 }`}
               >
-                <NavLink to={path.profile} end className=' px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'>
+                <NavLink
+                  to={path.profile}
+                  end
+                  className=' px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center '
+                >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -151,10 +155,7 @@ function Header() {
                   </svg>
                   <span>My Profile</span>
                 </NavLink>
-                <NavLink
-                  to={path.shopCart}
-                  className='block px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'
-                >
+                <NavLink to={path.shopCart} className=' px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -174,7 +175,7 @@ function Header() {
                 <Link
                   onClick={handleLogout}
                   to={path.login}
-                  className='block px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'
+                  className='px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'
                 >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'

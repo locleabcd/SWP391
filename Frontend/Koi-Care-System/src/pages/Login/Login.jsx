@@ -25,11 +25,11 @@ function Login() {
   const onSubmit = async (data) => {
     setLoading(true)
 
-    if (!captcha) {
-      toast.warn('Please complete reCAPTCHA')
-      setLoading(false)
-      return
-    }
+    // if (!captcha) {
+    //   toast.warn('Please complete reCAPTCHA')
+    //   setLoading(false)
+    //   return
+    // }
 
     try {
       const response = await axios.post('https://koicaresystem.azurewebsites.net/api/auth/login', {
@@ -43,20 +43,21 @@ function Login() {
         localStorage.setItem('role', user.role)
         localStorage.setItem('id', user.id)
         localStorage.setItem('name', user.username)
-        const role = user.role
+        
+          const role = user.role
 
-        switch (role) {
-          case 'ADMIN':
-            navigate('/admin')
-            break
-          case 'SHOP':
-            navigate('/shop')
-            break
-          case 'MEMBER':
-            navigate('/member')
-            break
-          default:
-            break
+          switch (role) {
+            case 'ADMIN':
+              navigate('/admin')
+              break
+            case 'SHOP':
+              navigate('/shop')
+              break
+            case 'MEMBER':
+              navigate('/member')
+              break
+            default:
+              break         
         }
       }
 
@@ -96,11 +97,7 @@ function Login() {
               placeholder='***********'
               className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none transition-colors duration-200'
               {...register('password', {
-                required: 'Password is required',
-                minLength: {
-                  value: 8,
-                  message: 'Password must be at least 7 characters'
-                }
+                required: 'Password is required'
               })}
             />
             <span
@@ -130,9 +127,9 @@ function Login() {
               <input type='checkbox' className='form-checkbox text-blue-500 rounded' />
               <span className='ml-2 text-black font-bold'>Remember me</span>
             </label>
-            <a href='#' className='text-black font-bold cursor-pointer mt-2'>
+            <Link to='/email' className='text-black font-bold cursor-pointer mt-2'>
               Forgot password?
-            </a>
+            </Link>
           </div>
 
           <button

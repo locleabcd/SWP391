@@ -21,7 +21,7 @@ function Home() {
             {/* logo */}
             <div className='flex items-center'>
               <button className='p-1 ml-6 rounded-md '>
-                <img className='w-12 animate-spin' src={logo} alt='Logo' />
+                <img className='w-12 animate-slow-spin' src={logo} alt='Logo' />
               </button>
               <a href='#' className=' text-xl font-bold text-gray-800'>
                 Koi Care System
@@ -32,6 +32,7 @@ function Home() {
               <ul className='flex space-x-8'>
                 <li>
                   <ScrollLink
+                    to='home'
                     smooth={true}
                     duration={500}
                     spy={true}
@@ -43,6 +44,7 @@ function Home() {
                 </li>
                 <li>
                   <ScrollLink
+                    to='features'
                     smooth={true}
                     duration={500}
                     spy={true}
@@ -54,6 +56,7 @@ function Home() {
                 </li>
                 <li>
                   <ScrollLink
+                    to='about'
                     smooth={true}
                     duration={500}
                     spy={true}
@@ -75,16 +78,16 @@ function Home() {
             </nav>
           </div>
         </div>
-        <div>
+        <div id='home'>
           <Homepage />
         </div>
       </div>
 
-      <div>
+      <div id='features'>
         <Feature />
       </div>
 
-      <div>
+      <div id='about'>
         <About />
       </div>
 
@@ -98,6 +101,11 @@ function Home() {
               info@koicare.com
             </a>
           </p>
+
+          <Link to='/policy' className='mb-2 px-3 underline'>
+            policy
+          </Link>
+
           <div className='flex justify-center space-x-4'>
             <a href='https://www.facebook.com' target='_blank' rel='noopener noreferrer'>
               <img src='../assets/facebook.png' alt='Facebook' className='w-6 h-6' />

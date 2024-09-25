@@ -1,15 +1,17 @@
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import Header from '../../../components/Member/Header'
 import { useDarkMode } from '../../../components/DarkModeContext'
-import { formatDistanceToNow } from 'date-fns'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function NewsDetail() {
   const [newDetail, setNewsDetail] = useState([])
   const { id } = useParams()
   const { isDarkMode } = useDarkMode()
+  const navigate = useNavigate()
 
   const getBlogDetail = async () => {
     try {
@@ -28,7 +30,19 @@ function NewsDetail() {
       console.log('data', res.data.data)
       console.log('data', res.data.data.user.username)
     } catch (error) {
-      console.log('Error fetching blog detail:', error)
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          console.error('Unauthorized access - Token expired or invalid. Logging out...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('id')
+          toast.error('Token expired navigate to login')
+          navigate('/login')
+        } else {
+          console.error('Error fetching ponds:', error.response?.status, error.message)
+        }
+      } else {
+        console.error('An unexpected error occurred:', error)
+      }
     }
   }
 
@@ -41,21 +55,21 @@ function NewsDetail() {
       <LeftSideBar />
       <div
         className={`relative ${
-          isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-300 text-black'
+          isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'
         } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
-        <div className=' flex flex-col justify-center items-center py-10 px-20'>
+        <div className=' flex flex-col justify-center items-center py-10 px-60'>
           <div
             className={`${
               isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-            } px-20 py-5 border border-gray-500 rounded-lg`}
+            } px-5 py-5 shadow-sm rounded-lg`}
           >
             <h1 className='text-3xl font-semibold flex justify-start'>{newDetail.blogTitle}</h1>
             <div className='flex items-center mt-5'>
-              <p>{newDetail.user?.username}</p>
+              <p>{newDetail.user?.username} </p>
               <div>
-                <p>&bull; {newDetail.blogDate}</p>
+                <p> &bull; {newDetail.blogDate}</p>
               </div>
               {/* {newDetail.tags.map((tag) => (
               <span key={tag?.tagId} className='text-sm font-semibold text-gray-700 mr-1'>
@@ -121,22 +135,38 @@ function NewsDetail() {
               </div>
             </div>
 
-            <p className='py-5 border-b border-gray-300'>{newDetail.blogContent}</p>
+            <p className='py-5 indent-8 text-justify'>{newDetail.blogContent}</p>
+            <p className='py-5 border-b border-gray-300 indent-8 text-justify'>
+              Koi fish are longer so they are less suitable for aquariums and more suitable for ponds. Goldfish with
+              their shorter size are more compatible for aquariums though they live well in ponds as well. Koi fish are
+              bred to look beautiful when being seen from the top because they are intended as pond fish. Earlier
+              goldfish were bred as pond fish but they were later bred to look beautiful from side view because they are
+              meant to be kept in aquarium. Most types of fancy goldfish have abnormal body structure that make them
+              prone to get swim bladder disease while none of the koi bred have this abnormality. Both are carps but
+              belong to different species. Both specieses can produce hybrid offsprings but the offsprings are
+              infertile/sterile (Unable to reproduce.). Both fish can live together with no problem. Koi will migrate
+              significant distances to reach their preferred spawning grounds — flooded meadows and stagnant marshy
+              areas. The breeding season is in the spring, around May or June. Females reproduce for the first time when
+              they are between 4 and 6 years old, males when they are between 3 and 5 years old. Once they reach sexual
+              maturity, they will breed every year. They attach their sticky eggs to water plants or any object
+              submerged in the water. The young hatch as larvae and stay in warm, shallow flooded areas until they are
+              large enough to brave more open waterways.
+            </p>
 
             <div className='flex border-b py-4 border-gray-300 items-center gap-2'>
               <img
                 src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
                 className='w-10 h-10 rounded-full border border-gray-300'
               />
-              <div>
+              <div className='w-full'>
                 <div className='flex justify-between items-center'>
                   <div className='flex items-center'>
-                    {newDetail.tags?.map((tag) => (
-                      <span key={tag.tagId} className='text-sm font-semibold text-gray-700 mr-1'>
-                        {tag.tagName}
-                      </span>
-                    ))}
                     <div>
+                      {newDetail.tags?.map((tag) => (
+                        <span key={tag.tagId} className='text-sm font-semibold text-gray-700 mr-1'>
+                          {tag.tagName}
+                        </span>
+                      ))}
                       <p>{newDetail?.user?.username}</p>
                     </div>
                   </div>
@@ -158,7 +188,7 @@ function NewsDetail() {
                         strokeWidth={2}
                         strokeLinecap='round'
                         strokeLinejoin='round'
-                        className='lucide lucide-facebook-icon stroke-1.5 w-3 h-3 fill-current w-3 h-3 fill-current'
+                        className='lucide lucide-facebook-icon stroke-1.5 w-3 h-3 fill-current '
                       >
                         <path d='M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z' />
                       </svg>
@@ -177,7 +207,7 @@ function NewsDetail() {
                         strokeWidth={2}
                         strokeLinecap='round'
                         strokeLinejoin='round'
-                        className='lucide lucide-twitter-icon stroke-1.5 w-3 h-3 fill-current w-3 h-3 fill-current'
+                        className='lucide lucide-twitter-icon stroke-1.5 w-3 h-3 fill-current '
                       >
                         <path d='M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z' />
                       </svg>
@@ -196,7 +226,7 @@ function NewsDetail() {
                         strokeWidth={2}
                         strokeLinecap='round'
                         strokeLinejoin='round'
-                        className='lucide lucide-linkedin-icon stroke-1.5 w-3 h-3 fill-current w-3 h-3 fill-current'
+                        className='lucide lucide-linkedin-icon stroke-1.5 w-3 h-3 fill-current '
                       >
                         <path d='M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z' />
                         <rect width={4} height={12} x={2} y={9} />

@@ -23,7 +23,7 @@ function LeftSideBar() {
       <div className='relative '>
         {isClosed ? (
           <button
-            className={`absolute duration-200 ease-linear left-0 top-6 p-1 z-10 ${
+            className={`absolute duration-200 ease-linear left-0 top-6 p-1 z-30 ${
               isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
             } `}
             onClick={() => setClosed(false)}
@@ -41,7 +41,7 @@ function LeftSideBar() {
           </button>
         ) : (
           <button
-            className={`absolute left-[260px] top-6 p-1 z-10 ${
+            className={`absolute left-[260px] top-6 p-1 z-30 ${
               isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
             } `}
             onClick={() => setClosed(true)}
