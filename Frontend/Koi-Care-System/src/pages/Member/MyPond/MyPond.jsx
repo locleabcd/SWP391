@@ -274,7 +274,7 @@ function MyPond() {
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer'
+            className='fixed z-50 bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer'
             onClick={() => {
               toggleAddFormVisibility()
             }}
