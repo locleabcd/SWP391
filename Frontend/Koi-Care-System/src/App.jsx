@@ -132,7 +132,7 @@ function App() {
       element: <KoiDetail />
     },
     {
-      path: path.about,
+      path: path.aboutMember,
       element: <About />
     }
   ])

@@ -154,7 +154,7 @@ function Login() {
 
         <div className='flex items-center justify-between mt-2'>
           <Link
-            to='/oauth2/authorization/google'
+            to='https://koicaresystem.azurewebsites.net/api/oauth2/authorization/google'
             className='flex items-center justify-center bg-white border hover:bg-gray-100 border-gray-300 text-gray-800 w-full py-3 rounded-lg mr-2'
           >
             <img src='https://www.google.com/favicon.ico' alt='Google' className='h-5 mr-2' />

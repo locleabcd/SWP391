@@ -10,12 +10,12 @@ import AOS from 'aos'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import TopLayout from '../../../layouts/TopLayout'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
   const [ponds, setPonds] = useState([])
   const [koi, setKoi] = useState([])
-  const [isFormVisible, setIsFormVisible] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isAddFormVisible, setIsAddFormVisible] = useState(false)
@@ -24,8 +24,13 @@ function MyPond() {
   const [baseImage, setBaseImage] = useState('')
   const [koiCounts, setKoiCounts] = useState({})
   const [selectedFile, setSelectedFile] = useState(null)
+  const [showButtons, setShowButtons] = useState(false)
 
   const navigate = useNavigate()
+
+  const toggleButtons = () => {
+    setShowButtons(!showButtons)
+  }
 
   const {
     register,
@@ -221,6 +226,37 @@ function MyPond() {
     }
   }, [ponds])
 
+  const sortPonds = (name, sort) => {
+    let sortedArray = [...ponds]
+    console.log(sortedArray)
+
+    if (sort === 'volume') {
+      sortedArray.sort((a, b) => (name === 'asc' ? a.volume - b.volume : b.volume - a.volume))
+    } else if (sort === 'name') {
+      sortedArray.sort((a, b) => (name === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)))
+    } else if (sort === 'koiCount') {
+      sortedArray.sort((a, b) =>
+        name === 'asc'
+          ? (koiCounts[a.id] || 0) - (koiCounts[b.id] || 0)
+          : (koiCounts[b.id] || 0) - (koiCounts[a.id] || 0)
+      )
+    }
+
+    setPonds(sortedArray)
+  }
+
+  const sortVolume = (sortType) => {
+    sortPonds(sortType, 'volume')
+  }
+
+  const sortByKoiCount = (sortType) => {
+    sortPonds(sortType, 'koiCount')
+  }
+
+  const sortByName = (sortType) => {
+    sortPonds(sortType, 'name')
+  }
+
   return (
     <div>
       <div className='h-screen flex'>
@@ -228,7 +264,7 @@ function MyPond() {
 
         <div
           className={`relative ${
-            isDarkMode ? 'bg-custom-light text-white' : 'bg-gray-200 text-black'
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
@@ -246,14 +282,97 @@ function MyPond() {
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
 
-          <div className='p-4 w-full'>
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-6 py-3'>
+          <div className='py-5 px-[30px] mx-auto'>
+            <TopLayout text='My Pond' />
+            <div className='w-full flex justify-end relative'>
+              <div className='cursor-pointer' onClick={toggleButtons}>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth={1.5}
+                  stroke='currentColor'
+                  className='w-8 h-8 mb-4 text-red-500'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75'
+                  />
+                </svg>
+
+                <div
+                  className={`absolute right-0 transition-all duration-500 -mt-3 border z-10 ease-in-out overflow-hidden ${
+                    showButtons ? 'max-h-50 opacity-100' : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div
+                    className={`${
+                      isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                    } flex flex-col space-y-2 shadow-lg rounded-lg p-4`}
+                  >
+                    <button
+                      className={`${
+                        isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
+                      } btn py-2 px-4 rounded `}
+                      onClick={() => sortByKoiCount('desc')}
+                    >
+                      Sorted by Number of Fish (desc)
+                    </button>
+                    <button
+                      className={`${
+                        isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
+                      } btn py-2 px-4 rounded `}
+                      onClick={() => sortByKoiCount('asc')}
+                    >
+                      Sorted by Number of Fish (asc)
+                    </button>
+                    <button
+                      className={`${
+                        isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
+                      } btn py-2 px-4 rounded `}
+                      onClick={() => sortByName('desc')}
+                    >
+                      Sorted by Name (Z-A)
+                    </button>
+                    <button
+                      className={`${
+                        isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
+                      } btn py-2 px-4 rounded `}
+                      onClick={() => sortByName('asc')}
+                    >
+                      Sorted by Name (A-Z)
+                    </button>
+                    <button
+                      className={`${
+                        isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
+                      } btn py-2 px-4 rounded `}
+                      onClick={() => sortVolume('asc')}
+                    >
+                      Sorted by Volume (asc)
+                    </button>
+                    <button
+                      className={`${
+                        isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
+                      } btn py-2 px-4 rounded `}
+                      onClick={() => sortVolume('desc')}
+                    >
+                      Sorted by Volume (desc)
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Conditionally render the buttons */}
+            </div>
+
+            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-3'>
               {ponds.map((pond) => (
                 <div
                   key={pond.id}
                   className={`${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } rounded-xl shadow cursor-pointer`}
+                  } rounded-xl cursor-pointer border`}
                   onClick={() => {
                     toggleEditFormVisibility(pond)
                     reset(pond)

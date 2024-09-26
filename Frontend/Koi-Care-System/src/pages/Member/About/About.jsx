@@ -1,6 +1,7 @@
 import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
+import TopLayout from '../../../layouts/TopLayout'
 
 function About() {
   const { isDarkMode } = useDarkMode()
@@ -16,6 +17,10 @@ function About() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
+
+          <div className='py-5 px-[30px] mx-auto'>
+            <TopLayout text='About' />
+          </div>
         </div>
       </div>
     </div>

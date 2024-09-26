@@ -5,7 +5,6 @@ const DarkModeContext = createContext()
 // eslint-disable-next-line react/prop-types
 export function DarkModeProvider({ children }) {
   const [isDarkMode, setIsDarkMode] = useState(() => {
-    // Check localStorage or default to light mode
     const savedMode = localStorage.getItem('darkMode')
     return savedMode ? JSON.parse(savedMode) : false
   })
