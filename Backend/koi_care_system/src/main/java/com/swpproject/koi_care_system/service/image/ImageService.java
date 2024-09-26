@@ -84,6 +84,5 @@ public class ImageService implements IImageService {
         } catch (IOException | SQLException e) {
             throw new RuntimeException(e.getMessage());
         }
-
     }
 }

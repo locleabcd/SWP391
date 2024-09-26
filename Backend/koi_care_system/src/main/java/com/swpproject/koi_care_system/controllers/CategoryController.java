@@ -1,11 +1,9 @@
-package com.dailycodework.dreamshops.controller;
-
-
-import com.dailycodework.dreamshops.exceptions.AlreadyExistsException;
-import com.dailycodework.dreamshops.exceptions.ResourceNotFoundException;
-import com.dailycodework.dreamshops.model.Category;
-import com.dailycodework.dreamshops.response.ApiResponse;
-import com.dailycodework.dreamshops.service.category.ICategoryService;
+package com.swpproject.koi_care_system.controllers;
+import com.swpproject.koi_care_system.exceptions.AlreadyExistsException;
+import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
+import com.swpproject.koi_care_system.models.Category;
+import com.swpproject.koi_care_system.payload.response.ApiResponse;
+import com.swpproject.koi_care_system.service.category.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +14,7 @@ import static org.springframework.http.HttpStatus.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/categories")
+@RequestMapping("/categories")
 public class CategoryController {
     private final ICategoryService categoryService;
 

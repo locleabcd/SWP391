@@ -31,7 +31,6 @@ public class UserController {
                 .data(userService.createUser(request))
                 .build());
     }
-
     @GetMapping
     public ResponseEntity<ApiResponse> getUsers() {
         return ResponseEntity.ok(ApiResponse.builder()

@@ -1,13 +1,12 @@
-package com.dailycodework.dreamshops.controller;
+package com.swpproject.koi_care_system.controllers;
 
-
-import com.dailycodework.dreamshops.dto.ProductDto;
-import com.dailycodework.dreamshops.exceptions.ResourceNotFoundException;
-import com.dailycodework.dreamshops.model.Product;
-import com.dailycodework.dreamshops.request.AddProductRequest;
-import com.dailycodework.dreamshops.request.ProductUpdateRequest;
-import com.dailycodework.dreamshops.response.ApiResponse;
-import com.dailycodework.dreamshops.service.product.IProductService;
+import com.swpproject.koi_care_system.dto.ProductDto;
+import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
+import com.swpproject.koi_care_system.models.Product;
+import com.swpproject.koi_care_system.payload.request.AddProductRequest;
+import com.swpproject.koi_care_system.payload.request.ProductUpdateRequest;
+import com.swpproject.koi_care_system.payload.response.ApiResponse;
+import com.swpproject.koi_care_system.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/products")
+@RequestMapping("/products")
 public class ProductController {
     private final IProductService productService;
 
@@ -31,14 +30,10 @@ public class ProductController {
     }
 
     @GetMapping("product/{productId}/product")
-    public ResponseEntity<ApiResponse> getProductById(@PathVariable Long productId) {
-        try {
-            Product product = productService.getProductById(productId);
-            ProductDto productDto = productService.convertToDto(product);
-            return  ResponseEntity.ok(new ApiResponse("success", productDto));
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
-        }
+    public ResponseEntity<ApiResponse> getProductById(@PathVariable Long productId) throws ResourceNotFoundException {
+        Product product = productService.getProductById(productId);
+        ProductDto productDto = productService.convertToDto(product);
+        return  ResponseEntity.ok(new ApiResponse("success", productDto));
     }
 
     @PostMapping("/add")

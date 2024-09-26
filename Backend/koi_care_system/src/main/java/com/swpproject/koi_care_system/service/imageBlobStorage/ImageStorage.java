@@ -1,8 +1,11 @@
 package com.swpproject.koi_care_system.service.imageBlobStorage;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
-import java.io.InputStream;
+import java.util.List;
 
 public interface ImageStorage {
-    String uploadImage(String originalImageName, InputStream data,Long length ) throws IOException;
+    String uploadImage(MultipartFile file) throws IOException;
+    List<String> uploadListImage(List<MultipartFile> file)throws IOException;
 }

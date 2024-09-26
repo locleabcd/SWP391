@@ -1,6 +1,5 @@
-package com.dailycodework.dreamshops.service.cart;
-
-import com.dailycodework.dreamshops.model.Cart;
+package com.swpproject.koi_care_system.service.cart;
+import com.swpproject.koi_care_system.models.Cart;
 
 import java.math.BigDecimal;
 

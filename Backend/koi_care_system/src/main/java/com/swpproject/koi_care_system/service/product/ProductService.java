@@ -1,9 +1,9 @@
 package com.swpproject.koi_care_system.service.product;
-
-
 import com.swpproject.koi_care_system.dto.ImageDto;
 import com.swpproject.koi_care_system.dto.ProductDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
+import com.swpproject.koi_care_system.mapper.ImageMapper;
+import com.swpproject.koi_care_system.mapper.ProductMapper;
 import com.swpproject.koi_care_system.models.Category;
 import com.swpproject.koi_care_system.models.Image;
 import com.swpproject.koi_care_system.models.Product;
@@ -23,9 +23,9 @@ import java.util.Optional;
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final ModelMapper modelMapper;
+    private final ProductMapper productMapper;
     private final ImageRepository imageRepository;
-
+    private final ImageMapper imageMapper;
     @Override
     public Product addProduct(AddProductRequest request) {
 
@@ -48,8 +48,6 @@ public class ProductService implements IProductService {
                 category
         );
     }
-
-
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
@@ -126,10 +124,10 @@ public class ProductService implements IProductService {
 
     @Override
     public ProductDto convertToDto(Product product) {
-        ProductDto productDto = modelMapper.map(product, ProductDto.class);
+        ProductDto productDto = productMapper.mapToProductDto(product);
         List<Image> images = imageRepository.findByProductId(product.getId());
         List<ImageDto> imageDtos = images.stream()
-                .map(image -> modelMapper.map(image, ImageDto.class))
+                .map(imageMapper::mapToImageDto)
                 .toList();
         productDto.setImages(imageDtos);
         return productDto;

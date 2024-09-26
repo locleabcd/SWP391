@@ -76,12 +76,4 @@ public class KoiPondService implements IKoiPondService {
     public KoiPondDto convertToDto(KoiPond koiPond) {
         return koiPondMapper.toDto(koiPond);
     }
-
-    @Override
-    public KoiPond getKoiPondWithFishCount(Long pondId) {
-        KoiPond koiPond = koiPondRepository.findById(pondId).orElseThrow(() -> new RuntimeException("KoiPond not found"));
-        int fishCount = koiPondRepository.countKoiFishByPondId(pondId);
-        koiPond.setNumberOfFish(fishCount);
-        return koiPond;
-    }
 }

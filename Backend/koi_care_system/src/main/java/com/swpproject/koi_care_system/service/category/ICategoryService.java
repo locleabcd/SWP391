@@ -1,6 +1,6 @@
-package com.dailycodework.dreamshops.service.category;
+package com.swpproject.koi_care_system.service.category;
 
-import com.dailycodework.dreamshops.model.Category;
+import com.swpproject.koi_care_system.models.Category;
 
 import java.util.List;
 

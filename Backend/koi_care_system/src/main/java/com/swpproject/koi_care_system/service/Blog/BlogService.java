@@ -40,7 +40,6 @@ public class BlogService implements IBlogService {
             throw new RuntimeException("Blog already exists");
         }
         Blog blog = blogMapper.mapToBlog(blogCreateRequest);
-        blog.setBlogImage("default.jpg");
         blog.setBlogDate(java.time.LocalDate.now());
 
         Set<Tag> tags = new HashSet<>();

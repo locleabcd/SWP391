@@ -1,17 +1,17 @@
-package com.dailycodework.dreamshops.service.order;
+package com.swpproject.koi_care_system.service.order;
 
-import com.dailycodework.dreamshops.dto.OrderDto;
-import com.dailycodework.dreamshops.enums.OrderStatus;
-import com.dailycodework.dreamshops.exceptions.ResourceNotFoundException;
-import com.dailycodework.dreamshops.model.Cart;
-import com.dailycodework.dreamshops.model.Order;
-import com.dailycodework.dreamshops.model.OrderItem;
-import com.dailycodework.dreamshops.model.Product;
-import com.dailycodework.dreamshops.repository.OrderRepository;
-import com.dailycodework.dreamshops.repository.ProductRepository;
-import com.dailycodework.dreamshops.service.cart.CartService;
+import com.swpproject.koi_care_system.dto.OrderDto;
+import com.swpproject.koi_care_system.enums.OrderStatus;
+import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
+import com.swpproject.koi_care_system.mapper.OrderMapper;
+import com.swpproject.koi_care_system.models.Cart;
+import com.swpproject.koi_care_system.models.Order;
+import com.swpproject.koi_care_system.models.OrderItem;
+import com.swpproject.koi_care_system.models.Product;
+import com.swpproject.koi_care_system.repository.OrderRepository;
+import com.swpproject.koi_care_system.repository.ProductRepository;
+import com.swpproject.koi_care_system.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,8 +26,7 @@ public class OrderService implements IOrderService {
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
     private final CartService cartService;
-    private final ModelMapper modelMapper;
-
+    private final OrderMapper orderMapper;
 
     @Transactional
     @Override
@@ -75,17 +74,14 @@ public class OrderService implements IOrderService {
     @Override
     public OrderDto getOrder(Long orderId) {
         return orderRepository.findById(orderId)
-                .map(this :: convertToDto)
+                .map(orderMapper::toDto)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
     }
 
     @Override
     public List<OrderDto> getUserOrders(Long userId) {
         List<Order> orders = orderRepository.findByUserId(userId);
-        return  orders.stream().map(this :: convertToDto).toList();
+        return  orders.stream().map(orderMapper :: toDto).toList();
     }
 
-    private OrderDto convertToDto(Order order) {
-        return modelMapper.map(order, OrderDto.class);
-    }
 }

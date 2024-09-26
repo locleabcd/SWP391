@@ -1,5 +1,4 @@
-package com.dailycodework.dreamshops.dto;
-
+package com.swpproject.koi_care_system.dto;
 import lombok.Data;
 
 import java.math.BigDecimal;

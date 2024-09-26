@@ -1,10 +1,8 @@
-package com.dailycodework.dreamshops.controller;
-
-import com.dailycodework.dreamshops.exceptions.ResourceNotFoundException;
-import com.dailycodework.dreamshops.model.Cart;
-import com.dailycodework.dreamshops.response.ApiResponse;
-import com.dailycodework.dreamshops.service.cart.CartService;
-import com.dailycodework.dreamshops.service.cart.ICartService;
+package com.swpproject.koi_care_system.controllers;
+import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
+import com.swpproject.koi_care_system.models.Cart;
+import com.swpproject.koi_care_system.payload.response.ApiResponse;
+import com.swpproject.koi_care_system.service.cart.ICartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,12 +13,12 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/carts")
+@RequestMapping("/carts")
 public class CartController {
     private final ICartService cartService;
 
     @GetMapping("/{cartId}/my-cart")
-    public ResponseEntity<ApiResponse> getCart( @PathVariable Long cartId) {
+    public ResponseEntity<ApiResponse> getCart(@PathVariable Long cartId) {
         try {
             Cart cart = cartService.getCart(cartId);
             return ResponseEntity.ok(new ApiResponse("Success", cart));

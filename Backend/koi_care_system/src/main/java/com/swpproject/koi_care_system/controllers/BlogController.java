@@ -5,14 +5,17 @@ import com.swpproject.koi_care_system.payload.request.BlogCreateRequest;
 import com.swpproject.koi_care_system.payload.request.BlogUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.Blog.IBlogService;
+import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
+
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestController
 @RequestMapping("/blog")
@@ -20,23 +23,34 @@ import java.util.List;
 public class BlogController {
 
     private final IBlogService blogService;
-
+    private final ImageStorage imageStorage;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createBlog(@RequestBody @Valid BlogCreateRequest blogCreateRequest, Authentication authentication) {
-        String username = authentication.getName();
-        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
-                .data(blogService.createBlog(blogCreateRequest, username))
-                .message("Blog has been created")
-                .build());
+    public ResponseEntity<ApiResponse> createBlog(@RequestBody @Valid BlogCreateRequest blogCreateRequest, Authentication authentication, @RequestParam(required = false) MultipartFile file){
+        try {
+            String username = authentication.getName();
+            blogCreateRequest.setBlogImage(!file.isEmpty() ? imageStorage.uploadImage(file) : "");
+            return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
+                    .data(blogService.createBlog(blogCreateRequest, username))
+                    .message("Blog has been created")
+                    .build());
+        }catch (Exception e){
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        }
     }
 
     @PutMapping("/update/{blogId}")
-    public ResponseEntity<ApiResponse> updateBlog(@PathVariable int blogId, @RequestBody @Valid BlogUpdateRequest blogUpdateRequest) {
-        return ResponseEntity.ok(ApiResponse.builder()
-                .data(blogService.updateBlog(blogId, blogUpdateRequest))
-                .message("Blog has been updated")
-                .build());
+    public ResponseEntity<ApiResponse> updateBlog(@PathVariable int blogId, @RequestBody @Valid BlogUpdateRequest blogUpdateRequest, @RequestParam(required = false) MultipartFile file){
+        try {
+            blogUpdateRequest.setBlogImage(!file.isEmpty() ? imageStorage.uploadImage(file):"");
+
+            return ResponseEntity.ok(ApiResponse.builder()
+                    .data(blogService.updateBlog(blogId, blogUpdateRequest))
+                    .message("Blog has been updated")
+                    .build());
+        }catch (Exception e){
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        }
     }
 
     @GetMapping("/getID/{blogId}")

@@ -1,6 +1,5 @@
-package com.dailycodework.dreamshops.repository;
-
-import com.dailycodework.dreamshops.model.Order;
+package com.swpproject.koi_care_system.repository;
+import com.swpproject.koi_care_system.models.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

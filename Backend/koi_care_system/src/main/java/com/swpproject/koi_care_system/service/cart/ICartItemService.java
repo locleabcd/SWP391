@@ -1,6 +1,6 @@
-package com.dailycodework.dreamshops.service.cart;
+package com.swpproject.koi_care_system.service.cart;
 
-import com.dailycodework.dreamshops.model.CartItem;
+import com.swpproject.koi_care_system.models.CartItem;
 
 public interface ICartItemService {
     void addItemToCart(Long cartId, Long productId, int quantity);

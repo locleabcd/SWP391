@@ -1,7 +1,6 @@
 package com.swpproject.koi_care_system.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -30,6 +29,13 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="issue_id")
+    private Issue issue;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="supplier_id")
+    private Supplier supplier;
     public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category) {
         this.name = name;
         this.brand = brand;

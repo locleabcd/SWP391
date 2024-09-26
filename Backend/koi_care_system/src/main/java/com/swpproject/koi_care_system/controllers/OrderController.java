@@ -1,10 +1,9 @@
-package com.dailycodework.dreamshops.controller;
-
-import com.dailycodework.dreamshops.dto.OrderDto;
-import com.dailycodework.dreamshops.exceptions.ResourceNotFoundException;
-import com.dailycodework.dreamshops.model.Order;
-import com.dailycodework.dreamshops.response.ApiResponse;
-import com.dailycodework.dreamshops.service.order.IOrderService;
+package com.swpproject.koi_care_system.controllers;
+import com.swpproject.koi_care_system.dto.OrderDto;
+import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
+import com.swpproject.koi_care_system.models.Order;
+import com.swpproject.koi_care_system.payload.response.ApiResponse;
+import com.swpproject.koi_care_system.service.order.IOrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("${api.prefix}/orders")
+@RequestMapping("/orders")
 public class OrderController {
     private final IOrderService orderService;
 
