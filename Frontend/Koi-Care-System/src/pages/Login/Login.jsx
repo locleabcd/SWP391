@@ -32,7 +32,7 @@ function Login() {
     // }
 
     try {
-      const response = await axios.post('https://koicaresystem.azurewebsites.net/api/auth/login', {
+      const response = await axios.post('https://koicaresystem.azurewebsites.net/api/auth/loginKoiCare', {
         username: data.username,
         password: data.password
       })

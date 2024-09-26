@@ -114,7 +114,7 @@ function MyPond() {
         formData.append('file', selectedFile)
         formData.append('imageUrl', data.imageUrl)
 
-        await axios.put(`https://koi-care-system.azurewebsites.net/api/koiponds/koipond/${id}/update`, formData, {
+        await axios.put(`https://koicaresystem.azurewebsites.net/api/koiponds/koipond/${id}/update`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -129,7 +129,7 @@ function MyPond() {
         formData.append('pumpCapacity', data.pumpCapacity)
         formData.append('volume', data.volume)
         formData.append('file', selectedFile)
-        await axios.post('https://koi-care-system.azurewebsites.net/api/koiponds/create', formData, {
+        await axios.post('https://koicaresystem.azurewebsites.net/api/koiponds/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -197,7 +197,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/koifishs/koipond/${id}/allKoi`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koifishs/koipond/${id}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
