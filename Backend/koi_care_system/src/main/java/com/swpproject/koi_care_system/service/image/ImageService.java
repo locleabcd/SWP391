@@ -8,6 +8,7 @@ import com.swpproject.koi_care_system.repository.ImageRepository;
 import com.swpproject.koi_care_system.service.imageBlobStorage.AzureImageStorage;
 import com.swpproject.koi_care_system.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,6 +27,7 @@ public class ImageService implements IImageService {
                 .orElseThrow(() -> new ResourceNotFoundException("No image found with id: " + id));
     }
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deleteImageById(Long id) {
         imageRepository.findById(id).ifPresentOrElse(image -> {
             try {
@@ -40,6 +42,7 @@ public class ImageService implements IImageService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public List<ImageDto> saveImages(Long productId, List<MultipartFile> files) {
         Product product = productService.getProductById(productId);
 
@@ -69,6 +72,7 @@ public class ImageService implements IImageService {
         return savedImageDto;
     }
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void updateImage(MultipartFile file, Long imageId) {
         Image image = getImageById(imageId);
         try {

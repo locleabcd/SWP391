@@ -12,6 +12,7 @@ import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -25,6 +26,7 @@ public class KoiPondService implements IKoiPondService {
     KoiPondMapper koiPondMapper;
     ImageStorage imageStorage;
     @Override
+    @PreAuthorize("hasRole('MEMBER')")
     public KoiPond addKoiPond(AddKoiPondRequest request) {
         if (koiPondRepository.existsByName(request.getName())) {
             throw new AlreadyExistsException("A Koi Pond with this name already exists");
@@ -43,15 +45,18 @@ public class KoiPondService implements IKoiPondService {
         return koiPondRepository.save(koiPond);
     }
     @Override
+    @PreAuthorize("hasRole('MEMBER')")
     public KoiPond getKoiPondById(Long id) {
         return koiPondRepository.findKoiPondsById(id);
     }
     @Override
+    @PreAuthorize("hasRole('MEMBER')")
     public List<KoiPond> getKoiPondByUserID(Long userID) {
         return  koiPondRepository.findByUserId(userID)
                 .orElseThrow(() -> new ResourceNotFoundException("No Koi Ponds found for user with ID: " + userID));
     }
     @Override
+    @PreAuthorize("hasRole('MEMBER')")
     public void deleteKoiPond(Long id) {
         koiPondRepository.findById(id)
                 .ifPresentOrElse(koiPond->{
@@ -67,6 +72,7 @@ public class KoiPondService implements IKoiPondService {
                 });
     }
     @Override
+    @PreAuthorize("hasRole('MEMBER')")
     public KoiPond updateKoiPond(KoiPondUpdateRequest koiPondUpdateRequest, Long koiPondId) {
         return Optional.ofNullable(getKoiPondById(koiPondId)).map(oldKoiPond -> {
             if(!oldKoiPond.getImageUrl().isEmpty()) {
@@ -86,7 +92,6 @@ public class KoiPondService implements IKoiPondService {
             return koiPondRepository.save(oldKoiPond);
         }).orElseThrow(() -> new ResourceNotFoundException("Koi pond not found!"));
     }
-
     @Override
     public List<KoiPondDto> getConvertedKoiPonds(List<KoiPond> koiPonds) {
         return koiPonds.stream().map(this::convertToDto).toList();

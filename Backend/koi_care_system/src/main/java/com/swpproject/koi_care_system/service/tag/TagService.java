@@ -26,6 +26,7 @@ public class TagService implements ITagService {
     TagMapper tagMapper;
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public TagDto createTag(TagCreateRequest request) {
         if (tagRepository.existsByTagName(request.getTagName())) {
             throw new AppException(ErrorCode.TAG_EXISTED);
@@ -37,6 +38,7 @@ public class TagService implements ITagService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public TagDto updateTag(int id, TagUpdateRequest request) {
         Tag tag = tagRepository.findById(id).orElseThrow(() -> new RuntimeException("Tag not found"));
         tagMapper.updateTag(tag, request);
@@ -45,6 +47,7 @@ public class TagService implements ITagService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deleteTag(int id) {
         tagRepository.findById(id).ifPresentOrElse(tagRepository::delete, () -> {
             throw new RuntimeException("Tag not found");

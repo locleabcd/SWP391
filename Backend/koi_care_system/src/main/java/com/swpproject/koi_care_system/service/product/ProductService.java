@@ -1,6 +1,7 @@
 package com.swpproject.koi_care_system.service.product;
 import com.swpproject.koi_care_system.dto.ImageDto;
 import com.swpproject.koi_care_system.dto.ProductDto;
+import com.swpproject.koi_care_system.dto.PromotionDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.mapper.ImageMapper;
 import com.swpproject.koi_care_system.mapper.ProductMapper;
@@ -15,6 +16,7 @@ import com.swpproject.koi_care_system.repository.ImageRepository;
 import com.swpproject.koi_care_system.repository.ProductRepository;
 import com.swpproject.koi_care_system.repository.SupplierRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,8 +32,8 @@ public class ProductService implements IProductService {
     private final ImageMapper imageMapper;
     private final SupplierRepository supplierRepository;
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public Product addProduct(AddProductRequest request) {
-
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(() -> {
                     Category newCategory = new Category(request.getCategory().getName());
@@ -60,6 +62,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deleteProductById(Long id) {
         productRepository.findById(id)
                 .ifPresentOrElse(productRepository::delete,
@@ -67,6 +70,7 @@ public class ProductService implements IProductService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public Product updateProduct(ProductUpdateRequest request, Long productId) {
         return productRepository.findById(productId)
                 .map(existingProduct -> updateExistingProduct(existingProduct,request))
@@ -132,15 +136,20 @@ public class ProductService implements IProductService {
     public List<ProductDto> getConvertedProducts(List<Product> products) {
       return products.stream().map(this::convertToDto).toList();
     }
-
     @Override
     public ProductDto convertToDto(Product product) {
         ProductDto productDto = productMapper.mapToProductDto(product);
+
         List<Image> images = imageRepository.findByProductId(product.getId());
         List<ImageDto> imageDtos = images.stream()
                 .map(imageMapper::mapToImageDto)
                 .toList();
         productDto.setImages(imageDtos);
+
+        List<PromotionDto> promotionDtos = product.getPromotions().stream()
+                .map(productMapper::mapToPromotionDto)
+                .toList();
+        productDto.setPromotions(promotionDtos);
         return productDto;
     }
 }

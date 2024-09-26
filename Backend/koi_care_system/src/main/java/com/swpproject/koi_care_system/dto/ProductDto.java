@@ -3,6 +3,7 @@ package com.swpproject.koi_care_system.dto;
 import com.swpproject.koi_care_system.models.Category;
 import com.swpproject.koi_care_system.models.Supplier;
 import lombok.Data;
+import org.springframework.data.annotation.Transient;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,4 +19,6 @@ public class ProductDto {
     private Category category;
     private Supplier supplier;
     private List<ImageDto> images;
+    private List<PromotionDto> promotions;
+
 }

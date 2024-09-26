@@ -13,6 +13,7 @@ import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -29,6 +30,7 @@ public class KoiFishService implements IKoiFishService {
     KoiFishMapper koiFishMapper;
     ImageStorage imageStorage;
     @Override
+    @PreAuthorize("hasRole('MEMBER')")
     public KoiFish addKoiFish(AddKoiFishRequest addKoiFishRequest) {
         if(koiFishRepository.existsByName(addKoiFishRequest.getName())){
             throw new AlreadyExistsException("A Koi fish with this name already exists");
@@ -52,11 +54,13 @@ public class KoiFishService implements IKoiFishService {
         return koiFishRepository.save(koiFish);
     }
     @Override
+    @PreAuthorize("hasRole('MEMBER')")
     public KoiFish getKoiFishById(Long id) {
         return koiFishRepository.findKoiFishById(id);
     }
 
     @Override
+    @PreAuthorize("hasRole('MEMBER')")
     public List<KoiFish> getKoiFishByKoiPond(Long koiPondId) {
         return koiFishRepository.findByKoiPondId(koiPondId)
                 .orElseThrow(()->new ResourceNotFoundException("No Koi fish found for koi pond with ID: " + koiPondId));
@@ -70,6 +74,7 @@ public class KoiFishService implements IKoiFishService {
         }).flatMap(List::stream).toList();
     }
     @Override
+    @PreAuthorize("hasRole('MEMBER')")
     public void deleteKoiFish(Long id) {
         koiFishRepository.findById(id)
                 .ifPresentOrElse(koiFishRepository::delete, ()->{
@@ -78,6 +83,7 @@ public class KoiFishService implements IKoiFishService {
     }
 
     @Override
+    @PreAuthorize("hasRole('MEMBER')")
     public KoiFish updateKoiFish(KoiFishUpdateRequest koiFishUpdateRequest, Long koiFishId) {
         return Optional.ofNullable(getKoiFishById(koiFishId)).map(oldKoiFish ->{
             if(!oldKoiFish.getImageUrl().isEmpty()){

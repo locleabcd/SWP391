@@ -8,6 +8,7 @@ import com.swpproject.koi_care_system.payload.request.AddSupplierRequest;
 import com.swpproject.koi_care_system.payload.request.SupplierUpdateRequest;
 import com.swpproject.koi_care_system.repository.SupplierRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,22 +21,26 @@ public class SupplierService implements ISupplierService {
     private final SupplierRepository supplierRepository;
     private final SupplierMapper supplierMapper;
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public Supplier getSupplierById(Long id) {
         return supplierRepository.findById(id)
                 .orElseThrow(()->new ResourceNotFoundException("Supplier not found!"));
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public Supplier getSupplierByName(String name) {
         return supplierRepository.findByName(name);
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public List<Supplier> getAllSupplier() {
         return supplierRepository.findAll();
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public Supplier addSupplier(AddSupplierRequest addSupplierRequest) {
         if(supplierRepository.existsByName(addSupplierRequest.getName())){
             throw new AlreadyExistsException("The supplier with this name already exists");
@@ -50,6 +55,7 @@ public class SupplierService implements ISupplierService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public Supplier updateSupplier(SupplierUpdateRequest supplier, Long id) {
         return Optional.ofNullable(getSupplierById(id)).map(oldSupplier ->{
             oldSupplier.setName(supplier.getName());
@@ -60,6 +66,7 @@ public class SupplierService implements ISupplierService {
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deleteSupplierById(Long id) {
         supplierRepository.findById(id)
                 .ifPresentOrElse(supplierRepository::delete,()->{
