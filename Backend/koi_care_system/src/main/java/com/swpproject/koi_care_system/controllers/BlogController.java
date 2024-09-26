@@ -4,7 +4,7 @@ import com.swpproject.koi_care_system.dto.BlogDto;
 import com.swpproject.koi_care_system.payload.request.BlogCreateRequest;
 import com.swpproject.koi_care_system.payload.request.BlogUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.Blog.IBlogService;
+import com.swpproject.koi_care_system.service.blog.IBlogService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

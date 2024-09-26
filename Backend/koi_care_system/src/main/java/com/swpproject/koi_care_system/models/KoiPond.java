@@ -35,6 +35,9 @@ public class KoiPond {
     @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL, orphanRemoval = true)
     List<WaterParametersHistory> waterParametersHistoryList;
 
+    @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Log> logList;
+
     public KoiPond(Long id, String name, int drainCount, Double depth, int skimmer, Double pumpCapacity,int volume,User user, String imageUrl) {
         this.id = id;
         this.name = name;
