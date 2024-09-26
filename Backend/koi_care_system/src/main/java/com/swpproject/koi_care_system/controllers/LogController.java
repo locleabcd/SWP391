@@ -2,7 +2,6 @@ package com.swpproject.koi_care_system.controllers;
 
 import com.swpproject.koi_care_system.payload.request.LogCreateRequest;
 import com.swpproject.koi_care_system.payload.request.LogUpdateRequest;
-import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.log.ILogService;
 import jakarta.validation.Valid;

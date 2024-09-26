@@ -1,7 +1,6 @@
 package com.swpproject.koi_care_system.payload.request;
 
 import com.swpproject.koi_care_system.enums.LogCategory;
-import com.swpproject.koi_care_system.models.KoiPond;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
