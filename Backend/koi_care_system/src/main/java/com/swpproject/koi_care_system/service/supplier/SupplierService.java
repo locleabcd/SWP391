@@ -2,7 +2,6 @@ package com.swpproject.koi_care_system.service.supplier;
 
 import com.swpproject.koi_care_system.exceptions.AlreadyExistsException;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
-import com.swpproject.koi_care_system.mapper.SupplierMapper;
 import com.swpproject.koi_care_system.models.Supplier;
 import com.swpproject.koi_care_system.payload.request.AddSupplierRequest;
 import com.swpproject.koi_care_system.payload.request.SupplierUpdateRequest;
@@ -19,7 +18,6 @@ import java.util.Optional;
 public class SupplierService implements ISupplierService {
 
     private final SupplierRepository supplierRepository;
-    private final SupplierMapper supplierMapper;
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public Supplier getSupplierById(Long id) {

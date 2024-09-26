@@ -1,7 +1,6 @@
 package com.swpproject.koi_care_system.models;
 
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

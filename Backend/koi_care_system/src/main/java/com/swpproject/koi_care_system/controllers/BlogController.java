@@ -6,13 +6,11 @@ import com.swpproject.koi_care_system.payload.request.BlogUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.Blog.IBlogService;
 import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -26,10 +24,10 @@ public class BlogController {
     private final ImageStorage imageStorage;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createBlog(@RequestBody @Valid BlogCreateRequest blogCreateRequest, Authentication authentication, @RequestParam(required = false) MultipartFile file){
+    public ResponseEntity<ApiResponse> createBlog(@ModelAttribute BlogCreateRequest blogCreateRequest, Authentication authentication){
         try {
             String username = authentication.getName();
-            blogCreateRequest.setBlogImage(!file.isEmpty() ? imageStorage.uploadImage(file) : "");
+            blogCreateRequest.setBlogImage(!blogCreateRequest.getFile().isEmpty() ? imageStorage.uploadImage(blogCreateRequest.getFile()) : "");
             return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
                     .data(blogService.createBlog(blogCreateRequest, username))
                     .message("Blog has been created")
@@ -38,12 +36,10 @@ public class BlogController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
     }
-
     @PutMapping("/update/{blogId}")
-    public ResponseEntity<ApiResponse> updateBlog(@PathVariable int blogId, @RequestBody @Valid BlogUpdateRequest blogUpdateRequest, @RequestParam(required = false) MultipartFile file){
+    public ResponseEntity<ApiResponse> updateBlog(@PathVariable int blogId, @ModelAttribute BlogUpdateRequest blogUpdateRequest){
         try {
-            blogUpdateRequest.setBlogImage(!file.isEmpty() ? imageStorage.uploadImage(file):"");
-
+            blogUpdateRequest.setBlogImage(!blogUpdateRequest.getFile().isEmpty() ? imageStorage.uploadImage(blogUpdateRequest.getFile()): blogUpdateRequest.getBlogImage());
             return ResponseEntity.ok(ApiResponse.builder()
                     .data(blogService.updateBlog(blogId, blogUpdateRequest))
                     .message("Blog has been updated")
@@ -52,7 +48,6 @@ public class BlogController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
     }
-
     @GetMapping("/getID/{blogId}")
     public ResponseEntity<ApiResponse> getBlogById(@PathVariable int blogId) {
         return ResponseEntity.ok(ApiResponse.builder()

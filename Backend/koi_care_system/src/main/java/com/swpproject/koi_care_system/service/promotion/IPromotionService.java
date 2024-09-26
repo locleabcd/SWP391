@@ -1,7 +1,6 @@
 package com.swpproject.koi_care_system.service.promotion;
 
 import com.swpproject.koi_care_system.dto.PromotionDto;
-import com.swpproject.koi_care_system.models.Promotion;
 import com.swpproject.koi_care_system.payload.request.AddPromotionRequest;
 import com.swpproject.koi_care_system.payload.request.PromotionUpdateRequest;
 

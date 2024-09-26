@@ -1,14 +1,12 @@
 package com.swpproject.koi_care_system.controllers;
 
 import com.swpproject.koi_care_system.dto.PromotionDto;
-import com.swpproject.koi_care_system.models.Promotion;
 import com.swpproject.koi_care_system.payload.request.AddPromotionRequest;
 import com.swpproject.koi_care_system.payload.request.PromotionUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.promotion.IPromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

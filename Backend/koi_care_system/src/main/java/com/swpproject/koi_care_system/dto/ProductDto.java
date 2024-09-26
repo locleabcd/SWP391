@@ -3,7 +3,6 @@ package com.swpproject.koi_care_system.dto;
 import com.swpproject.koi_care_system.models.Category;
 import com.swpproject.koi_care_system.models.Supplier;
 import lombok.Data;
-import org.springframework.data.annotation.Transient;
 
 import java.math.BigDecimal;
 import java.util.List;

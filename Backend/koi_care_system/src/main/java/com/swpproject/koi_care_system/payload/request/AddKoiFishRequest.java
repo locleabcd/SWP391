@@ -4,7 +4,7 @@ import com.swpproject.koi_care_system.models.KoiPond;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 public class AddKoiFishRequest {
@@ -16,7 +16,7 @@ public class AddKoiFishRequest {
     private Double weight;
     private String gender;
     private String variety;
-    private Date pondDate;
+    private LocalDate pondDate;
     private String breeder;
     private Double price;
     private Long koiPondId;
@@ -24,7 +24,7 @@ public class AddKoiFishRequest {
     private String imageUrl;
     private MultipartFile file;
     public AddKoiFishRequest(String name, String physique, int age, Double length, Double weight,
-                             String gender, String variety, Date pondDate, String breeder, Double price, KoiPond koiPond, String imageUrl) {
+                             String gender, String variety, LocalDate pondDate, String breeder, Double price, KoiPond koiPond, String imageUrl) {
         this.name = name;
         this.physique = physique;
         this.age = age;

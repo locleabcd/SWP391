@@ -51,9 +51,7 @@ public class BlogService implements IBlogService {
         blog.setUser(userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found")));
 
         return blogMapper.mapToBlogDto(blogRepository.save(blog));
-
     }
-
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public BlogDto updateBlog(int id, BlogUpdateRequest blogUpdateRequest) {

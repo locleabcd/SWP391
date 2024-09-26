@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Set;
 
@@ -20,5 +21,6 @@ public class BlogCreateRequest {
     String blogContent;
     String blogImage;
     Set<Integer> tagIds;
+    MultipartFile file;
 
 }
