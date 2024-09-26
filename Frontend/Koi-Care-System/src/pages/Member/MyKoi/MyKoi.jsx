@@ -84,22 +84,6 @@ function MyKoi() {
       console.log(data)
       const res = await axios.post(
         `https://koicaresystem.azurewebsites.net/api/koifishs/create`,formData,
-        // {
-          // ...data,
-          // formData,
-          // name: data.name,
-          // physique: data.physique,
-          // age: data.age,
-          // length: data.length,
-          // weight: data.weight,
-          // gender: data.gender,
-          // variety: data.variety,
-          // pondDate: data.pondDate,
-          // breeder: data.breeder,
-          // price: data.price,
-          // koiPondId : data.pondId,
-          // file : data.file[0]
-        // },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -233,9 +217,7 @@ function MyKoi() {
                         </div>    
                       </div>  
                   </div>
-                  {/* <div className='fixed w-[145px] h-14 bottom-6 right-5 rounded-3xl bg-red-500'>
-                    <p className='text-3xl font-semibold pt-2 pl-1'>{koiCounts[koi.id] !== undefined ? koiCounts[koi.id] : '...'} Koi</p>
-                  </div>  */}
+                  
                   
                   </Link>                                 
                 </div>
