@@ -3,13 +3,17 @@
 import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { MdSystemUpdateAlt } from 'react-icons/md'
 import { FaSpinner } from 'react-icons/fa'
+import { IoMdMale } from 'react-icons/io'
+import { IoMdFemale } from 'react-icons/io'
+import { FaQuestion } from 'react-icons/fa'
+import TopLayout from '../../../layouts/TopLayout'
 
 function KoiDetails() {
   const { isDarkMode } = useDarkMode()
@@ -20,6 +24,8 @@ function KoiDetails() {
   const [isLoading, setIsLoading] = useState(true)
   const [ponds, setPonds] = useState([])
   const navigate = useNavigate()
+  const [baseImage, setBaseImage] = useState('')
+  const [selectedFile, setSelectedFile] = useState(null)
 
   const {
     register,
@@ -28,9 +34,29 @@ function KoiDetails() {
     reset
   } = useForm()
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setBaseImage(reader.result)
+      }
+      reader.readAsDataURL(file)
+      setSelectedFile(file)
+    }
+  }
+
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' }
     return new Date(dateString).toLocaleDateString(undefined, options)
+  }
+
+  const formatISOToYYYYMMDD = (isoDate) => {
+    const date = new Date(isoDate)
+    const year = date.getFullYear()
+    const month = String(date.getMonth() + 1).padStart(2, '0') // Months are 0-based
+    const day = String(date.getDate()).padStart(2, '0')
+    return `${year}-${month}-${day}` // Returns date in yyyy-mm-dd format
   }
 
   const toggleCloseForm = () => {
@@ -51,7 +77,7 @@ function KoiDetails() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/koifishs/user/${userId}/allKoi`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koifishs/user/${userId}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -79,7 +105,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koi-care-system.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -185,24 +211,17 @@ function KoiDetails() {
         <LeftSideBar />
         <div
           className={`relative ${
-            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-200 text-black'
+            isDarkMode ? 'bg-custom-light text-white' : 'bg-gray-200 text-black'
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <div className='flex justify-between items-center'>
-            <Link to={`/member/myKoi`}>
-              <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-6 ml-3'>
-                <path
-                  fillRule='evenodd'
-                  d='M11.03 3.97a.75.75 0 0 1 0 1.06l-6.22 6.22H21a.75.75 0 0 1 0 1.5H4.81l6.22 6.22a.75.75 0 1 1-1.06 1.06l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 0 1 1.06 0Z'
-                  clipRule='evenodd'
-                />
-              </svg>
-            </Link>
-            <h1 className='p-4 text-center font-semibold text-2xl text-black '>Koi Details</h1>
-            <button>
-              <MdSystemUpdateAlt className='size-7 mr-3' onClick={() => toggleEditFormVisibility(koi)} />
-            </button>
+          <div className='py-5 px-[30px] mx-auto'>
+            <TopLayout text='My Koi' textName='My Koi Detail' links='member/myKoi' />
+            <div className='flex justify-between items-center'>
+              <button>
+                <MdSystemUpdateAlt className='size-7 mr-3' onClick={() => toggleEditFormVisibility(koi)} />
+              </button>
+            </div>
           </div>
 
           {isEditFormVisible && (
@@ -250,26 +269,62 @@ function KoiDetails() {
                       id='file'
                       className='mb-6  col-span-1 row-span-2 h-full flex justify-center border border-black'
                     >
-                      <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          width={16}
-                          height={16}
-                          fill='currentColor'
-                          className='mx-auto text-gray-500 inline-block w-10 h-10'
-                          viewBox='0 0 16 16'
-                        >
-                          <path
-                            fillRule='evenodd'
-                            d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
+                      {baseImage ? (
+                        <div className='pre-upload max-w-[40vw] relative max-h-[154px] w-full h-full'>
+                          <img src={baseImage} alt='Preview' className='absolute w-full h-full object-cover' />
+                          <input
+                            type='file'
+                            id='upload-input'
+                            className='absolute top-10 h-20 opacity-0'
+                            accept='image/*'
+                            {...register('file')}
+                            onChange={handleImageChange}
                           />
-                          <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
-                        </svg>
-                        <div className='py-3'>
-                          <span>Choose images here</span>
+
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            strokeWidth={1.5}
+                            stroke='currentColor'
+                            className='size-5 absolute text-white cursor-pointer -top-2 -right-2 rounded-full bg-red-500'
+                            onClick={() => setBaseImage(null)}
+                          >
+                            <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
+                          </svg>
                         </div>
-                        <input type='file' accept='image/*' className='hidden' ref={register} {...register('file')} />
-                      </label>
+                      ) : (
+                        <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
+                          <div className='relative'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              width={16}
+                              height={16}
+                              fill='currentColor'
+                              className='mx-auto text-gray-500 inline-block w-10 h-10'
+                              viewBox='0 0 16 16'
+                            >
+                              <path
+                                fillRule='evenodd'
+                                d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
+                              />
+                              <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
+                            </svg>
+                            <div className='py-3'>
+                              <span>Choose images here</span>
+                            </div>
+                          </div>
+
+                          <input
+                            type='file'
+                            id='upload-input'
+                            className='absolute ml-20 opacity-0'
+                            accept='image/*'
+                            {...register('file')}
+                            onChange={handleImageChange}
+                          />
+                        </label>
+                      )}
                     </div>
                     <div className='relative col-span-1 '>
                       <label
@@ -285,47 +340,68 @@ function KoiDetails() {
                         {...register('name')}
                       />
                     </div>
-                    <div className='relative col-span-1 '>
+                    <div className='relative col-span-1 mb-4'>
                       <label
                         htmlFor='physique'
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                       >
                         Physique
                       </label>
-                      <input
-                        type='text'
+                      <select
                         id='physique'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('physique')}
-                      />
+                      >
+                        {/* <option value=""></option> */}
+                        <option value='Normal'>Normal</option>
+                        <option value='Slim'>Slim</option>
+                        <option value='Corpulent'>Corpulent</option>
+                      </select>
                     </div>
-                    <div className='relative col-span-1 '>
+                    <div className='relative col-span-1 mb-2 mt-2'>
                       <label
                         htmlFor='age'
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                       >
                         Age
                       </label>
-                      <input
-                        type='number'
+                      <select
                         id='age'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('age')}
-                      />
+                      >
+                        <option value={0}>0 years</option>
+                        <option value={1}>Tosai (1 year)</option>
+                        <option value={2}>Nisai (2 years)</option>
+                        <option value={3}>Sansai (3 years)</option>
+                        <option value={4}>Yonsai (4 years)</option>
+                        <option value={5}>Gosai (5 years)</option>
+                        <option value={6}>Rokusai (6 years)</option>
+                        <option value={7}>Nanasai (7 years)</option>
+                        {[...Array(95)].map((_, i) => (
+                          <option key={i + 8} value={i + 8}>
+                            {i + 8} years
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                    <div className='relative col-span-1 '>
+                    <div className='relative col-span-1 mb-2 mt-2'>
                       <label
-                        htmlFor='gender'
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        htmlFor='gender'
                       >
                         Gender
                       </label>
-                      <input
-                        type='text'
+                      <select
                         id='gender'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('gender')}
-                      />
+                      >
+                        {/* <option value=""></option> */}
+                        <option value='Male'>Male</option>
+                        <option value='Female'>Female</option>
+                        <option value='Undefined'>Undefined</option>
+                      </select>
                     </div>
                     <div className='relative col-span-1 '>
                       <label
@@ -348,12 +424,13 @@ function KoiDetails() {
                       >
                         In pond since
                       </label>
+
                       <input
                         type='date'
                         id='pondDate'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        defaultValue={formatISOToYYYYMMDD(koi.pondDate)}
                         {...register('pondDate')}
-                        defaultValue={koi.pondDate}
                       />
                     </div>
                     <div className='relative col-span-1 '>
@@ -448,31 +525,63 @@ function KoiDetails() {
             </div>
           )}
 
-          <div className='flex justify-around '>
-            {/* left content  */}
+          <div className='flex justify-around py-10'>
+            {/* Left content */}
             <div
               className={`${
                 isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-              } border flex justify-around p-4 rounded-xl shadow-lg w-2/5`}
+              }  flex rounded-xl shadow-lg w-[45%]`}
             >
-              {/* img left  */}
-              <div>
-                <img className='w-full h-40 object-cover rounded-xl' src={koi.imageUrl} alt={koi.name} />
+              {/* Image section */}
+              <div className='h-full w-[45%] rounded-l-xl overflow-hidden'>
+                <img
+                  className='w-full h-[215px] object-fill transition-transform duration-300 transform hover:scale-105'
+                  // style={{ filter: 'brightness(1.1) contrast(1.1)' }}
+                  src={koi.imageUrl}
+                  alt={koi.name}
+                />
               </div>
-              <div className='pl-3'>
-                <h2 className='font-semibold text-2xl'>{koi.name}</h2>
-                <p className='pb-3'>Variety: {koi.variety}</p>
-                <div className='flex p-3 gap-12 bg-gray-300 rounded-2xl'>
-                  <div className='text-center '>
-                    <h1 className='text-red-500'>Age</h1>
+              {/* right content  */}
+              <div className='w-[55%] pl-4 pr-3 py-4 flex flex-col justify-between'>
+                <div>
+                  <div className='flex items-center'>
+                    <h2 className='w-[90%] font-semibold text-3xl text-start'> {koi.name}</h2>
+                    <div className=''>
+                      {koi.gender == 'Male' && (
+                        <span className='flex items-center'>
+                          <IoMdMale className='text-blue-500 size-7' />
+                        </span>
+                      )}
+                      {koi.gender == 'Female' && (
+                        <span className='flex items-center'>
+                          <IoMdFemale className='text-pink-500 size-7' />
+                        </span>
+                      )}
+                      {koi.gender == 'Undefined' && (
+                        <span>
+                          <FaQuestion className='text-red-500 size-7' />
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <p className='text-start my-2'>
+                    Variety: <strong>{koi.variety}</strong>
+                  </p>
+                  <p className='text-start mb-3'>
+                    Pond: <strong>{koi.koiPond.name}</strong>
+                  </p>
+                </div>
+                <div className='flex justify-between gap-4 bg-gray-400 rounded-2xl p-3 '>
+                  <div className='text-center'>
+                    <h1 className='text-red-500 font-semibold'>Age</h1>
                     <p className='text-sm'>{koi.age} years</p>
                   </div>
                   <div className='text-center'>
-                    <h1 className='text-red-500'>Length</h1>
+                    <h1 className='text-red-500 font-semibold'>Length</h1>
                     <p className='text-sm'>{koi.length} cm</p>
                   </div>
                   <div className='text-center'>
-                    <h1 className='text-red-500'>Weight</h1>
+                    <h1 className='text-red-500 font-semibold'>Weight</h1>
                     <p className='text-sm'>{koi.weight} g</p>
                   </div>
                 </div>
@@ -481,12 +590,12 @@ function KoiDetails() {
             <div
               className={`${
                 isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-              } text-start border p-4 rounded-xl shadow-lg w-2/5`}
+              } text-start p-4 rounded-xl shadow-lg w-[40%]`}
             >
-              <h2 className='font-semibold text-xl mb-2'>Koi Description:</h2>
+              <h2 className='font-bold text-center text-xl mb-2'>Koi Description</h2>
               <p className='mb-4'>
                 <strong>{koi.name}</strong> has been swimming in the pond "<strong>{koi.koiPond.name}</strong>" since{' '}
-                {formatDate(koi.pondDate)}.
+                <strong>{formatDate(koi.pondDate)}</strong>.
               </p>
               <p className='mb-4'>
                 <strong>{koi.name}</strong> was bought for <strong>{koi.price}€</strong> and was bred by{' '}
