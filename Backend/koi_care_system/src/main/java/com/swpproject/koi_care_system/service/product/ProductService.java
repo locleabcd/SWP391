@@ -7,11 +7,13 @@ import com.swpproject.koi_care_system.mapper.ProductMapper;
 import com.swpproject.koi_care_system.models.Category;
 import com.swpproject.koi_care_system.models.Image;
 import com.swpproject.koi_care_system.models.Product;
+import com.swpproject.koi_care_system.models.Supplier;
 import com.swpproject.koi_care_system.payload.request.AddProductRequest;
 import com.swpproject.koi_care_system.payload.request.ProductUpdateRequest;
 import com.swpproject.koi_care_system.repository.CategoryRepository;
 import com.swpproject.koi_care_system.repository.ImageRepository;
 import com.swpproject.koi_care_system.repository.ProductRepository;
+import com.swpproject.koi_care_system.repository.SupplierRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,7 @@ public class ProductService implements IProductService {
     private final ProductMapper productMapper;
     private final ImageRepository imageRepository;
     private final ImageMapper imageMapper;
+    private final SupplierRepository supplierRepository;
     @Override
     public Product addProduct(AddProductRequest request) {
 
@@ -35,17 +38,19 @@ public class ProductService implements IProductService {
                     return categoryRepository.save(newCategory);
                 });
         request.setCategory(category);
-        return productRepository.save(createProduct(request, category));
+        Supplier supplier = supplierRepository.findByName(request.getSupplierName());
+        return productRepository.save(createProduct(request, category,supplier));
     }
 
-    private Product createProduct(AddProductRequest request, Category category) {
+    private Product createProduct(AddProductRequest request, Category category, Supplier supplier) {
         return new Product(
                 request.getName(),
                 request.getBrand(),
                 request.getPrice(),
                 request.getInventory(),
                 request.getDescription(),
-                category
+                category,
+                supplier
         );
     }
     @Override
@@ -75,8 +80,9 @@ public class ProductService implements IProductService {
         existingProduct.setPrice(request.getPrice());
         existingProduct.setInventory(request.getInventory());
         existingProduct.setDescription(request.getDescription());
-
+        Supplier supplier = supplierRepository.findByName(request.getSupplierName());
         Category category = categoryRepository.findByName(request.getCategory().getName());
+        existingProduct.setSupplier(supplier);
         existingProduct.setCategory(category);
         return  existingProduct;
 
@@ -110,6 +116,11 @@ public class ProductService implements IProductService {
     @Override
     public List<Product> getProductsByBrandAndName(String brand, String name) {
         return productRepository.findByBrandAndName(brand, name);
+    }
+
+    @Override
+    public List<Product> getProductsBySupplier(String supplierName) {
+        return productRepository.findBySupplierName(supplierName);
     }
 
     @Override

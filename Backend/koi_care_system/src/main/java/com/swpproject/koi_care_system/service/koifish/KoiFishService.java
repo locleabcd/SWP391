@@ -8,12 +8,14 @@ import com.swpproject.koi_care_system.models.KoiFish;
 import com.swpproject.koi_care_system.payload.request.AddKoiFishRequest;
 import com.swpproject.koi_care_system.payload.request.KoiFishUpdateRequest;
 import com.swpproject.koi_care_system.repository.KoiFishRepository;
+import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +27,7 @@ public class KoiFishService implements IKoiFishService {
     KoiFishRepository koiFishRepository;
     IKoiPondService koiPondService;
     KoiFishMapper koiFishMapper;
+    ImageStorage imageStorage;
     @Override
     public KoiFish addKoiFish(AddKoiFishRequest addKoiFishRequest) {
         if(koiFishRepository.existsByName(addKoiFishRequest.getName())){
@@ -77,6 +80,13 @@ public class KoiFishService implements IKoiFishService {
     @Override
     public KoiFish updateKoiFish(KoiFishUpdateRequest koiFishUpdateRequest, Long koiFishId) {
         return Optional.ofNullable(getKoiFishById(koiFishId)).map(oldKoiFish ->{
+            if(!oldKoiFish.getImageUrl().isEmpty()){
+                try {
+                    imageStorage.deleteImage(oldKoiFish.getImageUrl());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             oldKoiFish.setName(koiFishUpdateRequest.getName());
             oldKoiFish.setAge(koiFishUpdateRequest.getAge());
             oldKoiFish.setGender(koiFishUpdateRequest.getGender());

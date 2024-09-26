@@ -20,6 +20,8 @@ public class Product {
     private String brand;
     private BigDecimal price;
     private int inventory;
+    @Lob
+    @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -36,12 +38,13 @@ public class Product {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="supplier_id")
     private Supplier supplier;
-    public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category) {
+    public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category, Supplier supplier) {
         this.name = name;
         this.brand = brand;
         this.price = price;
         this.inventory = inventory;
         this.description = description;
         this.category = category;
+        this.supplier = supplier;
     }
 }

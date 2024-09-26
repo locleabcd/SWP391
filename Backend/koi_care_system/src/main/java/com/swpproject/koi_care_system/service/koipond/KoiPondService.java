@@ -8,10 +8,13 @@ import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
 import com.swpproject.koi_care_system.models.KoiPond;
 import com.swpproject.koi_care_system.repository.KoiPondRepository;
+import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 @Service
@@ -20,6 +23,7 @@ import java.util.Optional;
 public class KoiPondService implements IKoiPondService {
     KoiPondRepository koiPondRepository;
     KoiPondMapper koiPondMapper;
+    ImageStorage imageStorage;
     @Override
     public KoiPond addKoiPond(AddKoiPondRequest request) {
         if (koiPondRepository.existsByName(request.getName())) {
@@ -50,13 +54,28 @@ public class KoiPondService implements IKoiPondService {
     @Override
     public void deleteKoiPond(Long id) {
         koiPondRepository.findById(id)
-                .ifPresentOrElse(koiPondRepository::delete,()->{
+                .ifPresentOrElse(koiPond->{
+                    try{
+                        if(!koiPond.getImageUrl().isEmpty())
+                            imageStorage.deleteImage(koiPond.getImageUrl());
+                        koiPondRepository.delete(koiPond);
+                    }catch (Exception e){
+                        throw new RuntimeException("Failed to delete the koi pond" + e.getMessage());
+                    }
+                },()->{
                     throw new ResourceNotFoundException("Koi Pond not found!");
                 });
     }
     @Override
     public KoiPond updateKoiPond(KoiPondUpdateRequest koiPondUpdateRequest, Long koiPondId) {
         return Optional.ofNullable(getKoiPondById(koiPondId)).map(oldKoiPond -> {
+            if(!oldKoiPond.getImageUrl().isEmpty()) {
+                try {
+                    imageStorage.deleteImage(oldKoiPond.getImageUrl());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
             oldKoiPond.setName(koiPondUpdateRequest.getName());
             oldKoiPond.setDepth(koiPondUpdateRequest.getDepth());
             oldKoiPond.setDrainCount(koiPondUpdateRequest.getDrainCount());

@@ -10,8 +10,11 @@ import org.mapstruct.Mapping;
 public interface ProductMapper {
 
     ProductDto mapToProductDto(Product product);
+    @Mapping(target = "issue", ignore = true)
     @Mapping(target = "images", ignore = true)
     Product mapToProduct(AddProductRequest request);
 
-//    Product toEntity(ProductDto productDto);
+    @Mapping(target = "supplier", ignore = true)
+    @Mapping(target = "issue", ignore = true)
+    Product toEntity(ProductDto productDto);
 }

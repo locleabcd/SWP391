@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.payload.request;
 import com.swpproject.koi_care_system.models.Category;
+import com.swpproject.koi_care_system.models.Supplier;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -13,4 +14,5 @@ public class AddProductRequest {
     private int inventory;
     private String description;
     private Category category;
+    private String supplierName;
 }

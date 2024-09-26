@@ -21,7 +21,7 @@ public class AzureImageStorage implements ImageStorage {
         this.blobServiceClient = blobServiceClient;
     }
     @Override
-    public String uploadImage(MultipartFile file)  throws IOException {
+    public String uploadImage(MultipartFile file)  {
         try(InputStream inputStream = file.getInputStream()){
             String containerName="koicare-blob";
             BlobContainerClient blobContainerClient= blobServiceClient.getBlobContainerClient(containerName);
@@ -29,17 +29,35 @@ public class AzureImageStorage implements ImageStorage {
             BlobClient blobClient = blobContainerClient.getBlobClient(newImageName);
             blobClient.upload(inputStream,file.getSize(),true);
             return blobClient.getBlobUrl();
-        }catch (BlobStorageException e) {
+        }catch (BlobStorageException | IOException e) {
             throw new CustomBlobStorageException("Failed to upload image to Azure Blob Storage", e);
         }
-
     }
     @Override
-    public List<String> uploadListImage(List<MultipartFile> listFile) throws IOException {
+    public List<String> uploadListImage(List<MultipartFile> listFile){
         List<String> resource = new ArrayList<>();
         for(MultipartFile file:listFile ){
             resource.add(this.uploadImage(file));
         }
         return resource;
+    }
+
+    @Override
+    public void deleteImage(String imageUrl) {
+        try {
+            String containerName = "koicare-blob";
+            BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(containerName);
+            String blobName = extractBlobNameFromUrl(imageUrl);
+            BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
+            blobClient.delete();
+        } catch (BlobStorageException e) {
+            throw new CustomBlobStorageException("Failed to delete image from Azure Blob Storage", e);
+        }
+    }
+
+    private String extractBlobNameFromUrl(String imageUrl) {
+        // Extract the blob name from the URL
+        // This might need to be adjusted based on your exact URL format
+        return imageUrl.substring(imageUrl.lastIndexOf("/") + 1);
     }
 }
