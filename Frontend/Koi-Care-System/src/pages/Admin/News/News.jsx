@@ -12,71 +12,75 @@ import { FaSpinner } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
 
 function News() {
-    const { isDarkMode } = useDarkMode()
-    const [blogs, setBlogs] = useState([])
-    const [showButtons, setShowButtons] = useState(false)
-    const [filterData, setFilterData] = useState([])
-    const [setTags] = useState([])
-    const [isAddFormVisible, setIsAddFormVisible] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [baseImage, setBaseImage] = useState('')
-    const [selectedFile, setSelectedFile] = useState(null)
+  const { isDarkMode } = useDarkMode()
+  const [blogs, setBlogs] = useState([])
+  const [showButtons, setShowButtons] = useState(false)
+  const [filterData, setFilterData] = useState([])
+  const [setTags] = useState([])
+  const [isAddFormVisible, setIsAddFormVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [baseImage, setBaseImage] = useState('')
+  const [selectedFile, setSelectedFile] = useState(null)
 
 
-    const toggleAddFormVisibility = () => {
-        setIsAddFormVisible(!isAddFormVisible)
-        reset()
+  const toggleAddFormVisibility = () => {
+    setIsAddFormVisible(!isAddFormVisible)
+    reset()
+  }
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+      if (file) {
+        const reader = new FileReader()
+        reader.onloadend = () => {
+          setBaseImage(reader.result)
+        }
+        reader.readAsDataURL(file)
+        setSelectedFile(file)
+      }
     }
 
-    const handleImageChange = (e) => {
-        const file = e.target.files[0]
-        if (file) {
-          const reader = new FileReader()
-          reader.onloadend = () => {
-            setBaseImage(reader.result)
-          }
-          reader.readAsDataURL(file)
-          setSelectedFile(file)
-        }
-      }
-
-    const {
+  const {
         register,
         handleSubmit,
         formState: { errors },
         reset
     } = useForm()
 
-    const onSubmit = async (data) => {
-        console.log('onSubmit:', data)
-        setIsLoading(true)
-        setIsSubmitting(true)
-        try {
-          const token = localStorage.getItem('token')
-          if (!token) {
-            throw new Error('No token found')
-          }
+  const onSubmit = async (data) => {
+    console.log('onSubmit:', data)
+    setIsLoading(true)
+    setIsSubmitting(true)
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
   
-          const formData = new FormData()   
+      const formData = new FormData()   
           // Append all fields to formData
-          formData.append('blogTitle', data.blogTitle)
-          formData.append('blogContent', data.blogContent)
-          formData.append('blogImage', data.blogImage)
-          formData.append('file', selectedFile);
+      formData.append('blogTitle', data.blogTitle)
+      formData.append('blogContent', data.blogContent)
+      formData.append('blogImage', data.blogImage)
+
+      if (selectedFile) {
+        formData.append('file', selectedFile)
+      }
           
-          if (data.tagIds && Array.isArray(data.tagIds)) {
-            data.tagIds.forEach(tagId => {
-                formData.append('tagIds', tagId);
-            });
-        }
+      const tagIdsArray = data.tagIds.split(',').map(tag => tag.trim());
+      tagIdsArray.forEach(tagId => formData.append('tagIds', tagId));
+
+      formData.forEach((value, key) => {
+      console.log(`${key}: ${value}`);
+      });
    
-          const res = await axios.post(`https://koicaresystem.azurewebsites.net/api/blog/create`, formData, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data'
-            }
-          })
+      const res = await axios.post(`https://koicaresystem.azurewebsites.net/api/blog/create`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
+        }
+      })
           setIsAddFormVisible(false)
           getBlog()
           reset()
@@ -88,13 +92,13 @@ function News() {
         }
       }
 
-    const navigate = useNavigate()
+  const navigate = useNavigate()
   
-    const toggleButtons = () => {
-      setShowButtons(!showButtons)
-    }
+  const toggleButtons = () => {
+    setShowButtons(!showButtons)
+  }
 
-    const getTag = async () => {
+  const getTag = async () => {
         try {
           const token = localStorage.getItem('token')
           if (!token) {
@@ -114,13 +118,19 @@ function News() {
         }
     }
 
-    useEffect(() => {
-        getTag()
-      }, [])
+  useEffect(() => {
+      getTag()
+    }, [])
 
+    if (isLoading) {
+      return (
+        <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+          <FaSpinner className='animate-spin text-green-500 text-4xl' />
+        </div>
+      )
+    } 
 
-  
-    const getBlog = async () => {
+  const getBlog = async () => {
       try {
         const token = localStorage.getItem('token')
         if (!token) {
@@ -152,9 +162,9 @@ function News() {
       }
     }
   
-    useEffect(() => {
-      getBlog()
-    }, [])
+  useEffect(() => {
+    getBlog()
+  }, [])
 
     // useEffect(() => {
     //     fetch('https://koicaresystem.azurewebsites.net/api/blog/search').then((data) => {
@@ -163,7 +173,7 @@ function News() {
     //     })
     //   })
   
-    return (
+  return (
       <div>
         <svg
             xmlns='http://www.w3.org/2000/svg'
@@ -265,7 +275,7 @@ function News() {
                       </div>
                     </div>
                   </div> */}
-                    <Link to={`/admin/news/${blog.blogId}`}>
+                    <Link to={`/admin/newsAdmin/${blog.blogId}`}>
                       <div className='relative'>
                         <img
                           src={blog.blogImage}
@@ -365,8 +375,7 @@ function News() {
 
         {isAddFormVisible && (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 '>
-          <div
-            className='bg-white min-w-[100vh] mb-auto mt-auto p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto no-scroll-bar'>
+          <div className='bg-white min-w-[100vh] mb-auto mt-auto p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto no-scroll-bar'>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className='flex justify-between mb-5'>
                 <svg
@@ -408,7 +417,7 @@ function News() {
               </div>
 
               <h3 className='mb-5 text-2xl font-bold'>Add Blog</h3>
-              <div className='grid grid-cols-2  gap-4'>
+              <div className='grid grid-cols-2 grid-rows-4 gap-4'>
                 <div id='file' className='mb-6 col-span-1 row-span-2 h-full flex justify-center border border-black'>
                   {baseImage ? (
                     <div className='pre-upload max-w-[40vw] relative max-h-[154px] w-full h-full'>
@@ -418,7 +427,7 @@ function News() {
                         id='upload-input'
                         className='absolute top-10 h-20 opacity-0'
                         accept='image/*'
-                        {...register('file')}
+                        {...register('file', { required: 'Image is required' })}
                         onChange={handleImageChange}
                       />
 
@@ -474,7 +483,7 @@ function News() {
                     htmlFor='blogTitle'
                     className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                   >
-                    BlogTitle
+                    Blog Title
                   </label>
                   <input
                     type='text'
@@ -482,27 +491,9 @@ function News() {
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                     {...register('blogTitle', { required: 'BlogTitle is required' })}
                   />
-                  {/* {errors.blogTitle && (
+                  {errors.blogTitle && (
                     <p className='absolute -bottom-[-14px] left-3 text-red-500 text-sm'>{errors.blogTitle.message}</p>
-                  )} */}
-                </div>
-                
-                <div className='relative col-span-1 '>
-                  <label
-                    htmlFor='blogContent'
-                    className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
-                  >
-                    Blog Content
-                  </label>
-                  <input
-                    type='text'
-                    id='blogContent'
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('blogContent', { required: 'Blog Content is required' })}
-                  />
-                  {/* {errors.blogContent && (
-                    <p className='absolute -bottom-[-14px] left-3 text-red-500 text-sm'>{errors.blogContent.message}</p>
-                  )} */}
+                  )}
                 </div>
 
                 <div className='relative col-span-1 '>
@@ -518,14 +509,43 @@ function News() {
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                     {...register('tagIds', { required: 'tagIds is required' })}
                   />
-                  {/* {errors.tagIds && (
+                  {errors.tagIds && (
                     <p className='absolute -bottom-[-14px] left-3 text-red-500 text-sm'>{errors.tagIds.message}</p>
-                  )} */}
+                  )}
                 </div>
 
-                
+                <div className='relative col-span-2 row-span-2  '>
+                  <label
+                    htmlFor='blogContent'
+                    className='absolute text-md font-medium -top-[10px] left-3 text-red-500 bg-white'
+                  >
+                    Blog Content
+                  </label>
+                  <input
+                    type='text'
+                    id='blogContent'
+                    className=' w-full h-full p-3 text-wrap text-start border border-black rounded-md shadow-sm'
+                    {...register('blogContent', { required: 'Blog Content is required' })}
+                  />
+                  {errors.blogContent && (
+                    <p className='absolute -bottom-[-14px] left-3 text-red-500 text-sm'>{errors.blogContent.message}</p>
+                  )}
+                </div>  
 
-                
+                <div className='relative col-span-1 row-span-1  '>
+                  <label
+                    htmlFor='blogImage'
+                    className='absolute text-md font-medium -top-[10px] left-3 text-red-500 bg-white'
+                  >
+                    Blog Image
+                   </label>
+                  <input
+                    type='text'
+                    id='blogImage'
+                    className=' w-full h-full items-start text-wrap p-3 border border-black rounded-md shadow-sm'
+                    {...register('blogImage', { required: false })}
+                  />         
+                </div>  
               </div>
             </form>
           </div>

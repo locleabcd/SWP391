@@ -266,8 +266,7 @@ function KoiDetails() {
                         />
                       </svg>
                     </button>
-                  </div>
-                  {/* Koi Edit Form Fields */}
+                  </div>                 
                   <div className='grid grid-cols-2 grid-rows-6 gap-4'>
                     <div
                       id='file'
@@ -480,7 +479,7 @@ function KoiDetails() {
                         id='status'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('status')}
-                        defaultValue={koi.status}
+                        // value={koi.status}
                       >
                         <option>Alive</option>
                         <option>Dead</option>

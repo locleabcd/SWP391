@@ -29,6 +29,7 @@ const path = {
   koiDetail: '/member/myKoi/:id',
   aboutMember: '/member/about',
   newsAdmin: '/admin/newsAdmin',
+  newsDetailsAdmin: '/admin/newsAdmin/:id',
   
 }
 

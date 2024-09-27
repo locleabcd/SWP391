@@ -285,7 +285,7 @@ function MyKoi() {
                         id='upload-input'
                         className='absolute top-10 h-20 opacity-0'
                         accept='image/*'
-                        {...register('file',{required:false})}
+                        {...register('file',{required: 'Image is required'})}
                         onChange={handleImageChange}
                       />
 
@@ -328,7 +328,7 @@ function MyKoi() {
                         id='upload-input'
                         className='absolute ml-20 opacity-0'
                         accept='image/*'
-                        {...register('file',{required:false})}
+                        {...register('file',{required: 'Image is required'})}
                         onChange={handleImageChange}
                       />
                     </label>

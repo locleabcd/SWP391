@@ -30,6 +30,7 @@ import KoiDetail from './pages/Member/MyKoi/KoiDetail'
 import About from './pages/Member/About/About'
 import Admin from './pages/Admin/Admin'
 import NewsAdmin from './pages/Admin/News/News'
+import NewsDetailsAdmin from './pages/Admin/News/NewsDetail'
 
 function App() {
   const routeElements = useRoutes([
@@ -144,6 +145,10 @@ function App() {
     {
       path: path.newsAdmin,
       element: <NewsAdmin />
+    },
+    {
+      path: path.newsDetailsAdmin,
+      element: <NewsDetailsAdmin />
     },
   ])
 
