@@ -172,18 +172,18 @@ function MyKoi() {
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='fixed bottom-7 right-5 text-lg hover:bg-red-700  rounded-full shadow-lg size-12 cursor-pointer z-10'
+            className='fixed bottom-7 right-5 text-lg hover:bg-blue-600 text-white rounded-full shadow-lg size-12 cursor-pointer z-30'
             onClick={toggleAddFormVisibility}
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
-          <div className='fixed w-[145px] h-14 bottom-6 right-5 rounded-3xl bg-red-500'>
+          <div className='fixed w-[145px] h-14 bottom-6 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
             <p className='text-3xl font-semibold pt-2 pl-3'>
               {koiCounts[localStorage.getItem('id')] !== undefined ? koiCounts[localStorage.getItem('id')] : '...'} Koi
             </p>
           </div>
 
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] mx-auto' data-aos='fade-left'>
             <TopLayout text='My Koi' />
             <div className='w-full '>
               <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 py-3'>

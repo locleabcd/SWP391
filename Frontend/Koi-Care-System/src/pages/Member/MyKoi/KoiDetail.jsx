@@ -140,7 +140,7 @@ function KoiDetails() {
       formData.append('price', data.price)
       formData.append('koiPondId', data.pondId)
       formData.append('status', data.status)
-      formData.append('imageUrl', data.status)
+      formData.append('imageUrl', data.imageUrl)
 
       // Append the image file if a file is selected
       if (selectedFile) {
@@ -344,10 +344,11 @@ function KoiDetails() {
                         {...register('name')}
                       />
                     </div>
-                    <div className='relative col-span-1 mb-4'>
+
+                    <div className='relative col-span-1 mb-2 mt-2'>
                       <label
-                        htmlFor='physique'
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        htmlFor='physique'
                       >
                         Physique
                       </label>
@@ -357,11 +358,12 @@ function KoiDetails() {
                         {...register('physique')}
                       >
                         {/* <option value=""></option> */}
-                        <option value='Normal'>Normal</option>
                         <option value='Slim'>Slim</option>
+                        <option value='Normal'>Normal</option>
                         <option value='Corpulent'>Corpulent</option>
                       </select>
                     </div>
+                    
                     <div className='relative col-span-1 mb-2 mt-2'>
                       <label
                         htmlFor='age'
@@ -389,6 +391,7 @@ function KoiDetails() {
                         ))}
                       </select>
                     </div>
+
                     <div className='relative col-span-1 mb-2 mt-2'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
@@ -407,6 +410,7 @@ function KoiDetails() {
                         <option value='Undefined'>Undefined</option>
                       </select>
                     </div>
+
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='variety'
@@ -598,7 +602,7 @@ function KoiDetails() {
             >
               <h2 className='font-bold text-center text-xl mb-2'>Koi Description</h2>
               <p className='mb-4'>
-                <strong>{koi.name}</strong> has been swimming in the pond "<strong>{koi.koiPond.name}</strong>" since{' '}
+                <strong>{koi.name}</strong> with size <strong>{koi.physique}</strong> has been swimming in the pond "<strong>{koi.koiPond.name}</strong>" since{' '}
                 <strong>{formatDate(koi.pondDate)}</strong>.
               </p>
               <p className='mb-4'>
