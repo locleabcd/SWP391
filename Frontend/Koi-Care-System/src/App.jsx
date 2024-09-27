@@ -28,6 +28,8 @@ import OTP from './pages/OTP/OTP'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
 import KoiDetail from './pages/Member/MyKoi/KoiDetail'
 import About from './pages/Member/About/About'
+import Admin from './pages/Admin/Admin'
+import NewsAdmin from './pages/Admin/News/News'
 
 function App() {
   const routeElements = useRoutes([
@@ -134,7 +136,15 @@ function App() {
     {
       path: path.aboutMember,
       element: <About />
-    }
+    },
+    {
+      path: path.admin,
+      element: <Admin />
+    },
+    {
+      path: path.newsAdmin,
+      element: <NewsAdmin />
+    },
   ])
 
   return (

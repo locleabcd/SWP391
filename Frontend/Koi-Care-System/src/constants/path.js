@@ -8,6 +8,7 @@ const path = {
   email: '/email',
   policy: '/policy',
   otp: '/otp',
+  admin: '/admin',
   resetPassword: '/resetPassword',
   verify: '/verifyPending',
   verifySuccess: '/verify',
@@ -26,7 +27,9 @@ const path = {
   news: '/member/news',
   newsDetails: '/member/news/:id',
   koiDetail: '/member/myKoi/:id',
-  aboutMember: '/member/about'
+  aboutMember: '/member/about',
+  newsAdmin: '/admin/newsAdmin',
+  
 }
 
 export default path

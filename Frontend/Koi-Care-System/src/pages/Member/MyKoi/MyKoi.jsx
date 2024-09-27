@@ -285,7 +285,7 @@ function MyKoi() {
                         id='upload-input'
                         className='absolute top-10 h-20 opacity-0'
                         accept='image/*'
-                        {...register('file')}
+                        {...register('file',{required:false})}
                         onChange={handleImageChange}
                       />
 
@@ -328,7 +328,7 @@ function MyKoi() {
                         id='upload-input'
                         className='absolute ml-20 opacity-0'
                         accept='image/*'
-                        {...register('file')}
+                        {...register('file',{required:false})}
                         onChange={handleImageChange}
                       />
                     </label>
@@ -383,6 +383,7 @@ function MyKoi() {
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                     {...register('age')}
                   >
+                    <option value={0}>Select Age</option>
                     <option value={0}>0 years</option>
                     <option value={1}>Tosai (1 year)</option>
                     <option value={2}>Nisai (2 years)</option>
@@ -449,7 +450,7 @@ function MyKoi() {
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                     {...register('gender')}
                   >
-                    <option value=''>Select...</option>
+                    <option value='Undefined'>Select Gender</option>
                     <option value='Male'>Male</option>
                     <option value='Female'>Female</option>
                     <option value='Undefined'>Undefined</option>
@@ -467,7 +468,7 @@ function MyKoi() {
                     type='text'
                     id='variety'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('variety')}
+                    {...register('variety', {required: false})}
                   />
                 </div>
 
@@ -498,7 +499,7 @@ function MyKoi() {
                     type='text'
                     id='breeder'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('breeder')}
+                    {...register('breeder',{required: false})}
                   />
                 </div>
 
@@ -514,7 +515,7 @@ function MyKoi() {
                     id='price'
                     placeholder='$'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('price')}
+                    {...register('price',{required: false})}
                   />
                 </div>
                 <div className='relative col-span-1 mb-2 mt-2'>
