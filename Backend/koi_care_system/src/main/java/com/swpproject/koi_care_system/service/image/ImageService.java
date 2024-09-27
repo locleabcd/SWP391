@@ -52,8 +52,6 @@ public class ImageService implements IImageService {
                 String imageUrl = imageStorage.uploadImage(file);
 
                 Image image = new Image();
-                image.setFileName(file.getOriginalFilename());
-                image.setFileType(file.getContentType());
                 image.setDownloadUrl(imageUrl);
                 image.setProduct(product);
 
@@ -61,7 +59,6 @@ public class ImageService implements IImageService {
 
                 ImageDto imageDto = new ImageDto();
                 imageDto.setId(savedImage.getId());
-                imageDto.setFileName(savedImage.getFileName());
                 imageDto.setDownloadUrl(savedImage.getDownloadUrl());
                 savedImageDto.add(imageDto);
 
@@ -79,9 +76,6 @@ public class ImageService implements IImageService {
             imageStorage.deleteImage(image.getDownloadUrl());
 
             String newImageUrl = imageStorage.uploadImage(file);
-
-            image.setFileName(file.getOriginalFilename());
-            image.setFileType(file.getContentType());
             image.setDownloadUrl(newImageUrl);
 
             imageRepository.save(image);
