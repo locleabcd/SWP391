@@ -283,7 +283,7 @@ function MyPond() {
           </svg>
 
           <div className='py-5 px-[30px] mx-auto'>
-            <TopLayout text='My Pond' />
+            <TopLayout text='My Pond' links='member/myPond' />
             <div className='w-full flex justify-end relative'>
               <div className='cursor-pointer' onClick={toggleButtons}>
                 <svg
@@ -292,7 +292,7 @@ function MyPond() {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className='w-8 h-8 mb-4 text-red-500'
+                  className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} w-8 h-8 mb-4`}
                 >
                   <path
                     strokeLinecap='round'
@@ -372,7 +372,7 @@ function MyPond() {
                   key={pond.id}
                   className={`${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } rounded-xl cursor-pointer border`}
+                  } rounded-xl cursor-pointer border hover:scale-105 duration-300`}
                   onClick={() => {
                     toggleEditFormVisibility(pond)
                     reset(pond)
@@ -470,12 +470,12 @@ function MyPond() {
                         className='mb-6 col-span-1 row-span-2 h-full w-full flex rounded-lg  items-center justify-center border border-black'
                       >
                         {baseImage ? (
-                          <div className='pre-upload max-w-[40vw] relative max-h-[124px] w-full h-full'>
+                          <div className='pre-upload max-w-[40vw] relative max-h-[154px] w-full h-full'>
                             <img src={baseImage} alt='Preview' className='absolute w-full h-full object-cover' />
                             <input
                               type='file'
                               id='upload-input'
-                              className='absolute top-10 h-20 opacity-0'
+                              className='absolute h-full w-full opacity-0 object-cover'
                               accept='image/*'
                               {...register('file')}
                               onChange={handleImageChange}
@@ -487,7 +487,7 @@ function MyPond() {
                               viewBox='0 0 24 24'
                               strokeWidth={1.5}
                               stroke='currentColor'
-                              className='size-8 absolute text-white -top-7 -right-4 rounded-full bg-red-500'
+                              className='size-5 absolute text-white -top-3 -right-2 rounded-full bg-red-500'
                               onClick={() => setBaseImage(null)}
                             >
                               <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
@@ -682,7 +682,7 @@ function MyPond() {
                         className='mb-6 col-span-1 row-span-2 h-full w-full flex  items-center justify-center border border-black'
                       >
                         {baseImage ? (
-                          <div className='pre-upload max-w-[40vw] relative max-h-[124px] w-full h-full'>
+                          <div className='pre-upload max-w-[40vw] relative max-h-[154px] w-full h-full'>
                             <img src={baseImage} alt='Preview' className='absolute w-full h-full object-cover' />
                             <input
                               type='file'
@@ -699,7 +699,7 @@ function MyPond() {
                               viewBox='0 0 24 24'
                               strokeWidth={1.5}
                               stroke='currentColor'
-                              className='size-8 absolute text-white -top-7 -right-4 rounded-full bg-red-500'
+                              className='size-5 absolute text-white -top-3 -right-2 rounded-full bg-red-500'
                               onClick={() => setBaseImage(null)}
                             >
                               <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
@@ -845,8 +845,8 @@ function MyPond() {
                       </div>
                     </div>
                   </form>
-                  <div>
-                    <button className='mx-auto w-full' onClick={() => deletePond(currentPond.id)}>
+                  <div className='w-full flex flex-col justify-center'>
+                    <button className='mx-auto' onClick={() => deletePond(currentPond.id)}>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'

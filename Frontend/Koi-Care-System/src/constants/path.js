@@ -26,6 +26,7 @@ const path = {
   news: '/member/news',
   newsDetails: '/member/news/:id',
   koiDetail: '/member/myKoi/:id',
+  recommendationDetail: '/member/recommendations/:id',
   aboutMember: '/member/about'
 }
 
