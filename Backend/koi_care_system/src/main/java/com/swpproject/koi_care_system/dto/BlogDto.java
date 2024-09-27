@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.dto;
 
+import com.swpproject.koi_care_system.payload.response.UserBlog;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ public class BlogDto {
     String blogContent;
     String blogImage;
     LocalDate blogDate;
-    UserDTO user;
+    UserBlog user;
     Set<TagDto> tags;
 
 }

@@ -5,6 +5,7 @@ import com.swpproject.koi_care_system.dto.UserDTO;
 import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
+import com.swpproject.koi_care_system.payload.response.UserBlog;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -19,6 +20,8 @@ public interface UserMapper {
     User maptoUser(CreateUserRequest createUserRequest);
 
     UserDTO maptoUserDTO(User user);
+
+    UserBlog maptoUserBlog(User user);
 
     @Mapping(target = "blogs", ignore = true)
     @Mapping(target = "email", ignore = true)

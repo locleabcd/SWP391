@@ -4,26 +4,31 @@ import com.swpproject.koi_care_system.dto.KoiPondDto;
 import com.swpproject.koi_care_system.exceptions.AlreadyExistsException;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.mapper.KoiPondMapper;
+import com.swpproject.koi_care_system.models.KoiPond;
 import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
-import com.swpproject.koi_care_system.models.KoiPond;
 import com.swpproject.koi_care_system.repository.KoiPondRepository;
+import com.swpproject.koi_care_system.repository.UserRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class KoiPondService implements IKoiPondService {
     KoiPondRepository koiPondRepository;
     KoiPondMapper koiPondMapper;
+    UserRepository userRepository;
+
     @Override
-    public KoiPond addKoiPond(AddKoiPondRequest request) {
-        if (koiPondRepository.existsByName(request.getName())) {
-            throw new AlreadyExistsException("A Koi Pond with this name already exists");
+    public KoiPondDto addKoiPond(AddKoiPondRequest request) {
+        if (koiPondRepository.existsByNameAndUserId(request.getName(), request.getUser().getId())) {
+            throw new AlreadyExistsException("Koi Pond with name " + request.getName() + " already exists!");
         }
         KoiPond koiPond = new KoiPond(
                 null,
@@ -36,24 +41,28 @@ public class KoiPondService implements IKoiPondService {
                 request.getUser(),
                 request.getImageUrl()
         );
-        return koiPondRepository.save(koiPond);
+        return koiPondMapper.toDto(koiPondRepository.save(koiPond));
     }
+
     @Override
     public KoiPond getKoiPondById(Long id) {
         return koiPondRepository.findKoiPondsById(id);
     }
+
     @Override
     public List<KoiPond> getKoiPondByUserID(Long userID) {
-        return  koiPondRepository.findByUserId(userID)
+        return koiPondRepository.findByUserId(userID)
                 .orElseThrow(() -> new ResourceNotFoundException("No Koi Ponds found for user with ID: " + userID));
     }
+
     @Override
     public void deleteKoiPond(Long id) {
         koiPondRepository.findById(id)
-                .ifPresentOrElse(koiPondRepository::delete,()->{
+                .ifPresentOrElse(koiPondRepository::delete, () -> {
                     throw new ResourceNotFoundException("Koi Pond not found!");
                 });
     }
+
     @Override
     public KoiPond updateKoiPond(KoiPondUpdateRequest koiPondUpdateRequest, Long koiPondId) {
         return Optional.ofNullable(getKoiPondById(koiPondId)).map(oldKoiPond -> {
@@ -72,6 +81,7 @@ public class KoiPondService implements IKoiPondService {
     public List<KoiPondDto> getConvertedKoiPonds(List<KoiPond> koiPonds) {
         return koiPonds.stream().map(this::convertToDto).toList();
     }
+
     @Override
     public KoiPondDto convertToDto(KoiPond koiPond) {
         return koiPondMapper.toDto(koiPond);

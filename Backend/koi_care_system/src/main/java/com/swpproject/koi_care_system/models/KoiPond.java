@@ -17,6 +17,7 @@ public class KoiPond {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false, unique = true)
     private String name;
     private int drainCount;
     private Double depth;
@@ -32,11 +33,12 @@ public class KoiPond {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL, orphanRemoval = true)
-    List<WaterParametersHistory> waterParametersHistoryList;
+    @OneToOne(mappedBy = "koiPond", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "waterParametersHistory_id")
+    private WaterParametersHistory waterParametersHistory;
 
     @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL, orphanRemoval = true)
-    List<Log> logList;
+    private List<Log> logList;
 
     public KoiPond(Long id, String name, int drainCount, Double depth, int skimmer, Double pumpCapacity,int volume,User user, String imageUrl) {
         this.id = id;

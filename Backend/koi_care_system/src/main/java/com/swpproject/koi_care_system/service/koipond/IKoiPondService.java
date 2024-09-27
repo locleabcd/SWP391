@@ -1,15 +1,15 @@
 package com.swpproject.koi_care_system.service.koipond;
 
 import com.swpproject.koi_care_system.dto.KoiPondDto;
+import com.swpproject.koi_care_system.models.KoiPond;
 import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
-import com.swpproject.koi_care_system.models.KoiPond;
 
 import java.util.List;
 
 public interface IKoiPondService {
 
-    KoiPond addKoiPond(AddKoiPondRequest addKoiPondRequest);
+    KoiPondDto addKoiPond(AddKoiPondRequest addKoiPondRequest);
     KoiPond getKoiPondById(Long id);
     List<KoiPond> getKoiPondByUserID(Long userID);
     void deleteKoiPond(Long id);

@@ -1,18 +1,18 @@
 package com.swpproject.koi_care_system.models;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "blogs")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Blog {
@@ -39,6 +39,7 @@ public class Blog {
     Set<Tag> tags = new HashSet<>();
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     User user;
 
 

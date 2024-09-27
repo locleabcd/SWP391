@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -19,7 +19,7 @@ public class WaterParametersHistory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date creatDateTime;
+    private LocalDateTime createDateTime;
 
     private Double specValue;
 
@@ -27,6 +27,7 @@ public class WaterParametersHistory {
 
     @OneToMany(mappedBy = "waterParametersHistory",cascade = CascadeType.ALL,orphanRemoval = false)
     List<Specification> specificationList;
+    //TODO
 
     @ManyToOne
     @JoinColumn(name="koiPond_id")
