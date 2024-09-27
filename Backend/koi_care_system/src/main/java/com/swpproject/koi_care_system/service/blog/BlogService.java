@@ -77,9 +77,8 @@ public class BlogService implements IBlogService {
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deleteBlog(int id) {
-        blogRepository.findById(id).ifPresentOrElse(blogRepository::delete, () -> {
-            throw new RuntimeException("Blog not found");
-        });
+        Blog blog = blogRepository.findById(id).orElseThrow(() -> new RuntimeException("Blog not found"));
+        blogRepository.delete(blog);
     }
 
     @Override

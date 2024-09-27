@@ -23,7 +23,7 @@ public class Specification {
 
     @ManyToOne
     @JoinColumn(name="waterParametersHistory_id")
-    private WaterParametersHistory waterParametersHistory;
+    private WaterParameters waterParameters;
 
     @OneToOne
     @JoinColumn(name="issue_id")

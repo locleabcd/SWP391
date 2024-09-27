@@ -33,9 +33,8 @@ public class KoiPond {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne(mappedBy = "koiPond", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "waterParametersHistory_id")
-    private WaterParametersHistory waterParametersHistory;
+    @OneToMany(mappedBy = "koiPond", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WaterParameters> waterParametersList;
 
     @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Log> logList;
