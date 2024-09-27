@@ -85,7 +85,21 @@ function Recommendations() {
     setSort(option)
   }
 
-  const searchProduct = product.filter((products) => products.name.toLowerCase().includes(search.toLowerCase()))
+  const searchProduct = product
+    .filter((products) => {
+      const matchesCategory = selectCategory === 'all' || products.category.id === selectCategory
+      const matchesSearch = products.name.toLowerCase().includes(search.toLowerCase())
+
+      return matchesCategory && matchesSearch
+    })
+    .sort((a, b) => {
+      if (sort === 'price-low-high') {
+        return a.price - b.price
+      } else if (sort === 'price-high-low') {
+        return b.price - a.price
+      }
+      return 0
+    })
 
   return (
     <div>

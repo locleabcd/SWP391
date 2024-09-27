@@ -63,7 +63,7 @@ function LeftSideBar() {
       {!isClosed && (
         <div
           className={`absolute top-0 left-0 z-999 flex h-screen w-[240px] flex-col no-scroll-bar overflow-y-auto border-r ${
-            isDarkMode ? 'bg-custom-dark text-white  border-gray-700' : 'bg-white text-black border-gray-300'
+            isDarkMode ? 'bg-custom-dark text-white  border-gray-700' : 'bg-white text-black border-gray-200'
           } shadow-sm duration-200 ease-linear lg:static lg:translate-x-0 -translate-x-full`}
         >
           <div className='flex justify-center items-center'>
