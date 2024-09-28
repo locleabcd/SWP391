@@ -1,5 +1,6 @@
-/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
+/* eslint-disable react/no-unescaped-entities */
 import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
@@ -131,22 +132,28 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
+      const formData = new FormData()
+      formData.append('name', data.name)
+      formData.append('physique', data.physique)
+      formData.append('age', data.age)
+      formData.append('gender', data.gender)
+      formData.append('variety', data.variety)
+      formData.append('pondDate', data.pondDate)
+      formData.append('breeder', data.breeder)
+      formData.append('price', data.price)
+      formData.append('koiPondId', data.pondId)
+      formData.append('status', data.status)
+      formData.append('imageUrl', data.status)
+
+      // Append the image file if a file is selected
+      if (selectedFile) {
+        formData.append('file', selectedFile)
+      }
+      // else {
+      //   formData.append('imageUrl', koi.imageUrl) // Append the existing imageUrl if no new image is uploaded
+      // }
       const res = await axios.put(
-        `https://koicaresystem.azurewebsites.net/api/koifishs/koifish/${id}/update`,
-        {
-          name: data.name,
-          physique: data.physique,
-          age: data.age,
-          gender: data.gender,
-          variety: data.variety,
-          pondDate: data.pondDate,
-          breeder: data.breeder,
-          price: data.price,
-          koiPondId: data.pondId,
-          file: data.file[0],
-          status: data.status,
-          imageUrl: data.imageUrl
-        },
+        `https://koicaresystem.azurewebsites.net/api/koifishs/koifish/${id}/update`,formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -242,14 +249,14 @@ function KoiDetails() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 pb-0 px-[30px] mx-auto'>
             <TopLayout text='My Koi' textName='My Koi Detail' links='member/myKoi' />
-            <div className='flex justify-between items-center'>
+          </div>
+          <div className='flex items-center justify-end pr-12'>
               <button>
-                <MdSystemUpdateAlt className='size-7 mr-3' onClick={() => toggleEditFormVisibility(koi)} />
+                <MdSystemUpdateAlt className='size-7 ' onClick={() => toggleEditFormVisibility(koi)} />
               </button>
             </div>
-          </div>
 
           {isEditFormVisible && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40 '>
@@ -405,7 +412,7 @@ function KoiDetails() {
                         <option value={5}>Gosai (5 years)</option>
                         <option value={6}>Rokusai (6 years)</option>
                         <option value={7}>Nanasai (7 years)</option>
-                        {[...Array(95)].map((_, i) => (
+                        {[...Array(93)].map((_, i) => (
                           <option key={i + 8} value={i + 8}>
                             {i + 8} years
                           </option>
@@ -552,7 +559,7 @@ function KoiDetails() {
             </div>
           )}
 
-          <div className='flex justify-around py-10'>
+          <div className='flex justify-around py-5'>
             {/* Left content */}
             <div
               className={`${
@@ -562,7 +569,7 @@ function KoiDetails() {
               {/* Image section */}
               <div className='h-full w-[45%] rounded-l-xl overflow-hidden'>
                 <img
-                  className='w-full h-[215px] object-fill transition-transform duration-300 transform hover:scale-105'
+                  className='w-full h-full object-fill transition-transform duration-300 transform hover:scale-105'
                   // style={{ filter: 'brightness(1.1) contrast(1.1)' }}
                   src={koi.imageUrl}
                   alt={koi.name}
@@ -572,7 +579,7 @@ function KoiDetails() {
               <div className='w-[55%] pl-4 pr-3 py-4 flex flex-col justify-between'>
                 <div>
                   <div className='flex items-center'>
-                    <h2 className='w-[90%] font-semibold text-3xl text-start'> {koi.name}</h2>
+                    <h2 className='w-[90%] font-semibold text-3xl text-start text-nowrap'> {koi.name}</h2>
                     <div className=''>
                       {koi.gender == 'Male' && (
                         <span className='flex items-center'>

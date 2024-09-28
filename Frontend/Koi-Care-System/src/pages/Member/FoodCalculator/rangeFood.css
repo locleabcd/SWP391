@@ -1,0 +1,53 @@
+.slider-thumb {
+  -webkit-appearance: none; /* Vô hiệu hóa mặc định */
+  appearance: none;
+  width: 100%;
+  height: 6px; /* Chiều cao của thanh trượt */
+  border-radius: 5px; /* Bo tròn góc */
+  background: #d1d1d1; /* Màu nền của thanh trượt */
+  transition: background 0.2s; /* Hiệu ứng chuyển đổi */
+}
+
+/* Thumb styling cho WebKit */
+.slider-thumb::-webkit-slider-thumb {
+  -webkit-appearance: none; /* Vô hiệu hóa mặc định */
+  appearance: none;
+  width: 20px; /* Kích thước chấm */
+  height: 20px; /* Kích thước chấm */
+  background-color: #ff0000; /* Màu chấm */
+  border-radius: 50%; /* Bo tròn chấm */
+  cursor: pointer; /* Con trỏ khi di chuột lên chấm */
+  transition: background-color 0.2s, width 0.2s, height 0.2s, transform 0.2s; /* Thêm hiệu ứng chuyển đổi */
+}
+
+/* Hiệu ứng hover */
+.slider-thumb::-webkit-slider-thumb:hover {
+  background-color: #ff0000; /* Màu chấm khi hover */
+  transform: scale(1.1); /* Tăng kích thước chấm */
+}
+
+/* Hiệu ứng khi nhấn */
+.slider-thumb::-webkit-slider-thumb:active {
+  width: 28px; /* Kích thước khi nhấn */
+  height: 28px; /* Kích thước khi nhấn */
+  background-color: #ff0000; /* Màu chấm khi nhấn */
+  transform: scale(1.1); /* Tăng kích thước chấm */
+}
+
+/* Thumb styling cho Firefox */
+.slider-thumb::-moz-range-thumb {
+  width: 20px; /* Kích thước chấm */
+  height: 20px; /* Kích thước chấm */
+  background-color: #ff0000; /* Màu chấm */
+  border-radius: 50%; /* Bo tròn chấm */
+  cursor: pointer; /* Con trỏ khi di chuột lên chấm */
+  transition: background-color 0.2s, width 0.2s, height 0.2s, transform 0.2s; /* Thêm hiệu ứng chuyển đổi */
+}
+
+/* Hiệu ứng khi nhấn */
+.slider-thumb::-moz-range-thumb:active {
+  width: 28px; /* Kích thước khi nhấn */
+  height: 28px; /* Kích thước khi nhấn */
+  background-color: #ff0000; /* Màu chấm khi nhấn */
+  transform: scale(1.1); /* Tăng kích thước chấm */
+}
