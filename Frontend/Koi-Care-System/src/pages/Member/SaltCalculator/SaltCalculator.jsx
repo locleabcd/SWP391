@@ -4,14 +4,16 @@
   import Header from '../../../components/Member/Header'
   import { useState, useEffect } from 'react'
   import axios from 'axios'
+  import TopLayout from '../../../layouts/TopLayout'
   import '../SaltCalculator/range.css'
-
+  
+  
   function SaltCalculator() {
     const { isDarkMode } = useDarkMode()
     const [ponds, setPonds] = useState([])
     const [selectedPond, setSelectedPond] = useState(null)
-    const [desiredSalinity, setDesiredSalinity] = useState(0) // Nồng độ mong muốn
-    const [currentSalinity, setCurrentSalinity] = useState(0) // Nồng độ hiện tại
+    const [desiredSalinity, setDesiredSalinity] = useState(0.01) // Nồng độ mong muốn
+    const [currentSalinity, setCurrentSalinity] = useState(0.01) // Nồng độ hiện tại
     const [saltNeeded, setSaltNeeded] = useState(0) // Kết quả: lượng muối cần thêm
     const [waterChangePercent, setWaterChangePercent] = useState(100) // Phần trăm thay đổi nước
     const [refillAmount, setRefillAmount] = useState(0) // Lượng nước cần bổ sung
@@ -48,15 +50,21 @@
     
     // Hàm xử lý khi người dùng chọn hồ
     const handlePondChange = (e) => {
-      const pondId = e.target.value
-      const pond = ponds.find(p => p.id === parseInt(pondId))
-
-      if (pond) {
-        setSelectedPond(pond)
+      const pondId = e.target.value;
+    
+      if (pondId === 'all') {
+        // Nếu chưa chọn hồ thì có thể chọn All Ponds
+        if (!selectedPond) {
+          setSelectedPond(null);
+        }
       } else {
-        setSelectedPond(null)
+        // Khi người dùng chọn một hồ cụ thể
+        const pond = ponds.find(p => p.id === parseInt(pondId));
+        if (pond) {
+          setSelectedPond(pond);
+        }
       }
-    }
+    };
 
     // Tính toán tự động khi nồng độ hoặc thể tích thay đổi
     useEffect(() => {
@@ -93,17 +101,19 @@
             className={`relative ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-100 text-black'} shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
           >
             <Header />
-            <div className="text-center justify-center underline  text-black text-3xl">
-              Salt Calculator
+            <div className='py-5 px-[30px] mx-auto'>
+            <TopLayout text='Salt Calculator' />
             </div>
             
             <div className="p-4 text-lg">
-              <label htmlFor="ponds" >Select a Pond:</label>
+            <label htmlFor="ponds">Select a Pond:</label>
               <select
                 id="ponds"
-                className="border rounded p-2"
+                className="border rounded p-2 text-black"
                 onChange={handlePondChange}
+                value={selectedPond ? selectedPond.id : 'all'} // Hiển thị giá trị của hồ đã chọn hoặc 'all'
               >
+                <option value="all" disabled>All Ponds</option> {/* Thêm tùy chọn All Ponds */}
                 {ponds.length > 0 ? (
                   ponds.map((pond) => (
                     <option key={pond.id} value={pond.id}>
@@ -116,13 +126,13 @@
               </select>
             </div>
           <div className='grid grid-cols-4 p-4 text-lg'>
-            <div className='col-span-2 bg-white  border-solid rounded-lg shadow-2xl'>
+            <div className='col-span-2'>
             {selectedPond ? (
-              <div className="mt-4 p-4">
+              <div className=" p-4">
                 <p><strong>Pond Volume:</strong> {selectedPond.volume} liters</p>
               </div>
             ) : (
-              <div className="mt-4">
+              <div className="p-4">
                 <p>Please select a pond.</p>
               </div>
             )}
@@ -178,7 +188,7 @@
         </div>
             
             </div>
-              <div className='col-span-2 text-black justify-center pl-10 py-20  '>
+              <div className='col-span-2 text-black border justify-center bg-white py-20 rounded shadow pl-10  '>
                   <h2>Notice on Salt Usage for Koi Ponds:</h2>
                     <ul className='list-disc p-3'>
                       <li>Ideal salt concentration <strong>(0.1% - 0.3%)</strong>: to reduce stress and support fish health.</li>
