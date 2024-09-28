@@ -90,7 +90,18 @@ function FoodCalculator() {
             minMultiplier = 0.003; 
             maxMultiplier = 0.007;
         }
-        
+        if (selectedTemperature === '13-16') {
+            minMultiplier = 0.007; 
+            maxMultiplier = 0.015;
+        }
+        if (selectedTemperature === '17-20') {
+            minMultiplier = 0.015; 
+            maxMultiplier = 0.025;
+        }
+        if (selectedTemperature === '21-28') {
+            minMultiplier = 0.025; 
+            maxMultiplier = 0.04;
+        }
     }
 
     if (selectedSize === 'mid') {  // Medium Fish
