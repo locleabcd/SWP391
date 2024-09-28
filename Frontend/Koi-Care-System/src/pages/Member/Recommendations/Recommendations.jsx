@@ -16,6 +16,7 @@ function Recommendations() {
   const [selectCategory, setSelectCategory] = useState('all')
   const [sort, setSort] = useState('newest')
   const [search, setSearch] = useState('')
+  const [pricing, setPricing] = useState('all')
 
   const navigate = useNavigate()
 
@@ -85,12 +86,31 @@ function Recommendations() {
     setSort(option)
   }
 
+  const handlePricingChange = (priceRange) => {
+    setPricing(priceRange)
+  }
+
   const searchProduct = product
     .filter((products) => {
       const matchesCategory = selectCategory === 'all' || products.category.id === selectCategory
       const matchesSearch = products.name.toLowerCase().includes(search.toLowerCase())
 
-      return matchesCategory && matchesSearch
+      let matchesPricing = false
+      switch (pricing) {
+        case 'all':
+          matchesPricing = true
+          break
+        case '0 - 50':
+          matchesPricing = products.price >= 0 && products.price <= 50
+          break
+        case '50 - 100':
+          matchesPricing = products.price > 50 && products.price <= 100
+          break
+        default:
+          matchesPricing = true
+      }
+
+      return matchesCategory && matchesSearch && matchesPricing
     })
     .sort((a, b) => {
       if (sort === 'price-low-high') {
@@ -232,20 +252,18 @@ function Recommendations() {
                 <div className='px-4 py-5 border-b border-gray-200'>
                   <div className='font-semibold text-xl'>By Pricing</div>
                   <div className='flex flex-col border-b-gray-200 mt-2'>
-                    <div className='py-3 mt-2 px-6 custom rounded-xl cursor-pointer flex gap-4'>
-                      <input className='scale-150' type='radio' />
-                      <div>All</div>
-                    </div>
-
-                    <div className='py-3 mt-2 px-6 custom rounded-xl cursor-pointer flex gap-4'>
-                      <input className='scale-150' type='radio' />
-                      <div>0 - 50</div>
-                    </div>
-
-                    <div className='py-3 mt-2 px-6 custom rounded-xl cursor-pointer flex gap-4'>
-                      <input className='scale-150' type='radio' />
-                      <div>50 - 100</div>
-                    </div>
+                    {['all', '0 - 50', '50 - 100'].map((range) => (
+                      <div
+                        key={range}
+                        onClick={() => handlePricingChange(range)}
+                        className={`py-3 mt-2 px-6 custom rounded-xl cursor-pointer flex gap-4 ${
+                          pricing === range ? 'bg-custom-layout-light' : 'hover:bg-custom-layout-light'
+                        }`}
+                      >
+                        <input type='radio' className='scale-150' checked={pricing === range} readOnly />
+                        <div>{range === 'all' ? 'All' : range}</div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>

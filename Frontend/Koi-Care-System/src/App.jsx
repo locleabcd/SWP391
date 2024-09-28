@@ -29,6 +29,7 @@ import ResetPassword from './pages/ResetPassword/ResetPassword'
 import KoiDetail from './pages/Member/MyKoi/KoiDetail'
 import About from './pages/Member/About/About'
 import RecommendationDetail from './pages/Member/Recommendations/RecommendationDetail'
+import MyPondLog from './pages/Member/MyPond/MyPondLog'
 
 function App() {
   const routeElements = useRoutes([
@@ -139,6 +140,10 @@ function App() {
     {
       path: path.aboutMember,
       element: <About />
+    },
+    {
+      path: path.myPondLog,
+      element: <MyPondLog />
     }
   ])
 
