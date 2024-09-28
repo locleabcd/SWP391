@@ -34,6 +34,24 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Image> images;
 
+    @Column(name = "rating")
+    private Double rating;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Feedback> feedbacks;
+
+    private Double calculateAverageRating() {
+        if (feedbacks == null || feedbacks.isEmpty()) {
+            return 0.0;
+        }
+        double sum = feedbacks.stream().mapToInt(Feedback::getStar).sum();
+        return sum / feedbacks.size();
+    }
+    @PrePersist
+    @PreUpdate
+    public void updateRating() {
+        this.rating = this.calculateAverageRating();
+    }
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="issue_id")
     private Issue issue;

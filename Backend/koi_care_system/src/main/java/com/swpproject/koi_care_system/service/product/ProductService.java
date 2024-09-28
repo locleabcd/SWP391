@@ -31,6 +31,7 @@ public class ProductService implements IProductService {
     private final ImageRepository imageRepository;
     private final ImageMapper imageMapper;
     private final SupplierRepository supplierRepository;
+
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public Product addProduct(AddProductRequest request) {
@@ -55,10 +56,13 @@ public class ProductService implements IProductService {
                 supplier
         );
     }
+
     @Override
     public Product getProductById(Long id) {
-        return productRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Product not found!"));
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
+        updateProductRating(product);
+        return product;
     }
 
     @Override
@@ -94,7 +98,9 @@ public class ProductService implements IProductService {
 
     @Override
     public List<Product> getAllProducts() {
-        return productRepository.findAll();
+        List<Product> products = productRepository.findAll();
+        products.forEach(this::updateProductRating);
+        return products;
     }
 
     @Override
@@ -136,8 +142,10 @@ public class ProductService implements IProductService {
     public List<ProductDto> getConvertedProducts(List<Product> products) {
       return products.stream().map(this::convertToDto).toList();
     }
+
     @Override
     public ProductDto convertToDto(Product product) {
+        updateProductRating(product);
         ProductDto productDto = productMapper.mapToProductDto(product);
 
         List<Image> images = imageRepository.findByProductId(product.getId());
@@ -151,5 +159,10 @@ public class ProductService implements IProductService {
                 .toList();
         productDto.setPromotions(promotionDtos);
         return productDto;
+    }
+
+    private void updateProductRating(Product product) {
+        product.updateRating();
+        productRepository.save(product);
     }
 }

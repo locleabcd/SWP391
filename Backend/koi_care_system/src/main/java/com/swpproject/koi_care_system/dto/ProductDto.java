@@ -19,5 +19,6 @@ public class ProductDto {
     private Supplier supplier;
     private List<ImageDto> images;
     private List<PromotionDto> promotions;
+    private Double rating;
 
 }
