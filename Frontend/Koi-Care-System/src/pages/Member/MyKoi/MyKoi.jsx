@@ -274,7 +274,7 @@ function MyKoi() {
                   </label>
                 </div>
 
-                {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>}
+                {/* {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>} */}
 
                 <div className='relative col-span-1 '>
                   <label
@@ -369,9 +369,9 @@ function MyKoi() {
                   <select
                     id='gender'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('gender')}
+                    {...register('gender', { required: false })}
                   >
-                    <option value=''>Select...</option>
+                    <option value='Undefined'>Select Gender</option>
                     <option value='Male'>Male</option>
                     <option value='Female'>Female</option>
                     <option value='Undefined'>Undefined</option>
@@ -389,7 +389,7 @@ function MyKoi() {
                     type='text'
                     id='variety'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('variety')}
+                    {...register('variety', { required: false })}
                   />
                 </div>
 
@@ -419,7 +419,7 @@ function MyKoi() {
                     type='text'
                     id='breeder'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('breeder')}
+                    {...register('breeder', { required: false })}
                   />
                 </div>
 
@@ -435,7 +435,7 @@ function MyKoi() {
                     id='price'
                     placeholder='$'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('price')}
+                    {...register('price', { required: false })}
                   />
                 </div>
 

@@ -5,6 +5,7 @@ import Home from './pages/Home/Home'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import Member from './pages/Member/Member'
+import Shop from './pages/Shop/Shop'
 import Dashboard from './pages/Member/Dashboard/Dashboard'
 import MyKoi from './pages/Member/MyKoi/MyKoi'
 import WaterParameters from './pages/Member/WaterParameters/WaterParameters'
@@ -30,6 +31,10 @@ import KoiDetail from './pages/Member/MyKoi/KoiDetail'
 import About from './pages/Member/About/About'
 import RecommendationDetail from './pages/Member/Recommendations/RecommendationDetail'
 import MyPondLog from './pages/Member/MyPond/MyPondLog'
+import ShopNews from './pages/Shop/News/ShopNews'
+import CreateNews from './pages/Shop/News/CreateNews'
+import UpdateNews from './pages/Shop/News/UpdateNews'
+import ViewNews from './pages/Shop/News/ViewNews'
 
 function App() {
   const routeElements = useRoutes([
@@ -144,6 +149,26 @@ function App() {
     {
       path: path.myPondLog,
       element: <MyPondLog />
+    },
+    {
+      path: path.shop,
+      element: <Shop />
+    },
+    {
+      path: path.shopNews,
+      element: <ShopNews />
+    },
+    {
+      path: path.createNews,
+      element: <CreateNews />
+    },
+    {
+      path: path.updateNews,
+      element: <UpdateNews />
+    },
+    {
+      path: path.viewNews,
+      element: <ViewNews />
     }
   ])
 

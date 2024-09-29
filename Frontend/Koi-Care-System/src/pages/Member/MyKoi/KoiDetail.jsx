@@ -86,7 +86,10 @@ function KoiDetails() {
 
       const allKois = res.data.data
       const koiDetails = allKois.find((koi) => koi.id.toString() === id)
+      console.log(res.data.data);
       setKoi(koiDetails)
+      
+      
     } catch (error) {
       console.error('Error fetching koi:', error)
       alert('Failed to load koi details, please try again later.')
@@ -143,7 +146,7 @@ function KoiDetails() {
       formData.append('price', data.price)
       formData.append('koiPondId', data.pondId)
       formData.append('status', data.status)
-      formData.append('imageUrl', data.status)
+      formData.append('imageUrl', data.imageUrl)
 
       // Append the image file if a file is selected
       if (selectedFile) {
@@ -221,7 +224,7 @@ function KoiDetails() {
       setIsEditFormVisible(false)
       navigate('/member/myKoi')
     } catch (error) {
-      console.error('Error deleting pond:', error)
+      console.error('Error deleting koi:', error)
     } finally {
       setIsLoading(false)
     }
@@ -296,8 +299,7 @@ function KoiDetails() {
                         />
                       </svg>
                     </button>
-                  </div>
-                  {/* Koi Edit Form Fields */}
+                  </div>                 
                   <div className='grid grid-cols-2 grid-rows-6 gap-4'>
                     <div
                       id='file'
@@ -374,10 +376,11 @@ function KoiDetails() {
                         {...register('name')}
                       />
                     </div>
-                    <div className='relative col-span-1 mb-4'>
+
+                    <div className='relative col-span-1 mb-2 mt-2'>
                       <label
-                        htmlFor='physique'
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        htmlFor='physique'
                       >
                         Physique
                       </label>
@@ -387,11 +390,12 @@ function KoiDetails() {
                         {...register('physique')}
                       >
                         {/* <option value=""></option> */}
-                        <option value='Normal'>Normal</option>
                         <option value='Slim'>Slim</option>
+                        <option value='Normal'>Normal</option>
                         <option value='Corpulent'>Corpulent</option>
                       </select>
                     </div>
+                    
                     <div className='relative col-span-1 mb-2 mt-2'>
                       <label
                         htmlFor='age'
@@ -419,6 +423,7 @@ function KoiDetails() {
                         ))}
                       </select>
                     </div>
+
                     <div className='relative col-span-1 mb-2 mt-2'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
@@ -437,6 +442,7 @@ function KoiDetails() {
                         <option value='Undefined'>Undefined</option>
                       </select>
                     </div>
+
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='variety'
@@ -506,7 +512,7 @@ function KoiDetails() {
                         id='status'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('status')}
-                        defaultValue={koi.status}
+                        // value={koi.status}
                       >
                         <option>Alive</option>
                         <option>Dead</option>
@@ -569,7 +575,7 @@ function KoiDetails() {
               {/* Image section */}
               <div className='h-full w-[45%] rounded-l-xl overflow-hidden'>
                 <img
-                  className='w-full h-full object-fill transition-transform duration-300 transform hover:scale-105'
+                  className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105'
                   // style={{ filter: 'brightness(1.1) contrast(1.1)' }}
                   src={koi.imageUrl}
                   alt={koi.name}
@@ -628,7 +634,7 @@ function KoiDetails() {
             >
               <h2 className='font-bold text-center text-xl mb-2'>Koi Description</h2>
               <p className='mb-4'>
-                <strong>{koi.name}</strong> has been swimming in the pond "<strong>{koi.koiPond.name}</strong>" since{' '}
+                <strong>{koi.name}</strong> with size <strong>{koi.physique}</strong> has been swimming in the pond "<strong>{koi.koiPond.name}</strong>" since{' '}
                 <strong>{formatDate(koi.pondDate)}</strong>.
               </p>
               <p className='mb-4'>
