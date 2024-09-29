@@ -29,6 +29,7 @@ const path = {
   recommendationDetail: '/member/recommendations/:id',
   aboutMember: '/member/about',
   myPondLog: '/member/myPond/myPondLog',
+  myPondLogDetail: '/member/myPond/myPondLog/:id',
   shopNews: '/shop/shopNews',
   createNews: '/shop/createNews',
   updateNews: '/shop/shopNews/update/:id',

@@ -367,7 +367,7 @@ function Recommendations() {
                       value={search}
                       onChange={(e) => setSearch(e.target.value)}
                       placeholder='Search Product...'
-                      className='pl-7 font-light outline-none text-lg'
+                      className={`pl-7 font-light ${isDarkMode ? 'bg-custom-dark' : ''}  outline-none text-lg`}
                     />
                   </div>
                 </div>
@@ -429,7 +429,7 @@ function Recommendations() {
                           <div className='flex justify-between'>
                             <div className='mt-3'>${products.price}</div>
                             <div className='mt-3 flex'>
-                              {[...Array(5)].map((index) => {
+                              {[...Array(5)].map((_, index) => {
                                 const fullStar = index < Math.floor(products.rating)
                                 const halfStar = index < products.rating && index >= Math.floor(products.rating)
 

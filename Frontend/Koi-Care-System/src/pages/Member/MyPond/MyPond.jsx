@@ -438,13 +438,33 @@ function MyPond() {
                       <h3 className='text-base font-semibold'>{pond.pumpCapacity} L/min</h3>
                     </div>
                   </div>
+                  <Link to={`/member/myPond/myPondLog/${pond.id}`} className='flex justify-end'>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className=' text-lg shadow-lg text-black rounded-ee-xl bg-custom-layout-light size-14 p-2 cursor-pointer'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10'
+                      />
+                    </svg>
+                  </Link>
                 </div>
               ))}
             </div>
 
             {isAddFormVisible && (
               <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
-                <div className=' bg-white min-w-[80vh] m-auto p-6 rounded-lg shadow-lg'>
+                <div
+                  className={` ${
+                    isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                  }  min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
+                >
                   <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className='flex justify-between mb-5'>
                       <svg
@@ -553,7 +573,9 @@ function MyPond() {
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='name'
-                          className='absolute block -top-[12px] bg-white left-3 text-red-500 font-semibold'
+                          className={`absolute block -top-[12px] ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } left-3 text-red-500 font-semibold`}
                         >
                           Name:
                         </label>
@@ -561,7 +583,9 @@ function MyPond() {
                           type='text'
                           id='name'
                           placeholder='Enter name'
-                          className='w-full p-3 bg-white border border-black  rounded-lg focus:outline-none transition-colors duration-200'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('name')}
                         />
                         {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>}
@@ -570,7 +594,9 @@ function MyPond() {
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='volume'
-                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
                         >
                           Volume:
                         </label>
@@ -578,7 +604,9 @@ function MyPond() {
                           type='text'
                           id='volume'
                           placeholder='Enter volume'
-                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('volume')}
                         />
                         {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>}
@@ -587,7 +615,9 @@ function MyPond() {
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='depth'
-                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
                         >
                           Depth (m):
                         </label>
@@ -595,7 +625,9 @@ function MyPond() {
                           type='text'
                           id='depth'
                           placeholder='Enter depth in meters'
-                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('depth')}
                         />
                         {errors.depth && <p className='text-red-500 text-sm'>{errors.depth.message}</p>}
@@ -604,7 +636,9 @@ function MyPond() {
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='drainCount'
-                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
                         >
                           Drain Count:
                         </label>
@@ -612,7 +646,9 @@ function MyPond() {
                           type='text'
                           id='drainCount'
                           placeholder='Enter drain count'
-                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('drainCount')}
                         />
                         {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>}
@@ -621,7 +657,9 @@ function MyPond() {
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='skimmerCount'
-                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
                         >
                           Skimmer Count:
                         </label>
@@ -629,7 +667,9 @@ function MyPond() {
                           type='text'
                           id='skimmerCount'
                           placeholder='Enter skimmer count'
-                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('skimmer')}
                         />
                         {errors.skimmer && <p className='text-red-500 text-sm'>{errors.skimmer.message}</p>}
@@ -638,7 +678,9 @@ function MyPond() {
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='pumpCapacity'
-                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
                         >
                           Pumping Capacity (l/h):
                         </label>
@@ -646,7 +688,9 @@ function MyPond() {
                           type='text'
                           id='pumpCapacity'
                           placeholder='Enter pumping capacity in l/h'
-                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('pumpCapacity')}
                         />
                         {errors.pumpCapacity && <p className='text-red-500 text-sm'>{errors.pumpCapacity.message}</p>}
@@ -659,7 +703,11 @@ function MyPond() {
 
             {isEditFormVisible && currentPond && (
               <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
-                <div className='bg-white min-w-[80vh] m-auto p-6 rounded-lg shadow-lg'>
+                <div
+                  className={`${
+                    isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                  } min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
+                >
                   {/* Form for editing pond */}
                   <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className='flex justify-between mb-5'>
@@ -765,7 +813,9 @@ function MyPond() {
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='name'
-                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
                         >
                           Name:
                         </label>
@@ -773,7 +823,9 @@ function MyPond() {
                           type='text'
                           id='name'
                           placeholder='Enter volume'
-                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none  transition-colors duration-200'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none  transition-colors duration-200`}
                           {...register('name')}
                         />
                         {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>}
@@ -782,7 +834,9 @@ function MyPond() {
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='volume'
-                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
                         >
                           Volume:
                         </label>
@@ -790,7 +844,9 @@ function MyPond() {
                           type='text'
                           id='volume'
                           placeholder='Enter volume'
-                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('volume')}
                         />
                         {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>}
@@ -799,7 +855,9 @@ function MyPond() {
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='depth'
-                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
                         >
                           Depth (m):
                         </label>
@@ -807,7 +865,9 @@ function MyPond() {
                           type='text'
                           id='depth'
                           placeholder='Enter depth in meters'
-                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('depth')}
                         />
                         {errors.depth && <p className='text-red-500 text-sm'>{errors.depth.message}</p>}
@@ -817,7 +877,9 @@ function MyPond() {
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='drainCount'
-                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
                         >
                           Drain Count:
                         </label>
@@ -825,7 +887,9 @@ function MyPond() {
                           type='text'
                           id='drainCount'
                           placeholder='Enter drain count'
-                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('drainCount')}
                         />
                         {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>}
@@ -834,7 +898,9 @@ function MyPond() {
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='skimmerCount'
-                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
                         >
                           Skimmer Count:
                         </label>
@@ -842,7 +908,9 @@ function MyPond() {
                           type='text'
                           id='skimmerCount'
                           placeholder='Enter skimmer count'
-                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('skimmer')}
                         />
                         {errors.skimmer && <p className='text-red-500 text-sm'>{errors.skimmer.message}</p>}
@@ -851,7 +919,9 @@ function MyPond() {
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='pumpCapacity'
-                          className='absolute -top-[12px] left-3 text-red-500 bg-white font-semibold'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
                         >
                           Pumping Capacity (l/h):
                         </label>
@@ -859,7 +929,9 @@ function MyPond() {
                           type='text'
                           id='pumpCapacity'
                           placeholder='Enter pumping capacity in l/h'
-                          className='w-full p-3 bg-white border border-black rounded-lg focus:outline-none transition-colors duration-200'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('pumpCapacity')}
                         />
                         {errors.pumpCapacity && <p className='text-red-500 text-sm'>{errors.pumpCapacity.message}</p>}

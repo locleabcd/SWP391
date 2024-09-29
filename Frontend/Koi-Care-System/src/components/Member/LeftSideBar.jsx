@@ -83,8 +83,10 @@ function LeftSideBar() {
                 to={path.dashboard}
                 end
                 className={({ isActive }) => {
-                  const active = isActive ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}` : ''
-                  return `${active} hover:bg-custom-layout-light min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                  const active = isActive
+                    ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                    : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                  return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
                 }}
               >
                 {/* left section */}
@@ -113,8 +115,10 @@ function LeftSideBar() {
               <NavLink
                 to={path.myKoi}
                 className={({ isActive }) => {
-                  const active = isActive ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}` : ''
-                  return `${active} mt-2 hover:bg-custom-layout-light min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                  const active = isActive
+                    ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                    : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                  return `${active} mt-2  min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
                 }}
               >
                 {/* left section */}
@@ -131,8 +135,10 @@ function LeftSideBar() {
               <NavLink
                 to={path.myPond}
                 className={({ isActive }) => {
-                  const active = isActive ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}` : ''
-                  return `${active} mt-2 hover:bg-custom-layout-light min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                  const active = isActive
+                    ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                    : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                  return `${active} mt-2  min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
                 }}
               >
                 <div className='flex items-center'>
@@ -148,8 +154,10 @@ function LeftSideBar() {
               <NavLink
                 to={path.waterParameters}
                 className={({ isActive }) => {
-                  const active = isActive ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}` : ''
-                  return `${active} mt-2 hover:bg-custom-layout-light min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                  const active = isActive
+                    ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                    : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                  return `${active} mt-2  min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
                 }}
               >
                 {/* left section */}
@@ -166,8 +174,10 @@ function LeftSideBar() {
               <NavLink
                 to={path.reminders}
                 className={({ isActive }) => {
-                  const active = isActive ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}` : ''
-                  return `${active} mt-2 hover:bg-custom-layout-light min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                  const active = isActive
+                    ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                    : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                  return `${active} mt-2  min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
                 }}
               >
                 {/* left section */}
@@ -184,8 +194,10 @@ function LeftSideBar() {
               <NavLink
                 to={path.recommendations}
                 className={({ isActive }) => {
-                  const active = isActive ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}` : ''
-                  return `${active} mt-2 hover:bg-custom-layout-light min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                  const active = isActive
+                    ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                    : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                  return `${active} mt-2  min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
                 }}
               >
                 {/* left section */}
@@ -202,8 +214,10 @@ function LeftSideBar() {
               <NavLink
                 to={path.foodCalculator}
                 className={({ isActive }) => {
-                  const active = isActive ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}` : ''
-                  return `${active} mt-2 hover:bg-custom-layout-light min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                  const active = isActive
+                    ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                    : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                  return `${active} mt-2  min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
                 }}
               >
                 {/* left section */}
@@ -220,8 +234,10 @@ function LeftSideBar() {
               <NavLink
                 to={path.saltCalculator}
                 className={({ isActive }) => {
-                  const active = isActive ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}` : ''
-                  return `${active} mt-2 hover:bg-custom-layout-light min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                  const active = isActive
+                    ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                    : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                  return `${active} mt-2  min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
                 }}
               >
                 {/* left section */}
@@ -238,8 +254,10 @@ function LeftSideBar() {
               <NavLink
                 to={path.statistics}
                 className={({ isActive }) => {
-                  const active = isActive ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}` : ''
-                  return `${active} mt-2 hover:bg-custom-layout-light min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                  const active = isActive
+                    ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                    : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                  return `${active} mt-2  min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
                 }}
               >
                 {/* left section */}
@@ -256,8 +274,10 @@ function LeftSideBar() {
               <NavLink
                 to={path.news}
                 className={({ isActive }) => {
-                  const active = isActive ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}` : ''
-                  return `${active} mt-2 hover:bg-custom-layout-light min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                  const active = isActive
+                    ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                    : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                  return `${active} mt-2  min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
                 }}
               >
                 {/* left section */}
@@ -274,7 +294,7 @@ function LeftSideBar() {
                 to={path.aboutMember}
                 className={({ isActive }) => {
                   const active = isActive ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}` : ''
-                  return `${active} mt-2 hover:bg-custom-layout-light min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                  return `${active} mt-2  min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
                 }}
               >
                 {/* left section */}

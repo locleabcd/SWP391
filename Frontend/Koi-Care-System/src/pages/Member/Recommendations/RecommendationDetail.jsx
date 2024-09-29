@@ -20,6 +20,11 @@ function Recommendations() {
   const [active, setActive] = useState('description')
   const [feedback, setFeedback] = useState([])
   const [visibleId, setVisibleId] = useState(null)
+  const [rating, setRating] = useState(0)
+  const [hoveredRating, setHoveredRating] = useState(0)
+  const [comment, setComment] = useState('')
+  const [editableFeedback, setEditableFeedback] = useState(null)
+  const [isEditing, setIsEditing] = useState(false)
 
   const toggleHide = (id) => {
     setVisibleId(visibleId === id ? null : id)
@@ -128,6 +133,78 @@ function Recommendations() {
       getFeedback()
     } catch (err) {
       console.log(err)
+    }
+  }
+
+  const createFeedback = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+
+      await axios.post(
+        'https://koicaresystem.azurewebsites.net/api/feedbacks',
+        {
+          star: rating,
+          comment: comment,
+          userId: userId,
+          productId: id
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      getFeedback()
+      getProductId()
+      setRating(0)
+      setComment('')
+      setHoveredRating(0)
+    } catch (error) {
+      console.error('Error details:', error)
+    }
+  }
+
+  const handleEdit = (feedbacks) => {
+    setEditableFeedback(feedbacks)
+    setRating(feedbacks.star)
+    setComment(feedbacks.comment)
+    setIsEditing(true)
+  }
+
+  const handleCancelEdit = () => {
+    setEditableFeedback(null)
+    setRating(0)
+    setComment('')
+    setHoveredRating(0)
+    setIsEditing(false)
+  }
+
+  const updateFeedback = async (id) => {
+    try {
+      const token = localStorage.getItem('token')
+
+      await axios.put(
+        'https://koicaresystem.azurewebsites.net/api/feedbacks',
+        {
+          id: id,
+          star: rating,
+          comment: comment,
+          productId: id
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      getFeedback()
+      setRating(0)
+      setComment('')
+      setHoveredRating(0)
+      setEditableFeedback(null)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -249,7 +326,13 @@ function Recommendations() {
               <div className='flex-auto px-10 py-8'>
                 <div className='border-b border-gray-200 pb-8'>
                   <div className='flex gap-5 items-center'>
-                    <div className='px-2 py-2 rounded-2xl bg-custom-layout-light'>In Stock</div>
+                    <div
+                      className={`px-2 py-2 rounded-2xl ${
+                        isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
+                      } `}
+                    >
+                      In Stock
+                    </div>
                     <div>{productId.category?.name || 'No category available'}</div>
                   </div>
                   <div className='text-3xl font-semibold mt-5'>{productId.name}</div>
@@ -309,7 +392,9 @@ function Recommendations() {
                       type='text'
                       value={count}
                       readOnly
-                      className='outline-none w-10 text-center text-xl text-blue-400'
+                      className={`outline-none w-10 text-center text-xl text-blue-400 ${
+                        isDarkMode ? 'bg-custom-dark' : ''
+                      }`}
                     />
                     <button className='border-l border-blue-400 p-2' onClick={increment}>
                       <svg
@@ -339,12 +424,53 @@ function Recommendations() {
 
             <div className='mt-20 border border-gray-200 rounded-xl px-10 py-5'>
               <div className='text-3xl'>Post Reviews</div>
+              <div className='flex items-center mt-10'>
+                {[...Array(5)].map((_, index) => (
+                  <svg
+                    key={index}
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill={index < (hoveredRating || rating) ? 'gold' : 'none'}
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='h-8 w-8 cursor-pointer hover:scale-110 text-yellow-400 transition-transform duration-200'
+                    onMouseEnter={() => setHoveredRating(index + 1)}
+                    onMouseLeave={() => setHoveredRating(0)}
+                    onClick={() => setRating(index + 1)}
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M12 3.5l2.715 5.451 6.027.488-4.373 3.751 1.331 5.551L12 15.902l-5.7 3.839 1.331-5.551-4.373-3.751 6.027-.488L12 3.5z'
+                    />
+                  </svg>
+                ))}
+              </div>
               <input
                 type='text'
-                className='mt-10 rounded-xl w-full h-32 text-black px-5 py-2 focus:border focus:border-blue-400 text-start flex outline-none border border-gray-200'
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                className={`mt-5 rounded-xl w-full h-32 text-black px-5 py-2 focus:border ${
+                  isDarkMode ? 'bg-custom-dark text-white' : ''
+                } focus:border-blue-400 text-start flex outline-none border border-gray-200`}
               />
+              <button
+                type='submit'
+                className='mt-5 px-5 py-3 bg-blue-400 hover:bg-blue-500 rounded-lg text-white'
+                onClick={editableFeedback ? updateFeedback(feedback?.id || 'note') : createFeedback}
+              >
+                {editableFeedback ? 'Edit Review' : 'Post Review'}
+              </button>
 
-              <button className='mt-5 px-5 py-3 bg-blue-400 rounded-lg text-white'>Post Reviews</button>
+              {isEditing && (
+                <button
+                  type='button'
+                  className='px-5 py-3 bg-red-400 hover:bg-red-500 rounded-lg ml-5 text-white'
+                  onClick={handleCancelEdit}
+                >
+                  Cancel
+                </button>
+              )}
             </div>
 
             <div className='mt-20 border rounded-xl border-gray-200 px-10 py-5'>
@@ -488,7 +614,9 @@ function Recommendations() {
                                 visibleId === feedbacks.id ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
                               }`}
                             >
-                              <button className='py-2 px-4 hover:bg-gray-200'>Edit</button>
+                              <button className='py-2 px-4 hover:bg-gray-200' onClick={() => handleEdit(feedbacks)}>
+                                Edit
+                              </button>
                               <button
                                 className='py-2 px-4 hover:bg-gray-200'
                                 onClick={() => deleteFeedback(feedbacks.id)}
