@@ -28,8 +28,8 @@ const path = {
   newsDetails: '/member/news/:id',
   koiDetail: '/member/myKoi/:id',
   aboutMember: '/member/about',
-  newsAdmin: '/admin/newsAdmin',
-  newsDetailsAdmin: '/admin/newsAdmin/:id',
+  shopNews: '/shop/shopNews',
+  createNews: '/shop/createNews'
   
 }
 

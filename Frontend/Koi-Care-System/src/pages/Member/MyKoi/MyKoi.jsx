@@ -200,7 +200,7 @@ function MyKoi() {
                           <img
                             src={koi.imageUrl}
                             alt={koi.name}
-                            className='w-full h-32 object-cover rounded-s-2xl overflow-hidden'
+                            className='w-full h-32 object-cover rounded-s-xl overflow-hidden'
                             style={{ objectFit: 'cover', filter: 'brightness(1.1)' }}
                           />
                         </div>
@@ -285,7 +285,7 @@ function MyKoi() {
                         id='upload-input'
                         className='absolute top-10 h-20 opacity-0'
                         accept='image/*'
-                        {...register('file',{required: 'Image is required'})}
+                        {...register('file')}
                         onChange={handleImageChange}
                       />
 
@@ -328,14 +328,14 @@ function MyKoi() {
                         id='upload-input'
                         className='absolute ml-20 opacity-0'
                         accept='image/*'
-                        {...register('file',{required: 'Image is required'})}
+                        {...register('file')}
                         onChange={handleImageChange}
                       />
                     </label>
                   )}
                 </div>
 
-                {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>}
+                {/* {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>} */}
 
                 <div className='relative col-span-1 '>
                   <label
@@ -448,7 +448,7 @@ function MyKoi() {
                   <select
                     id='gender'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('gender')}
+                    {...register('gender', {required: false})}
                   >
                     <option value='Undefined'>Select Gender</option>
                     <option value='Male'>Male</option>

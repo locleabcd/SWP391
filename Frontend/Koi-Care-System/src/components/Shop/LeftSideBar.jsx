@@ -1,4 +1,10 @@
-
+import { IoFishOutline } from 'react-icons/io5'
+import { GiAquarium } from 'react-icons/gi'
+import { IoIosWater } from 'react-icons/io'
+import { LuAlarmClock } from 'react-icons/lu'
+import { FaHandPointRight } from 'react-icons/fa'
+import { CgCalculator } from 'react-icons/cg'
+import { IoStatsChartSharp } from 'react-icons/io5'
 import { FaRegNewspaper } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import path from '../../constants/path'
@@ -6,7 +12,7 @@ import { useDarkMode } from '../DarkModeContext'
 import logo from '../../assets/logo.png'
 import { useState } from 'react'
 
-function LeftSideBarAdmin() {
+function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
 
   const [isClosed, setClosed] = useState(false)
@@ -69,11 +75,14 @@ function LeftSideBarAdmin() {
             </a>
           </div>
           {/* right section */}
+
           <div className='flex flex-col justify-center items-center mt-6 duration-200'>
             <div className=''>
+              
+
               {/* sidebar items  */}
               <NavLink
-                to={path.newsAdmin}
+                to={path.shopNews}
                 className={({ isActive }) => {
                   const active = isActive ? 'bg-custom-left-bar text-white' : ''
                   return `hover:text-white ${active} mt-2 hover:bg-custom-left-bar min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
@@ -88,6 +97,8 @@ function LeftSideBarAdmin() {
                   <span className='font-semibold'>News and blogs</span>
                 </div>
               </NavLink>
+
+              
             </div>
           </div>
         </div>
@@ -96,4 +107,4 @@ function LeftSideBarAdmin() {
   )
 }
 
-export default LeftSideBarAdmin
+export default LeftSideBar

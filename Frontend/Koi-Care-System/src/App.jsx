@@ -5,6 +5,7 @@ import Home from './pages/Home/Home'
 import Login from './pages/Login/Login'
 import Register from './pages/Register/Register'
 import Member from './pages/Member/Member'
+import Shop from './pages/Shop/Shop'
 import Dashboard from './pages/Member/Dashboard/Dashboard'
 import MyKoi from './pages/Member/MyKoi/MyKoi'
 import WaterParameters from './pages/Member/WaterParameters/WaterParameters'
@@ -28,9 +29,8 @@ import OTP from './pages/OTP/OTP'
 import ResetPassword from './pages/ResetPassword/ResetPassword'
 import KoiDetail from './pages/Member/MyKoi/KoiDetail'
 import About from './pages/Member/About/About'
-import Admin from './pages/Admin/Admin'
-import NewsAdmin from './pages/Admin/News/News'
-import NewsDetailsAdmin from './pages/Admin/News/NewsDetail'
+import ShopNews from './pages/Shop/News/ShopNews'
+import CreateNews from './pages/Shop/News/CreateNews'
 
 function App() {
   const routeElements = useRoutes([
@@ -139,16 +139,16 @@ function App() {
       element: <About />
     },
     {
-      path: path.admin,
-      element: <Admin />
+      path: path.shop,
+      element: <Shop />
     },
     {
-      path: path.newsAdmin,
-      element: <NewsAdmin />
+      path: path.shopNews,
+      element: <ShopNews />
     },
     {
-      path: path.newsDetailsAdmin,
-      element: <NewsDetailsAdmin />
+      path: path.createNews,
+      element: <CreateNews />
     },
   ])
 

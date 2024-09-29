@@ -83,7 +83,10 @@ function KoiDetails() {
 
       const allKois = res.data.data
       const koiDetails = allKois.find((koi) => koi.id.toString() === id)
+      console.log(res.data.data);
       setKoi(koiDetails)
+      
+      
     } catch (error) {
       console.error('Error fetching koi:', error)
       alert('Failed to load koi details, please try again later.')
@@ -542,7 +545,7 @@ function KoiDetails() {
               {/* Image section */}
               <div className='h-full w-[45%] rounded-l-xl overflow-hidden'>
                 <img
-                  className='w-full h-full object-fill transition-transform duration-300 transform hover:scale-105'
+                  className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105'
                   // style={{ filter: 'brightness(1.1) contrast(1.1)' }}
                   src={koi.imageUrl}
                   alt={koi.name}

@@ -4,7 +4,7 @@ import path from '../../constants/path'
 import { Link, NavLink } from 'react-router-dom'
 import { useState } from 'react'
 
-function HeaderAdmin() {
+function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
 
   const [isOpen, setIsOpen] = useState(false)
@@ -202,4 +202,4 @@ function HeaderAdmin() {
   )
 }
 
-export default HeaderAdmin
+export default Header
