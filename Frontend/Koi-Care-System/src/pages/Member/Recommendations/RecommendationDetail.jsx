@@ -17,6 +17,13 @@ function Recommendations() {
   const navigate = useNavigate()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [count, setCount] = useState(1)
+  const [active, setActive] = useState('description')
+  const [feedback, setFeedback] = useState([])
+  const [visibleId, setVisibleId] = useState(null)
+
+  const toggleHide = (id) => {
+    setVisibleId(visibleId === id ? null : id)
+  }
 
   const images = productId.images || []
 
@@ -85,14 +92,48 @@ function Recommendations() {
       }
 
       const filteredProducts = res.data.data.filter((products) => String(products.id) !== String(id))
-      console.log('res..', filteredProducts)
-
-      console.log(res.data.data)
       setProductRelate(filteredProducts)
     } catch (error) {
       console.log(error)
     }
   }
+
+  const getFeedback = async () => {
+    try {
+      const token = localStorage.getItem('token')
+
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/feedbacks/product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      console.log(res.data.data)
+      setFeedback(res.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const deleteFeedback = async (id) => {
+    try {
+      const token = localStorage.getItem('token')
+
+      await axios.delete(`https://koicaresystem.azurewebsites.net/api/feedbacks/feedback/${id}/delete`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      getFeedback()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    getFeedback()
+  }, [])
 
   useEffect(() => {
     getProductId()
@@ -119,14 +160,14 @@ function Recommendations() {
           <div className='py-5 px-[30px] mx-auto '>
             <TopLayout text='Recommendations' textName='Recommendations Detail' links='member/recommendations' />
 
-            <div className='flex border border-gray-200 px-7 py-5 min-h-[700px]'>
+            <div className='flex border border-gray-200 px-7 py-5 min-h-[700px] rounded-xl'>
               <div className='flex-none w-[600px]'>
                 <div id='controls-carousel' className='relative w-full' data-carousel='static'>
-                  <div className='relative h-[650px] overflow-hidden rounded-xl border border-gray-200'>
+                  <div className='relative h-[650px] duration-500 transition-all overflow-hidden rounded-xl border border-gray-200'>
                     {images.map((image, index) => (
                       <div
                         key={image.id}
-                        className={`duration-700 ease-in-out  ${index === currentIndex ? 'block' : 'hidden'}`}
+                        className={`duration-500 transition-all  ${index === currentIndex ? 'block' : 'hidden'}`}
                         data-carousel-item={index === currentIndex ? 'active' : ''}
                       >
                         <img
@@ -214,6 +255,39 @@ function Recommendations() {
                   <div className='text-3xl font-semibold mt-5'>{productId.name}</div>
                   <div className='text-xl text-justify mt-5'>{productId.description}</div>
                   <div className='text-3xl mt-5 font-semibold'>${productId.price}</div>
+                  <div className='flex mt-5 gap-3 items-center'>
+                    <div className='flex'>
+                      {[...Array(5)].map((_, index) => {
+                        const fullStar = index < Math.floor(productId.rating)
+                        const halfStar = index < productId.rating && index >= Math.floor(productId.rating)
+
+                        return (
+                          <svg
+                            key={index}
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill={fullStar ? 'gold' : halfStar ? 'url(#half-star)' : 'none'}
+                            viewBox='0 0 24 24'
+                            strokeWidth={1.5}
+                            stroke='currentColor'
+                            className='size-6 text-yellow-500'
+                          >
+                            <defs>
+                              <linearGradient id='half-star'>
+                                <stop offset='50%' stopColor='gold' />
+                                <stop offset='50%' stopColor='none' />
+                              </linearGradient>
+                            </defs>
+                            <path
+                              strokeLinecap='round'
+                              strokeLinejoin='round'
+                              d='M12 3.5l2.715 5.451 6.027.488-4.373 3.751 1.331 5.551L12 15.902l-5.7 3.839 1.331-5.551-4.373-3.751 6.027-.488L12 3.5z'
+                            />
+                          </svg>
+                        )
+                      })}
+                    </div>
+                    <div className='text-xl text-blue-300'>({feedback.length} reviews)</div>
+                  </div>
                 </div>
 
                 <div className='flex mt-5 gap-5 items-center border-b border-gray-200 pb-10 pt-5'>
@@ -260,6 +334,174 @@ function Recommendations() {
                     Add to cart
                   </button>
                 </div>
+              </div>
+            </div>
+
+            <div className='mt-20 border border-gray-200 rounded-xl px-10 py-5'>
+              <div className='text-3xl'>Post Reviews</div>
+              <input
+                type='text'
+                className='mt-10 rounded-xl w-full h-32 text-black px-5 py-2 focus:border focus:border-blue-400 text-start flex outline-none border border-gray-200'
+              />
+
+              <button className='mt-5 px-5 py-3 bg-blue-400 rounded-lg text-white'>Post Reviews</button>
+            </div>
+
+            <div className='mt-20 border rounded-xl border-gray-200 px-10 py-5'>
+              <div className='flex gap-2'>
+                <div
+                  className={`text-xl py-3 px-4 border-b cursor-pointer ease-in duration-200 ${
+                    active === 'description' ? ' border-blue-400' : 'border-transparent'
+                  }`}
+                  onClick={() => setActive('description')}
+                >
+                  Description
+                </div>
+                <div
+                  className={`text-xl py-3 px-4 border-b cursor-pointer ${
+                    active === 'reviews' ? 'border-blue-400' : 'border-transparent'
+                  }`}
+                  onClick={() => setActive('reviews')}
+                >
+                  Reviews
+                </div>
+              </div>
+
+              <div className='py-3'>
+                {active === 'description' && (
+                  <div className=''>
+                    <div className='text-2xl font-semibold text-justify leading-7 indent-7 py-5'>
+                      {productId.description}
+                    </div>
+                    <div className='text-lg text-justify indent-7 py-2'>{productId.description_detail}</div>
+                  </div>
+                )}
+                {active === 'reviews' && (
+                  <div className='flex gap-10'>
+                    <div className='flex-none w-[400px] max-h-[280px] border border-gray-200 flex flex-col items-center justify-center py-20'>
+                      <div className='text-2xl font-semibold'>Average Rating</div>
+                      <div className='mt-3 text-3xl text-blue-400'>{productId.rating}/5</div>
+                      <div className='flex mt-3'>
+                        {[...Array(5)].map((_, index) => {
+                          const fullStar = index < Math.floor(productId.rating)
+                          const halfStar = index < productId.rating && index >= Math.floor(productId.rating)
+
+                          return (
+                            <svg
+                              key={index}
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill={fullStar ? 'gold' : halfStar ? 'url(#half-star)' : 'none'}
+                              viewBox='0 0 24 24'
+                              strokeWidth={1.5}
+                              stroke='currentColor'
+                              className='size-6 text-yellow-500'
+                            >
+                              <defs>
+                                <linearGradient id='half-star'>
+                                  <stop offset='50%' stopColor='gold' />
+                                  <stop offset='50%' stopColor='none' />
+                                </linearGradient>
+                              </defs>
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                d='M12 3.5l2.715 5.451 6.027.488-4.373 3.751 1.331 5.551L12 15.902l-5.7 3.839 1.331-5.551-4.373-3.751 6.027-.488L12 3.5z'
+                              />
+                            </svg>
+                          )
+                        })}
+                      </div>
+                    </div>
+
+                    <div className='flex-auto flex flex-col border max-h-[280px] gap-10 overflow-y-auto border-gray-200 px-8 py-10'>
+                      <div className='text-2xl font-semibold'>Comment</div>
+                      {feedback.map((feedbacks) => (
+                        <div
+                          className={`flex justify-between items-center ${
+                            isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
+                          }  p-5 ml-2 rounded-xl`}
+                          key={feedbacks.id}
+                        >
+                          <div className=''>
+                            <div className='flex gap-5'>
+                              <img
+                                src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
+                                className='w-12 h-12 rounded-full border border-gray-300'
+                              />
+                              <div className=''>
+                                <div className=''>{feedbacks.username}</div>
+                                <div className='flex'>
+                                  {[...Array(5)].map((_, index) => {
+                                    const fullStar = index < Math.floor(feedbacks.star)
+                                    const halfStar = index < feedbacks.star && index >= Math.floor(feedbacks.star)
+
+                                    return (
+                                      <svg
+                                        key={index}
+                                        xmlns='http://www.w3.org/2000/svg'
+                                        fill={fullStar ? 'gold' : halfStar ? 'url(#half-star)' : 'none'}
+                                        viewBox='0 0 24 24'
+                                        strokeWidth={1.5}
+                                        stroke='currentColor'
+                                        className='size-6 text-yellow-500'
+                                      >
+                                        <defs>
+                                          <linearGradient id='half-star'>
+                                            <stop offset='50%' stopColor='gold' />
+                                            <stop offset='50%' stopColor='none' />
+                                          </linearGradient>
+                                        </defs>
+                                        <path
+                                          strokeLinecap='round'
+                                          strokeLinejoin='round'
+                                          d='M12 3.5l2.715 5.451 6.027.488-4.373 3.751 1.331 5.551L12 15.902l-5.7 3.839 1.331-5.551-4.373-3.751 6.027-.488L12 3.5z'
+                                        />
+                                      </svg>
+                                    )
+                                  })}
+                                </div>
+                              </div>
+                            </div>
+                            <div className='mt-5'>{feedbacks.comment}</div>
+                          </div>
+                          <div
+                            className='flex flex-col justify-center items-center'
+                            onClick={() => toggleHide(feedbacks.id)}
+                          >
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              strokeWidth={1.5}
+                              stroke='currentColor'
+                              className='size-6 cursor-pointer relative top-12 -right-4'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                d='M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z'
+                              />
+                            </svg>
+
+                            <div
+                              className={`flex flex-col border relative top-12 -right-4  border-gray-300 transition-all duration-300 overflow-hidden${
+                                visibleId === feedbacks.id ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                              }`}
+                            >
+                              <button className='py-2 px-4 hover:bg-gray-200'>Edit</button>
+                              <button
+                                className='py-2 px-4 hover:bg-gray-200'
+                                onClick={() => deleteFeedback(feedbacks.id)}
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 

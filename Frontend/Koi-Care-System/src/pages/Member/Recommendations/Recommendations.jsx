@@ -429,23 +429,34 @@ function Recommendations() {
                           <div className='flex justify-between'>
                             <div className='mt-3'>${products.price}</div>
                             <div className='mt-3 flex'>
-                              {[...Array(5)].map((index) => (
-                                <svg
-                                  key={index}
-                                  xmlns='http://www.w3.org/2000/svg'
-                                  fill={index < products.rating ? 'gold' : 'none'}
-                                  viewBox='0 0 24 24'
-                                  strokeWidth={1.5}
-                                  stroke='currentColor'
-                                  className='size-6 text-yellow-500'
-                                >
-                                  <path
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                    d='M12 3.5l2.715 5.451 6.027.488-4.373 3.751 1.331 5.551L12 15.902l-5.7 3.839 1.331-5.551-4.373-3.751 6.027-.488L12 3.5z'
-                                  />
-                                </svg>
-                              ))}
+                              {[...Array(5)].map((index) => {
+                                const fullStar = index < Math.floor(products.rating)
+                                const halfStar = index < products.rating && index >= Math.floor(products.rating)
+
+                                return (
+                                  <svg
+                                    key={index}
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    fill={fullStar ? 'gold' : halfStar ? 'url(#half-star)' : 'none'}
+                                    viewBox='0 0 24 24'
+                                    strokeWidth={1.5}
+                                    stroke='currentColor'
+                                    className='size-6 text-yellow-500'
+                                  >
+                                    <defs>
+                                      <linearGradient id='half-star'>
+                                        <stop offset='50%' stopColor='gold' />
+                                        <stop offset='50%' stopColor='none' />
+                                      </linearGradient>
+                                    </defs>
+                                    <path
+                                      strokeLinecap='round'
+                                      strokeLinejoin='round'
+                                      d='M12 3.5l2.715 5.451 6.027.488-4.373 3.751 1.331 5.551L12 15.902l-5.7 3.839 1.331-5.551-4.373-3.751 6.027-.488L12 3.5z'
+                                    />
+                                  </svg>
+                                )
+                              })}
                             </div>
                           </div>
                         </div>
