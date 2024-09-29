@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
-/* eslint-disable react/no-unescaped-entities */
 import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
@@ -175,33 +172,6 @@ function KoiDetails() {
       setIsLoading(false)
     }
   }
-
-  const [fishes, setFishes] = useState([])
-
-  const getFishes = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const pondId = ponds.map((pond) => pond.id)
-      console.log(pondId)
-      if (!token) {
-        throw new Error('No token found')
-      }
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koifishs/koipond/${pondId}/allKoi`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      console.log('API Fish Response:', res)
-      console.log('API Fish Data:', res.data.data)
-      setFishes(res.data.data)
-    } catch (error) {
-      console.error('Error fetching fish:', error)
-    }
-  }
-
-  useEffect(() => {
-    getFishes()
-  })
 
   const deleteKoi = async (id) => {
     const isConfirmed = window.confirm('Are you sure to delete koi')

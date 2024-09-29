@@ -167,8 +167,7 @@ function UpdateNews() {
                 {...register('file')}
                 className="mt-1 p-2 border border-gray-300 rounded w-full"
               />
-            </div>
-            
+            </div>           
             <button
               type="submit"
               disabled={isSubmitting}
