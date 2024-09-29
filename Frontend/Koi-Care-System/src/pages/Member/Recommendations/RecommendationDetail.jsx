@@ -137,6 +137,24 @@ function Recommendations() {
                       </div>
                     ))}
                   </div>
+
+                  <div className='flex mt-4 gap-2 justify-start'>
+                    {images.map((image, index) => (
+                      <button
+                        key={image.id}
+                        onClick={() => setCurrentIndex(index)}
+                        className={`w-32 h-32 border rounded-md overflow-hidden focus:outline-none ${
+                          currentIndex === index ? 'border-blue-500' : 'border-gray-300'
+                        }`}
+                      >
+                        <img
+                          src={image.downloadUrl}
+                          className='w-full h-full object-cover'
+                          alt={`Thumbnail ${index + 1}`}
+                        />
+                      </button>
+                    ))}
+                  </div>
                   <button
                     type='button'
                     className='absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none'

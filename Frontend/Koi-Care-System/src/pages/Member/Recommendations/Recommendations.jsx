@@ -17,6 +17,7 @@ function Recommendations() {
   const [sort, setSort] = useState('newest')
   const [search, setSearch] = useState('')
   const [pricing, setPricing] = useState('all')
+  const [rating, setRating] = useState()
 
   const navigate = useNavigate()
 
@@ -90,6 +91,10 @@ function Recommendations() {
     setPricing(priceRange)
   }
 
+  const handleRatingChange = (selectedRating) => {
+    setRating(selectedRating)
+  }
+
   const searchProduct = product
     .filter((products) => {
       const matchesCategory = selectCategory === 'all' || products.category.id === selectCategory
@@ -110,7 +115,31 @@ function Recommendations() {
           matchesPricing = true
       }
 
-      return matchesCategory && matchesSearch && matchesPricing
+      let matchesRating = false
+      switch (rating) {
+        case 'all':
+          matchesRating = true
+          break
+        case '1':
+          matchesRating = products.rating >= 1
+          break
+        case '2':
+          matchesRating = products.rating >= 2
+          break
+        case '3':
+          matchesRating = products.rating >= 3
+          break
+        case '4':
+          matchesRating = products.rating >= 4
+          break
+        case '5':
+          matchesRating = products.rating === 5
+          break
+        default:
+          matchesRating = true
+      }
+
+      return matchesCategory && matchesSearch && matchesPricing && matchesRating
     })
     .sort((a, b) => {
       if (sort === 'price-low-high') {
@@ -257,11 +286,58 @@ function Recommendations() {
                         key={range}
                         onClick={() => handlePricingChange(range)}
                         className={`py-3 mt-2 px-6 custom rounded-xl cursor-pointer flex gap-4 ${
-                          pricing === range ? 'bg-custom-layout-light' : 'hover:bg-custom-layout-light'
+                          pricing === range
+                            ? isDarkMode
+                              ? 'bg-custom-layout-dark'
+                              : 'bg-custom-layout-light'
+                            : isDarkMode
+                            ? 'hover:bg-custom-layout-dark'
+                            : 'hover:bg-custom-layout-light'
                         }`}
                       >
                         <input type='radio' className='scale-150' checked={pricing === range} readOnly />
                         <div>{range === 'all' ? 'All' : range}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className='px-4 py-5 border-b border-gray-200'>
+                  <div className='font-semibold text-xl'>By Star</div>
+                  <div className='flex flex-col border-b-gray-200 mt-2'>
+                    {[1, 2, 3, 4, 5].map((stars) => (
+                      <div
+                        key={stars}
+                        onClick={() => handleRatingChange(stars)}
+                        className={`py-3 mt-2 px-6 custom rounded-xl cursor-pointer flex gap-4 ${
+                          rating === stars
+                            ? isDarkMode
+                              ? 'bg-custom-layout-dark'
+                              : 'bg-custom-layout-light'
+                            : isDarkMode
+                            ? 'hover:bg-custom-layout-dark'
+                            : 'hover:bg-custom-layout-light'
+                        }`}
+                      >
+                        <div className='flex items-center gap-1'>
+                          {Array.from({ length: stars }).map((_, i) => (
+                            <svg
+                              key={i}
+                              xmlns='http://www.w3.org/2000/svg'
+                              fill='none'
+                              viewBox='0 0 24 24'
+                              strokeWidth={1.5}
+                              stroke='currentColor'
+                              className='size-6 text-yellow-400'
+                            >
+                              <path
+                                strokeLinecap='round'
+                                strokeLinejoin='round'
+                                d='M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z'
+                              />
+                            </svg>
+                          ))}
+                        </div>
                       </div>
                     ))}
                   </div>
@@ -350,7 +426,28 @@ function Recommendations() {
                         </div>
                         <div className='px-7 py-5 text-xl mt-5 font-medium'>
                           <div className='line-clamp-1'>{products.name}</div>
-                          <div className='mt-3'>${products.price}</div>
+                          <div className='flex justify-between'>
+                            <div className='mt-3'>${products.price}</div>
+                            <div className='mt-3 flex'>
+                              {[...Array(5)].map((index) => (
+                                <svg
+                                  key={index}
+                                  xmlns='http://www.w3.org/2000/svg'
+                                  fill={index < products.rating ? 'gold' : 'none'}
+                                  viewBox='0 0 24 24'
+                                  strokeWidth={1.5}
+                                  stroke='currentColor'
+                                  className='size-6 text-yellow-500'
+                                >
+                                  <path
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    d='M12 3.5l2.715 5.451 6.027.488-4.373 3.751 1.331 5.551L12 15.902l-5.7 3.839 1.331-5.551-4.373-3.751 6.027-.488L12 3.5z'
+                                  />
+                                </svg>
+                              ))}
+                            </div>
+                          </div>
                         </div>
                       </div>
                     ))}
