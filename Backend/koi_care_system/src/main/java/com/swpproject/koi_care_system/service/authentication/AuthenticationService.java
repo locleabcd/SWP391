@@ -6,12 +6,13 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-import com.swpproject.koi_care_system.dto.UserDTO;
 import com.swpproject.koi_care_system.enums.ErrorCode;
 import com.swpproject.koi_care_system.enums.Role;
 import com.swpproject.koi_care_system.exceptions.AppException;
+import com.swpproject.koi_care_system.mapper.UserMapper;
 import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
+import com.swpproject.koi_care_system.payload.response.LoginResponse;
 import com.swpproject.koi_care_system.repository.UserRepository;
 import com.swpproject.koi_care_system.service.email.IEmailService;
 import com.swpproject.koi_care_system.service.otp.IOtpService;
@@ -41,6 +42,7 @@ public class AuthenticationService implements IAuthenticationService {
     PasswordEncoder passwordEncoder;
     IEmailService emailService;
     IOtpService otpService;
+    UserMapper userMapper;
 
     @NonFinal
     @Value("${jwt.signerKey}")
@@ -48,7 +50,7 @@ public class AuthenticationService implements IAuthenticationService {
 
     //Authenticate user
     @Override
-    public UserDTO authenticate(AuthenticationRequest request) {
+    public LoginResponse authenticate(AuthenticationRequest request) {
         var user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
 
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
@@ -62,14 +64,7 @@ public class AuthenticationService implements IAuthenticationService {
         }
         var token = generateToken(user);
 
-        return UserDTO.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .role(user.getRole())
-                .token(token)
-                .status(true)
-                .build();
+        return userMapper.maptoLoginResponse(user, token);
     }
 
     public String generateToken(User user) {
@@ -82,7 +77,7 @@ public class AuthenticationService implements IAuthenticationService {
                 .issuer("phuoc.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()
+                        Instant.now().plus(5, ChronoUnit.MINUTES).toEpochMilli()
                 ))
                 .claim("scope", buildScope(user))
                 .build();

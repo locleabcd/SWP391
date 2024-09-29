@@ -36,22 +36,30 @@ public class UserService implements IUserService {
 
     public UserDTO createUser(CreateUserRequest request) {
 
-
         if (userRepo.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
-        } else if (userRepo.existsByEmail(request.getEmail())) {
-            throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
+
+        User existingUser = userRepo.findByEmail(request.getEmail()).orElse(null);
+        if (existingUser != null) {
+            if (!existingUser.isStatus()) {
+                var token = authenticationService.generateToken(existingUser);
+                emailService.send(existingUser.getUsername(), existingUser.getEmail(), "Resend Verify Email", token);
+                return userMapper.maptoUserDTO(existingUser);
+            } else {
+                throw new AppException(ErrorCode.EMAIL_EXISTED);
+            }
+        }
+
         User user = userMapper.maptoUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(Role.GUEST.name());
-        //Verify user code email
+        user.setStatus(false);
 
         var token = authenticationService.generateToken(user);
         emailService.send(user.getUsername(), user.getEmail(), "Welcome New User, Your Verify Email", token);
 
         return userMapper.maptoUserDTO(userRepo.save(user));
-
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -93,8 +101,5 @@ public class UserService implements IUserService {
         user.setRole(Role.MEMBER.name());
         userRepo.save(user);
     }
-    @Override
-    public User findUserByUserName(String username) {
-        return userRepo.findByUsername(username).orElseThrow(()-> new RuntimeException("User not found"));
-    }
+
 }

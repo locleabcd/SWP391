@@ -7,6 +7,7 @@ import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
+import com.swpproject.koi_care_system.repository.UserRepository;
 import com.swpproject.koi_care_system.service.image.ImageStorage;
 import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import com.swpproject.koi_care_system.service.user.IUserService;
@@ -32,6 +33,7 @@ public class KoiPondController {
     private final IKoiPondService koiPondService;
     private final IUserService userService;
     private final ImageStorage imageStorage;
+    private final UserRepository userRepository;
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createKoiPond(@RequestParam String name, @RequestParam Double depth, @RequestParam int drainCount,
@@ -44,7 +46,7 @@ public class KoiPondController {
                 imageUrl = "1234567";
             }
             String username = authentication.getName();
-            User user = userService.findUserByUserName(username);
+            User user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found"));
             KoiPondDto koiPondDto = koiPondService.addKoiPond(new AddKoiPondRequest(name, drainCount, volume, depth, skimmer, pumpCapacity, user, imageUrl));
             return ResponseEntity.ok(new ApiResponse("Add Koi pond success!", koiPondDto));
         } catch (Exception e) {
