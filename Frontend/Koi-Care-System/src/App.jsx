@@ -31,6 +31,8 @@ import KoiDetail from './pages/Member/MyKoi/KoiDetail'
 import About from './pages/Member/About/About'
 import ShopNews from './pages/Shop/News/ShopNews'
 import CreateNews from './pages/Shop/News/CreateNews'
+import UpdateNews from './pages/Shop/News/UpdateNews'
+import ViewNews from './pages/Shop/News/ViewNews'
 
 function App() {
   const routeElements = useRoutes([
@@ -149,6 +151,14 @@ function App() {
     {
       path: path.createNews,
       element: <CreateNews />
+    },
+    {
+      path: path.updateNews,
+      element: <UpdateNews />
+    },
+    {
+      path: path.viewNews,
+      element: <ViewNews />
     },
   ])
 

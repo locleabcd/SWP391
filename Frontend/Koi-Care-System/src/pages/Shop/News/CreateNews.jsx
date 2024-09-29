@@ -76,11 +76,11 @@ function CreateNews() {
             <label htmlFor="blogTitle" className='block text-sm font-medium mb-2'>
               Blog Title
             </label>
-            <input
-              type="text"
+            <textarea
               id="blogTitle"
               className={`w-full p-2 border rounded-md ${errors.blogTitle ? 'border-red-500' : 'border-gray-300'}`}
               {...register('blogTitle', { required: 'Blog Title is required' })}
+              rows={3}
             />
             {errors.blogTitle && <p className='text-red-500 text-xs mt-1'>{errors.blogTitle.message}</p>}
           </div>
@@ -93,7 +93,7 @@ function CreateNews() {
                 id="blogContent"
                 className={`w-full p-2 border rounded-md ${errors.blogContent ? 'border-red-500' : 'border-gray-300'}`}
                 {...register('blogContent', { required: 'Blog Content is required' })}
-                rows={5}
+                rows={20}
             />
               {errors.blogContent && <p className='text-red-500 text-xs mt-1'>{errors.blogContent.message}</p>}
           </div>

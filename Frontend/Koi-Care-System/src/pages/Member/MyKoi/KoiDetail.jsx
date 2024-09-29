@@ -194,7 +194,7 @@ function KoiDetails() {
       setIsEditFormVisible(false)
       navigate('/member/myKoi')
     } catch (error) {
-      console.error('Error deleting pond:', error)
+      console.error('Error deleting koi:', error)
     } finally {
       setIsLoading(false)
     }

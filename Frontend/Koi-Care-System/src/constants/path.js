@@ -29,7 +29,9 @@ const path = {
   koiDetail: '/member/myKoi/:id',
   aboutMember: '/member/about',
   shopNews: '/shop/shopNews',
-  createNews: '/shop/createNews'
+  createNews: '/shop/createNews',
+  updateNews: '/shop/shopNews/update/:id',
+  viewNews: '/shop/shopNews/:id',
   
 }
 
