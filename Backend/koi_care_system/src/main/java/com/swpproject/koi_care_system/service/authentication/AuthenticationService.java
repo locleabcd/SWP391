@@ -77,7 +77,7 @@ public class AuthenticationService implements IAuthenticationService {
                 .issuer("phuoc.com")
                 .issueTime(new Date())
                 .expirationTime(new Date(
-                        Instant.now().plus(5, ChronoUnit.MINUTES).toEpochMilli()
+                        Instant.now().plus(1, ChronoUnit.DAYS).toEpochMilli()
                 ))
                 .claim("scope", buildScope(user))
                 .build();

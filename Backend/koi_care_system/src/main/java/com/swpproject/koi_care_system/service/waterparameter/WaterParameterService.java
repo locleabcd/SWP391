@@ -38,7 +38,9 @@ public class WaterParameterService implements IWaterParameters {
     @Override
     public WaterParameterDto updateWaterParameters(long id, ParametersUpdateRequest request) {
         WaterParameters waterParameters = waterParametersRepository.findById(id).orElseThrow(() -> new RuntimeException("WaterParameters not found"));
+        KoiPond koiPond = koiPondRepository.findById(request.getKoiPondId()).orElseThrow(() -> new RuntimeException("KoiPond not found"));
         waterParameterMapper.updateWaterParameters(waterParameters, request);
+        waterParameters.setKoiPond(koiPond);
         return waterParameterMapper.mapToWaterParameterDto(waterParametersRepository.save(waterParameters));
     }
 

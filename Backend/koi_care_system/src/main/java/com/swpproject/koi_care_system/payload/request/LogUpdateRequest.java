@@ -1,6 +1,7 @@
 package com.swpproject.koi_care_system.payload.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,4 +22,6 @@ public class LogUpdateRequest {
     String category;
     String note;
     String image;
+    @NotNull
+    long koiPondId;
 }

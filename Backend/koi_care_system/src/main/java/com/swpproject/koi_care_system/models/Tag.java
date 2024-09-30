@@ -25,6 +25,6 @@ public class Tag {
     @Column(name = "tag_description", nullable = false)
     String tagDescription;
 
-    @ManyToMany(mappedBy = "tags", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.LAZY)
     Set<Blog> blogs = new HashSet<>();
 }

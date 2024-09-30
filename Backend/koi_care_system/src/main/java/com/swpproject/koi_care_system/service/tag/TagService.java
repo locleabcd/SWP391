@@ -4,6 +4,7 @@ import com.swpproject.koi_care_system.dto.TagDto;
 import com.swpproject.koi_care_system.enums.ErrorCode;
 import com.swpproject.koi_care_system.exceptions.AppException;
 import com.swpproject.koi_care_system.mapper.TagMapper;
+import com.swpproject.koi_care_system.models.Blog;
 import com.swpproject.koi_care_system.models.Tag;
 import com.swpproject.koi_care_system.payload.request.TagCreateRequest;
 import com.swpproject.koi_care_system.payload.request.TagUpdateRequest;
@@ -46,9 +47,11 @@ public class TagService implements ITagService {
 
     @Override
     public void deleteTag(int id) {
-        tagRepository.findById(id).ifPresentOrElse(tagRepository::delete, () -> {
-            throw new RuntimeException("Tag not found");
-        });
+        Tag tag = tagRepository.findById(id).orElseThrow(() -> new RuntimeException("Tag not found"));
+        for (Blog blog : tag.getBlogs()) {
+            blog.getTags().remove(tag);
+        }
+        tagRepository.delete(tag);
     }
 
     @Override

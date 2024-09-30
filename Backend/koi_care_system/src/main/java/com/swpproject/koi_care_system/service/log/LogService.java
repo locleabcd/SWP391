@@ -36,7 +36,9 @@ public class LogService implements ILogService {
     @Override
     public LogDto updateLog(int logId, LogUpdateRequest request) {
         Log log = logRepository.findById(logId).orElseThrow(() -> new RuntimeException("Log not found"));
+        KoiPond koiPond = koiPondRepository.findById(request.getKoiPondId()).orElseThrow(() -> new RuntimeException("Pond not found"));
         logMapper.updateLog(log, request);
+        log.setKoiPond(koiPond);
         return logMapper.mapToLogDto(logRepository.save(log));
     }
 
