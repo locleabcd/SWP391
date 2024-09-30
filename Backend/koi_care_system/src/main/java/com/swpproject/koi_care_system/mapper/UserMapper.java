@@ -17,7 +17,7 @@ public interface UserMapper {
     @Mapping(target = "koiPondList", ignore = true)
     @Mapping(target = "blogs", ignore = true)
     @Mapping(target = "id", ignore = true)
-    @Mapping(target = "role", ignore = true)
+    @Mapping(target = "role", constant = "GUEST")
     @Mapping(target = "status", constant = "false")
     User maptoUser(CreateUserRequest createUserRequest);
 

@@ -17,7 +17,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -36,25 +35,14 @@ public class UserService implements IUserService {
 
     public UserDTO createUser(CreateUserRequest request) {
 
+
         if (userRepo.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
+        } else if (userRepo.existsByEmail(request.getEmail())) {
+            throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
-
-        User existingUser = userRepo.findByEmail(request.getEmail()).orElse(null);
-        if (existingUser != null) {
-            if (!existingUser.isStatus()) {
-                var token = authenticationService.generateToken(existingUser);
-                emailService.send(existingUser.getUsername(), existingUser.getEmail(), "Resend Verify Email", token);
-                return userMapper.maptoUserDTO(existingUser);
-            } else {
-                throw new AppException(ErrorCode.EMAIL_EXISTED);
-            }
-        }
-
         User user = userMapper.maptoUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.GUEST.name());
-        user.setStatus(false);
 
         var token = authenticationService.generateToken(user);
         emailService.send(user.getUsername(), user.getEmail(), "Welcome New User, Your Verify Email", token);
@@ -66,12 +54,6 @@ public class UserService implements IUserService {
     public List<UserDTO> getListUser() {
         return userRepo.findAll().stream()
                 .map(userMapper::maptoUserDTO).toList();
-    }
-
-    public UserDTO getMyInfo() {
-        var context = SecurityContextHolder.getContext();
-        String username = context.getAuthentication().getName();
-        return userMapper.maptoUserDTO(userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException("User Not Found")));
     }
 
     @PostAuthorize("returnObject.username == authentication.name")
@@ -101,5 +83,6 @@ public class UserService implements IUserService {
         user.setRole(Role.MEMBER.name());
         userRepo.save(user);
     }
+
 
 }

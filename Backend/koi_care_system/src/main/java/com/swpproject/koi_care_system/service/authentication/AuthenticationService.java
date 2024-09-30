@@ -56,13 +56,13 @@ public class AuthenticationService implements IAuthenticationService {
         boolean authenticated = passwordEncoder.matches(request.getPassword(), user.getPassword());
 
         if (!authenticated) {
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
-        }
-
-        if (user.getRole().equals(Role.GUEST.name())) {
-            throw new AppException(ErrorCode.UNAUTHENTICATED);
+            throw new AppException(ErrorCode.INVALID_CREDENTIALS);
         }
         var token = generateToken(user);
+        if (user.getRole().equals(Role.GUEST.name()) && !user.isStatus()) {
+            emailService.send(user.getUsername(), user.getEmail(), "Resend Verify Email", token);
+            throw new AppException(ErrorCode.UNAUTHENTICATED);
+        }
 
         return userMapper.maptoLoginResponse(user, token);
     }

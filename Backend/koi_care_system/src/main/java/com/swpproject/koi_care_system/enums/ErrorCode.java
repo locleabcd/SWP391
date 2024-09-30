@@ -20,6 +20,7 @@ public enum ErrorCode {
     TAG_EXISTED(1009, "Tag Existed", HttpStatus.BAD_REQUEST),
     TAG_DESCRIPTION_EXISTED(1010, "Tag Duplicated Description", HttpStatus.BAD_REQUEST),
     INVALID_OTP(1011, "Invalid OTP for email", HttpStatus.BAD_REQUEST),
+    INVALID_CREDENTIALS(1012, "Incorrect password", HttpStatus.BAD_REQUEST),
     ;
 
 
