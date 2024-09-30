@@ -13,7 +13,7 @@ function TopLayout({ text, textName, links }) {
     >
       <div>
         <div className='text-3xl mb-2'>{text}</div>
-        <div className='flex gap-3 justify-center items-center'>
+        <div className='flex gap-3 items-center'>
           <Link to='/member' className='text-gray-400'>
             Home
           </Link>

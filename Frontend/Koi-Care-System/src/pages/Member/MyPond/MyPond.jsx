@@ -8,7 +8,7 @@ import axios, { AxiosError } from 'axios'
 import { set, useForm } from 'react-hook-form'
 import { FaSpinner } from 'react-icons/fa'
 import AOS from 'aos'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayout'
@@ -269,22 +269,45 @@ function MyPond() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            fill='none'
-            viewBox='0 0 24 24'
-            strokeWidth={1.5}
-            stroke='currentColor'
-            className='fixed z-50 bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer'
-            onClick={() => {
-              toggleAddFormVisibility()
-            }}
-          >
-            <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
-          </svg>
+
+          <div className='w-full flex justify-end'>
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+              className='fixed z-50 bottom-5 right-5 text-lg text-black outline-none rounded-r-xl bg-custom-layout-light shadow-lg size-16 p-2 cursor-pointer'
+              onClick={() => {
+                toggleAddFormVisibility()
+              }}
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+              />
+            </svg>
+            <Link to='/member/myPond/myPondLog'>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='fixed z-50 bottom-5 right-[84px] text-lg shadow-lg text-black rounded-l-xl bg-custom-layout-light size-16 p-2 cursor-pointer'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10'
+                />
+              </svg>
+            </Link>
+          </div>
 
           <div className='py-5 px-[30px] mx-auto'>
-            <TopLayout text='My Pond' />
+            <TopLayout text='My Pond' links='member/myPond' />
             <div className='w-full flex justify-end relative'>
               <div className='cursor-pointer' onClick={toggleButtons}>
                 <svg
@@ -293,7 +316,7 @@ function MyPond() {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className='w-8 h-8 mb-4 text-red-500'
+                  className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} w-8 h-8 mb-4`}
                 >
                   <path
                     strokeLinecap='round'
@@ -363,8 +386,6 @@ function MyPond() {
                   </div>
                 </div>
               </div>
-
-              {/* Conditionally render the buttons */}
             </div>
 
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-3'>
@@ -373,7 +394,7 @@ function MyPond() {
                   key={pond.id}
                   className={`${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } rounded-xl cursor-pointer border`}
+                  } rounded-xl cursor-pointer border hover:scale-105 duration-300`}
                   onClick={() => {
                     toggleEditFormVisibility(pond)
                     reset(pond)
@@ -387,33 +408,33 @@ function MyPond() {
                   />
                   <div className='p-4'>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-52'>Pond:</h3>
+                      <h3 className='text-base w-56'>Pond:</h3>
                       <h3 className='text-base font-semibold'>{pond.name}</h3>
                     </div>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-52'>Number of fish:</h3>
+                      <h3 className='text-base w-56'>Number of fish:</h3>
                       <h3 className='text-base font-semibold'>
                         {koiCounts[pond.id] !== undefined ? koiCounts[pond.id] : 'Loading...'}
                       </h3>{' '}
                     </div>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-52'>Volume:</h3>
+                      <h3 className='text-base w-56'>Volume:</h3>
                       <h3 className='text-base font-semibold'>{pond.volume} l</h3>
                     </div>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-52'>Drain Count:</h3>
+                      <h3 className='text-base w-56'>Drain Count:</h3>
                       <h3 className='text-base font-semibold'>{pond.drainCount}</h3>
                     </div>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-52'>Depth:</h3>
+                      <h3 className='text-base w-56'>Depth:</h3>
                       <h3 className='text-base font-semibold'>{pond.depth} m</h3>
                     </div>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-52'>Skimmer Count:</h3>
+                      <h3 className='text-base w-56'>Skimmer Count:</h3>
                       <h3 className='text-base font-semibold'>{pond.skimmer}</h3>
                     </div>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-52'>Pump Capacity:</h3>
+                      <h3 className='text-base w-56'>Pump Capacity:</h3>
                       <h3 className='text-base font-semibold'>{pond.pumpCapacity} L/min</h3>
                     </div>
                   </div>
@@ -424,7 +445,6 @@ function MyPond() {
             {isAddFormVisible && (
               <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
                 <div className=' bg-white min-w-[80vh] m-auto p-6 rounded-lg shadow-lg'>
-                  {/* Form for adding pond */}
                   <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className='flex justify-between mb-5'>
                       <svg
@@ -471,12 +491,12 @@ function MyPond() {
                         className='mb-6 col-span-1 row-span-2 h-full w-full flex rounded-lg  items-center justify-center border border-black'
                       >
                         {baseImage ? (
-                          <div className='pre-upload max-w-[40vw] relative max-h-[124px] w-full h-full'>
+                          <div className='pre-upload max-w-[40vw] relative max-h-[154px] w-full h-full'>
                             <img src={baseImage} alt='Preview' className='absolute w-full h-full object-cover' />
                             <input
                               type='file'
                               id='upload-input'
-                              className='absolute top-10 h-20 opacity-0'
+                              className='absolute h-full w-full opacity-0 object-cover'
                               accept='image/*'
                               {...register('file')}
                               onChange={handleImageChange}
@@ -488,7 +508,7 @@ function MyPond() {
                               viewBox='0 0 24 24'
                               strokeWidth={1.5}
                               stroke='currentColor'
-                              className='size-8 absolute text-white -top-7 -right-4 rounded-full bg-red-500'
+                              className='size-5 absolute text-white -top-3 -right-2 rounded-full bg-red-500'
                               onClick={() => setBaseImage(null)}
                             >
                               <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
@@ -683,7 +703,7 @@ function MyPond() {
                         className='mb-6 col-span-1 row-span-2 h-full w-full flex  items-center justify-center border border-black'
                       >
                         {baseImage ? (
-                          <div className='pre-upload max-w-[40vw] relative max-h-[124px] w-full h-full'>
+                          <div className='pre-upload max-w-[40vw] relative max-h-[154px] w-full h-full'>
                             <img src={baseImage} alt='Preview' className='absolute w-full h-full object-cover' />
                             <input
                               type='file'
@@ -700,7 +720,7 @@ function MyPond() {
                               viewBox='0 0 24 24'
                               strokeWidth={1.5}
                               stroke='currentColor'
-                              className='size-8 absolute text-white -top-7 -right-4 rounded-full bg-red-500'
+                              className='size-5 absolute text-white -top-3 -right-2 rounded-full bg-red-500'
                               onClick={() => setBaseImage(null)}
                             >
                               <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
@@ -846,8 +866,8 @@ function MyPond() {
                       </div>
                     </div>
                   </form>
-                  <div>
-                    <button className='mx-auto w-full' onClick={() => deletePond(currentPond.id)}>
+                  <div className='w-full flex flex-col justify-center'>
+                    <button className='mx-auto' onClick={() => deletePond(currentPond.id)}>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
