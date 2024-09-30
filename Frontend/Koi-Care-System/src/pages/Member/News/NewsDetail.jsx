@@ -77,7 +77,12 @@ function NewsDetail() {
             </div>
             <div className='flex gap-2 justify-start w-full mt-10 mb-10 px-6'>
               {newDetail.tags?.map((tag) => (
-                <span key={tag.tagId} className='text-lg  px-2 py-1 rounded-xl bg-gray-200'>
+                <span
+                  key={tag.tagId}
+                  className={`text-lg  px-2 py-1 rounded-xl ${
+                    isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
+                  } `}
+                >
                   {tag.tagName}
                 </span>
               ))}
@@ -87,11 +92,6 @@ function NewsDetail() {
               <div>
                 <p> {newDetail.blogDate}</p>
               </div>
-              {/* {newDetail.tags.map((tag) => (
-              <span key={tag?.tagId} className='text-sm font-semibold text-gray-700 mr-1'>
-                {tag?.tagName}
-              </span>
-            ))} */}
             </div>
             <div className='w-full mt-5 '>
               <div className='py-5 flex w-full justify-between border-b border-gray-300 px-6'>
@@ -113,7 +113,7 @@ function NewsDetail() {
                 </a>
 
                 <div className='flex gap-2 '>
-                  <a className='cursor-pointer flex items-center justify-center p-2 bg-slate-200 flex-none text-blue w-10 h-10 rounded-full'>
+                  <a className='cursor-pointer flex items-center justify-center p-2 bg-slate-100 text-black flex-none text-blue w-10 h-10 rounded-full'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'

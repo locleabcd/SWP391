@@ -221,7 +221,7 @@ function ShopNews() {
                         {blog.blogTitle}
                       </td>
                       <td className='py-2 px-3 border-b border-gray-200'>
-                        {blog.blogContent.substring(0, 100)}...
+                        {blog.blogContent.substring(0, 70)}...
                       </td>
                       <td className='py-2 px-3 border-b border-gray-200'>
                         {blog.tags?.map((tag) => (
