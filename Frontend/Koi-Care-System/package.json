@@ -28,6 +28,7 @@
     "react-router-dom": "^6.26.2",
     "react-scroll": "^1.9.0",
     "react-toastify": "^10.0.5",
+    "redux": "^5.0.1",
     "styled-components": "^6.1.13",
     "svg-outline-stroke": "^1.3.1",
     "tailwind-scrollbar": "^3.1.0",

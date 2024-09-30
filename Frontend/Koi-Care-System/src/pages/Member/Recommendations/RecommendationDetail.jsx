@@ -167,6 +167,7 @@ function Recommendations() {
 
   const handleEdit = (feedbacks) => {
     setEditableFeedback(feedbacks)
+    localStorage.setItem('id_feed', feedbacks.id)
     setRating(feedbacks.star)
     setComment(feedbacks.comment)
     setIsEditing(true)
@@ -180,14 +181,15 @@ function Recommendations() {
     setIsEditing(false)
   }
 
-  const updateFeedback = async (id) => {
+  const updateFeedback = async () => {
     try {
       const token = localStorage.getItem('token')
+      const id_feedback = localStorage.getItem('id_feed')
 
       await axios.put(
         'https://koicaresystem.azurewebsites.net/api/feedbacks',
         {
-          id: id,
+          id: id_feedback,
           star: rating,
           comment: comment,
           productId: id
@@ -275,7 +277,7 @@ function Recommendations() {
                   </div>
                   <button
                     type='button'
-                    className='absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none'
+                    className='absolute top-0 start-0 z-10 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none'
                     onClick={prevImage}
                   >
                     <span className='inline-flex items-center justify-center w-8 h-8 rounded-full bg-black'>
@@ -299,7 +301,7 @@ function Recommendations() {
                   </button>
                   <button
                     type='button'
-                    className='absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none'
+                    className='absolute top-0 end-0 z-10 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none'
                     onClick={nextImage}
                   >
                     <span className='inline-flex items-center justify-center w-8 h-8 rounded-full bg-black'>
@@ -457,7 +459,7 @@ function Recommendations() {
               <button
                 type='submit'
                 className='mt-5 px-5 py-3 bg-blue-400 hover:bg-blue-500 rounded-lg text-white'
-                onClick={editableFeedback ? updateFeedback(feedback?.id || 'note') : createFeedback}
+                onClick={editableFeedback ? updateFeedback : createFeedback}
               >
                 {editableFeedback ? 'Edit Review' : 'Post Review'}
               </button>
