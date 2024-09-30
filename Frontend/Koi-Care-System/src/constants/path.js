@@ -34,8 +34,9 @@ const path = {
   createNews: '/shop/createNews',
   updateNews: '/shop/shopNews/update/:id',
   viewNews: '/shop/shopNews/:id',
-  tag:'/shop/tag/tag'
-  
+  tag:'/shop/tag',
+  createTag:'/shop/createTag',
+  updateTag:'/shop/tag/:id', 
 }
 
 export default path

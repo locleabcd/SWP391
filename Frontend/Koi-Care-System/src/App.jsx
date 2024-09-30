@@ -37,6 +37,8 @@ import UpdateNews from './pages/Shop/News/UpdateNews'
 import ViewNews from './pages/Shop/News/ViewNews'
 import Tag from './pages/Shop/Tag/Tag'
 import MyPondLogId from './pages/Member/MyPond/MyPondLogId'
+import CreateTag from './pages/Shop/Tag/CreateTag'
+import UpdateTag from './pages/Shop/Tag/UpdateTag'
 
 function App() {
   const routeElements = useRoutes([
@@ -179,7 +181,15 @@ function App() {
     {
       path: path.tag,
       element: <Tag />
-    }
+    },
+    {
+      path: path.createTag,
+      element: <CreateTag />
+    },
+    {
+      path: path.updateTag,
+      element: <UpdateTag />
+    },
   ])
 
   return (
