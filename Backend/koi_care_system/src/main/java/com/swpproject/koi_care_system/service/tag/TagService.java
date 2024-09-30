@@ -8,6 +8,7 @@ import com.swpproject.koi_care_system.models.Blog;
 import com.swpproject.koi_care_system.models.Tag;
 import com.swpproject.koi_care_system.payload.request.TagCreateRequest;
 import com.swpproject.koi_care_system.payload.request.TagUpdateRequest;
+import com.swpproject.koi_care_system.repository.BlogRepository;
 import com.swpproject.koi_care_system.repository.TagRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class TagService implements ITagService {
 
     TagRepository tagRepository;
     TagMapper tagMapper;
+    private final BlogRepository blogRepository;
 
     @Override
     public TagDto createTag(TagCreateRequest request) {
@@ -50,6 +52,9 @@ public class TagService implements ITagService {
         Tag tag = tagRepository.findById(id).orElseThrow(() -> new RuntimeException("Tag not found"));
         for (Blog blog : tag.getBlogs()) {
             blog.getTags().remove(tag);
+            if (blog.getTags().isEmpty()) {
+                blogRepository.delete(blog);
+            } else blogRepository.save(blog);
         }
         tagRepository.delete(tag);
     }
