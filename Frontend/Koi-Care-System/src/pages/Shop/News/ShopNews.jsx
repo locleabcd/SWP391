@@ -6,7 +6,7 @@ import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import TopLayout from '../../../layouts/TopLayout'
+import TopLayout from '../../../layouts/TopLayoutShop'
 
 function ShopNews() {
   const { isDarkMode } = useDarkMode()

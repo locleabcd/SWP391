@@ -35,6 +35,7 @@ import ShopNews from './pages/Shop/News/ShopNews'
 import CreateNews from './pages/Shop/News/CreateNews'
 import UpdateNews from './pages/Shop/News/UpdateNews'
 import ViewNews from './pages/Shop/News/ViewNews'
+import Tag from './pages/Shop/Tag/Tag'
 
 function App() {
   const routeElements = useRoutes([
@@ -169,7 +170,11 @@ function App() {
     {
       path: path.viewNews,
       element: <ViewNews />
-    }
+    },
+    {
+      path: path.tag,
+      element: <Tag />
+    },
   ])
 
   return (

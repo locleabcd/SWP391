@@ -143,7 +143,7 @@ function KoiDetails() {
       formData.append('price', data.price)
       formData.append('koiPondId', data.pondId)
       formData.append('status', data.status)
-      formData.append('imageUrl', data.imageUrl)
+      // formData.append('imageUrl', data.imageUrl)
 
       // Append the image file if a file is selected
       if (selectedFile) {
@@ -427,6 +427,7 @@ function KoiDetails() {
                         {...register('variety')}
                       />
                     </div>
+                    
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='pondDate'
@@ -499,7 +500,7 @@ function KoiDetails() {
                         id='pondId'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('pondId')}
-                        defaultValue={koi.koiPond.id}
+                        // value={koi.koiPond.id}
                       >
                         {ponds.map((pond) => (
                           <option key={pond.id} value={pond.id}>
@@ -507,9 +508,9 @@ function KoiDetails() {
                           </option>
                         ))}
                       </select>
-                      {errors.pondId && (
+                      {/* {errors.pondId && (
                         <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.pondId.message}</p>
-                      )}
+                      )} */}
                     </div>
                   </div>
                 </form>

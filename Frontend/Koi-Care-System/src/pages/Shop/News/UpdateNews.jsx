@@ -5,7 +5,7 @@ import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import TopLayout from '../../../layouts/TopLayout'
+import TopLayout from '../../../layouts/TopLayoutShop'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form';
 
@@ -17,19 +17,20 @@ function UpdateNews() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [blogData, setBlogData] = useState(null);
-  const [baseImage, setBaseImage] = useState('')
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setBaseImage(reader.result)
-      }
-      reader.readAsDataURL(file)
-      setSelectedFile(file)
-    }
-  }
+  // const [baseImage, setBaseImage] = useState('')
+
+  // const handleImageChange = (e) => {
+  //   const file = e.target.files[0]
+  //   if (file) {
+  //     const reader = new FileReader()
+  //     reader.onloadend = () => {
+  //       setBaseImage(reader.result)
+  //     }
+  //     reader.readAsDataURL(file)
+  //     setSelectedFile(file)
+  //   }
+  // }
 
   const {
     register,
@@ -74,11 +75,12 @@ function UpdateNews() {
       const formData = new FormData()
       formData.append('blogTitle', data.blogTitle)
       formData.append('blogContent', data.blogContent)
-      formData.append('blogImage', data.blogImage)
+      // formData.append('blogImage', data.blogImage)
       formData.append('blogDate', data.blogDate)
-      formData.append('tagIds', data.tagIds)
-      formData.append('file', data.file[0]);
-
+      formData.append('tagIds', data.tagIds)      
+      if (data.file && data.file.length > 0) {
+        formData.append('file', data.file[0]); 
+      } 
 
       const res = await axios.put(
         `https://koicaresystem.azurewebsites.net/api/blog/update/${id}`,formData,

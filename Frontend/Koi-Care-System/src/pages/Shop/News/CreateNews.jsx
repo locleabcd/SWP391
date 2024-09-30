@@ -7,7 +7,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import TopLayout from '../../../layouts/TopLayout'
+import TopLayout from '../../../layouts/TopLayoutShop'
 import { useForm } from 'react-hook-form'
 
 function CreateNews() {
