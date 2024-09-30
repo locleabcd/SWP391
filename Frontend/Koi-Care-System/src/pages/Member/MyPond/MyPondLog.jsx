@@ -4,6 +4,9 @@ import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import TopLayout from '../../../layouts/TopLayout'
 import axios from 'axios'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+import { useNavigate } from 'react-router-dom'
 
 function MyPondLog() {
   const { isDarkMode } = useDarkMode()
@@ -11,6 +14,14 @@ function MyPondLog() {
   const [isAddFormVisible, setIsAddFormVisible] = useState(false)
   const [isEditFormVisible, setIsEditFormVisible] = useState(false)
   const [currentLog, setCurrentLog] = useState(null)
+  const [ponds, setPonds] = useState([])
+  const [title, setTitle] = useState('')
+  const [dateTime, setDateTime] = useState('')
+  const [category, setCategory] = useState('')
+  const [pond, setPond] = useState('')
+  const [note, setNote] = useState('')
+
+  const navigate = useNavigate()
 
   const toggleAddFormVisibility = () => {
     setIsAddFormVisible(!isAddFormVisible)
@@ -68,6 +79,91 @@ function MyPondLog() {
       console.log('err', error)
     }
   }
+
+  const getPond = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const id = localStorage.getItem('id')
+      if (!token) {
+        throw new Error('No token found')
+      }
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log(res.data.data)
+      setPonds(res.data.data)
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          console.error('Unauthorized access - Token expired or invalid. Logging out...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('id')
+          toast.error('Token expired navigate to login')
+          navigate('/login')
+        } else {
+          console.error('Error fetching ponds:', error.response?.status, error.message)
+        }
+      } else {
+        console.error('An unexpected error occurred:', error)
+      }
+    }
+  }
+
+  const createLog = async () => {
+    try {
+      const token = localStorage.getItem('token')
+
+      await axios.post(
+        'https://koicaresystem.azurewebsites.net/api/log/create',
+        {
+          logTitle: title,
+          logDate: dateTime,
+          category: category,
+          note: note,
+          koiPondId: pond
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+    } catch (error) {
+      console.error('Error details:', error)
+      console.log(dateTime)
+      console.log(pond)
+    }
+  }
+
+  const updateLog = async (logId) => {
+    try {
+      const token = localStorage.getItem('token')
+
+      await axios.put(
+        `https://koicaresystem.azurewebsites.net/api/log/create/${logId}`,
+        {
+          logTitle: title,
+          logDate: dateTime,
+          category: category,
+          note: note,
+          koiPondId: pond
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+    } catch (error) {
+      console.error('Error details:', error)
+    }
+  }
+
+  useEffect(() => {
+    getPond()
+  }, [])
 
   useEffect(() => {
     pondLog()
@@ -136,9 +232,6 @@ function MyPondLog() {
                       <div className='mt-3 text-red-500'>{formatDate(logs.logDate)}</div>
                       <div className='mt-3'>{logs.note}</div>
                     </div>
-                    <div className='flex-auto mt-4'>
-                      <img src={logs.image} alt='' className='h-44' />
-                    </div>
                   </div>
                 </div>
               ))}
@@ -150,193 +243,150 @@ function MyPondLog() {
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
                     }  min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
                   >
-                    <form
-                      // onSubmit={handleSubmit(onSubmit)}
-                      noValidate
-                    >
-                      <div className='flex justify-between mb-5'>
+                    <div className='flex justify-between mb-5'>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        onClick={() => {
+                          toggleAddFormVisibility()
+                        }}
+                        className='size-10 text-red-500 cursor-pointer'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                        />
+                      </svg>
+
+                      <button onClick={() => createLog()}>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'
                           viewBox='0 0 24 24'
                           strokeWidth={1.5}
                           stroke='currentColor'
-                          onClick={() => {
-                            // reset()
-                            // setBaseImage(null)
-                            toggleAddFormVisibility()
-                          }}
-                          className='size-10 text-red-500 cursor-pointer'
+                          className='size-10 text-green-500 cursor-pointer'
                         >
                           <path
                             strokeLinecap='round'
                             strokeLinejoin='round'
-                            d='m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                            d='M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
                           />
                         </svg>
-
-                        <button type='submit'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            strokeWidth={1.5}
-                            stroke='currentColor'
-                            className='size-10 text-green-500 cursor-pointer'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              d='M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                      <h3 className='mb-5 text-2xl font-bold'>Add a Log</h3>
-                      <div className='grid grid-cols-2 grid-rows-3 gap-4'>
-                        <div
-                          id='imageSingle'
-                          className='mb-6 col-span-1 row-span-2 h-full w-full flex rounded-lg  items-center justify-center border border-black'
+                      </button>
+                    </div>
+                    <h3 className='mb-5 text-2xl font-bold'>Add a Log</h3>
+                    <div className='grid grid-cols-2 grid-rows-2 gap-4'>
+                      <div className='relative col-span-1'>
+                        <label
+                          htmlFor='name'
+                          className={`absolute block -top-[12px] ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } left-3 text-red-500 font-semibold`}
                         >
-                          <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
-                            <div className='relative'>
-                              <svg
-                                xmlns='http://www.w3.org/2000/svg'
-                                width={16}
-                                height={16}
-                                fill='currentColor'
-                                className='mx-auto text-gray-500 inline-block w-10 h-10'
-                                viewBox='0 0 16 16'
-                              >
-                                <path
-                                  fillRule='evenodd'
-                                  d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
-                                />
-                                <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
-                              </svg>
-                              <div className='py-3'>
-                                <span>Choose images here</span>
-                              </div>
-                            </div>
-
-                            <input
-                              type='file'
-                              id='upload-input'
-                              className='absolute ml-20 opacity-0'
-                              accept='image/*'
-                              // {...register('file')}
-                              // onChange={handleImageChange}
-                            />
-                          </label>
-                        </div>
-
-                        {/* {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>} */}
-
-                        <div className='mb-4 relative col-span-1'>
-                          <label
-                            htmlFor='name'
-                            className={`absolute block -top-[12px] ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } left-3 text-red-500 font-semibold`}
-                          >
-                            Title:
-                          </label>
-                          <input
-                            type='text'
-                            id='name'
-                            placeholder='Enter title'
-                            className={`w-full p-3 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
-                            // {...register('name')}
-                          />
-                          {/* {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>} */}
-                        </div>
-
-                        <div className='mb-4 relative col-span-1'>
-                          <label
-                            htmlFor='volume'
-                            className={`absolute -top-[12px] left-3 text-red-500 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } font-semibold`}
-                          >
-                            Date & time:
-                          </label>
-                          <input
-                            type='datetime-local'
-                            id='volume'
-                            placeholder='Enter volume'
-                            className={`w-full p-3 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                            // {...register('volume')}
-                          />
-                          {/* {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>} */}
-                        </div>
-
-                        <div className='mb-4 relative col-span-1'>
-                          <label
-                            htmlFor='depth'
-                            className={`absolute -top-[12px] left-3 text-red-500 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } font-semibold`}
-                          >
-                            Category:
-                          </label>
-                          <input
-                            type='text'
-                            id='depth'
-                            placeholder='Enter depth in meters'
-                            className={`w-full p-3 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                            // {...register('depth')}
-                          />
-                          {/* {errors.depth && <p className='text-red-500 text-sm'>{errors.depth.message}</p>} */}
-                        </div>
-
-                        <div className='mb-4 relative col-span-1'>
-                          <label
-                            htmlFor='drainCount'
-                            className={`absolute -top-[12px] left-3 text-red-500 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } font-semibold`}
-                          >
-                            Pond:
-                          </label>
-                          <input
-                            type='text'
-                            id='drainCount'
-                            placeholder='Enter drain count'
-                            className={`w-full p-3 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                            // {...register('drainCount')}
-                          />
-                          {/* {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>} */}
-                        </div>
+                          Title:
+                        </label>
+                        <input
+                          type='text'
+                          id='name'
+                          placeholder='Enter title'
+                          onChange={(e) => setTitle(e.target.value)}
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
+                        />
                       </div>
-                      <div className='mb-4 relative w-full'>
+
+                      <div className='relative col-span-1'>
+                        <label
+                          htmlFor='volume'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
+                        >
+                          Date & time:
+                        </label>
+                        <input
+                          type='datetime-local'
+                          id='volume'
+                          placeholder='Enter volume'
+                          onChange={(e) => setDateTime(e.target.value)}
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                        />
+                      </div>
+
+                      <div className='mb-4 relative col-span-1'>
+                        <label
+                          htmlFor='depth'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
+                        >
+                          Category:
+                        </label>
+                        <select
+                          id='pondId'
+                          onChange={(e) => setCategory(e.target.value)}
+                          className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        >
+                          <option value='other'>other</option>
+                          <option value='Water Change'>Water Change</option>
+                          <option value='Koi Treatment'>Koi Treatment</option>
+                          <option value='Water Treatment'>Water Treatment</option>
+                          <option value='Population Change'>Population Change</option>
+                          <option value='Experience'>Experience</option>
+                          <option value='Pond Modification'>Pond Modification</option>
+                        </select>
+                      </div>
+
+                      <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='drainCount'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold`}
                         >
-                          Note:
+                          Pond:
                         </label>
-                        <input
-                          type='text'
-                          id='drainCount'
-                          placeholder='Note'
-                          className={`w-full h-32 p-3 ${
-                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          // {...register('drainCount')}
-                        />
-                        {/* {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>} */}
+                        <select
+                          id='pondId'
+                          onChange={(e) => setPond(e.target.value)}
+                          className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        >
+                          <option value=''>Select a pond</option>
+                          {ponds.map((pond) => (
+                            <option key={pond.id} value={pond.id}>
+                              {pond.name}
+                            </option>
+                          ))}
+                        </select>
                       </div>
-                    </form>
+                    </div>
+                    <div className='mb-4 mt-4 relative w-full'>
+                      <label
+                        htmlFor='drainCount'
+                        className={`absolute -top-[12px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        } font-semibold`}
+                      >
+                        Note:
+                      </label>
+                      <input
+                        type='text'
+                        onChange={(e) => setNote(e.target.value)}
+                        id='drainCount'
+                        placeholder='Note'
+                        className={`w-full h-32 p-3 ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                      />
+                    </div>
                   </div>
                 </div>
               )}
@@ -348,192 +398,149 @@ function MyPondLog() {
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
                     }  min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
                   >
-                    <form
-                      // onSubmit={handleSubmit(onSubmit)}
-                      noValidate
-                    >
-                      <div className='flex justify-between mb-5'>
+                    <div className='flex justify-between mb-5'>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        onClick={() => {
+                          // reset()
+                          // setBaseImage(null)
+                          toggleCloseForm()
+                        }}
+                        className='size-10 text-red-500 cursor-pointer'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                        />
+                      </svg>
+
+                      <button type='submit'>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'
                           viewBox='0 0 24 24'
                           strokeWidth={1.5}
                           stroke='currentColor'
-                          onClick={() => {
-                            // reset()
-                            // setBaseImage(null)
-                            toggleCloseForm()
-                          }}
-                          className='size-10 text-red-500 cursor-pointer'
+                          className='size-10 text-green-500 cursor-pointer'
                         >
                           <path
                             strokeLinecap='round'
                             strokeLinejoin='round'
-                            d='m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                            d='M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
                           />
                         </svg>
-
-                        <button type='submit'>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            strokeWidth={1.5}
-                            stroke='currentColor'
-                            className='size-10 text-green-500 cursor-pointer'
-                          >
-                            <path
-                              strokeLinecap='round'
-                              strokeLinejoin='round'
-                              d='M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
-                            />
-                          </svg>
-                        </button>
-                      </div>
-                      <h3 className='mb-5 text-2xl font-bold'>Add a Log</h3>
-                      <div className='grid grid-cols-2 grid-rows-3 gap-4'>
-                        <div
-                          id='imageSingle'
-                          className='mb-6 col-span-1 row-span-2 h-full w-full flex rounded-lg  items-center justify-center border border-black'
+                      </button>
+                    </div>
+                    <h3 className='mb-5 text-2xl font-bold'>Add a Log</h3>
+                    <div className='grid grid-cols-2 grid-rows-2 gap-4'>
+                      <div className='mb-4 relative col-span-1'>
+                        <label
+                          htmlFor='name'
+                          className={`absolute block -top-[12px] ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } left-3 text-red-500 font-semibold`}
                         >
-                          <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
-                            <div className='relative'>
-                              <svg
-                                xmlns='http://www.w3.org/2000/svg'
-                                width={16}
-                                height={16}
-                                fill='currentColor'
-                                className='mx-auto text-gray-500 inline-block w-10 h-10'
-                                viewBox='0 0 16 16'
-                              >
-                                <path
-                                  fillRule='evenodd'
-                                  d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
-                                />
-                                <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
-                              </svg>
-                              <div className='py-3'>
-                                <span>Choose images here</span>
-                              </div>
-                            </div>
-
-                            <input
-                              type='file'
-                              id='upload-input'
-                              className='absolute ml-20 opacity-0'
-                              accept='image/*'
-                              // {...register('file')}
-                              // onChange={handleImageChange}
-                            />
-                          </label>
-                        </div>
-
-                        {/* {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>} */}
-
-                        <div className='mb-4 relative col-span-1'>
-                          <label
-                            htmlFor='name'
-                            className={`absolute block -top-[12px] ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } left-3 text-red-500 font-semibold`}
-                          >
-                            Title:
-                          </label>
-                          <input
-                            type='text'
-                            id='name'
-                            placeholder='Enter title'
-                            className={`w-full p-3 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
-                            // {...register('name')}
-                          />
-                          {/* {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>} */}
-                        </div>
-
-                        <div className='mb-4 relative col-span-1'>
-                          <label
-                            htmlFor='volume'
-                            className={`absolute -top-[12px] left-3 text-red-500 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } font-semibold`}
-                          >
-                            Date & time:
-                          </label>
-                          <input
-                            type='datetime-local'
-                            id='volume'
-                            placeholder='Enter volume'
-                            className={`w-full p-3 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                            // {...register('volume')}
-                          />
-                          {/* {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>} */}
-                        </div>
-
-                        <div className='mb-4 relative col-span-1'>
-                          <label
-                            htmlFor='depth'
-                            className={`absolute -top-[12px] left-3 text-red-500 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } font-semibold`}
-                          >
-                            Category:
-                          </label>
-                          <input
-                            type='text'
-                            id='depth'
-                            placeholder='Enter depth in meters'
-                            className={`w-full p-3 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                            // {...register('depth')}
-                          />
-                          {/* {errors.depth && <p className='text-red-500 text-sm'>{errors.depth.message}</p>} */}
-                        </div>
-
-                        <div className='mb-4 relative col-span-1'>
-                          <label
-                            htmlFor='drainCount'
-                            className={`absolute -top-[12px] left-3 text-red-500 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } font-semibold`}
-                          >
-                            Pond:
-                          </label>
-                          <input
-                            type='text'
-                            id='drainCount'
-                            placeholder='Enter drain count'
-                            className={`w-full p-3 ${
-                              isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                            } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                            // {...register('drainCount')}
-                          />
-                          {/* {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>} */}
-                        </div>
+                          Title:
+                        </label>
+                        <input
+                          type='text'
+                          id='name'
+                          placeholder='Enter title'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
+                          // {...register('name')}
+                        />
+                        {/* {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>} */}
                       </div>
-                      <div className='mb-4 relative w-full'>
+
+                      <div className='mb-4 relative col-span-1'>
+                        <label
+                          htmlFor='volume'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
+                        >
+                          Date & time:
+                        </label>
+                        <input
+                          type='datetime-local'
+                          id='volume'
+                          placeholder='Enter volume'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                          // {...register('volume')}
+                        />
+                        {/* {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>} */}
+                      </div>
+
+                      <div className='mb-4 relative col-span-1'>
+                        <label
+                          htmlFor='depth'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
+                        >
+                          Category:
+                        </label>
+                        <input
+                          type='text'
+                          id='depth'
+                          placeholder='Enter depth in meters'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                          // {...register('depth')}
+                        />
+                        {/* {errors.depth && <p className='text-red-500 text-sm'>{errors.depth.message}</p>} */}
+                      </div>
+
+                      <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='drainCount'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold`}
                         >
-                          Note:
+                          Pond:
                         </label>
                         <input
                           type='text'
-                          placeholder='Note'
-                          className={`w-full h-32 p-3 ${
+                          id='drainCount'
+                          placeholder='Enter drain count'
+                          className={`w-full p-3 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           // {...register('drainCount')}
                         />
                         {/* {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>} */}
                       </div>
-                    </form>
+                    </div>
+                    <div className='mb-4 relative w-full'>
+                      <label
+                        htmlFor='drainCount'
+                        className={`absolute -top-[12px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        } font-semibold`}
+                      >
+                        Note:
+                      </label>
+                      <input
+                        type='text'
+                        placeholder='Note'
+                        className={`w-full h-32 p-3 ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                        // {...register('drainCount')}
+                      />
+                      {/* {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>} */}
+                    </div>
 
                     <div className='w-full flex flex-col justify-center'>
                       <button className='mx-auto' onClick={() => deleteLog(currentLog.logId)}>

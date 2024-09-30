@@ -375,7 +375,10 @@ function Recommendations() {
                 {searchProduct.length > 0 ? (
                   <div className='grid grid-cols-3 gap-8 py-3 mt-4'>
                     {searchProduct.map((products) => (
-                      <div key={products.id} className='border border-gray-200 rounded-xl hover:scale-105 duration-300'>
+                      <div
+                        key={products.id}
+                        className='border border-gray-200 rounded-xl hover:scale-[102%] duration-300'
+                      >
                         <div>
                           <div className='border-b border-gray-200 max-h-[300px]'>
                             <Link
