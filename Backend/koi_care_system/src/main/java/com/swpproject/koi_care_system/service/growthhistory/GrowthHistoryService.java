@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.service.growhistory;
+package com.swpproject.koi_care_system.service.growthhistory;
 
 import com.swpproject.koi_care_system.dto.GrowthHistoryDto;
 import com.swpproject.koi_care_system.mapper.GrowthHistoryMapper;

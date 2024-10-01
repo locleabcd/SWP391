@@ -3,7 +3,7 @@ package com.swpproject.koi_care_system.controllers;
 import com.swpproject.koi_care_system.payload.request.GrowthCreateRequest;
 import com.swpproject.koi_care_system.payload.request.GrowthUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.growhistory.IGrowthHistoryService;
+import com.swpproject.koi_care_system.service.growthhistory.IGrowthHistoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ public class GrowthHistoryController {
     private final IGrowthHistoryService growHistoryService;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createGrowHistory(@RequestBody @Valid GrowthCreateRequest growthCreateRequest) {
+    public ResponseEntity<ApiResponse> createGrowthHistory(@RequestBody @Valid GrowthCreateRequest growthCreateRequest) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .data(growHistoryService.createGrowthHistory(growthCreateRequest))
                 .message("Grow history has been created")
@@ -24,7 +24,7 @@ public class GrowthHistoryController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<ApiResponse> updateGrowHistory(@PathVariable Long id, @RequestBody @Valid GrowthUpdateRequest growthUpdateRequest) {
+    public ResponseEntity<ApiResponse> updateGrowthHistory(@PathVariable Long id, @RequestBody @Valid GrowthUpdateRequest growthUpdateRequest) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .data(growHistoryService.updateGrowthHistory(id, growthUpdateRequest))
                 .message("Grow history has been updated")
@@ -32,7 +32,7 @@ public class GrowthHistoryController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<ApiResponse> deleteGrowHistory(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> deleteGrowthHistory(@PathVariable Long id) {
         growHistoryService.deleteGrowthHistory(id);
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("Grow history has been deleted")
@@ -40,7 +40,7 @@ public class GrowthHistoryController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<ApiResponse> getGrowHistory(@PathVariable Long id) {
+    public ResponseEntity<ApiResponse> getGrowthHistory(@PathVariable Long id) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .data(growHistoryService.getGrowthHistory(id))
                 .message("Grow history has been found")
@@ -48,7 +48,7 @@ public class GrowthHistoryController {
     }
 
     @GetMapping("/list/{koiFishId}")
-    public ResponseEntity<ApiResponse> getListGrowHistory(@PathVariable Long koiFishId) {
+    public ResponseEntity<ApiResponse> getListGrowthHistory(@PathVariable Long koiFishId) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .data(growHistoryService.getListGrowthHistory(koiFishId))
                 .message("List of grow history has been found")
