@@ -27,6 +27,10 @@ public class Product {
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
 
+    @Lob
+    @Column(name = "description_detail", nullable = false, columnDefinition = "TEXT")
+    private String description_detail;
+
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "category_id")
     private Category category;
@@ -58,21 +62,22 @@ public class Product {
 
     @ManyToMany
     @JoinTable(
-        name = "product_promotion",
-        joinColumns = @JoinColumn(name = "product_id"),
-        inverseJoinColumns = @JoinColumn(name = "promotion_id")
+            name = "product_promotion",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "promotion_id")
     )
     private Set<Promotion> promotions = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="supplier_id")
     private Supplier supplier;
-    public Product(String name, String brand, BigDecimal price, int inventory, String description, Category category, Supplier supplier) {
+    public Product(String name, String brand, BigDecimal price, int inventory, String description,String description_detail, Category category, Supplier supplier) {
         this.name = name;
         this.brand = brand;
         this.price = price;
         this.inventory = inventory;
         this.description = description;
+        this.description_detail=description_detail;
         this.category = category;
         this.supplier = supplier;
     }

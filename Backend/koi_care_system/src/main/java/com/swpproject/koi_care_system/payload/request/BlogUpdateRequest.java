@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.util.annotation.Nullable;
 
 import java.util.Set;
 
@@ -19,7 +20,6 @@ public class BlogUpdateRequest {
     String blogTitle;
     @NotBlank
     String blogContent;
-    String blogImage;
     String blogDate;
     Set<Integer> tagIds;
     MultipartFile file;

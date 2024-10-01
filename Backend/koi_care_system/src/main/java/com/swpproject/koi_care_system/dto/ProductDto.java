@@ -15,6 +15,7 @@ public class ProductDto {
     private BigDecimal price;
     private int inventory;
     private String description;
+    private String description_detail;
     private Category category;
     private Supplier supplier;
     private List<ImageDto> images;

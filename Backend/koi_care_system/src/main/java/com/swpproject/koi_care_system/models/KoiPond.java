@@ -30,8 +30,10 @@ public class KoiPond {
     private User user;
 
     @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL, orphanRemoval = true)
-    List<WaterParametersHistory> waterParametersHistoryList;
+    List<WaterParameters> waterParametersList;
 
+    @OneToMany(mappedBy = "koiPond",cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Log> logList;
     public KoiPond(Long id, String name, int drainCount, Double depth, int skimmer, Double pumpCapacity,int volume,User user, String imageUrl) {
         this.id = id;
         this.name = name;

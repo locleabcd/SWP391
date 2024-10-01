@@ -44,7 +44,7 @@ public class SupplierService implements ISupplierService {
             throw new AlreadyExistsException("The supplier with this name already exists");
         }
         Supplier supplier = new Supplier(
-            null,
+                null,
                 addSupplierRequest.getName(),
                 addSupplierRequest.getPhone(),
                 addSupplierRequest.getAddress()

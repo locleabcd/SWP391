@@ -1,6 +1,7 @@
 package com.swpproject.koi_care_system.service.Blog;
 
 import com.swpproject.koi_care_system.dto.BlogDto;
+import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.mapper.BlogMapper;
 import com.swpproject.koi_care_system.models.Blog;
 import com.swpproject.koi_care_system.models.Tag;
@@ -10,6 +11,7 @@ import com.swpproject.koi_care_system.payload.request.BlogUpdateRequest;
 import com.swpproject.koi_care_system.repository.BlogRepository;
 import com.swpproject.koi_care_system.repository.TagRepository;
 import com.swpproject.koi_care_system.repository.UserRepository;
+import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -20,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,16 +35,17 @@ public class BlogService implements IBlogService {
     BlogMapper blogMapper;
     UserRepository userRepository;
     TagRepository tagRepository;
-
+    ImageStorage imageStorage;
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
-    public BlogDto createBlog(BlogCreateRequest blogCreateRequest, String username) {
+    public BlogDto createBlog(BlogCreateRequest blogCreateRequest, String username) throws IOException {
         if (blogRepository.existsByBlogTitle(blogCreateRequest.getBlogTitle())) {
             throw new RuntimeException("Blog already exists");
         }
+        if(blogCreateRequest.getFile()!=null)
+            blogCreateRequest.setBlogImage(!blogCreateRequest.getFile().isEmpty()?imageStorage.uploadImage(blogCreateRequest.getFile()):"");
         Blog blog = blogMapper.mapToBlog(blogCreateRequest);
         blog.setBlogDate(java.time.LocalDate.now());
-
         Set<Tag> tags = new HashSet<>();
         for (int tagId : blogCreateRequest.getTagIds()) {
             Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new RuntimeException("Tag not found"));
@@ -61,6 +65,14 @@ public class BlogService implements IBlogService {
                 throw new RuntimeException("Blog title already exists");
             }
         }
+        if(blogUpdateRequest.getFile()!=null)
+            if(!blogUpdateRequest.getFile().isEmpty()){
+                try{
+                    blog.setBlogImage(imageStorage.uploadImage(blogUpdateRequest.getFile()));
+                }catch (Exception e){
+                    throw new RuntimeException(e);
+                }
+            }
         blogMapper.updateBlog(blog, blogUpdateRequest);
         Set<Tag> tags = new HashSet<>();
         for (int tagId : blogUpdateRequest.getTagIds()) {
@@ -74,8 +86,8 @@ public class BlogService implements IBlogService {
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deleteBlog(int id) {
-        blogRepository.findById(id).ifPresentOrElse(blogRepository::delete, () -> {
-            throw new RuntimeException("Blog not found");
+        blogRepository.findById(id).ifPresentOrElse(blogRepository::delete,()->{
+            throw new ResourceNotFoundException("Blog not found!");
         });
     }
 

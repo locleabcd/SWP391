@@ -16,6 +16,10 @@ import com.swpproject.koi_care_system.repository.ImageRepository;
 import com.swpproject.koi_care_system.repository.ProductRepository;
 import com.swpproject.koi_care_system.repository.SupplierRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +35,6 @@ public class ProductService implements IProductService {
     private final ImageRepository imageRepository;
     private final ImageMapper imageMapper;
     private final SupplierRepository supplierRepository;
-
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public Product addProduct(AddProductRequest request) {
@@ -44,7 +47,6 @@ public class ProductService implements IProductService {
         Supplier supplier = supplierRepository.findByName(request.getSupplierName());
         return productRepository.save(createProduct(request, category,supplier));
     }
-
     private Product createProduct(AddProductRequest request, Category category, Supplier supplier) {
         return new Product(
                 request.getName(),
@@ -52,17 +54,15 @@ public class ProductService implements IProductService {
                 request.getPrice(),
                 request.getInventory(),
                 request.getDescription(),
+                request.getDescription_detail(),
                 category,
                 supplier
         );
     }
-
     @Override
     public Product getProductById(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
-        updateProductRating(product);
-        return product;
+        return productRepository.findById(id)
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found!"));
     }
 
     @Override
@@ -88,6 +88,7 @@ public class ProductService implements IProductService {
         existingProduct.setPrice(request.getPrice());
         existingProduct.setInventory(request.getInventory());
         existingProduct.setDescription(request.getDescription());
+        existingProduct.setDescription_detail(request.getDescription_detail());
         Supplier supplier = supplierRepository.findByName(request.getSupplierName());
         Category category = categoryRepository.findByName(request.getCategory().getName());
         existingProduct.setSupplier(supplier);
@@ -95,12 +96,14 @@ public class ProductService implements IProductService {
         return  existingProduct;
 
     }
-
     @Override
-    public List<Product> getAllProducts() {
-        List<Product> products = productRepository.findAll();
-        products.forEach(this::updateProductRating);
-        return products;
+    public List<Product> getAllProducts(int pageNumber, int pageSize, String sortBy, String sortDir) {
+        Sort sort = ("Asc".equalsIgnoreCase(sortDir)) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        List<Product> productsTmp = productRepository.findAll();
+        productsTmp.forEach(this::updateProductRating);
+        Page<Product> products = productRepository.findAll(pageable);
+        return products.stream().toList();
     }
 
     @Override
@@ -140,12 +143,10 @@ public class ProductService implements IProductService {
 
     @Override
     public List<ProductDto> getConvertedProducts(List<Product> products) {
-      return products.stream().map(this::convertToDto).toList();
+        return products.stream().map(this::convertToDto).toList();
     }
-
     @Override
     public ProductDto convertToDto(Product product) {
-        updateProductRating(product);
         ProductDto productDto = productMapper.mapToProductDto(product);
 
         List<Image> images = imageRepository.findByProductId(product.getId());
@@ -160,7 +161,6 @@ public class ProductService implements IProductService {
         productDto.setPromotions(promotionDtos);
         return productDto;
     }
-
     private void updateProductRating(Product product) {
         product.updateRating();
         productRepository.save(product);

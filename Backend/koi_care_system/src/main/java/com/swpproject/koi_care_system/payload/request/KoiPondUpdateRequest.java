@@ -1,9 +1,14 @@
 package com.swpproject.koi_care_system.payload.request;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.util.annotation.Nullable;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class KoiPondUpdateRequest {
     private Long id;
     private String name;
@@ -12,16 +17,6 @@ public class KoiPondUpdateRequest {
     private Double depth;
     private int skimmer;
     private Double pumpCapacity;
-    private String imageUrl;
     private MultipartFile file;
-    public KoiPondUpdateRequest(String name, int drainCount, int volume, Double depth, int skimmer, Double pumpCapacity, String imageUrl) {
-        this.name = name;
-        this.drainCount = drainCount;
-        this.volume = volume;
-        this.depth = depth;
-        this.skimmer = skimmer;
-        this.pumpCapacity = pumpCapacity;
-        this.imageUrl = imageUrl;
-    }
 
 }

@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 @Service
 @RequiredArgsConstructor
@@ -19,14 +20,9 @@ public class CartItemService  implements ICartItemService{
     private final CartRepository cartRepository;
     private final IProductService productService;
     private final ICartService cartService;
-    
+
     @Override
     public void addItemToCart(Long cartId, Long productId, int quantity) {
-        //1. Get the cart
-        //2. Get the product
-        //3. Check if the product already in the cart
-        //4. If Yes, then increase the quantity with the requested quantity
-        //5. If No, then initiate a new CartItem entry.
         Cart cart = cartService.getCart(cartId);
         Product product = productService.getProductById(productId);
         CartItem cartItem = cart.getItems()
@@ -37,7 +33,7 @@ public class CartItemService  implements ICartItemService{
             cartItem.setCart(cart);
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
-            cartItem.setUnitPrice(product.getPrice());
+            cartItem.setUnitPrice(calculateDiscountedPrice(product));
         }
         else {
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
@@ -46,6 +42,17 @@ public class CartItemService  implements ICartItemService{
         cart.addItem(cartItem);
         cartItemRepository.save(cartItem);
         cartRepository.save(cart);
+    }
+
+    // Update the calculateDiscountedPrice method
+    private BigDecimal calculateDiscountedPrice(Product product) {
+        BigDecimal totalDiscountRate = product.getPromotions().stream()
+                .map(promotion -> BigDecimal.valueOf(promotion.getDiscountRate()))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal tmp = new BigDecimal(100);
+        BigDecimal discountMultiplier = BigDecimal.ONE.subtract(totalDiscountRate.divide(tmp));
+        System.out.println(discountMultiplier);
+        return product.getPrice().multiply(discountMultiplier).setScale(2, RoundingMode.HALF_UP);
     }
 
     @Override
@@ -65,7 +72,7 @@ public class CartItemService  implements ICartItemService{
                 .findFirst()
                 .ifPresent(item -> {
                     item.setQuantity(quantity);
-                    item.setUnitPrice(item.getProduct().getPrice());
+                    item.setUnitPrice(calculateDiscountedPrice(item.getProduct()));
                     item.setTotalPrice();
                 });
         BigDecimal totalAmount = cart.getItems()

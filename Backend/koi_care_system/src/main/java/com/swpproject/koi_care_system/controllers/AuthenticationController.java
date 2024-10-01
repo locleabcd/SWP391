@@ -5,7 +5,7 @@ import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
 import com.swpproject.koi_care_system.payload.request.ResetPasswordRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
-import com.swpproject.koi_care_system.service.user.UserService;
+import com.swpproject.koi_care_system.service.user.IUserService;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +22,7 @@ import java.text.ParseException;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationController {
     IAuthenticationService authService;
-    UserService userService;
+    IUserService userService;
 
     @PostMapping("/loginKoiCare")
     ResponseEntity<ApiResponse> authenticate(@RequestBody @Valid AuthenticationRequest request) {

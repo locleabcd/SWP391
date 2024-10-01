@@ -43,13 +43,13 @@ public class OrderService implements IOrderService {
 
     private Order createOrder(Cart cart) {
         Order order = new Order();
-       order.setUser(cart.getUser());
+        order.setUser(cart.getUser());
         order.setOrderStatus(OrderStatus.PENDING);
         order.setOrderDate(LocalDate.now());
         return  order;
     }
 
-     private List<OrderItem> createOrderItems(Order order, Cart cart) {
+    private List<OrderItem> createOrderItems(Order order, Cart cart) {
         return  cart.getItems().stream().map(cartItem -> {
             Product product = cartItem.getProduct();
             product.setInventory(product.getInventory() - cartItem.getQuantity());
@@ -61,15 +61,15 @@ public class OrderService implements IOrderService {
                     cartItem.getUnitPrice());
         }).toList();
 
-     }
+    }
 
-     private BigDecimal calculateTotalAmount(List<OrderItem> orderItemList) {
+    private BigDecimal calculateTotalAmount(List<OrderItem> orderItemList) {
         return  orderItemList
                 .stream()
                 .map(item -> item.getPrice()
                         .multiply(new BigDecimal(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
-     }
+    }
 
     @Override
     public OrderDto getOrder(Long orderId) {

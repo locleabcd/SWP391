@@ -13,7 +13,6 @@ import com.swpproject.koi_care_system.repository.PromotionRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -78,14 +77,5 @@ public class PromotionService implements IPromotionService {
         }
         productRepository.saveAll(products);
         promotionRepository.save(promotion);
-    }
-    @Scheduled(cron = "0 0 0 * * ?") // Runs every day at midnight
-    public void updatePromotionStatuses() {
-        LocalDate today = LocalDate.now();
-        List<Promotion> expiredPromotions = promotionRepository.findByEndDateBeforeAndStatusNot(today, "END");
-        for (Promotion promotion : expiredPromotions) {
-            promotion.setStatus("END");
-        }
-        promotionRepository.saveAll(expiredPromotions);
     }
 }

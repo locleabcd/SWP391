@@ -14,7 +14,6 @@ public interface IUserService {
     List<UserDTO> getListUser();
 
     UserDTO findUserByID(Long userID);
-
     User findUserByUserName(String username);
 
     UserDTO updateUserByID(Long id, UpdateUserRequest request);
@@ -23,4 +22,5 @@ public interface IUserService {
 
     void verifyUser(String email, String token);
 
+    UserDTO convertToDto(User user);
 }

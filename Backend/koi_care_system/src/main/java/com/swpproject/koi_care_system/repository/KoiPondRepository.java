@@ -14,4 +14,6 @@ public interface KoiPondRepository extends JpaRepository<KoiPond,Long> {
     KoiPond findKoiPondsById(Long id);
 
     Optional<List<KoiPond>> findByUserId(Long userId);
+
+    boolean existsByNameAndUserId(String name, Long id);
 }

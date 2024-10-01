@@ -1,14 +1,9 @@
 server:
   port: 8080
   servlet:
-    multipart:
-      enabled: true
-      max-request-size: 20MB
-      max-file-size: 2MB
     context-path: /api
   error:
     include-message: always
-
 spring:
   profiles:
     active: dev
@@ -16,4 +11,5 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     cache: false
-
+jwt:
+  signerKey: "1Xt6QiR02nO30C3YVxkkG/qxQQ9sECaUY44pi2Do2SgF/OACYM7RKc/M+ED95TsX"

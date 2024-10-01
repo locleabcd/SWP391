@@ -41,4 +41,6 @@ public class Blog {
     @ManyToOne
     User user;
 
+
+
 }

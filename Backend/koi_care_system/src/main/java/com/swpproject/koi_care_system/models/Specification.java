@@ -22,8 +22,8 @@ public class Specification {
     private Double maxValue;
 
     @ManyToOne
-    @JoinColumn(name="waterParametersHistory_id")
-    private WaterParametersHistory waterParametersHistory;
+    @JoinColumn(name="waterParameters_id")
+    private WaterParameters waterParameters;
 
     @OneToOne
     @JoinColumn(name="issue_id")

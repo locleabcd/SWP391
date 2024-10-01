@@ -1,14 +1,14 @@
 package com.swpproject.koi_care_system.service.authentication;
 
 import com.nimbusds.jose.JOSEException;
-import com.swpproject.koi_care_system.dto.UserDTO;
 import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AuthenticationRequest;
+import com.swpproject.koi_care_system.payload.response.LoginResponse;
 
 import java.text.ParseException;
 
 public interface IAuthenticationService {
-    UserDTO authenticate(AuthenticationRequest request);
+    LoginResponse authenticate(AuthenticationRequest request);
 
     String generateToken(User user);
 

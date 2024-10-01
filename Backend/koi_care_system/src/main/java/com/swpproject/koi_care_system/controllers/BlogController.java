@@ -38,15 +38,10 @@ public class BlogController {
     }
     @PutMapping("/update/{blogId}")
     public ResponseEntity<ApiResponse> updateBlog(@PathVariable int blogId, @ModelAttribute BlogUpdateRequest blogUpdateRequest){
-        try {
-            blogUpdateRequest.setBlogImage(!blogUpdateRequest.getFile().isEmpty() ? imageStorage.uploadImage(blogUpdateRequest.getFile()): blogUpdateRequest.getBlogImage());
-            return ResponseEntity.ok(ApiResponse.builder()
-                    .data(blogService.updateBlog(blogId, blogUpdateRequest))
-                    .message("Blog has been updated")
-                    .build());
-        }catch (Exception e){
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
-        }
+        return ResponseEntity.ok(ApiResponse.builder()
+                .data(blogService.updateBlog(blogId, blogUpdateRequest))
+                .message("Blog has been updated")
+                .build());
     }
     @GetMapping("/getID/{blogId}")
     public ResponseEntity<ApiResponse> getBlogById(@PathVariable int blogId) {

@@ -15,9 +15,9 @@ import com.swpproject.koi_care_system.service.email.IEmailService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,26 +44,17 @@ public class UserService implements IUserService {
         }
         User user = userMapper.maptoUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.GUEST.name());
-        //Verify user code email
 
         var token = authenticationService.generateToken(user);
         emailService.send(user.getUsername(), user.getEmail(), "Welcome New User, Your Verify Email", token);
 
         return userMapper.maptoUserDTO(userRepo.save(user));
-
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     public List<UserDTO> getListUser() {
         return userRepo.findAll().stream()
                 .map(userMapper::maptoUserDTO).toList();
-    }
-
-    public UserDTO getMyInfo() {
-        var context = SecurityContextHolder.getContext();
-        String username = context.getAuthentication().getName();
-        return userMapper.maptoUserDTO(userRepo.findByUsername(username).orElseThrow(() -> new RuntimeException("User Not Found")));
     }
 
     @PostAuthorize("returnObject.username == authentication.name")
@@ -96,5 +87,10 @@ public class UserService implements IUserService {
     @Override
     public User findUserByUserName(String username) {
         return userRepo.findByUsername(username).orElseThrow(()-> new RuntimeException("User not found"));
+    }
+
+    @Override
+    public UserDTO convertToDto(User user) {
+        return userMapper.maptoUserDTO(user);
     }
 }

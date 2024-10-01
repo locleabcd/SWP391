@@ -38,7 +38,7 @@ public class SupplierController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error",null));
         }
     }
-    @GetMapping("/supplier/{id}")
+    @GetMapping("/supplier/{id}/by_id")
     public ResponseEntity<ApiResponse> getSupplierById(@PathVariable Long id){
         try {
             Supplier supplier = supplierService.getSupplierById(id);
@@ -47,7 +47,7 @@ public class SupplierController {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
-    @GetMapping("/supplier/{name}")
+    @GetMapping("/supplier/{name}/by_name")
     public ResponseEntity<ApiResponse> getSupplierByName(@PathVariable String name){
         try {
             Supplier supplier = supplierService.getSupplierByName(name);
@@ -56,7 +56,7 @@ public class SupplierController {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }
-    @GetMapping("/supplier/{id}/delete")
+    @DeleteMapping("/supplier/{id}/delete")
     public ResponseEntity<ApiResponse> deleteSupplier(@PathVariable Long id){
         try {
             supplierService.deleteSupplierById(id);
@@ -66,7 +66,7 @@ public class SupplierController {
         }
     }
     @PutMapping("/supplier/{id}/update")
-    public ResponseEntity<ApiResponse> updateSupplier(@PathVariable Long id, SupplierUpdateRequest supplierUpdateRequest){
+    public ResponseEntity<ApiResponse> updateSupplier(@PathVariable Long id, @RequestBody SupplierUpdateRequest supplierUpdateRequest){
         try {
             Supplier updatedSupplier = supplierService.updateSupplier(supplierUpdateRequest,id);
             return ResponseEntity.ok(new ApiResponse("Update success!", updatedSupplier));

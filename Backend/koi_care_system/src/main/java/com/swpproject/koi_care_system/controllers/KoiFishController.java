@@ -6,11 +6,8 @@ import com.swpproject.koi_care_system.models.KoiFish;
 import com.swpproject.koi_care_system.payload.request.AddKoiFishRequest;
 import com.swpproject.koi_care_system.payload.request.KoiFishUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import com.swpproject.koi_care_system.service.koifish.IKoiFishService;
-import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -23,14 +20,9 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("/koifishs")
 public class KoiFishController {
     private final IKoiFishService koiFishService;
-    @Autowired
-    private IKoiPondService koiPondService;
-    private final ImageStorage imageStorage;
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createKoiFish(@ModelAttribute AddKoiFishRequest addKoiFishRequest){
         try{
-            addKoiFishRequest.setKoiPond(koiPondService.getKoiPondById(addKoiFishRequest.getKoiPondId()));
-            addKoiFishRequest.setImageUrl(!addKoiFishRequest.getFile().isEmpty()?imageStorage.uploadImage(addKoiFishRequest.getFile()):"");
             KoiFish koiFish = koiFishService.addKoiFish(addKoiFishRequest);
             KoiFishDto koiFishDto = koiFishService.convertToDto(koiFish);
             return ResponseEntity.ok(new ApiResponse("Add Koi success!",koiFishDto));
@@ -82,8 +74,6 @@ public class KoiFishController {
     @PutMapping("/koifish/{id}/update")
     public ResponseEntity<ApiResponse> updateKoiFish(@PathVariable Long id,@ModelAttribute KoiFishUpdateRequest koiFishUpdateRequest){
         try{
-            koiFishUpdateRequest.setKoiPond(koiPondService.getKoiPondById(koiFishUpdateRequest.getKoiPondId()));
-            koiFishUpdateRequest.setImageUrl(koiFishUpdateRequest.getFile().isEmpty()? koiFishUpdateRequest.getImageUrl() :imageStorage.uploadImage(koiFishUpdateRequest.getFile()));
             KoiFish updatedKoiFish = koiFishService.updateKoiFish(koiFishUpdateRequest,id);
             KoiFishDto koiFishDto = koiFishService.convertToDto(updatedKoiFish);
             return ResponseEntity.ok(new ApiResponse("Update success!",koiFishDto));

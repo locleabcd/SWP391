@@ -7,14 +7,12 @@ import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import com.swpproject.koi_care_system.service.user.IUserService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.lang.module.ResolutionException;
 import java.util.List;
@@ -23,17 +21,14 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 
 @RequiredArgsConstructor
-@Controller
+@RestController
 @RequestMapping("/koiponds")
 public class KoiPondController {
     private final IKoiPondService koiPondService;
     private final IUserService userService;
-    private final ImageStorage imageStorage;
-
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createKoiPond(@ModelAttribute AddKoiPondRequest addKoiPondRequest, Authentication authentication) {
         try{
-            addKoiPondRequest.setImageUrl(!addKoiPondRequest.getFile().isEmpty()?imageStorage.uploadImage(addKoiPondRequest.getFile()):"");
             String username = authentication.getName();
             User user = userService.findUserByUserName(username);
             addKoiPondRequest.setUser(user);
@@ -76,7 +71,6 @@ public class KoiPondController {
     @PutMapping("/koipond/{id}/update")
     public ResponseEntity<ApiResponse> updateKoiPond(@PathVariable Long id,@ModelAttribute KoiPondUpdateRequest koiPondUpdateRequest) {
         try {
-            koiPondUpdateRequest.setImageUrl(!koiPondUpdateRequest.getFile().isEmpty()?imageStorage.uploadImage(koiPondUpdateRequest.getFile()): koiPondUpdateRequest.getImageUrl());
             KoiPond updatedKoiPond = koiPondService.updateKoiPond(koiPondUpdateRequest, id);
             KoiPondDto koiPondDto = koiPondService.convertToDto(updatedKoiPond);
             return ResponseEntity.ok(new ApiResponse("Update success!", koiPondDto));
