@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useRoutes } from 'react-router-dom'
 import path from './constants/path'
 import { ToastContainer } from 'react-toastify'
@@ -35,6 +36,7 @@ import ShopNews from './pages/Shop/News/ShopNews'
 import CreateNews from './pages/Shop/News/CreateNews'
 import UpdateNews from './pages/Shop/News/UpdateNews'
 import ViewNews from './pages/Shop/News/ViewNews'
+import './index.css'
 import MyPondLogId from './pages/Member/MyPond/MyPondLogId'
 
 function App() {
@@ -177,10 +179,31 @@ function App() {
     }
   ])
 
+  const data = [
+    {
+      Id: 2,
+      Subject: 'Meeting',
+      StartTime: new Date(2018, 1, 15, 10, 0),
+      EndTime: new Date(2018, 1, 15, 12, 30),
+      IsAllDay: false,
+      Status: 'Completed',
+      Priority: 'High'
+    }
+  ]
+  const fieldsData = {
+    id: 'Id',
+    subject: { name: 'Subject' },
+    isAllDay: { name: 'IsAllDay' },
+    startTime: { name: 'StartTime' },
+    endTime: { name: 'EndTime' }
+  }
+  const eventSettings = { dataSource: data, fields: fieldsData }
+
   return (
     <>
       <DarkModeProvider>
         {routeElements}
+
         <ToastContainer />
       </DarkModeProvider>
     </>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Member/Header'
@@ -143,15 +144,14 @@ function Statistics() {
   const formatDate = (date) => {
     const parsedDate = new Date(date)
     if (dateFilter === 'Day') {
-      return parsedDate.toLocaleString() // Full date and time
+      return parsedDate.toLocaleString()
     } else if (dateFilter === 'Last month') {
-      return parsedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }) // Month and year
+      return parsedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
     } else if (dateFilter === 'Last year') {
-      return parsedDate.getFullYear() // Year only
+      return parsedDate.getFullYear()
     }
   }
 
-  // Aggregate water data based on the selected filter (group by day, month, or year)
   const aggregateWaterData = (data) => {
     const dateMap = {}
 
@@ -237,8 +237,12 @@ function Statistics() {
           <div className='py-5 px-[30px] mx-auto'>
             <TopLayout text='Statistics' links='member/statistics' />
 
-            <div className='p-4 text-lg flex justify-between items-center'>
-              <select id='ponds' className='border rounded p-2' onChange={handlePondChange}>
+            <div className='pb-6 text-lg flex justify-between items-center'>
+              <select
+                id='ponds'
+                className={`${isDarkMode ? 'bg-custom-dark' : ''} border rounded-lg p-2 outline-none`}
+                onChange={handlePondChange}
+              >
                 {ponds.length > 0 ? (
                   ponds.map((pond) => (
                     <option key={pond.id} value={pond.id}>
@@ -250,7 +254,10 @@ function Statistics() {
                 )}
               </select>
 
-              <select onChange={handleFilterChange} className='border rounded p-2 outline-none'>
+              <select
+                onChange={handleFilterChange}
+                className={`${isDarkMode ? 'bg-custom-dark' : ''} border rounded-lg p-2 outline-none`}
+              >
                 <option value='Day'>Day</option>
                 <option value='Last month'>Last month</option>
                 <option value='Last year'>Last year</option>
@@ -258,15 +265,16 @@ function Statistics() {
             </div>
 
             <div className='grid grid-cols-3 gap-7'>
-              <div className='border py-5 px-6 border-gray-200 shadow-lg'>
+              <div className='border py-5 rounded-lg w-full border-gray-200 shadow-lg'>
                 <div className='text-xl mb-4 text-center'>Nitrite - Phosphate - Ammonium (mg/l)</div>
                 <LineChart
-                  width={400}
+                  className='w-full mx-auto'
+                  width={500}
                   height={300}
                   data={sortedWaterData}
                   margin={{
                     top: 5,
-                    right: 30
+                    right: 60
                   }}
                 >
                   <CartesianGrid strokeDasharray='3 3' />
@@ -297,15 +305,16 @@ function Statistics() {
                   />
                 </LineChart>
               </div>
-              <div className='py-5 px-6 border border-gray-200 shadow-lg'>
+              <div className='py-5 rounded-lg border border-gray-200 shadow-lg'>
                 <div className='text-xl mb-4 text-center'>Carbon - PH - Hardness (dH)</div>
                 <LineChart
-                  width={400}
+                  width={500}
                   height={300}
                   data={sortedWaterData}
+                  className='w-full mx-auto'
                   margin={{
                     top: 5,
-                    right: 30
+                    right: 60
                   }}
                 >
                   <CartesianGrid strokeDasharray='3 3' />
@@ -336,15 +345,16 @@ function Statistics() {
                   />
                 </LineChart>
               </div>
-              <div className='py-5 px-6 border border-gray-200 shadow-lg'>
+              <div className='py-5 rounded-lg border border-gray-200 shadow-lg'>
                 <div className='text-xl mb-4 text-center'>Temperature - Temp (C)</div>
                 <LineChart
-                  width={400}
+                  width={500}
                   height={300}
                   data={sortedWaterData}
+                  className='w-full mx-auto'
                   margin={{
                     top: 5,
-                    right: 30
+                    right: 60
                   }}
                 >
                   <CartesianGrid strokeDasharray='3 3' />
@@ -371,14 +381,15 @@ function Statistics() {
             </div>
 
             <div className='grid grid-cols-2 gap-7 mt-10'>
-              <div className='py-5 px-2 border border-gray-200 shadow-lg'>
+              <div className='py-5 px-2 rounded-lg border border-gray-200 shadow-lg'>
                 <div className='text-xl mb-4 text-center'>CO₂ - O₂ - Total Chlorine (mg/l)</div>
                 <ResponsiveContainer width='100%' height={300}>
                   <AreaChart
                     data={sortedWaterData}
+                    className='w-full mx-auto'
                     margin={{
                       top: 10,
-                      right: 30,
+                      right: 60,
                       left: 0,
                       bottom: 0
                     }}
@@ -388,13 +399,13 @@ function Statistics() {
                     <YAxis />
                     <Tooltip formatter={(value) => formatTooltipValue(value)} />
                     <Area type='monotone' dataKey='nitrate' stackId='1' stroke='#ff7300' fill='#ff7300' />
-                    <Area type='monotone' dataKey='carbonDioxide' stackId='1' stroke='#8884d8' fill='#8884d8' />
-                    <Area type='monotone' dataKey='oxygen' stackId='1' stroke='#82ca9d' fill='#82ca9d' />
+                    <Area type='monotone' dataKey='carbonDioxide' stackId='1' stroke='#7CF0FF' fill='#7CF0FF' />
+                    <Area type='monotone' dataKey='oxygen' stackId='1' stroke='#4570EA' fill='#4570EA' />
                   </AreaChart>
                 </ResponsiveContainer>
               </div>
 
-              <div className='py-5 px-2 border border-gray-200 shadow-lg'>
+              <div className='py-5 px-2 rounded-lg border border-gray-200 shadow-lg'>
                 <div className='text-xl mb-4 text-center'>Amount fed (g)</div>
                 <ResponsiveContainer width='100%' height={300}>
                   <BarChart data={sortedWaterData}>

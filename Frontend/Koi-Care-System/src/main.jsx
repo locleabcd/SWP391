@@ -5,7 +5,9 @@ import './index.css'
 import { StrictMode } from 'react'
 import { Provider } from 'react-redux'
 import { store } from './redux/store/store'
+import { registerLicense } from '@syncfusion/ej2-base'
 
+registerLicense('Ngo9BigBOggjHTQxAR8/V1NDaF5cWWtCf1NpRmJGfV5ycEVHYlZTQHxaQU0SNHVRdkdnWH9ecXRVRGZcVkd2WEQ=')
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Provider store={store}>
