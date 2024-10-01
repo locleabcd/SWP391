@@ -38,6 +38,7 @@ import UpdateNews from './pages/Shop/News/UpdateNews'
 import ViewNews from './pages/Shop/News/ViewNews'
 import './index.css'
 import MyPondLogId from './pages/Member/MyPond/MyPondLogId'
+import WishList from './pages/Member/WishList/WishList'
 
 function App() {
   const routeElements = useRoutes([
@@ -176,6 +177,10 @@ function App() {
     {
       path: path.myPondLogDetail,
       element: <MyPondLogId />
+    },
+    {
+      path: path.wishList,
+      element: <WishList />
     }
   ])
 

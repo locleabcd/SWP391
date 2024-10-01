@@ -3,17 +3,7 @@ import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import TopLayout from '../../../layouts/TopLayout'
 import '../../../index.css'
-import {
-  ScheduleComponent,
-  Day,
-  Week,
-  WorkWeek,
-  Agenda,
-  Month,
-  Inject,
-  ViewsDirective,
-  ViewDirective
-} from '@syncfusion/ej2-react-schedule'
+import { ScheduleComponent, Day, Week, WorkWeek, Agenda, Month, Inject } from '@syncfusion/ej2-react-schedule'
 
 function Reminders() {
   const { isDarkMode } = useDarkMode()
@@ -54,11 +44,11 @@ function Reminders() {
             <TopLayout text='Reminders' links='/member/reminders' />
 
             <ScheduleComponent
-              height='900px'
+              height='625px'
               width='100%'
               selectedDate={new Date(2018, 1, 15)}
               eventSettings={eventSettings}
-              className='rounded-lg'
+              className='rounded-lg border border-gray-200 '
             >
               <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
             </ScheduleComponent>
