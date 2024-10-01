@@ -21,6 +21,7 @@ public class Remark {//TODO
     private String physique;
     private Double length;
     private Double weight;
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name="koifish_id")

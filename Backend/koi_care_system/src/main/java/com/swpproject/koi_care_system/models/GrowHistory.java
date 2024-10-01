@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -17,10 +17,11 @@ public class GrowHistory {//TODO
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date createDate;
+    private LocalDate createDate;
     private String physique;
     private Double length;
     private Double weight;
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name="koifish_id")
