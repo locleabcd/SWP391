@@ -1,11 +1,13 @@
-import { PiNewspaperClipping } from "react-icons/pi";
-import { CiShoppingTag } from "react-icons/ci";
+import { PiNewspaperClipping } from "react-icons/pi"
+import { FaTags } from "react-icons/fa";
 import { FaRegNewspaper } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import path from '../../constants/path'
 import { useDarkMode } from '../DarkModeContext'
 import logo from '../../assets/logo.png'
 import { useEffect, useState } from 'react'
+import { AiFillShop } from "react-icons/ai"
+import { FaBoxArchive } from "react-icons/fa6"
 
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
@@ -15,6 +17,7 @@ function LeftSideBar() {
   })
 
   const [isNewsOpen, setIsNewsOpen] = useState(false)
+  const [isShopOpen, setIsShopOpen] = useState(false)
 
   useEffect(() => {
     localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
@@ -127,7 +130,7 @@ function LeftSideBar() {
                   </div>
                   {!isClosed && 
                   <span className='flex items-center'>
-                    <p className='font-semibold'>News and Blogs</p>
+                    <p className='font-semibold'>Manage News</p>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 ml-2 mt-1">
                       <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clipRule="evenodd" />
                     </svg>
@@ -169,9 +172,54 @@ function LeftSideBar() {
                   >
                     <div className='flex items-center'>
                       <div className='w-7 h-7 mr-3'>
-                        <CiShoppingTag className='w-full h-full' />
+                      <FaTags className='w-full h-full' />
                       </div>
                       {!isClosed && <span className='font-semibold'>Tag</span>}
+                    </div>
+                  </NavLink>
+                </div>
+              )}
+            </div>
+            {/* Manage Shop  */}
+            <div>
+              <button
+                className={`min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                  isClosed ? 'flex-col' : ''
+                } ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
+                onClick={() => setIsShopOpen(!isShopOpen)}
+              >
+                <div className='flex items-center'>
+                  <div className='w-7 h-7 mr-3'>
+                    <AiFillShop className='w-full h-full' />
+                  </div>
+                  {!isClosed && 
+                  <span className='flex items-center'>
+                    <p className='font-semibold'>Manage Shop</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 ml-2 mt-1">
+                      <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clipRule="evenodd" />
+                    </svg>
+                  </span>}
+                </div>
+              </button>
+
+              {isShopOpen && (
+                <div className=''>
+                  <NavLink
+                    to={path.supplier}
+                    className={({ isActive }) => {
+                      const active = isActive
+                        ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                        : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        isClosed ? 'flex-col' : ''
+                      }`
+                    }}
+                  >
+                    <div className='flex items-center'>
+                      <div className='w-6 h-6 mr-3'>
+                      <FaBoxArchive className='w-full h-full' />
+                      </div>
+                      {!isClosed && <span className='font-semibold'>Supplier</span>}
                     </div>
                   </NavLink>
                 </div>

@@ -11,13 +11,13 @@ import TopLayout from '../../../layouts/TopLayoutShop'
 function Tag() {
   const { isDarkMode } = useDarkMode()
   const [tags,setTags] = useState([])
-  const [showButtons, setShowButtons] = useState(false)
+  // const [showButtons, setShowButtons] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
 
-  const toggleButtons = () => {
-    setShowButtons(!showButtons)
-  }
+  // const toggleButtons = () => {
+  //   setShowButtons(!showButtons)
+  // }
 
   const getTag = async () => {
     try {
@@ -54,7 +54,7 @@ function Tag() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystem.azurewebsites.net/api/tag/delete /${id}`, {
+      await axios.delete(`https://koicaresystem.azurewebsites.net/api/tag/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -62,7 +62,7 @@ function Tag() {
       toast.success('Tag deleted successfully')
       getTag()
     } catch (error) {
-      console.error('Error deleting blog:', error)
+      console.error('Error deleting tag:', error)
     } finally {
       setIsLoading(false)
     }

@@ -39,6 +39,8 @@ import Tag from './pages/Shop/Tag/Tag'
 import MyPondLogId from './pages/Member/MyPond/MyPondLogId'
 import CreateTag from './pages/Shop/Tag/CreateTag'
 import UpdateTag from './pages/Shop/Tag/UpdateTag'
+import Supplier from './pages/Shop/Supplier/Supplier'
+import CreateSupplier from './pages/Shop/Supplier/CreateSupplier'
 
 function App() {
   const routeElements = useRoutes([
@@ -189,6 +191,14 @@ function App() {
     {
       path: path.updateTag,
       element: <UpdateTag />
+    },
+    {
+      path: path.supplier,
+      element: <Supplier />
+    },
+    {
+      path: path.createSupplier,
+      element: <CreateSupplier />
     },
   ])
 
