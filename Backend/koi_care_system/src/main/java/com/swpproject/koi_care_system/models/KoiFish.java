@@ -35,7 +35,7 @@ public class KoiFish {
     private KoiPond koiPond;
 
     @OneToMany(mappedBy = "koiFish",cascade = CascadeType.ALL,orphanRemoval = true)
-    List<GrowHistory> growHistoryList;
+    List<GrowthHistory> growthHistoryList;
 
     @OneToMany(mappedBy = "koiFish",cascade = CascadeType.ALL,orphanRemoval = true)
     List<Remark> remarkList;

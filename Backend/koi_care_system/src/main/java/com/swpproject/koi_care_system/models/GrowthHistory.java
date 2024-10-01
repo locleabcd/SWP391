@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class GrowHistory {//TODO
+public class GrowthHistory {//TODO
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

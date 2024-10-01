@@ -1,7 +1,6 @@
 package com.swpproject.koi_care_system.payload.request;
 
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GrowCreateRequest {
+public class GrowthUpdateRequest {
     LocalDate createDate;
     String physique;
     @NotNull
@@ -25,6 +24,4 @@ public class GrowCreateRequest {
     @Min(value = 0, message = "Weight must be positive")
     Double weight;
     String imageUrl;
-    @NotBlank
-    Long koiFishId;
 }

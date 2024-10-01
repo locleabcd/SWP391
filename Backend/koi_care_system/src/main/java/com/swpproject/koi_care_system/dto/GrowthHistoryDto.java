@@ -12,7 +12,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class GrowHistoryDto {
+public class GrowthHistoryDto {
     Long id;
     LocalDate createDate;
     String physique;
