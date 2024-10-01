@@ -2,13 +2,65 @@ import { useDarkMode } from '../../components/DarkModeContext'
 import '../../App.css'
 import path from '../../constants/path'
 import { Link, NavLink } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
+import axios from 'axios'
 
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
   const wishlistCount = useSelector((state) => state.name.count)
   const [isOpen, setIsOpen] = useState(false)
+  const [cart, setCart] = useState([])
+  const [cartId, setCartId] = useState([])
+  const carts = useSelector((state) => state.cart.totalQuantity)
+
+  const getCartId = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const cartId = localStorage.getItem('cartId')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const response = await axios.get(`https://koicaresystem.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setCart(response.data.data.items)
+      console.log(response.data.data.items)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getCartId()
+  }, [])
+
+  const getCart = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const response = await axios.get(`https://koicaresystem.azurewebsites.net/api/carts/user/${userId}/cartId`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setCartId(response.data.data)
+      localStorage.setItem('cartId', response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getCart()
+  }, [])
 
   const toggleList = () => {
     setIsOpen(!isOpen)
@@ -49,12 +101,13 @@ function Header() {
             </svg>
           </button>
 
-          <button
+          <Link
+            to='/member/cartList'
             type='button'
             data-dropdown-toggle='notification-dropdown'
             className={`${
               isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
-            } p-[12px] rounded-full`}
+            } p-[12px] rounded-full relative`}
           >
             <span className='sr-only'>View notifications</span>
             <svg
@@ -71,7 +124,13 @@ function Header() {
                 d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
               />
             </svg>
-          </button>
+
+            {carts > 0 && (
+              <span className='absolute top-0 right-0 inline-flex items-center justify-center px-[8px] py-[4px] text-xs font-bold leading-none text-white bg-red-600 rounded-full'>
+                {carts}
+              </span>
+            )}
+          </Link>
 
           <Link
             to='/member/wishList'

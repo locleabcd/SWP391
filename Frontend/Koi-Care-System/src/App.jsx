@@ -39,6 +39,7 @@ import ViewNews from './pages/Shop/News/ViewNews'
 import './index.css'
 import MyPondLogId from './pages/Member/MyPond/MyPondLogId'
 import WishList from './pages/Member/WishList/WishList'
+import CartList from './pages/Member/CartList/CartList'
 
 function App() {
   const routeElements = useRoutes([
@@ -181,6 +182,10 @@ function App() {
     {
       path: path.wishList,
       element: <WishList />
+    },
+    {
+      path: path.cartList,
+      element: <CartList />
     }
   ])
 

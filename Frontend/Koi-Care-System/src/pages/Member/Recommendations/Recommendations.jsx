@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Member/Header'
@@ -10,6 +11,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { AddToWishlist, RemoveFromWishlist } from '../../../redux/store/wishList'
+import { addToCartList } from '../../../redux/store/cartList'
 
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
@@ -21,6 +23,7 @@ function Recommendations() {
   const [pricing, setPricing] = useState('all')
   const [rating, setRating] = useState()
   const [wishlist, setWishlist] = useState([])
+  const [cartId, setCartId] = useState([])
   const dispatch = useDispatch()
 
   const handleAddToWishlist = (product) => {
@@ -31,6 +34,10 @@ function Recommendations() {
       setWishlist([...wishlist, product.id])
       dispatch(AddToWishlist(product))
     }
+  }
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCartList(product))
   }
 
   const navigate = useNavigate()
@@ -84,6 +91,30 @@ function Recommendations() {
       console.log(error)
     }
   }
+
+  const getCartId = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const response = await axios.get(`https://koicaresystem.azurewebsites.net/api/carts/user/${userId}/cartId`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setCartId(response.data.data)
+      localStorage.setItem('cartId', response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getCartId()
+  }, [])
 
   useEffect(() => {
     getProduct()
@@ -444,6 +475,7 @@ function Recommendations() {
                             </button>
 
                             <svg
+                              onClick={() => handleAddToCart(products)}
                               xmlns='http://www.w3.org/2000/svg'
                               fill='none'
                               viewBox='0 0 24 24'
