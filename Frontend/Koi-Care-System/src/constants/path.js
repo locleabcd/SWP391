@@ -39,6 +39,7 @@ const path = {
   updateTag:'/shop/tag/:id', 
   supplier: '/shop/supplier',
   createSupplier:'/shop/createSupplier',
+  updateSupplier:'/shop/supplier/:id',
 }
 
 export default path

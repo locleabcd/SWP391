@@ -38,8 +38,8 @@ function UpdateTag() {
       setTagData(res.data.data);
       reset(res.data.data); 
     } catch (error) {
-      console.error('Error fetching blog:', error);
-      toast.error('Failed to fetch blog details.');
+      console.error('Error fetching tag:', error);
+      toast.error('Failed to fetch tag details.');
     } finally {
       setIsLoading(false);
     }

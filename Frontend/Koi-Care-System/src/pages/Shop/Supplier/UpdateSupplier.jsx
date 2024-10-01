@@ -3,17 +3,19 @@ import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
-import { useForm } from 'react-hook-form'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useForm } from 'react-hook-form';
 
-function CreateSupplier() {
+function UpdateSupplier() {
+  const { id } = useParams()
   const { isDarkMode } = useDarkMode()
+  const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const navigate = useNavigate()
+  const [suppliers,setSuppliers] = useState(null)
 
   const {
     register,
@@ -22,8 +24,32 @@ function CreateSupplier() {
     reset
   } = useForm()
 
-  const onSubmit = async (data) => {
-    console.log('onSubmit:', data)
+  const fetchSupplier = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/suppliers/supplier/${id}/by_id`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setSuppliers(res.data.data);
+      reset(res.data.data); 
+    } catch (error) {
+      console.error('Error fetching supplier:', error);
+      toast.error('Failed to fetch supplier details.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSupplier();
+  }, [id]);
+
+  const updateSupplier = async (data) => {
     setIsLoading(true)
     setIsSubmitting(true)
     try {
@@ -31,37 +57,44 @@ function CreateSupplier() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.post(`https://koicaresystem.azurewebsites.net/api/suppliers/add`, 
-      {
-        name: data.name, 
-        phone: data.phone,
-        address: data.address,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const res = await axios.put(
+        `https://koicaresystem.azurewebsites.net/api/suppliers/supplier/${id}/update`,
+        {
+            name: data.name, 
+            phone: data.phone,
+            address: data.address
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      })
-      toast.success('Supplier created successfully!')
-      navigate('/shop/supplier')
-      
+      )
+
+      toast.success('Supplier updated successfully!');
+      navigate('/shop/supplier');
     } catch (error) {
       console.log(error)
-      toast.error('Failed to create Supplier.');
+      toast.error('Failed to update Supplier.');
     } finally {
       setIsSubmitting(false)
       setIsLoading(false)
     }
   }
+
+  const onSubmit = (data) => {
+    updateSupplier(data)
+  }
+
   return (
-    <div className="h-screen flex">
+    <div className='h-screen flex'>
       <LeftSideBar />
       <div className={`relative ${
           isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'
       } overflow-y-auto flex-1 flex-col  overflow-x-hidden duration-200 ease-linear`}>
         <Header />
         <div className='py-5 pb-0 px-[30px] mx-auto'>
-          <TopLayout text='Supplier' textName='Create Supplier' links='shop/supplier' />
+          <TopLayout text='Supplier' textName='Update Supplier' links='shop/supplier' />
           <div className='bg-white p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className='mb-4'>
@@ -119,18 +152,14 @@ function CreateSupplier() {
               type="submit"
               className={`px-4 py-2 bg-blue-600 text-white rounded-md ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
               disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Submitting...' : 'Create Supplier'}
-            </button>
+              >
+                {isSubmitting ? 'Submitting...' : 'Update Supplier'}
+              </button>
             </form>
           </div>
         </div>
-      </div>
-
-
-      
+      </div> 
     </div>
   )
 }
-
-export default CreateSupplier
+export default UpdateSupplier
