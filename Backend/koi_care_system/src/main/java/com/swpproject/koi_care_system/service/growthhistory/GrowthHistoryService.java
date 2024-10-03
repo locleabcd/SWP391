@@ -1,6 +1,8 @@
 package com.swpproject.koi_care_system.service.growthhistory;
 
 import com.swpproject.koi_care_system.dto.GrowthHistoryDto;
+import com.swpproject.koi_care_system.enums.ErrorCode;
+import com.swpproject.koi_care_system.exceptions.AppException;
 import com.swpproject.koi_care_system.mapper.GrowthHistoryMapper;
 import com.swpproject.koi_care_system.models.GrowthHistory;
 import com.swpproject.koi_care_system.models.KoiFish;
@@ -25,36 +27,40 @@ public class GrowthHistoryService implements IGrowthHistoryService {
 
     @Override
     public GrowthHistoryDto createGrowthHistory(GrowthCreateRequest growthCreateRequest) {
-        KoiFish koiFish = koiFishRepository.findById(growthCreateRequest.getKoiFishId()).orElseThrow(() -> new IllegalArgumentException("KoiFish not found"));
-        //TODO : check if image create then update koiFish image
+        KoiFish koiFish = koiFishRepository.findById(growthCreateRequest.getKoiFishId()).orElseThrow(() -> new AppException(ErrorCode.KOI_FISH_NOT_FOUND));
         GrowthHistory growthHistory = growthHistoryMapper.mapToGrowthHistory(growthCreateRequest);
-        if (growthCreateRequest.getImageUrl().isEmpty()) growthHistory.setImageUrl("default.png");
-        else koiFish.setImageUrl(growthCreateRequest.getImageUrl());
         growthHistory.setKoiFish(koiFish);//relation between growHistory and koiFish
-        //Update KoiFish
-        updateKoiFish(growthHistory);
-        return growthHistoryMapper.mapToGrowthHistoryDto(growthHistoryRepository.save(growthHistory));
+        if (growthCreateRequest.getImageUrl().isEmpty()) growthHistory.setImageUrl("defaultGrowth.png");
+        //If new growthHistory is the latest, update KoiFish
+        GrowthHistory savedGrowthHistory = growthHistoryRepository.save(growthHistory);
+        long latestId = growthHistoryRepository.findLatestByKoiFishId(koiFish.getId());
+        if (savedGrowthHistory.getId() == latestId) {
+            //Update KoiFish
+            updateKoiFish(savedGrowthHistory);
+            koiFishRepository.save(koiFish);
+        }
+        return growthHistoryMapper.mapToGrowthHistoryDto(savedGrowthHistory);
     }
 
     @Override
     public GrowthHistoryDto updateGrowthHistory(Long id, GrowthUpdateRequest growthUpdateRequest) {
-        GrowthHistory growthHistory = growthHistoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("GrowHistory not found"));
+        GrowthHistory growthHistory = growthHistoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.GROWTH_HISTORY_NOT_FOUND));
         growthHistoryMapper.updateGrowthHistory(growthHistory, growthUpdateRequest);
         KoiFish koiFish = growthHistory.getKoiFish();
-        //TODO: check if image update then update koiFish image
-        if (growthUpdateRequest.getImageUrl().isEmpty()) growthHistory.setImageUrl("default.png");
+        if (growthUpdateRequest.getImageUrl().isEmpty()) growthHistory.setImageUrl("defaultGrowth.png");
+        GrowthHistory updatedGrowthHistory = growthHistoryRepository.save(growthHistory);
         //Update latest KoiFish
         long latestId = growthHistoryRepository.findLatestByKoiFishId(koiFish.getId());
-        if (id.equals(latestId)) {
-            updateKoiFish(growthHistory);
-        }
-        return growthHistoryMapper.mapToGrowthHistoryDto(growthHistoryRepository.save(growthHistory));
+        GrowthHistory growthHistoryLatest = growthHistoryRepository.findById(latestId).orElseThrow(() -> new AppException(ErrorCode.GROWTH_HISTORY_NOT_FOUND));
+        updateKoiFish(growthHistoryLatest);
+        koiFishRepository.save(koiFish);
+
+        return growthHistoryMapper.mapToGrowthHistoryDto(updatedGrowthHistory);
     }
 
     @Override
     public void deleteGrowthHistory(Long id) {
-        //TODO: delete then update second koiFish
-        GrowthHistory growthHistory = growthHistoryRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("GrowHistory not found"));
+        GrowthHistory growthHistory = growthHistoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.GROWTH_HISTORY_NOT_FOUND));
         KoiFish koiFish = growthHistory.getKoiFish();
         List<GrowthHistory> growHistories = growthHistoryRepository.findAllByKoiFishId(koiFish.getId());
         if (growHistories.size() == 1) {
@@ -64,7 +70,7 @@ public class GrowthHistoryService implements IGrowthHistoryService {
         growthHistoryRepository.delete(growthHistory);
 
         long latestId = growthHistoryRepository.findLatestByKoiFishId(koiFish.getId());
-        GrowthHistory growthHistoryLatest = growthHistoryRepository.findById(latestId).orElseThrow(() -> new IllegalArgumentException("GrowHistory not found"));
+        GrowthHistory growthHistoryLatest = growthHistoryRepository.findById(latestId).orElseThrow(() -> new AppException(ErrorCode.GROWTH_HISTORY_NOT_FOUND));
 
         updateKoiFish(growthHistoryLatest);
         growthHistoryRepository.save(growthHistoryLatest);
@@ -72,7 +78,7 @@ public class GrowthHistoryService implements IGrowthHistoryService {
 
     @Override
     public GrowthHistoryDto getGrowthHistory(Long id) {
-        return growthHistoryRepository.findById(id).map(growthHistoryMapper::mapToGrowthHistoryDto).orElseThrow(() -> new IllegalArgumentException("GrowHistory not found"));
+        return growthHistoryRepository.findById(id).map(growthHistoryMapper::mapToGrowthHistoryDto).orElseThrow(() -> new AppException(ErrorCode.GROWTH_HISTORY_NOT_FOUND));
     }
 
     @Override
@@ -83,7 +89,9 @@ public class GrowthHistoryService implements IGrowthHistoryService {
 
     private void updateKoiFish(GrowthHistory growthHistory) {
         KoiFish koiFish = growthHistory.getKoiFish();
-        koiFish.setImageUrl(growthHistory.getImageUrl());
+        if (!"defaultGrowth.png".equals(growthHistory.getImageUrl())) {
+            koiFish.setImageUrl(growthHistory.getImageUrl());
+        }
         koiFish.setPhysique(growthHistory.getPhysique());
         koiFish.setLength(growthHistory.getLength());
         koiFish.setWeight(growthHistory.getWeight());

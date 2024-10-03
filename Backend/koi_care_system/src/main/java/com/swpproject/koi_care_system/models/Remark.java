@@ -6,22 +6,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Remark {//TODO
+public class Remark {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Date createDate;
-    private String physique;
-    private Double length;
-    private Double weight;
-    private String imageUrl;
+    private LocalDateTime createDate;
+    private String title;
+    private String note;
 
     @ManyToOne
     @JoinColumn(name="koifish_id")
