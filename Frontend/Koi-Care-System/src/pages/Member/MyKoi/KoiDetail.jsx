@@ -143,15 +143,9 @@ function KoiDetails() {
       formData.append('price', data.price)
       formData.append('koiPondId', data.pondId)
       formData.append('status', data.status)
-      // formData.append('imageUrl', data.imageUrl)
-
-      // Append the image file if a file is selected
       if (selectedFile) {
         formData.append('file', selectedFile)
       }
-      // else {
-      //   formData.append('imageUrl', koi.imageUrl) // Append the existing imageUrl if no new image is uploaded
-      // }
       const res = await axios.put(
         `https://koicaresystem.azurewebsites.net/api/koifishs/koifish/${id}/update`,formData,
         {
@@ -230,6 +224,96 @@ function KoiDetails() {
                 <MdSystemUpdateAlt className='size-7 ' onClick={() => toggleEditFormVisibility(koi)} />
               </button>
             </div>
+              <div className='flex justify-around py-5'>
+            {/* Left content koi */}
+            <div
+              className={`${
+                isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+              }  flex rounded-xl shadow-lg w-[45%]`}
+            >
+              {/* Image section */}
+              <div className='h-full w-[45%] rounded-l-xl overflow-hidden'>
+                <img
+                  className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105'
+                  // style={{ filter: 'brightness(1.1) contrast(1.1)' }}
+                  src={koi.imageUrl}
+                  alt={koi.name}
+                />
+              </div>
+              {/* right content koi */}
+              <div className='w-[55%] pl-4 pr-3 py-4 flex flex-col justify-between'>
+                <div>
+                  <div className='flex items-center'>
+                    <h2 className='w-[90%] font-semibold text-3xl text-start text-nowrap'> {koi.name}</h2>
+                    <div className=''>
+                      {koi.gender == 'Male' && (
+                        <span className='flex items-center'>
+                          <IoMdMale className='text-blue-500 size-7' />
+                        </span>
+                      )}
+                      {koi.gender == 'Female' && (
+                        <span className='flex items-center'>
+                          <IoMdFemale className='text-pink-500 size-7' />
+                        </span>
+                      )}
+                      {koi.gender == 'Undefined' && (
+                        <span>
+                          <FaQuestion className='text-red-500 size-7' />
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <p className='text-start my-2'>
+                    Variety: <strong>{koi.variety}</strong>
+                  </p>
+                  <p className='text-start mb-3'>
+                    Pond: <strong>{koi.koiPond.name}</strong>
+                  </p>
+                </div>
+                <div className='flex justify-between gap-4 bg-gray-400 rounded-2xl p-3 '>
+                  <div className='text-center'>
+                    <h1 className='text-red-500 font-semibold'>Age</h1>
+                    <p className='text-sm'>{koi.age} years</p>
+                  </div>
+                  <div className='text-center'>
+                    <h1 className='text-red-500 font-semibold'>Length</h1>
+                    <p className='text-sm'>{koi.length} cm</p>
+                  </div>
+                  <div className='text-center'>
+                    <h1 className='text-red-500 font-semibold'>Weight</h1>
+                    <p className='text-sm'>{koi.weight} g</p>
+                  </div>
+                </div>
+              </div>
+              {/* growth history  */}
+              <div className='flex'>
+                <div className='flex flex-col '>
+
+                </div>
+
+              </div>
+            </div>
+            <div
+              className={`${
+                isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+              } text-start p-4 rounded-xl shadow-lg w-[40%]`}
+            >
+              <h2 className='font-bold text-center text-xl mb-2'>Koi Description</h2>
+              <p className='mb-4'>
+                <strong>{koi.name}</strong> with size <strong>{koi.physique}</strong> has been swimming in the pond "<strong>{koi.koiPond.name}</strong>" since{' '}
+                <strong>{formatDate(koi.pondDate)}</strong>.
+              </p>
+              <p className='mb-4'>
+                <strong>{koi.name}</strong> was bought for <strong>{koi.price}€</strong> and was bred by{' '}
+                <strong>{koi.breeder}</strong>.
+              </p>
+              <p className='mb-2'>
+                <strong>{koi.name}</strong> was <strong>{koi.status}</strong>.
+              </p>
+            </div>
+          </div>
+
+
 
           {isEditFormVisible && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40 '>
@@ -536,87 +620,7 @@ function KoiDetails() {
             </div>
           )}
 
-          <div className='flex justify-around py-5'>
-            {/* Left content */}
-            <div
-              className={`${
-                isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-              }  flex rounded-xl shadow-lg w-[45%]`}
-            >
-              {/* Image section */}
-              <div className='h-full w-[45%] rounded-l-xl overflow-hidden'>
-                <img
-                  className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105'
-                  // style={{ filter: 'brightness(1.1) contrast(1.1)' }}
-                  src={koi.imageUrl}
-                  alt={koi.name}
-                />
-              </div>
-              {/* right content  */}
-              <div className='w-[55%] pl-4 pr-3 py-4 flex flex-col justify-between'>
-                <div>
-                  <div className='flex items-center'>
-                    <h2 className='w-[90%] font-semibold text-3xl text-start text-nowrap'> {koi.name}</h2>
-                    <div className=''>
-                      {koi.gender == 'Male' && (
-                        <span className='flex items-center'>
-                          <IoMdMale className='text-blue-500 size-7' />
-                        </span>
-                      )}
-                      {koi.gender == 'Female' && (
-                        <span className='flex items-center'>
-                          <IoMdFemale className='text-pink-500 size-7' />
-                        </span>
-                      )}
-                      {koi.gender == 'Undefined' && (
-                        <span>
-                          <FaQuestion className='text-red-500 size-7' />
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                  <p className='text-start my-2'>
-                    Variety: <strong>{koi.variety}</strong>
-                  </p>
-                  <p className='text-start mb-3'>
-                    Pond: <strong>{koi.koiPond.name}</strong>
-                  </p>
-                </div>
-                <div className='flex justify-between gap-4 bg-gray-400 rounded-2xl p-3 '>
-                  <div className='text-center'>
-                    <h1 className='text-red-500 font-semibold'>Age</h1>
-                    <p className='text-sm'>{koi.age} years</p>
-                  </div>
-                  <div className='text-center'>
-                    <h1 className='text-red-500 font-semibold'>Length</h1>
-                    <p className='text-sm'>{koi.length} cm</p>
-                  </div>
-                  <div className='text-center'>
-                    <h1 className='text-red-500 font-semibold'>Weight</h1>
-                    <p className='text-sm'>{koi.weight} g</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className={`${
-                isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-              } text-start p-4 rounded-xl shadow-lg w-[40%]`}
-            >
-              <h2 className='font-bold text-center text-xl mb-2'>Koi Description</h2>
-              <p className='mb-4'>
-                <strong>{koi.name}</strong> with size <strong>{koi.physique}</strong> has been swimming in the pond "<strong>{koi.koiPond.name}</strong>" since{' '}
-                <strong>{formatDate(koi.pondDate)}</strong>.
-              </p>
-              <p className='mb-4'>
-                <strong>{koi.name}</strong> was bought for <strong>{koi.price}€</strong> and was bred by{' '}
-                <strong>{koi.breeder}</strong>.
-              </p>
-              <p className='mb-2'>
-                <strong>{koi.name}</strong> was <strong>{koi.status}</strong>.
-              </p>
-            </div>
-          </div>
+          
         </div>
       </div>
     </div>
