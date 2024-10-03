@@ -40,6 +40,8 @@ const path = {
   supplier: '/shop/supplier',
   createSupplier:'/shop/createSupplier',
   updateSupplier:'/shop/supplier/:id',
+  wishList: '/member/wishList',
+  cartList: '/member/cartList'
 }
 
 export default path

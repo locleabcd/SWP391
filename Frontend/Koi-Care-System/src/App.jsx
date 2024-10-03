@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useRoutes } from 'react-router-dom'
 import path from './constants/path'
 import { ToastContainer } from 'react-toastify'
@@ -36,12 +37,15 @@ import CreateNews from './pages/Shop/News/CreateNews'
 import UpdateNews from './pages/Shop/News/UpdateNews'
 import ViewNews from './pages/Shop/News/ViewNews'
 import Tag from './pages/Shop/Tag/Tag'
-import MyPondLogId from './pages/Member/MyPond/MyPondLogId'
 import CreateTag from './pages/Shop/Tag/CreateTag'
 import UpdateTag from './pages/Shop/Tag/UpdateTag'
 import Supplier from './pages/Shop/Supplier/Supplier'
 import CreateSupplier from './pages/Shop/Supplier/CreateSupplier'
 import UpdateSupplier from './pages/Shop/Supplier/UpdateSupplier'
+import './index.css'
+import MyPondLogId from './pages/Member/MyPond/MyPondLogId'
+import WishList from './pages/Member/WishList/WishList'
+import CartList from './pages/Member/CartList/CartList'
 
 function App() {
   const routeElements = useRoutes([
@@ -178,10 +182,6 @@ function App() {
       element: <ViewNews />
     },
     {
-      path: path.myPondLogDetail,
-      element: <MyPondLogId  />
-    },
-    {
       path: path.tag,
       element: <Tag />
     },
@@ -205,12 +205,45 @@ function App() {
       path: path.updateSupplier,
       element: <UpdateSupplier />
     },
+    {
+      path: path.myPondLogDetail,
+      element: <MyPondLogId />
+    },
+    {
+      path: path.wishList,
+      element: <WishList />
+    },
+    {
+      path: path.cartList,
+      element: <CartList />
+    }
   ])
+
+  const data = [
+    {
+      Id: 2,
+      Subject: 'Meeting',
+      StartTime: new Date(2018, 1, 15, 10, 0),
+      EndTime: new Date(2018, 1, 15, 12, 30),
+      IsAllDay: false,
+      Status: 'Completed',
+      Priority: 'High'
+    }
+  ]
+  const fieldsData = {
+    id: 'Id',
+    subject: { name: 'Subject' },
+    isAllDay: { name: 'IsAllDay' },
+    startTime: { name: 'StartTime' },
+    endTime: { name: 'EndTime' }
+  }
+  const eventSettings = { dataSource: data, fields: fieldsData }
 
   return (
     <>
       <DarkModeProvider>
         {routeElements}
+
         <ToastContainer />
       </DarkModeProvider>
     </>

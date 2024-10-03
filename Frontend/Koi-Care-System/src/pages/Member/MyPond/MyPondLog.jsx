@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Member/Header'
@@ -25,6 +26,16 @@ function MyPondLog() {
 
   const toggleAddFormVisibility = () => {
     setIsAddFormVisible(!isAddFormVisible)
+  }
+
+  const openEditForm = (log) => {
+    setTitle(log.logTitle)
+    setDateTime(log.logDate)
+    setCategory(log.category)
+    setNote(log.note)
+    setPond(log.koiPondName)
+    localStorage.setItem('logId', log.logId)
+    toggleEditFormVisibility(true)
   }
 
   const toggleCloseForm = () => {
@@ -61,12 +72,13 @@ function MyPondLog() {
     }
   }
 
-  const deleteLog = async (logId) => {
+  const deleteLog = async () => {
     try {
       const token = localStorage.getItem('token')
       if (!token) {
         console.log('not found token')
       }
+      const logId = localStorage.getItem('logId')
 
       await axios.delete(`https://koicaresystem.azurewebsites.net/api/log/delete/${logId}`, {
         headers: {
@@ -120,7 +132,7 @@ function MyPondLog() {
         {
           logTitle: title,
           logDate: dateTime,
-          category: category,
+          category: category.toUpperCase(),
           note: note,
           koiPondId: pond
         },
@@ -130,23 +142,23 @@ function MyPondLog() {
           }
         }
       )
+      pondLog()
+      toggleAddFormVisibility(false)
     } catch (error) {
       console.error('Error details:', error)
-      console.log(dateTime)
-      console.log(pond)
     }
   }
 
-  const updateLog = async (logId) => {
+  const updateLog = async () => {
     try {
       const token = localStorage.getItem('token')
-
+      const logId = localStorage.getItem('logId')
       await axios.put(
-        `https://koicaresystem.azurewebsites.net/api/log/create/${logId}`,
+        `https://koicaresystem.azurewebsites.net/api/log/update/${logId}`,
         {
           logTitle: title,
           logDate: dateTime,
-          category: category,
+          category: category.toUpperCase(),
           note: note,
           koiPondId: pond
         },
@@ -156,6 +168,8 @@ function MyPondLog() {
           }
         }
       )
+      pondLog()
+      toggleCloseForm()
     } catch (error) {
       console.error('Error details:', error)
     }
@@ -204,7 +218,7 @@ function MyPondLog() {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed bottom-5 right-5 text-lg text-black outline-none rounded-r-xl bg-custom-layout-light shadow-lg size-16 p-2 cursor-pointer'
+                className='fixed bottom-5 right-5 text-lg text-black outline-none rounded-full bg-custom-layout-light shadow-lg size-16 p-2 cursor-pointer'
                 onClick={() => {
                   toggleAddFormVisibility()
                 }}
@@ -219,7 +233,7 @@ function MyPondLog() {
               {log.map((logs) => (
                 <div
                   key={logs.logId}
-                  onClick={() => toggleEditFormVisibility(logs)}
+                  onClick={() => openEditForm(logs)}
                   className='border border-gray-50 shadow-lg rounded-xl px-10 py-5'
                 >
                   <div className='flex justify-between'>
@@ -333,15 +347,15 @@ function MyPondLog() {
                         <select
                           id='pondId'
                           onChange={(e) => setCategory(e.target.value)}
-                          className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                          className='block w-full p-3 border border-black rounded-md shadow-sm'
                         >
-                          <option value='other'>other</option>
-                          <option value='Water Change'>Water Change</option>
-                          <option value='Koi Treatment'>Koi Treatment</option>
-                          <option value='Water Treatment'>Water Treatment</option>
-                          <option value='Population Change'>Population Change</option>
-                          <option value='Experience'>Experience</option>
-                          <option value='Pond Modification'>Pond Modification</option>
+                          <option value='OTHER'>Other</option>
+                          <option value='WATER_CHANGE'>Water Change</option>
+                          <option value='KOI_TREATMENT'>Koi Treatment</option>
+                          <option value='WATER_TREATMENT'>Water Treatment</option>
+                          <option value='POPULATION_CHANGE'>Population Change</option>
+                          <option value='EXPERIENCE'>Experience</option>
+                          <option value='POND_MODIFICATION'>Pond Modification</option>
                         </select>
                       </div>
 
@@ -357,7 +371,7 @@ function MyPondLog() {
                         <select
                           id='pondId'
                           onChange={(e) => setPond(e.target.value)}
-                          className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                          className='block w-full p-3 border border-black rounded-md shadow-sm'
                         >
                           <option value=''>Select a pond</option>
                           {ponds.map((pond) => (
@@ -406,8 +420,6 @@ function MyPondLog() {
                         strokeWidth={1.5}
                         stroke='currentColor'
                         onClick={() => {
-                          // reset()
-                          // setBaseImage(null)
                           toggleCloseForm()
                         }}
                         className='size-10 text-red-500 cursor-pointer'
@@ -419,7 +431,7 @@ function MyPondLog() {
                         />
                       </svg>
 
-                      <button type='submit'>
+                      <button onClick={() => updateLog()}>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'
@@ -436,7 +448,7 @@ function MyPondLog() {
                         </svg>
                       </button>
                     </div>
-                    <h3 className='mb-5 text-2xl font-bold'>Add a Log</h3>
+                    <h3 className='mb-5 text-2xl font-bold'>Update a Log</h3>
                     <div className='grid grid-cols-2 grid-rows-2 gap-4'>
                       <div className='mb-4 relative col-span-1'>
                         <label
@@ -449,14 +461,13 @@ function MyPondLog() {
                         </label>
                         <input
                           type='text'
-                          id='name'
+                          value={title}
+                          onChange={(e) => setTitle(e.target.value)}
                           placeholder='Enter title'
                           className={`w-full p-3 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
-                          // {...register('name')}
                         />
-                        {/* {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>} */}
                       </div>
 
                       <div className='mb-4 relative col-span-1'>
@@ -470,17 +481,16 @@ function MyPondLog() {
                         </label>
                         <input
                           type='datetime-local'
-                          id='volume'
-                          placeholder='Enter volume'
+                          value={dateTime}
+                          onChange={(e) => setDateTime(e.target.value)}
+                          placeholder='Enter Date Time'
                           className={`w-full p-3 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          // {...register('volume')}
                         />
-                        {/* {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>} */}
                       </div>
 
-                      <div className='mb-4 relative col-span-1'>
+                      <div className='relative col-span-1'>
                         <label
                           htmlFor='depth'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
@@ -489,16 +499,20 @@ function MyPondLog() {
                         >
                           Category:
                         </label>
-                        <input
-                          type='text'
-                          id='depth'
-                          placeholder='Enter depth in meters'
-                          className={`w-full p-3 ${
-                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          // {...register('depth')}
-                        />
-                        {/* {errors.depth && <p className='text-red-500 text-sm'>{errors.depth.message}</p>} */}
+                        <select
+                          id='pondId'
+                          value={category}
+                          onChange={(e) => setCategory(e.target.value)}
+                          className='block w-full p-3 border border-black rounded-md shadow-sm'
+                        >
+                          <option value='OTHER'>Other</option>
+                          <option value='WATER_CHANGE'>Water Change</option>
+                          <option value='KOI_TREATMENT'>Koi Treatment</option>
+                          <option value='WATER_TREATMENT'>Water Treatment</option>
+                          <option value='POPULATION_CHANGE'>Population Change</option>
+                          <option value='EXPERIENCE'>Experience</option>
+                          <option value='POND_MODIFICATION'>Pond Modification</option>
+                        </select>
                       </div>
 
                       <div className='mb-4 relative col-span-1'>
@@ -510,19 +524,22 @@ function MyPondLog() {
                         >
                           Pond:
                         </label>
-                        <input
-                          type='text'
-                          id='drainCount'
-                          placeholder='Enter drain count'
-                          className={`w-full p-3 ${
-                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          // {...register('drainCount')}
-                        />
-                        {/* {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>} */}
+                        <select
+                          id='pondId'
+                          value={pond}
+                          onChange={(e) => setPond(e.target.value)}
+                          className='block w-full p-3 border border-black rounded-md shadow-sm'
+                        >
+                          <option value=''>Select a pond</option>
+                          {ponds.map((pond) => (
+                            <option key={pond.id} value={pond.id}>
+                              {pond.name}
+                            </option>
+                          ))}
+                        </select>
                       </div>
                     </div>
-                    <div className='mb-4 relative w-full'>
+                    <div className='mt-4 relative w-full'>
                       <label
                         htmlFor='drainCount'
                         className={`absolute -top-[12px] left-3 text-red-500 ${
@@ -533,17 +550,17 @@ function MyPondLog() {
                       </label>
                       <input
                         type='text'
+                        value={note}
+                        onChange={(e) => setNote(e.target.value)}
                         placeholder='Note'
                         className={`w-full h-32 p-3 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                        // {...register('drainCount')}
                       />
-                      {/* {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>} */}
                     </div>
 
                     <div className='w-full flex flex-col justify-center'>
-                      <button className='mx-auto' onClick={() => deleteLog(currentLog.logId)}>
+                      <button className='mx-auto' onClick={() => deleteLog()}>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'

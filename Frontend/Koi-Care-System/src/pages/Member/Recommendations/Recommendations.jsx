@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Member/Header'
@@ -8,6 +9,9 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { Link, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { AddToWishlist, RemoveFromWishlist } from '../../../redux/store/wishList'
+import { addToCartList } from '../../../redux/store/cartList'
 
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
@@ -18,6 +22,23 @@ function Recommendations() {
   const [search, setSearch] = useState('')
   const [pricing, setPricing] = useState('all')
   const [rating, setRating] = useState()
+  const [wishlist, setWishlist] = useState([])
+  const [cartId, setCartId] = useState([])
+  const dispatch = useDispatch()
+
+  const handleAddToWishlist = (product) => {
+    if (wishlist.includes(product.id)) {
+      setWishlist(wishlist.filter((id) => id !== product.id))
+      dispatch(RemoveFromWishlist(product))
+    } else {
+      setWishlist([...wishlist, product.id])
+      dispatch(AddToWishlist(product))
+    }
+  }
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCartList(product))
+  }
 
   const navigate = useNavigate()
 
@@ -65,12 +86,35 @@ function Recommendations() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(response.data.data)
       setProduct(response.data.data)
     } catch (error) {
       console.log(error)
     }
   }
+
+  const getCartId = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const response = await axios.get(`https://koicaresystem.azurewebsites.net/api/carts/user/${userId}/cartId`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setCartId(response.data.data)
+      localStorage.setItem('cartId', response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getCartId()
+  }, [])
 
   useEffect(() => {
     getProduct()
@@ -392,30 +436,52 @@ function Recommendations() {
                                 className='w-full h-[290px] rounded-t-lg'
                               />
                             </Link>
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              fill='none'
-                              viewBox='0 0 24 24'
-                              strokeWidth={1.5}
-                              stroke='currentColor'
-                              className={`size-11 relative rounded-full -top-[13px] cursor-pointer left-[5%] p-2 ${
-                                isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
-                              }`}
-                            >
-                              <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z'
-                              />
-                            </svg>
+                            <button aria-label='wishlist' onClick={() => handleAddToWishlist(products)}>
+                              {wishlist.includes(products.id) ? (
+                                <svg
+                                  xmlns='http://www.w3.org/2000/svg'
+                                  fill='none'
+                                  viewBox='0 0 24 24'
+                                  strokeWidth={1.5}
+                                  stroke='currentColor'
+                                  className={`size-11 relative rounded-full -top-[13px] text-red-500 cursor-pointer left-[50%] p-2 ${
+                                    isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
+                                  }`}
+                                >
+                                  <path
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z'
+                                  />
+                                </svg>
+                              ) : (
+                                <svg
+                                  xmlns='http://www.w3.org/2000/svg'
+                                  fill='none'
+                                  viewBox='0 0 24 24'
+                                  strokeWidth={1.5}
+                                  stroke='currentColor'
+                                  className={`size-11 relative rounded-full -top-[13px] cursor-pointer left-[50%] p-2 ${
+                                    isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
+                                  }`}
+                                >
+                                  <path
+                                    strokeLinecap='round'
+                                    strokeLinejoin='round'
+                                    d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z'
+                                  />
+                                </svg>
+                              )}
+                            </button>
 
                             <svg
+                              onClick={() => handleAddToCart(products)}
                               xmlns='http://www.w3.org/2000/svg'
                               fill='none'
                               viewBox='0 0 24 24'
                               strokeWidth={1.5}
                               stroke='currentColor'
-                              className={`size-11 relative rounded-full -top-[55px] -right-[85%] p-2 cursor-pointer ${
+                              className={`size-11 relative rounded-full -top-[60px] -right-[85%] p-2 cursor-pointer ${
                                 isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
                               }`}
                             >

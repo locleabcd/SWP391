@@ -173,7 +173,7 @@ function News() {
                     key={index}
                     className={`${
                       isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                    } mb-4 border rounded-lg shadow-sm  hover:scale-105 duration-200`}
+                    } mb-4 border rounded-lg shadow-sm  hover:scale-[102%] duration-200`}
                   >
                     {/* <div className='flex border-b px-5 py-4 border-gray-300 items-center gap-2'>
                     <img
