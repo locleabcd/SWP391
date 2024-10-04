@@ -91,7 +91,7 @@ function News() {
 
         <div
           className={`relative ${
-            isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
@@ -119,7 +119,7 @@ function News() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder='Search Blog...'
-                  className='pl-7 font-light outline-none text-lg'
+                  className={`${isDarkMode ? 'bg-custom-dark' : ''} pl-7 font-light outline-none text-lg`}
                 />
               </div>
               <div className='cursor-pointer mt-3' onClick={toggleButtons}>
@@ -173,7 +173,7 @@ function News() {
                     key={index}
                     className={`${
                       isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                    } mb-4 border rounded-lg shadow-sm  hover:scale-105 duration-200`}
+                    } mb-4 border rounded-lg shadow-sm  hover:scale-[102%] duration-200`}
                   >
                     {/* <div className='flex border-b px-5 py-4 border-gray-300 items-center gap-2'>
                     <img
@@ -216,7 +216,9 @@ function News() {
                               {blog.tags?.map((tag) => (
                                 <span
                                   key={tag.tagId}
-                                  className='text-lg flex justify-start px-2 py-1 rounded-xl bg-gray-200'
+                                  className={`text-lg flex justify-start px-2 py-1 rounded-xl ${
+                                    isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
+                                  } `}
                                 >
                                   {tag.tagName}
                                 </span>
