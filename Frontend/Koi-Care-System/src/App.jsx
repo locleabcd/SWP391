@@ -41,6 +41,11 @@ import './index.css'
 import MyPondLogId from './pages/Member/MyPond/MyPondLogId'
 import WishList from './pages/Member/WishList/WishList'
 import CartList from './pages/Member/CartList/CartList'
+import CreateTag from './pages/Shop/Tag/CreateTag'
+import UpdateTag from './pages/Shop/Tag/UpdateTag'
+import Supplier from './pages/Shop/Supplier/Supplier'
+import CreateSupplier from './pages/Shop/Supplier/CreateSupplier'
+import UpdateSupplier from './pages/Shop/Supplier/UpdateSupplier'
 
 function App() {
   const routeElements = useRoutes([
@@ -177,6 +182,10 @@ function App() {
       element: <ViewNews />
     },
     {
+      path: path.myPondLogDetail,
+      element: <MyPondLogId />
+    },
+    {
       path: path.tag,
       element: <Tag />
     },
@@ -191,6 +200,26 @@ function App() {
     {
       path: path.cartList,
       element: <CartList />
+    },
+    {
+      path: path.createTag,
+      element: <CreateTag />
+    },
+    {
+      path: path.updateTag,
+      element: <UpdateTag />
+    },
+    {
+      path: path.supplier,
+      element: <Supplier />
+    },
+    {
+      path: path.createSupplier,
+      element: <CreateSupplier />
+    },
+    {
+      path: path.updateSupplier,
+      element: <UpdateSupplier />
     }
   ])
 

@@ -179,28 +179,28 @@ function ShopNews() {
             </div>
             {/* Blog Table */}
             <div className='overflow-x-auto mt-6'>
-              <table className='min-w-full bg-white border-spacing-x-1 border-gray-200'>
+              <table className='min-w-full  border-spacing-x-1 border-gray-200'>
                 <thead className='border-gray-200'>
-                  <tr>
-                    <th className='py-3 px-5 text-left text-xs font-bold text-black uppercase'>
+                  <tr className='border-b'>
+                    <th className='py-3 px-5 text-left text-xs font-bold uppercase'>
                        ID
                     </th>
-                    <th className='py-3 px-5 text-left text-xs font-bold text-black uppercase'>
+                    <th className='py-3 px-5 text-left text-xs font-bold uppercase'>
                       Image
                     </th>
-                    <th className='py-3 px-5 text-left text-xs font-bold text-black uppercase'>
+                    <th className='py-3 px-5 text-left text-xs font-bold uppercase'>
                       Title
                     </th>
-                    <th className='py-3 px-5 text-left text-xs font-bold text-black uppercase'>
+                    <th className='py-3 px-5 text-left text-xs font-bold uppercase'>
                       Content
                     </th>
-                    <th className='py-3 px-5 text-left text-xs font-bold text-black uppercase'>
+                    <th className='py-3 px-5 text-left text-xs font-bold uppercase'>
                       Tags
                     </th>
-                    <th className='py-3 px-5 text-left text-xs font-bold text-black uppercase'>
+                    <th className='py-3 px-5 text-left text-xs font-bold uppercase'>
                       Date
                     </th>
-                    <th className='py-3 px-5 text-left text-xs font-bold text-black uppercase'>
+                    <th className='py-3 px-5 text-left text-xs font-bold uppercase'>
                       Action
                     </th>
 
@@ -221,7 +221,7 @@ function ShopNews() {
                         {blog.blogTitle}
                       </td>
                       <td className='py-2 px-3 border-b border-gray-200'>
-                        {blog.blogContent.substring(0, 100)}...
+                        {blog.blogContent.substring(0, 70)}...
                       </td>
                       <td className='py-2 px-3 border-b border-gray-200'>
                         {blog.tags?.map((tag) => (

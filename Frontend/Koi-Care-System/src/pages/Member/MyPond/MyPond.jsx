@@ -212,7 +212,6 @@ function MyPond() {
           Authorization: `Bearer ${token}`
         }
       })
-
       const koiCount = res.data.data.length
       setKoiCounts((prevCounts) => ({
         ...prevCounts,

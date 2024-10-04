@@ -36,7 +36,12 @@ const path = {
   viewNews: '/shop/shopNews/:id',
   tag: '/shop/tag/tag',
   wishList: '/member/wishList',
-  cartList: '/member/cartList'
+  cartList: '/member/cartList',
+  createTag: '/shop/createTag',
+  updateTag: '/shop/tag/:id',
+  supplier: '/shop/supplier',
+  createSupplier: '/shop/createSupplier',
+  updateSupplier: '/shop/supplier/:id'
 }
 
 export default path
