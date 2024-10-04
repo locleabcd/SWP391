@@ -25,6 +25,8 @@ function Recommendations() {
   const [wishlist, setWishlist] = useState([])
   const [cartId, setCartId] = useState([])
   const dispatch = useDispatch()
+  const [currentPage, setCurrentPage] = useState(1)
+  const pageSize = 9
 
   const handleAddToWishlist = (product) => {
     if (wishlist.includes(product.id)) {
@@ -87,6 +89,7 @@ function Recommendations() {
         }
       })
       setProduct(response.data.data)
+      console.log(response.data.data)
     } catch (error) {
       console.log(error)
     }

@@ -16,7 +16,7 @@ const cartListSlice = createSlice({
     AddToCartList: (state, action) => {
       const existingItem = state.cartList.find((item) => item.id === action.payload.id)
       if (existingItem) {
-        existingItem.quantity += action.payload.quantity || 1 // Handle missing quantity
+        existingItem.quantity += action.payload.quantity || 1
         state.totalQuantity += action.payload.quantity || 1
       } else {
         state.cartList.push({
