@@ -216,8 +216,8 @@
                         <label>{saltNeeded.toFixed(2)} grams</label>
                       </div>
                       <div className='row flex justify-between w-full px-10 mt-4'>
-                        <label><strong>Amount of Water to Change:</strong></label>
-                        <label>{refillAmount.toFixed(2)} liters</label>
+                        <label><strong>Per water change(refill):</strong></label>
+                        <label>{refillAmount.toFixed(2)} grams</label>
                       </div>
                     </div>
                   </div>

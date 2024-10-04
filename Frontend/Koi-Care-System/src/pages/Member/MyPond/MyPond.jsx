@@ -117,8 +117,10 @@ function MyPond() {
         formData.append('skimmer', data.skimmer)
         formData.append('pumpCapacity', data.pumpCapacity)
         formData.append('volume', data.volume)
-        formData.append('file', selectedFile)
-        formData.append('imageUrl', data.imageUrl)
+        if (selectedFile) {
+          formData.append('file', selectedFile)
+        }
+        // formData.append('imageUrl', data.imageUrl)
 
         await axios.put(`https://koicaresystem.azurewebsites.net/api/koiponds/koipond/${id}/update`, formData, {
           headers: {
@@ -134,7 +136,9 @@ function MyPond() {
         formData.append('skimmer', data.skimmer)
         formData.append('pumpCapacity', data.pumpCapacity)
         formData.append('volume', data.volume)
-        formData.append('file', selectedFile)
+        if (selectedFile) {
+          formData.append('file', selectedFile)
+        } 
         await axios.post('https://koicaresystem.azurewebsites.net/api/koiponds/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -548,7 +552,7 @@ function MyPond() {
                         )}
                       </div>
 
-                      {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>}
+                      {/* {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>} */}
 
                       <div className='mb-4 relative col-span-1'>
                         <label
