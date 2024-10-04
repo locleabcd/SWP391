@@ -24,6 +24,10 @@ function KoiDetails() {
   const navigate = useNavigate()
   const [baseImage, setBaseImage] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
+  const [growth, setGrowth] = useState(null)
+  const [currentGrowth, setCurrentGrowth] = useState(null)
+  const [isAddGrowthFormVisible, setIsAddGrowthFormVisible] = useState(false)
+  const [isEditGrowthFormVisible, setIsEditGrowthFormVisible] = useState(false)
 
   const {
     register,
@@ -57,6 +61,128 @@ function KoiDetails() {
     return `${year}-${month}-${day}` // Returns date in yyyy-mm-dd format
   }
 
+  const toggleAddGrowthFormVisibility = () => {
+    setIsAddGrowthFormVisible(!isAddGrowthFormVisible)
+    setIsEditGrowthFormVisible(false)
+    setCurrentGrowth(null)
+    reset()
+  }
+
+  const toggleCloseGrowthForm = () => {
+    setIsEditGrowthFormVisible(!isEditGrowthFormVisible)
+    setIsAddGrowthFormVisible(false)
+    setCurrentGrowth(null)
+    setBaseImage(null)
+    reset(growth)
+  }
+
+  const toggleEditGrowthFormVisibility = (growth) => {
+    if (growth) {
+      setCurrentGrowth(growth)
+      setIsEditGrowthFormVisible(true)
+      setIsAddGrowthFormVisible(false)
+      reset()
+    }
+  }
+
+  const getGrowthHistory = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/growth-history/list/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log(res.data.data)
+      setGrowth(res.data.data)
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          console.error('Unauthorized access - Token expired or invalid. Logging out...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('id')
+          toast.error('Token expired navigate to login')
+          navigate('/login')
+        } else {
+          console.error('Error fetching growth history:', error.response?.status, error.message)
+        }
+      } else {
+        console.error('An unexpected error occurred:', error)
+      }
+    }
+  }
+
+  useEffect(() => {
+    getGrowthHistory()
+  }, [])
+
+  const upDateGrowth = async (data, id = null) => {
+    setIsLoading(true)
+    setIsSubmitting(true)
+
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      if (id) {
+        const formData = new FormData()
+        formData.append('createDate', data.createDate)
+        formData.append('physique', data.physique)
+        formData.append('length', data.length)
+        formData.append('weight', data.weight)
+        if (selectedFile) {
+          formData.append('file', selectedFile)
+        }
+
+        await axios.put(`https://koicaresystem.azurewebsites.net/api/growth-history/update/${id}`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+      } else {
+        const formData = new FormData()
+        formData.append('createDate', data.createDate)
+        formData.append('physique', data.physique)
+        formData.append('length', data.length)
+        formData.append('weight', data.weight)
+        formData.append('koiFishId', data.id)
+        if (selectedFile) {
+          formData.append('file', selectedFile)
+        }
+        await axios.post('https://koicaresystem.azurewebsites.net/api/growth-history/create', formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        })
+      }
+
+      reset()
+      getGrowthHistory()
+      setIsAddGrowthFormVisible(false)
+      setIsEditGrowthFormVisible(false)
+    } catch (error) {
+      console.log('Error creating/updating growth history:', error)
+    } finally {
+      setIsSubmitting(false)
+      setIsLoading(false)
+    }
+  }
+
+  const onSubmitGrowth = async (data) => {
+    if (currentGrowth) {
+      upDateGrowth(data, currentGrowth.id)
+    } else {
+      upDateGrowth(data)
+    }
+  }
+
   const toggleCloseForm = () => {
     setIsEditFormVisible(false)
   }
@@ -70,23 +196,19 @@ function KoiDetails() {
     setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
-      const userId = localStorage.getItem('id')
       if (!token) {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koifishs/user/${userId}/allKoi`, {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koifishs/koifish/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
 
-      const allKois = res.data.data
-      const koiDetails = allKois.find((koi) => koi.id.toString() === id)
+      
       console.log(res.data.data);
-      setKoi(koiDetails)
-      
-      
+      setKoi(res.data.data)    
     } catch (error) {
       console.error('Error fetching koi:', error)
       alert('Failed to load koi details, please try again later.')
@@ -208,7 +330,7 @@ function KoiDetails() {
 
   return (
     <div>
-      <div className='h-screen flex'>
+      <div className=' flex'>
         <LeftSideBar />
         <div
           className={`relative ${
@@ -220,48 +342,33 @@ function KoiDetails() {
             <TopLayout text='My Koi' textName='My Koi Detail' links='member/myKoi' />
           </div>
           <div className='flex items-center justify-end pr-12'>
-              <button>
-                <MdSystemUpdateAlt className='size-7 ' onClick={() => toggleEditFormVisibility(koi)} />
-              </button>
-            </div>
-              <div className='flex justify-around py-5'>
+            <button>
+              <MdSystemUpdateAlt className='size-7' onClick={() => toggleEditFormVisibility(koi)} />
+            </button>
+          </div>
+
+          {/* Main content section */}
+          <div className='flex justify-around py-5'>
             {/* Left content koi */}
             <div
               className={`${
                 isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-              }  flex rounded-xl shadow-lg w-[45%]`}
+              } flex rounded-xl shadow-lg w-[50%]`}
             >
               {/* Image section */}
-              <div className='h-full w-[45%] rounded-l-xl overflow-hidden'>
+              <div className='h-full w-[50%] rounded-l-xl overflow-hidden'>
                 <img
                   className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105'
-                  // style={{ filter: 'brightness(1.1) contrast(1.1)' }}
                   src={koi.imageUrl}
                   alt={koi.name}
                 />
               </div>
-              {/* right content koi */}
+
+              {/* Right content koi */}
               <div className='w-[55%] pl-4 pr-3 py-4 flex flex-col justify-between'>
                 <div>
                   <div className='flex items-center'>
-                    <h2 className='w-[90%] font-semibold text-3xl text-start text-nowrap'> {koi.name}</h2>
-                    <div className=''>
-                      {koi.gender == 'Male' && (
-                        <span className='flex items-center'>
-                          <IoMdMale className='text-blue-500 size-7' />
-                        </span>
-                      )}
-                      {koi.gender == 'Female' && (
-                        <span className='flex items-center'>
-                          <IoMdFemale className='text-pink-500 size-7' />
-                        </span>
-                      )}
-                      {koi.gender == 'Undefined' && (
-                        <span>
-                          <FaQuestion className='text-red-500 size-7' />
-                        </span>
-                      )}
-                    </div>
+                    <h2 className='w-[90%] font-semibold text-3xl text-start text-nowrap'>{koi.name}</h2>
                   </div>
                   <p className='text-start my-2'>
                     Variety: <strong>{koi.variety}</strong>
@@ -270,7 +377,7 @@ function KoiDetails() {
                     Pond: <strong>{koi.koiPond.name}</strong>
                   </p>
                 </div>
-                <div className='flex justify-between gap-4 bg-gray-400 rounded-2xl p-3 '>
+                <div className='flex justify-between gap-4 bg-gray-400 rounded-2xl p-3'>
                   <div className='text-center'>
                     <h1 className='text-red-500 font-semibold'>Age</h1>
                     <p className='text-sm'>{koi.age} years</p>
@@ -285,14 +392,9 @@ function KoiDetails() {
                   </div>
                 </div>
               </div>
-              {/* growth history  */}
-              <div className='flex'>
-                <div className='flex flex-col '>
-
-                </div>
-
-              </div>
             </div>
+
+            {/* Koi description */}
             <div
               className={`${
                 isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
@@ -312,8 +414,248 @@ function KoiDetails() {
               </p>
             </div>
           </div>
+          {/* Growth history and remarks */}
+          <div className='grid grid-cols-2 gap-4 px-20 py-5'>
+            {/* Growth History Section */}
+            <div className='growth-history col-span-1 w-[85%]'>
+              <div className='flex justify-between items-center text-center'>
+                <h2 className='font-bold text-xl '>Growth History</h2>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth={1.5}
+                  stroke='currentColor'
+                  className='text-red-500 size-12 p-2 cursor-pointer'
+                  onClick={() => {
+                    toggleAddGrowthFormVisibility()
+                  }}
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                  />
+                </svg>
+              </div>            
+              {growth.length > 0 ? (
+                growth.map((g, index) => (
+                  <div
+                    key={index}
+                    className={`flex items-center rounded-lg mb-4 max-h-28 overflow-hidden ${
+                      isDarkMode ? 'text-white bg-black' : 'text-black bg-white'
+                    }`}
+                  >
+                    {/* Image section */}
+                    <div className='w-[40%] rounded-l-lg overflow-hidden'>
+                      <img
+                        src={g.imageUrl} 
+                        alt={`Growth ${index + 1}`}
+                        className='w-full h-full object-cover'
+                      />
+                    </div>
 
+                    {/* Growth details */}
+                    <div className='w-[60%] pl-4 flex flex-col'>
+                      <p className='mb-2'>
+                        <strong>Date:</strong> {formatDate(g.createDate)}
+                      </p>
+                      <p className='mb-2'>
+                        <strong>Length:</strong> {g.length} cm
+                      </p>
+                      <p className='mb-2'>
+                        <strong>Weight:</strong> {g.weight} g
+                      </p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className='text-center text-sm text-gray-500'>No growth history available</p>
+              )}
+            </div>
 
+            {/* Remarks Section */}
+            <div className='remarks pl-20'>
+              <h2 className='font-bold text-xl mb-4'>Remarks</h2>
+              <p> {/* Add your remarks content here */} </p>
+            </div>
+          </div>
+
+          {isAddGrowthFormVisible && (
+            <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40 '>
+              <div className='bg-white min-w-[80vh] m-auto p-6 rounded-lg shadow-lg'>
+                {/* Form for adding growth record */}
+                <form onSubmit={handleSubmit(onSubmitGrowth)} noValidate>
+                  <div className='flex justify-between mb-5'>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      onClick={toggleCloseGrowthForm}
+                      className='size-10 text-red-500 cursor-pointer'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                      />
+                    </svg>
+
+                    <button type='submit' disabled={isSubmitting}>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='size-10 text-green-500 cursor-pointer'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                        />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div className='grid grid-cols-2 gap-4'>
+                    {/* Image upload input */}
+                    <div
+                      id='growth-image'
+                      className='mb-6 h-full flex justify-center border border-black'
+                    >
+                      {baseImage ? (
+                        <div className='pre-upload max-w-[40vw] relative max-h-[154px] w-full h-full'>
+                          <img src={baseImage} alt='Preview' className='absolute w-full h-full object-cover' />
+                          <input
+                            type='file'
+                            id='upload-input'
+                            className='absolute top-10 h-20 opacity-0'
+                            accept='image/*'
+                            {...register('file')}
+                            onChange={handleImageChange}
+                          />
+
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            strokeWidth={1.5}
+                            stroke='currentColor'
+                            className='size-5 absolute text-white cursor-pointer -top-2 -right-2 rounded-full bg-red-500'
+                            onClick={() => setBaseImage(null)}
+                          >
+                            <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
+                          </svg>
+                        </div>
+                      ) : (
+                        <label className='pre-upload flex flex-col items-center justify-center text-center cursor-pointer'>
+                          <div className='relative'>
+                            <svg
+                              xmlns='http://www.w3.org/2000/svg'
+                              width={16}
+                              height={16}
+                              fill='currentColor'
+                              className='mx-auto text-gray-500 inline-block w-10 h-10'
+                              viewBox='0 0 16 16'
+                            >
+                              <path
+                                fillRule='evenodd'
+                                d='M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708l2-2z'
+                              />
+                              <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
+                            </svg>
+                            <div className='py-3'>
+                              <span>Choose images here</span>
+                            </div>
+                          </div>
+
+                          <input
+                            type='file'
+                            id='upload-input'
+                            className='absolute ml-20 opacity-0'
+                            accept='image/*'
+                            {...register('file')}
+                            onChange={handleImageChange}
+                          />
+                        </label>
+                      )}
+                    </div>
+
+                    {/* Date input */}
+                    <div className='relative'>
+                      <label
+                        htmlFor='growthDate'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
+                        Date
+                      </label>
+                      <input
+                        type='date'
+                        id='growthDate'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('createDate')}
+                      />
+                    </div>
+
+                    {/* Physique input */}
+                    <div className='relative'>
+                      <label
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        htmlFor='physique'
+                      >
+                        Physique
+                      </label>
+                      <select
+                        id='physique'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('physique')}
+                      >
+                        <option value='Slim'>Slim</option>
+                        <option value='Normal'>Normal</option>
+                        <option value='Corpulent'>Corpulent</option>
+                      </select>
+                    </div>
+
+                    {/* Length input */}
+                    <div className='relative'>
+                      <label
+                        htmlFor='length'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
+                        Length (cm)
+                      </label>
+                      <input
+                        type='number'
+                        id='length'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('length')}
+                      />
+                    </div>
+
+                    {/* Weight input */}
+                    <div className='relative'>
+                      <label
+                        htmlFor='weight'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
+                        Weight (g)
+                      </label>
+                      <input
+                        type='number'
+                        id='weight'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('weight')}
+                      />
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
 
           {isEditFormVisible && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40 '>
