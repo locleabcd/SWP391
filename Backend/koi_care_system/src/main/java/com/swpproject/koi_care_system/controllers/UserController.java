@@ -29,6 +29,15 @@ public class UserController {
                 .data(userService.createUser(request))
                 .build());
     }
+
+    @PostMapping("/register/staff")
+    public ResponseEntity<ApiResponse> createStaff(@RequestBody @Valid CreateUserRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
+                .message("Staff has been created")
+                .data(userService.createStaff(request))
+                .build());
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse> getUsers() {
         return ResponseEntity.ok(ApiResponse.builder()

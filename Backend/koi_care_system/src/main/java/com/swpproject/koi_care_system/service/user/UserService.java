@@ -12,6 +12,7 @@ import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.repository.UserRepository;
 import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
 import com.swpproject.koi_care_system.service.email.IEmailService;
+import com.swpproject.koi_care_system.service.profile.ProfileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -33,6 +34,7 @@ public class UserService implements IUserService {
     PasswordEncoder passwordEncoder;
     IEmailService emailService;
     IAuthenticationService authenticationService;
+    ProfileService profileService;
 
     public UserDTO createUser(CreateUserRequest request) {
 
@@ -81,7 +83,8 @@ public class UserService implements IUserService {
         User user = userRepo.findByEmail(email)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         user.setStatus(true);
-        user.setRole(Role.MEMBER.name());
+        user.setRole(Role.MEMBER);
+        user.setUserProfile(profileService.createProfile(user));
         userRepo.save(user);
     }
     @Override
@@ -92,5 +95,23 @@ public class UserService implements IUserService {
     @Override
     public UserDTO convertToDto(User user) {
         return userMapper.maptoUserDTO(user);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public UserDTO createStaff(CreateUserRequest request) {
+        if (userRepo.existsByUsername(request.getUsername())) {
+            throw new AppException(ErrorCode.USER_EXISTED);
+        } else if (userRepo.existsByEmail(request.getEmail())) {
+            throw new AppException(ErrorCode.EMAIL_EXISTED);
+        }
+        User user = userMapper.maptoUser(request);
+        user.setEmail(request.getUsername() + "@koicare.comany.vn");
+        user.setPassword(passwordEncoder.encode("ABC@123"));
+        user.setRole(Role.SHOP);
+        user.setStatus(true);
+        userRepo.save(user);
+        user.setUserProfile(profileService.createProfile(user));
+        return userMapper.maptoUserDTO(userRepo.save(user));
     }
 }

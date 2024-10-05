@@ -22,6 +22,9 @@ public class Order {
     private Long orderId;
     private LocalDate orderDate;
     private BigDecimal totalAmount;
+    private String address;
+    private String phone;
+    private String recipientName;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)

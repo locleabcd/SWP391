@@ -23,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -101,7 +102,15 @@ public class ProductService implements IProductService {
         Sort sort = ("Asc".equalsIgnoreCase(sortDir)) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         List<Product> productsTmp = productRepository.findAll();
-        productsTmp.forEach(this::updateProductRating);
+        productsTmp.forEach(product->{
+            updateProductRating(product);
+            product.getPromotions().forEach(promotion -> {
+                if(promotion.getEndDate().isBefore(LocalDate.now())){
+                    promotion.setStatus("END");
+                    product.getPromotions().remove(promotion);
+                }
+            });
+        });
         Page<Product> products = productRepository.findAll(pageable);
         return products.stream().toList();
     }

@@ -14,6 +14,9 @@ import org.mapstruct.MappingTarget;
 public interface UserMapper {
 
 
+    @Mapping(target = "orders", ignore = true)
+    @Mapping(target = "userProfile", ignore = true)
+    @Mapping(target = "cart", ignore = true)
     @Mapping(target = "koiPondList", ignore = true)
     @Mapping(target = "blogs", ignore = true)
     @Mapping(target = "id", ignore = true)
@@ -25,6 +28,8 @@ public interface UserMapper {
 
     LoginResponse maptoLoginResponse(User user, String token);
 
+    @Mapping(target = "userProfile", ignore = true)
+    @Mapping(target = "orders", ignore = true)
     @Mapping(target = "koiPondList", ignore = true)
     @Mapping(target = "blogs", ignore = true)
     @Mapping(target = "email", ignore = true)

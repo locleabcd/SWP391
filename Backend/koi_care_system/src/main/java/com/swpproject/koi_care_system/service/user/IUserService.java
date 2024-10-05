@@ -23,4 +23,6 @@ public interface IUserService {
     void verifyUser(String email, String token);
 
     UserDTO convertToDto(User user);
+
+    UserDTO createStaff(CreateUserRequest request);
 }

@@ -24,6 +24,4 @@ public class PaymentDetail {
     @OneToOne
     @JoinColumn(name="payment_id")
     private Payment payment;
-
-
 }

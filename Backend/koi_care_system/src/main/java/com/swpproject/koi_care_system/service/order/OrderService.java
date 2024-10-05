@@ -8,6 +8,7 @@ import com.swpproject.koi_care_system.models.Cart;
 import com.swpproject.koi_care_system.models.Order;
 import com.swpproject.koi_care_system.models.OrderItem;
 import com.swpproject.koi_care_system.models.Product;
+import com.swpproject.koi_care_system.payload.request.PlaceOrderRequest;
 import com.swpproject.koi_care_system.repository.OrderRepository;
 import com.swpproject.koi_care_system.repository.ProductRepository;
 import com.swpproject.koi_care_system.service.cart.CartService;
@@ -30,15 +31,18 @@ public class OrderService implements IOrderService {
 
     @Transactional
     @Override
-    public Order placeOrder(Long userId) {
-        Cart cart   = cartService.getCartByUserId(userId);
+    public OrderDto placeOrder(PlaceOrderRequest request) {
+        Cart cart   = cartService.getCartByUserId(request.getUserId());
         Order order = createOrder(cart);
         List<OrderItem> orderItemList = createOrderItems(order, cart);
+        order.setAddress(request.getAddress());
+        order.setPhone(request.getPhone());
+        order.setRecipientName(request.getRecipientName());
         order.setOrderItems(new HashSet<>(orderItemList));
         order.setTotalAmount(calculateTotalAmount(orderItemList));
         Order savedOrder = orderRepository.save(order);
         cartService.clearCart(cart.getId());
-        return savedOrder;
+        return orderMapper.toDto(savedOrder);
     }
 
     private Order createOrder(Cart cart) {
