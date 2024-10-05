@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.dto;
 
+import com.swpproject.koi_care_system.enums.Role;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -14,6 +15,6 @@ public class UserDTO {
     String username;
     @Email
     String email;
-    String role;
+    Role role;
     boolean status;
 }

@@ -23,7 +23,9 @@ public enum ErrorCode {
     INVALID_CREDENTIALS(1012, "Incorrect password", HttpStatus.BAD_REQUEST),
     REMARK_NOT_FOUND(1013, "Remark Not Found", HttpStatus.NOT_FOUND),
     KOI_FISH_NOT_FOUND(1014, "Koi Fish Not Found", HttpStatus.NOT_FOUND),
-    GROWTH_HISTORY_NOT_FOUND(1015, "Growth History Not Found", HttpStatus.NOT_FOUND);
+    GROWTH_HISTORY_NOT_FOUND(1015, "Growth History Not Found", HttpStatus.NOT_FOUND),
+    PROFILE_NOT_FOUND(1016, "Profile Not Found", HttpStatus.NOT_FOUND),
+    ;
 
 
     private int code;

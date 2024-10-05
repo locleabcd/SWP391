@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.payload.request;
 
+import com.swpproject.koi_care_system.enums.Role;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -14,6 +15,6 @@ public class UpdateUserRequest {
     String username;
     @Size(min = 8, message = "USER_PASSWORD")
     String password;
-    String role;
+    Role role;
     boolean status;
 }

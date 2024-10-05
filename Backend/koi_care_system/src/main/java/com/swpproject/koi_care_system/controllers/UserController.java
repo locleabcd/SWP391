@@ -13,8 +13,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @Slf4j
 @RestController
 @RequestMapping("/users")
@@ -29,6 +27,14 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
                 .message("User has been created")
                 .data(userService.createUser(request))
+                .build());
+    }
+
+    @PostMapping("/register/staff")
+    public ResponseEntity<ApiResponse> createStaff(@RequestBody @Valid CreateUserRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
+                .message("Staff has been created")
+                .data(userService.createStaff(request))
                 .build());
     }
 

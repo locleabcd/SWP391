@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.models;
 
+import com.swpproject.koi_care_system.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -8,7 +9,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,14 +32,18 @@ public class User {
     @Column(nullable = false)
     String email;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     List<KoiPond> koiPondList;
 
     @Column(nullable = false)
-    String role;
+    @Enumerated(EnumType.STRING)
+    Role role;
 
     boolean status;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     Set<Blog> blogs = new HashSet<>();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    UserProfile userProfile;
 }

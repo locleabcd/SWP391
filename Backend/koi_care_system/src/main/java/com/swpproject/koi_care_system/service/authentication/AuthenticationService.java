@@ -59,7 +59,7 @@ public class AuthenticationService implements IAuthenticationService {
             throw new AppException(ErrorCode.INVALID_CREDENTIALS);
         }
         var token = generateToken(user);
-        if (user.getRole().equals(Role.GUEST.name()) && !user.isStatus()) {
+        if (user.getRole().equals(Role.GUEST) && !user.isStatus()) {
             emailService.send(user.getUsername(), user.getEmail(), "Resend Verify Email", token);
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
@@ -154,8 +154,8 @@ public class AuthenticationService implements IAuthenticationService {
         return false;
     }
 
-    private String buildScope(User user) {
-        if (user.getRole() == null || user.getRole().isEmpty()) {
+    private Role buildScope(User user) {
+        if (user.getRole() == null) {
             throw new AppException(ErrorCode.NO_ROLES);
         }
         return user.getRole();
