@@ -197,6 +197,12 @@ function Recommendations() {
       return 0
     })
 
+  const startIndex = (currentPage - 1) * pageSize
+  const endIndex = startIndex + pageSize
+
+  const paginatedProducts = searchProduct.slice(startIndex, endIndex)
+  const totalPage = Math.ceil(searchProduct.length / pageSize)
+
   return (
     <div>
       <div className='h-screen flex'>
@@ -419,122 +425,165 @@ function Recommendations() {
                   </div>
                 </div>
 
-                {searchProduct.length > 0 ? (
-                  <div className='grid grid-cols-3 gap-8 py-3 mt-4'>
-                    {searchProduct.map((products) => (
-                      <div
-                        key={products.id}
-                        className='border border-gray-200 rounded-xl hover:scale-[102%] duration-300'
-                      >
-                        <div>
-                          <div className='border-b border-gray-200 max-h-[300px]'>
-                            <Link
-                              to={`/member/recommendations/${products.id}`}
-                              key={products.images[0].id}
-                              className='min-h-[150px] cursor-pointer'
-                            >
-                              <img
-                                src={products.images[0].downloadUrl}
-                                alt=''
-                                className='w-full h-[290px] rounded-t-lg'
-                              />
-                            </Link>
-                            <button aria-label='wishlist' onClick={() => handleAddToWishlist(products)}>
-                              {wishlist.includes(products.id) ? (
-                                <svg
-                                  xmlns='http://www.w3.org/2000/svg'
-                                  fill='none'
-                                  viewBox='0 0 24 24'
-                                  strokeWidth={1.5}
-                                  stroke='currentColor'
-                                  className={`size-11 relative rounded-full -top-[13px] text-red-500 cursor-pointer left-[50%] p-2 ${
-                                    isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
-                                  }`}
-                                >
-                                  <path
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                    d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z'
-                                  />
-                                </svg>
-                              ) : (
-                                <svg
-                                  xmlns='http://www.w3.org/2000/svg'
-                                  fill='none'
-                                  viewBox='0 0 24 24'
-                                  strokeWidth={1.5}
-                                  stroke='currentColor'
-                                  className={`size-11 relative rounded-full -top-[13px] cursor-pointer left-[50%] p-2 ${
-                                    isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
-                                  }`}
-                                >
-                                  <path
-                                    strokeLinecap='round'
-                                    strokeLinejoin='round'
-                                    d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z'
-                                  />
-                                </svg>
-                              )}
-                            </button>
-
-                            <svg
-                              onClick={() => handleAddToCart(products)}
-                              xmlns='http://www.w3.org/2000/svg'
-                              fill='none'
-                              viewBox='0 0 24 24'
-                              strokeWidth={1.5}
-                              stroke='currentColor'
-                              className={`size-11 relative rounded-full -top-[60px] -right-[85%] p-2 cursor-pointer ${
-                                isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
-                              }`}
-                            >
-                              <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
-                              />
-                            </svg>
-                          </div>
-                        </div>
-                        <div className='px-7 py-5 text-xl mt-5 font-medium'>
-                          <div className='line-clamp-1'>{products.name}</div>
-                          <div className='flex justify-between'>
-                            <div className='mt-3'>${products.price}</div>
-                            <div className='mt-3 flex'>
-                              {[...Array(5)].map((_, index) => {
-                                const fullStar = index < Math.floor(products.rating)
-                                const halfStar = index < products.rating && index >= Math.floor(products.rating)
-
-                                return (
+                {paginatedProducts.length > 0 ? (
+                  <>
+                    <div className='grid grid-cols-3 gap-8 py-3 mt-4'>
+                      {paginatedProducts.map((products) => (
+                        <div
+                          key={products.id}
+                          className='border border-gray-200 rounded-xl hover:scale-[102%] duration-300'
+                        >
+                          <div>
+                            <div className='border-b border-gray-200 max-h-[300px]'>
+                              <Link
+                                to={`/member/recommendations/${products.id}`}
+                                key={products.images[0].id}
+                                className='min-h-[150px] cursor-pointer'
+                              >
+                                <img
+                                  src={products.images[0].downloadUrl}
+                                  alt=''
+                                  className='w-full h-[290px] rounded-t-lg'
+                                />
+                              </Link>
+                              <button aria-label='wishlist' onClick={() => handleAddToWishlist(products)}>
+                                {wishlist.includes(products.id) ? (
                                   <svg
-                                    key={index}
                                     xmlns='http://www.w3.org/2000/svg'
-                                    fill={fullStar ? 'gold' : halfStar ? 'url(#half-star)' : 'none'}
+                                    fill='none'
                                     viewBox='0 0 24 24'
                                     strokeWidth={1.5}
                                     stroke='currentColor'
-                                    className='size-6 text-yellow-500'
+                                    className={`size-11 relative rounded-full -top-[13px] text-red-500 cursor-pointer left-[50%] p-2 ${
+                                      isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
+                                    }`}
                                   >
-                                    <defs>
-                                      <linearGradient id='half-star'>
-                                        <stop offset='50%' stopColor='gold' />
-                                        <stop offset='50%' stopColor='none' />
-                                      </linearGradient>
-                                    </defs>
                                     <path
                                       strokeLinecap='round'
                                       strokeLinejoin='round'
-                                      d='M12 3.5l2.715 5.451 6.027.488-4.373 3.751 1.331 5.551L12 15.902l-5.7 3.839 1.331-5.551-4.373-3.751 6.027-.488L12 3.5z'
+                                      d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z'
                                     />
                                   </svg>
-                                )
-                              })}
+                                ) : (
+                                  <svg
+                                    xmlns='http://www.w3.org/2000/svg'
+                                    fill='none'
+                                    viewBox='0 0 24 24'
+                                    strokeWidth={1.5}
+                                    stroke='currentColor'
+                                    className={`size-11 relative rounded-full -top-[13px] cursor-pointer left-[50%] p-2 ${
+                                      isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
+                                    }`}
+                                  >
+                                    <path
+                                      strokeLinecap='round'
+                                      strokeLinejoin='round'
+                                      d='M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z'
+                                    />
+                                  </svg>
+                                )}
+                              </button>
+
+                              <svg
+                                onClick={() => handleAddToCart(products)}
+                                xmlns='http://www.w3.org/2000/svg'
+                                fill='none'
+                                viewBox='0 0 24 24'
+                                strokeWidth={1.5}
+                                stroke='currentColor'
+                                className={`size-11 relative rounded-full -top-[60px] -right-[85%] p-2 cursor-pointer ${
+                                  isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
+                                }`}
+                              >
+                                <path
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
+                                  d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
+                                />
+                              </svg>
+                            </div>
+                          </div>
+                          <div className='px-7 py-5 text-xl mt-5 font-medium'>
+                            <div className='line-clamp-1'>{products.name}</div>
+                            <div className='flex justify-between'>
+                              <div className='mt-3'>${products.price}</div>
+                              <div className='mt-3 flex'>
+                                {[...Array(5)].map((_, index) => {
+                                  const fullStar = index < Math.floor(products.rating)
+                                  const halfStar = index < products.rating && index >= Math.floor(products.rating)
+
+                                  return (
+                                    <svg
+                                      key={index}
+                                      xmlns='http://www.w3.org/2000/svg'
+                                      fill={fullStar ? 'gold' : halfStar ? 'url(#half-star)' : 'none'}
+                                      viewBox='0 0 24 24'
+                                      strokeWidth={1.5}
+                                      stroke='currentColor'
+                                      className='size-6 text-yellow-500'
+                                    >
+                                      <defs>
+                                        <linearGradient id='half-star'>
+                                          <stop offset='50%' stopColor='gold' />
+                                          <stop offset='50%' stopColor='none' />
+                                        </linearGradient>
+                                      </defs>
+                                      <path
+                                        strokeLinecap='round'
+                                        strokeLinejoin='round'
+                                        d='M12 3.5l2.715 5.451 6.027.488-4.373 3.751 1.331 5.551L12 15.902l-5.7 3.839 1.331-5.551-4.373-3.751 6.027-.488L12 3.5z'
+                                      />
+                                    </svg>
+                                  )
+                                })}
+                              </div>
                             </div>
                           </div>
                         </div>
+                      ))}
+                    </div>
+                    <div className='flex justify-center items-center mt-6'>
+                      <button
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(currentPage - 1)}
+                        className={`px-4 py-2 border border-gray-300 rounded-md mx-1 ${
+                          currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'
+                        }`}
+                      >
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={2}
+                          stroke='currentColor'
+                          className='w-5 h-5'
+                        >
+                          <path strokeLinecap='round' strokeLinejoin='round' d='M15 19l-7-7 7-7' />
+                        </svg>
+                      </button>
+                      <div>
+                        {currentPage} / {totalPage}
                       </div>
-                    ))}
-                  </div>
+                      <button
+                        disabled={endIndex >= searchProduct.length}
+                        onClick={() => setCurrentPage(currentPage + 1)}
+                        className={`px-4 py-2 border border-gray-300 rounded-md mx-1 ${
+                          endIndex >= searchProduct.length ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'
+                        }`}
+                      >
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={2}
+                          stroke='currentColor'
+                          className='w-5 h-5'
+                        >
+                          <path strokeLinecap='round' strokeLinejoin='round' d='M9 5l7 7-7 7' />
+                        </svg>
+                      </button>
+                    </div>
+                  </>
                 ) : (
                   <div className='text-center text-gray-500 text-lg mt-10'>No products found</div>
                 )}

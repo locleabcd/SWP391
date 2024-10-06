@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-// Helper function to load wishlist from localStorage
 const loadFromLocalStorage = () => {
   const storedWishlist = localStorage.getItem('wishlist')
   return storedWishlist ? JSON.parse(storedWishlist) : []

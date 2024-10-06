@@ -79,7 +79,7 @@ export const removeToCartList = (productId) => async (dispatch) => {
         }
       }
     )
-    toast.error('Delete product success!!', {
+    toast.success('Delete product success!!', {
       autoClose: 1000
     })
     dispatch(RemoveFromCartList(response.data))

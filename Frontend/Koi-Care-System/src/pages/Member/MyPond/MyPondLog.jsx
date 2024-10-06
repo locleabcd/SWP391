@@ -530,6 +530,7 @@ function MyPondLog() {
                           onChange={(e) => setPond(e.target.value)}
                           className='block w-full p-3 border border-black rounded-md shadow-sm'
                         >
+                          <option value=''>Select a pond</option>
                           {ponds.map((pond) => (
                             <option key={pond.id} value={pond.id}>
                               {pond.name}
