@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useDarkMode } from '../components/DarkModeContext'
+import { motion } from 'framer-motion'
+import { FadeRight } from '../utils/animation'
 
 // eslint-disable-next-line react/prop-types
 function TopLayout({ text, textName, links }) {
   const { isDarkMode } = useDarkMode()
 
   return (
-    <div
+    <motion.div
+      variants={FadeRight(0.3)}
+      initial='hidden'
+      animate='visible'
       className={`${
         isDarkMode ? ' bg-custom-layout-dark text-white' : 'bg-custom-layout-light '
       }  flex w-full rounded-xl py-[30px] px-[25px] mb-[30px] relative`}
@@ -30,7 +35,7 @@ function TopLayout({ text, textName, links }) {
         </div>
       </div>
       <div></div>
-    </div>
+    </motion.div>
   )
 }
 

@@ -12,6 +12,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayout'
+import { motion } from 'framer-motion'
+import { FadeLeft, FadeRight } from '../../../utils/animation'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
@@ -138,7 +140,7 @@ function MyPond() {
         formData.append('volume', data.volume)
         if (selectedFile) {
           formData.append('file', selectedFile)
-        } 
+        }
         await axios.post('https://koicaresystem.azurewebsites.net/api/koiponds/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -233,7 +235,6 @@ function MyPond() {
   const sortPonds = (name, sort) => {
     let sortedArray = [...ponds]
     console.log(sortedArray)
-
     if (sort === 'volume') {
       sortedArray.sort((a, b) => (name === 'asc' ? a.volume - b.volume : b.volume - a.volume))
     } else if (sort === 'name') {
@@ -265,7 +266,6 @@ function MyPond() {
     <div>
       <div className='h-screen flex'>
         <LeftSideBar />
-
         <div
           className={`relative ${
             isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
@@ -391,9 +391,24 @@ function MyPond() {
               </div>
             </div>
 
-            <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-3'>
-              {ponds.map((pond) => (
-                <div
+            <motion.div
+              initial='hidden'
+              animate='visible'
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.3
+                  }
+                }
+              }}
+              className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 py-3'
+            >
+              {ponds.map((pond, index) => (
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, x: 100 },
+                    visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
+                  }}
                   key={pond.id}
                   className={`${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
@@ -441,9 +456,9 @@ function MyPond() {
                       <h3 className='text-base font-semibold'>{pond.pumpCapacity} L/min</h3>
                     </div>
                   </div>
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             {isAddFormVisible && (
               <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
@@ -573,9 +588,9 @@ function MyPond() {
                           className={`w-full p-3 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('name')}
+                          {...register('name', { required: 'Name is required' })}
                         />
-                        {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>}
+                        {/* {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>} */}
                       </div>
 
                       <div className='mb-4 relative col-span-1'>

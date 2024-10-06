@@ -4,7 +4,9 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        dancing: ['Forte', 'cMyriad Variable Concept']
+        dancing: ['Forte', 'cMyriad Variable Concept'],
+        poppins: ['Poppins', 'sans-serif'],
+        averia: ['Averia Serif Libre', 'serif']
       },
       colors: {
         'custom-dark': '#24303F',

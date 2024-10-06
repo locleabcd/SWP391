@@ -21,6 +21,7 @@
     "axios": "^1.7.7",
     "date-fns": "^4.1.0",
     "font-awesome": "^4.7.0",
+    "framer-motion": "^11.11.1",
     "heroicons": "^2.1.5",
     "koi-care-system": "file:",
     "react": "^18.3.1",
