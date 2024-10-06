@@ -230,7 +230,7 @@ function News() {
                     </div>
                   </div> */}
 
-                    <div className=''>
+                    <div className='hover:scale-[102%]'>
                       <Link to={`/member/news/${blog.blogId}`}>
                         <div className='relative'>
                           <img

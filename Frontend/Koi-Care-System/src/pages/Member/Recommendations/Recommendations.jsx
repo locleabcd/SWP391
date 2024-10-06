@@ -28,14 +28,28 @@ function Recommendations() {
   const [currentPage, setCurrentPage] = useState(1)
   const pageSize = 9
 
+  useEffect(() => {
+    const savedWishlist = localStorage.getItem('wishlist')
+    if (savedWishlist) {
+      setWishlist(JSON.parse(savedWishlist))
+    }
+  }, [])
+
   const handleAddToWishlist = (product) => {
-    if (wishlist.includes(product.id)) {
-      setWishlist(wishlist.filter((id) => id !== product.id))
+    let updatedWishlist
+
+    const isProductInWishlist = wishlist.some((item) => item.id === product.id)
+
+    if (isProductInWishlist) {
+      updatedWishlist = wishlist.filter((item) => item.id !== product.id)
       dispatch(RemoveFromWishlist(product))
     } else {
-      setWishlist([...wishlist, product.id])
+      updatedWishlist = [...wishlist, product]
       dispatch(AddToWishlist(product))
     }
+
+    setWishlist(updatedWishlist)
+    localStorage.setItem('wishlist', JSON.stringify(updatedWishlist))
   }
 
   const handleAddToCart = (product) => {
@@ -447,7 +461,7 @@ function Recommendations() {
                                 />
                               </Link>
                               <button aria-label='wishlist' onClick={() => handleAddToWishlist(products)}>
-                                {wishlist.includes(products.id) ? (
+                                {wishlist.some((item) => item.id === products.id) ? (
                                   <svg
                                     xmlns='http://www.w3.org/2000/svg'
                                     fill='none'

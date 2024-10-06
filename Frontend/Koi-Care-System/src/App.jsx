@@ -46,6 +46,7 @@ import UpdateTag from './pages/Shop/Tag/UpdateTag'
 import Supplier from './pages/Shop/Supplier/Supplier'
 import CreateSupplier from './pages/Shop/Supplier/CreateSupplier'
 import UpdateSupplier from './pages/Shop/Supplier/UpdateSupplier'
+import Checkout from './pages/Member/Recommendations/Checkout'
 
 function App() {
   const routeElements = useRoutes([
@@ -220,6 +221,10 @@ function App() {
     {
       path: path.updateSupplier,
       element: <UpdateSupplier />
+    },
+    {
+      path: path.checkout,
+      element: <Checkout />
     }
   ])
 
