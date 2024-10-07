@@ -220,15 +220,14 @@ function KoiDetails() {
         );
         toast.success('Remark updated successfully!');
       } else {
-        const jsonData = {
-          title: data.title,
-          createDate: data.createDate,
-          note: data.note,
-          koiFishId: koiFishId, 
-        };
         await axios.post(
           'https://koicaresystem.azurewebsites.net/api/remark/create',
-          jsonData,
+          {
+            title: data.title,
+            createDate: data.createDate,
+            note: data.note,
+            koiFishId: data.koiFishId, 
+          },
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -1403,7 +1402,7 @@ function KoiDetails() {
             </div>
           )}
 
-          {isAddRemarkFormVisible && koi && (
+          {isAddRemarkFormVisible && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40 '>
               <div className='bg-white min-w-[80vh] m-auto p-6 rounded-lg shadow-lg'>
                 {/* Form for adding growth record */}
@@ -1479,7 +1478,7 @@ function KoiDetails() {
                         type='datetime-local'
                         id='createDate'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                        defaultValue={new Date().toISOString().slice(0, 16)}
+                        max={new Date().toISOString().slice(0, 16)}
                         {...register('createDate', { required: true })}                        
                       />
                     </div>

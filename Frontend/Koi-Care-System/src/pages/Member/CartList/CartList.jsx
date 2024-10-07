@@ -6,7 +6,8 @@ import { useDarkMode } from '../../../components/DarkModeContext'
 import TopLayout from '../../../layouts/TopLayout'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { removeToCartList } from '../../../redux/store/cartList'
+import { loadCart, removeToCartList } from '../../../redux/store/cartList'
+import { Link } from 'react-router-dom'
 
 const CartList = () => {
   const wishlist = useSelector((state) => state.cart.cartList)
@@ -76,6 +77,7 @@ const CartList = () => {
 
   const handleRemoveToCart = async (productId) => {
     await dispatch(removeToCartList(productId))
+    dispatch(loadCart())
     getCartId()
   }
 
@@ -92,9 +94,36 @@ const CartList = () => {
           <Header />
 
           <div className='py-5 px-[30px] mx-auto '>
-            <TopLayout text='Recommendations' textName='Cart List' links='member/recommendations' />
+            <TopLayout text='Recommendations' textName='Checkout' links='member/recommendations' />
 
             <div className='border border-gray-200 px-10 py-5 rounded-xl'>
+              <ol className='items-center flex w-full px-52 pb-20 pt-14 justify-center text-center text-sm font-medium text-gray-700'>
+                <li className='flex items-center after:mx-2 after:mb-10 after:h-1 after:w-full w-full after:border-b after:border-gray-400 dark:text-primary-500'>
+                  <span className='flex flex-col'>
+                    <div className='w-10 h-10 rounded-full bg-blue-500 flex items-center justify-center text-white '>
+                      1
+                    </div>
+                    <div className='mt-4'>Cart</div>
+                  </span>
+                </li>
+                <li className='flex items-center after:mx-2 after:mb-10 after:h-1 after:w-full w-full after:border-b after:border-gray-400 dark:text-primary-500'>
+                  <span className='flex flex-col'>
+                    <div className='w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white '>
+                      2
+                    </div>
+                    <div className='mt-4'>Address</div>
+                  </span>
+                </li>
+                <li className='flex items-center'>
+                  <span className='flex flex-col'>
+                    <div className='w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white '>
+                      3
+                    </div>
+                    <div className='mt-4'>Payment</div>
+                  </span>
+                </li>
+              </ol>
+
               <table className='min-w-full'>
                 <thead className=''>
                   <tr className=''>
@@ -223,6 +252,13 @@ const CartList = () => {
                   <div className='font-medium'>Total</div>
                   <div className=''>${subTotal.toFixed(2)}</div>
                 </div>
+              </div>
+
+              <div className='flex justify-between mt-8'>
+                <button className='px-6 py-3 bg-gray-300 text-white rounded-lg cursor-pointer'>Back</button>
+                <Link to='/member/checkout' className='px-6 py-3 bg-blue-400 text-white rounded-lg cursor-pointer'>
+                  Checkout
+                </Link>
               </div>
             </div>
           </div>

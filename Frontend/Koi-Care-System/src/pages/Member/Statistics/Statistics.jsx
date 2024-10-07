@@ -22,6 +22,7 @@ import {
   BarChart,
   Bar
 } from 'recharts'
+import { motion } from 'framer-motion'
 
 function Statistics() {
   const { isDarkMode } = useDarkMode()
@@ -48,12 +49,11 @@ function Statistics() {
 
   const handlePondChange = (e) => {
     const pondId = e.target.value
-    localStorage.setItem('pondId', pondId)
     const pond = ponds.find((p) => p.id === parseInt(pondId))
 
     if (pond) {
       setSelectedPond(pond)
-      getWater()
+      getWater(pondId)
     } else {
       setSelectedPond(null)
     }
@@ -100,10 +100,9 @@ function Statistics() {
     getPond()
   }, [])
 
-  const getWater = async () => {
+  const getWater = async (koiPondId) => {
     try {
       const token = localStorage.getItem('token')
-      const koiPondId = localStorage.getItem('pondId')
 
       const res = await axios.get(
         `https://koicaresystem.azurewebsites.net/api/water-parameters/getByKoiPondId/${koiPondId}`,
@@ -209,7 +208,6 @@ function Statistics() {
     }))
   }
 
-  // Event handler for changing the time filter (Day, Month, Year)
   const handleFilterChange = (e) => {
     setDateFilter(e.target.value)
   }
@@ -243,6 +241,7 @@ function Statistics() {
                 className={`${isDarkMode ? 'bg-custom-dark' : ''} border rounded-lg p-2 outline-none`}
                 onChange={handlePondChange}
               >
+                <option value=''>Select a pond</option>
                 {ponds.length > 0 ? (
                   ponds.map((pond) => (
                     <option key={pond.id} value={pond.id}>
@@ -264,8 +263,25 @@ function Statistics() {
               </select>
             </div>
 
-            <div className='grid grid-cols-3 gap-7'>
-              <div className='border py-5 rounded-lg w-full border-gray-200 shadow-lg'>
+            <motion.div
+              initial='hidden'
+              animate='visible'
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.3
+                  }
+                }
+              }}
+              className='grid grid-cols-3 gap-7'
+            >
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: 100 },
+                  visible: { opacity: 1, x: 0, transition: { delay: 0.6 } }
+                }}
+                className='border py-5 rounded-lg w-full border-gray-200 shadow-lg'
+              >
                 <div className='text-xl mb-4 text-center'>Nitrite - Phosphate - Ammonium (mg/l)</div>
                 <LineChart
                   className='w-full mx-auto'
@@ -304,8 +320,14 @@ function Statistics() {
                     activeDot={{ r: 6, fill: '#387908', stroke: 'white', strokeWidth: 2 }}
                   />
                 </LineChart>
-              </div>
-              <div className='py-5 rounded-lg border border-gray-200 shadow-lg'>
+              </motion.div>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: 100 },
+                  visible: { opacity: 1, x: 0, transition: { delay: 0.9 } }
+                }}
+                className='py-5 rounded-lg border border-gray-200 shadow-lg'
+              >
                 <div className='text-xl mb-4 text-center'>Carbon - PH - Hardness (dH)</div>
                 <LineChart
                   width={500}
@@ -344,8 +366,14 @@ function Statistics() {
                     activeDot={{ r: 6, fill: '#ff7300', stroke: 'white', strokeWidth: 2 }}
                   />
                 </LineChart>
-              </div>
-              <div className='py-5 rounded-lg border border-gray-200 shadow-lg'>
+              </motion.div>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: 100 },
+                  visible: { opacity: 1, x: 0, transition: { delay: 1.2 } }
+                }}
+                className='py-5 rounded-lg border border-gray-200 shadow-lg'
+              >
                 <div className='text-xl mb-4 text-center'>Temperature - Temp (C)</div>
                 <LineChart
                   width={500}
@@ -377,11 +405,28 @@ function Statistics() {
                     activeDot={{ r: 6, fill: '#82ca9d', stroke: 'white', strokeWidth: 2 }}
                   />
                 </LineChart>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
 
-            <div className='grid grid-cols-2 gap-7 mt-10'>
-              <div className='py-5 px-2 rounded-lg border border-gray-200 shadow-lg'>
+            <motion.div
+              initial='hidden'
+              animate='visible'
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.3
+                  }
+                }
+              }}
+              className='grid grid-cols-2 gap-7 mt-10'
+            >
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: 0 },
+                  visible: { opacity: 1, x: 0, transition: { delay: 0.6 } }
+                }}
+                className='py-5 px-2 rounded-lg border border-gray-200 shadow-lg'
+              >
                 <div className='text-xl mb-4 text-center'>CO₂ - O₂ - Total Chlorine (mg/l)</div>
                 <ResponsiveContainer width='100%' height={300}>
                   <AreaChart
@@ -403,9 +448,15 @@ function Statistics() {
                     <Area type='monotone' dataKey='oxygen' stackId='1' stroke='#4570EA' fill='#4570EA' />
                   </AreaChart>
                 </ResponsiveContainer>
-              </div>
+              </motion.div>
 
-              <div className='py-5 px-2 rounded-lg border border-gray-200 shadow-lg'>
+              <motion.div
+                variants={{
+                  hidden: { opacity: 0, x: 0 },
+                  visible: { opacity: 1, x: 0, transition: { delay: 0.9 } }
+                }}
+                className='py-5 px-2 rounded-lg border border-gray-200 shadow-lg'
+              >
                 <div className='text-xl mb-4 text-center'>Amount fed (g)</div>
                 <ResponsiveContainer width='100%' height={300}>
                   <BarChart data={sortedWaterData}>
@@ -416,8 +467,8 @@ function Statistics() {
                     <Bar dataKey='amountFed' fill='#8884d8' />
                   </BarChart>
                 </ResponsiveContainer>
-              </div>
-            </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
       </div>

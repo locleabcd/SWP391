@@ -480,7 +480,7 @@ function MyKoi() {
                   <select
                     id='gender'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('gender', {required: false})}
+                    {...register('gender', { required: false })}
                   >
                     <option value='Undefined'>Select Gender</option>
                     <option value='Male'>Male</option>
@@ -500,9 +500,7 @@ function MyKoi() {
                     type='text'
                     id='variety'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('variety', { 
-                      required: false,                     
-                    })}
+                    {...register('variety', { required: false })}
                   />
                 </div>
 
@@ -533,9 +531,7 @@ function MyKoi() {
                     type='text'
                     id='breeder'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('breeder', {
-                      required: false, 
-                    })}
+                    {...register('breeder', { required: false })}
                   />
                 </div>
 

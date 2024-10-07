@@ -8,6 +8,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { useEffect, useState } from 'react'
+import { addToCartList } from '../../../redux/store/cartList'
+import { useDispatch } from 'react-redux'
 
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
@@ -25,6 +27,11 @@ function Recommendations() {
   const [comment, setComment] = useState('')
   const [editableFeedback, setEditableFeedback] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
+  const dispatch = useDispatch()
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCartList(product, count))
+  }
 
   const toggleHide = (id) => {
     setVisibleId(visibleId === id ? null : id)
@@ -417,7 +424,10 @@ function Recommendations() {
                   <button className='text-xl py-4 px-10 bg-blue-400 hover:bg-blue-500 text-white rounded-lg'>
                     Buy Now
                   </button>
-                  <button className='text-xl py-4 px-10 bg-orange-500 hover:bg-orange-600 text-white rounded-lg'>
+                  <button
+                    onClick={() => handleAddToCart(productId)}
+                    className='text-xl py-4 px-10 bg-orange-500 hover:bg-orange-600 text-white rounded-lg'
+                  >
                     Add to cart
                   </button>
                 </div>
@@ -448,7 +458,7 @@ function Recommendations() {
                   </svg>
                 ))}
               </div>
-              <input
+              <textarea
                 type='text'
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
@@ -508,7 +518,7 @@ function Recommendations() {
                   <div className='flex gap-10'>
                     <div className='flex-none w-[400px] max-h-[280px] border border-gray-200 flex flex-col items-center justify-center py-20'>
                       <div className='text-2xl font-semibold'>Average Rating</div>
-                      <div className='mt-3 text-3xl text-blue-400'>{productId.rating}/5</div>
+                      <div className='mt-3 text-3xl text-blue-400'>{productId.rating.toFixed(1)}/5</div>
                       <div className='flex mt-3'>
                         {[...Array(5)].map((_, index) => {
                           const fullStar = index < Math.floor(productId.rating)

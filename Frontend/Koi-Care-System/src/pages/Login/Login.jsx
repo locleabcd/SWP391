@@ -13,7 +13,6 @@ function Login() {
   const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const [captcha, setCaptcha] = useState(null)
-
   const navigate = useNavigate()
 
   const {
@@ -25,11 +24,11 @@ function Login() {
   const onSubmit = async (data) => {
     setLoading(true)
 
-    if (!captcha) {
-      toast.warn('Please complete reCAPTCHA')
-      setLoading(false)
-      return
-    }
+    //   if (!captcha) {
+    //    toast.warn('Please complete reCAPTCHA')
+    //    setLoading(false)
+    //    return
+    //  }
 
     try {
       const response = await axios.post('https://koicaresystem.azurewebsites.net/api/auth/loginKoiCare', {
@@ -60,10 +59,9 @@ function Login() {
             break
         }
       }
-
-      // eslint-disable-next-line no-unused-vars
     } catch (error) {
       toast.error('Invalid username or password')
+      console.log(error)
     } finally {
       setLoading(false)
     }

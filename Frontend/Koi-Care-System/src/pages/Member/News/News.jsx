@@ -8,6 +8,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayout'
+import { motion } from 'framer-motion'
 
 function News() {
   const { isDarkMode } = useDarkMode()
@@ -76,6 +77,22 @@ function News() {
 
   const searchBlog = blogs.filter((blog) => blog.blogTitle.toLowerCase().includes(search.toLowerCase()))
 
+  const sortBlog = (name, sort) => {
+    let sortedArray = [...blogs]
+    console.log(sortedArray)
+    if (sort === 'name') {
+      sortedArray.sort((a, b) =>
+        name === 'asc' ? a.blogTitle.localeCompare(b.blogTitle) : b.blogTitle.localeCompare(a.blogTitle)
+      )
+    }
+
+    setBlogs(sortedArray)
+  }
+
+  const sortByName = (sortType) => {
+    sortBlog(sortType, 'name')
+  }
+
   useEffect(() => {
     getTag()
   }, [])
@@ -129,7 +146,7 @@ function News() {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className='w-10 h-10 mb-4 text-red-500'
+                  className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} w-8 h-8 mb-4`}
                 >
                   <path
                     strokeLinecap='round'
@@ -152,6 +169,7 @@ function News() {
                       className={`${
                         isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
                       } btn py-2 px-4 rounded `}
+                      onClick={() => sortByName('desc')}
                     >
                       Sorted by Name (A-Z)
                     </button>
@@ -159,6 +177,7 @@ function News() {
                       className={`${
                         isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
                       } btn py-2 px-4 rounded `}
+                      onClick={() => sortByName('asc')}
                     >
                       Sorted by Name (Z-A)
                     </button>
@@ -167,9 +186,24 @@ function News() {
               </div>
             </div>
             {searchBlog.length > 0 ? (
-              <div className='py-3 grid grid-cols-3 gap-6 mt-2'>
+              <motion.div
+                initial='hidden'
+                animate='visible'
+                variants={{
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.3
+                    }
+                  }
+                }}
+                className='py-3 grid grid-cols-3 gap-6 mt-2'
+              >
                 {searchBlog.map((blog, index) => (
-                  <div
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, x: 100 },
+                      visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
+                    }}
                     key={index}
                     className={`${
                       isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
@@ -196,7 +230,7 @@ function News() {
                     </div>
                   </div> */}
 
-                    <div className=''>
+                    <div className='hover:scale-[102%]'>
                       <Link to={`/member/news/${blog.blogId}`}>
                         <div className='relative'>
                           <img
@@ -290,9 +324,9 @@ function News() {
                         </a>
                       </div>
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             ) : (
               <div className='text-center text-gray-500 text-lg mt-10'>No Blog found</div>
             )}

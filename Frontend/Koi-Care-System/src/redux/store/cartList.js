@@ -15,8 +15,9 @@ const cartListSlice = createSlice({
   reducers: {
     AddToCartList: (state, action) => {
       const existingItem = state.cartList.find((item) => item.id === action.payload.id)
+
       if (existingItem) {
-        existingItem.quantity += action.payload.quantity || 1 // Handle missing quantity
+        existingItem.quantity += action.payload.quantity || 1
         state.totalQuantity += action.payload.quantity || 1
       } else {
         state.cartList.push({
@@ -34,23 +35,29 @@ const cartListSlice = createSlice({
         state.cartList = state.cartList.filter((item) => item.id !== action.payload.id)
         state.count -= 1
       }
+    },
+    LoadCart: (state, action) => {
+      state.cartList = action.payload.cartList
+      state.count = action.payload.count
+      state.totalQuantity = action.payload.totalQuantity
     }
   }
 })
 
-export const { AddToCartList, RemoveFromCartList } = cartListSlice.actions
+export const { AddToCartList, RemoveFromCartList, LoadCart } = cartListSlice.actions
 export default cartListSlice.reducer
 
-export const addToCartList = (product) => async (dispatch) => {
+export const addToCartList = (product, quantity) => async (dispatch) => {
   const cartId = localStorage.getItem('cartId')
   try {
     const token = localStorage.getItem('token')
-    const response = await axios.post(
+    const productQuantity = quantity || product.quantity || 1
+    await axios.post(
       'https://koicaresystem.azurewebsites.net/api/cartItems/item/add',
       {
         cartId: cartId,
         productId: product.id,
-        quantity: product.quantity || 1
+        quantity: productQuantity
       },
       {
         headers: {
@@ -61,9 +68,48 @@ export const addToCartList = (product) => async (dispatch) => {
     toast.success('Add to cart success!!', {
       autoClose: 1000
     })
-    dispatch(AddToCartList(response.data))
+    dispatch(
+      AddToCartList({
+        ...product,
+        quantity: productQuantity
+      })
+    )
   } catch (error) {
     console.log(error)
+  }
+}
+
+export const loadCart = () => async (dispatch) => {
+  const cartId = localStorage.getItem('cartId')
+  const token = localStorage.getItem('token')
+
+  if (!token) {
+    console.error('No token found')
+    return
+  }
+
+  try {
+    const response = await axios.get(`https://koicaresystem.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+
+    const cartData = response.data.data
+    const cartItems = cartData.items.map((item) => ({
+      id: item.productId,
+      quantity: item.quantity
+    }))
+
+    dispatch(
+      LoadCart({
+        cartList: cartItems,
+        count: cartItems.length,
+        totalQuantity: cartItems.reduce((total, item) => total + item.quantity, 0)
+      })
+    )
+  } catch (error) {
+    console.error('Failed to load cart:', error)
   }
 }
 
@@ -79,7 +125,7 @@ export const removeToCartList = (productId) => async (dispatch) => {
         }
       }
     )
-    toast.error('Delete product success!!', {
+    toast.success('Delete product success!!', {
       autoClose: 1000
     })
     dispatch(RemoveFromCartList(response.data))

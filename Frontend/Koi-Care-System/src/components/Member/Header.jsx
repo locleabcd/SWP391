@@ -3,8 +3,9 @@ import '../../App.css'
 import path from '../../constants/path'
 import { Link, NavLink } from 'react-router-dom'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
+import { loadCart } from '../../redux/store/cartList'
 
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
@@ -12,7 +13,7 @@ function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [cart, setCart] = useState([])
   const [cartId, setCartId] = useState([])
-  const carts = useSelector((state) => state.cart.totalQuantity)
+  const dispatch = useDispatch()
 
   const getCartId = async () => {
     try {
@@ -28,11 +29,14 @@ function Header() {
         }
       })
       setCart(response.data.data.items)
+      dispatch(loadCart())
       console.log(response.data.data.items)
     } catch (error) {
       console.log(error)
     }
   }
+
+  const carts = useSelector((state) => state.cart.count)
 
   useEffect(() => {
     getCartId()
