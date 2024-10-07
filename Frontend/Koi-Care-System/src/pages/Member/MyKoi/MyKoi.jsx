@@ -21,6 +21,36 @@ function MyKoi() {
   const [baseImage, setBaseImage] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
   const [koiCounts, setKoiCounts] = useState({})
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue ,
+    formState: { errors },
+    reset
+  } = useForm()
+
+    // Watch for length and physique changes
+  const length = watch('length')
+  const physique = watch('physique')
+
+  // // Calculate weight when length or physique changes
+  useEffect(() => {
+    if (length && physique) {
+      let calculatedWeight = 0;
+      const lengthCubed = Math.pow(length, 3); // length^3
+
+      if (physique === 'Slim') {
+        calculatedWeight = (1.5 * lengthCubed) / 100;
+      } else if (physique === 'Normal') {
+        calculatedWeight = (1.7 * lengthCubed) / 100;
+      } else if (physique === 'Corpulent') {
+        calculatedWeight = (2 * lengthCubed) / 100;
+      }
+
+      setValue('weight', calculatedWeight.toFixed(2));
+    }
+  }, [length, physique, setValue]);
 
   useEffect(() => {
     AOS.init({ duration: 500, offset: 500 })
@@ -43,12 +73,7 @@ function MyKoi() {
     reset()
   }
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset
-  } = useForm()
+  
 
   const onSubmit = async (data) => {
     console.log('onSubmit:', data)
@@ -75,7 +100,9 @@ function MyKoi() {
       formData.append('price', data.price)
       formData.append('koiPondId', data.pondId)
       // Append the selected file (image)
-      formData.append('file', selectedFile)
+      if (selectedFile) {
+        formData.append('file', selectedFile)
+      }
 
       console.log(data)
       // eslint-disable-next-line no-unused-vars
@@ -149,13 +176,13 @@ function MyKoi() {
     getPond()
   }, [])
 
-  if (isLoading) {
-    return (
-      <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-        <FaSpinner className='animate-spin text-green-500 text-4xl' />
-      </div>
-    )
-  }
+  // if (isLoading) {
+  //   return (
+  //     <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+  //       <FaSpinner className='animate-spin text-green-500 text-4xl' />
+  //     </div>
+  //   )
+  // }
 
   return (
     <div>
@@ -348,10 +375,13 @@ function MyKoi() {
                     type='text'
                     id='name'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('name', { required: 'Name is required' })}
+                    {...register('name', { 
+                      required: 'Name is required', 
+                      maxLength: { value: 20, message: 'Name must be at most 50 characters long' } 
+                    })}
                   />
                   {errors.name && (
-                    <p className='absolute -bottom-[-1px] left-3 text-red-500 text-sm'>{errors.name.message}</p>
+                    <p className='absolute -bottom-[3px] left-3 text-red-500 text-sm'>{errors.name.message}</p>
                   )}
                 </div>
 
@@ -367,7 +397,7 @@ function MyKoi() {
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                     {...register('physique')}
                   >
-                    <option defaultValue='Normal'>Normal</option>
+                    <option value='Normal'>Normal</option>
                     <option value='Slim'>Slim</option>
                     <option value='Corpulent'>Corpulent</option>
                   </select>
@@ -412,10 +442,12 @@ function MyKoi() {
                     id='length'
                     placeholder='cm'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('length', { required: 'Length is required' })}
+                    {...register('length', { required: 'Length is required', 
+                      max:  { value: 200 , message: 'Length must not exceed 200 cm' } 
+                    })}
                   />
                   {errors.length && (
-                    <p className='absolute -bottom-[13px] left-3 text-red-500 text-sm'>{errors.length.message}</p>
+                    <p className='absolute -bottom-[20px] left-3 text-red-500 text-sm'>{errors.length.message}</p>
                   )}
                 </div>
 
@@ -468,7 +500,9 @@ function MyKoi() {
                     type='text'
                     id='variety'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('variety', {required: false})}
+                    {...register('variety', { 
+                      required: false,                     
+                    })}
                   />
                 </div>
 
@@ -499,7 +533,9 @@ function MyKoi() {
                     type='text'
                     id='breeder'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('breeder',{required: false})}
+                    {...register('breeder', {
+                      required: false, 
+                    })}
                   />
                 </div>
 
@@ -511,13 +547,18 @@ function MyKoi() {
                     Price
                   </label>
                   <input
-                    type='text'
+                    type='number'
                     id='price'
                     placeholder='$'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('price',{required: false})}
+                    {...register('price', { 
+                      required: false, 
+                      maxLength: { value: 10, message: 'Price must be at most 10 characters long' },
+                      min: { value: 1, message: 'Price must be greater than 0' } 
+                    })}
                   />
                 </div>
+                {errors.price && ( <p className='absolute -bottom-1 left-3 text-red-500 text-sm'>{errors.price.message}</p> )}
                 <div className='relative col-span-1 mb-2 mt-2'>
                   <label
                     className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
@@ -551,7 +592,7 @@ function MyKoi() {
                   <input
                     type='text'
                     id='status'
-                    defaultValue='Alive'
+                    value='Alive'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                     readOnly
                   />
