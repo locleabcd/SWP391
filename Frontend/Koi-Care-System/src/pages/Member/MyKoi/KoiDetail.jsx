@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { MdSystemUpdateAlt } from 'react-icons/md'
 import { FaSpinner } from 'react-icons/fa'
 import TopLayout from '../../../layouts/TopLayout'
+import { toast } from 'react-toastify'
 
 function KoiDetails() {
   const { isDarkMode } = useDarkMode()
@@ -26,7 +27,7 @@ function KoiDetails() {
   const [isAddGrowthFormVisible, setIsAddGrowthFormVisible] = useState(false)
   const [isEditGrowthFormVisible, setIsEditGrowthFormVisible] = useState(false)
   const [remarks, setRemarks] = useState(null)
-  const [currentRemark, setcurrentRemark] = useState(null)
+  const [currentRemark, setCurrentRemark] = useState(null)
   const [isAddRemarkFormVisible, setIsAddRemarkFormVisible] = useState(false)
   const [isEditRemarkFormVisible, setIsEditRemarkFormVisible] = useState(false)
 
@@ -100,6 +101,30 @@ function KoiDetails() {
     }
   }
 
+  const toggleAddRemarkFormVisibility = () => {
+    setIsAddRemarkFormVisible(!isAddRemarkFormVisible)
+    setIsEditRemarkFormVisible(false)
+    setCurrentRemark(null)
+    reset()
+  }
+
+  const toggleCloseRemarkForm = () => {
+    setIsEditRemarkFormVisible(!isEditRemarkFormVisible)
+    setIsAddRemarkFormVisible(false)
+    setCurrentRemark(null)
+    setBaseImage(null)
+    reset(remarks)
+  }
+
+  const toggleEditRemarkFormVisibility = (remarks) => {
+    if (remarks) {
+      setCurrentRemark(remarks)
+      setIsEditRemarkFormVisible(true)
+      setIsAddRemarkFormVisible(false)
+      reset()
+    }
+  }
+
   const getGrowthHistory = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -168,6 +193,65 @@ function KoiDetails() {
     getRemark()
   }, [])
 
+  const upDateRemark = async (data, id = null) => {
+    console.log('upDateRemark:', data, 'id:', id);
+    setIsLoading(true);
+    setIsSubmitting(true);
+  
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+  
+      if (id) {
+        await axios.put(
+          `https://koicaresystem.azurewebsites.net/api/remark/update/${id}`,
+          {
+            title: data.title,
+            createDate: data.createDate,
+            note: data.note,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        toast.success('Remark updated successfully!');
+      } else {
+        const jsonData = {
+          title: data.title,
+          createDate: data.createDate,
+          note: data.note,
+          koiFishId: koiFishId, 
+        };
+        await axios.post(
+          'https://koicaresystem.azurewebsites.net/api/remark/create',
+          jsonData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        toast.success('Remark created successfully!');
+      }
+  
+      reset();
+      getRemark();
+      setIsAddRemarkFormVisible(false);
+      setIsEditRemarkFormVisible(false);
+    } catch (error) {
+      console.log('Error creating/updating remark history:', error);
+      toast.error(error.response?.data?.message || 'Failed to create/update remark.');
+    } finally {
+      setIsSubmitting(false);
+      setIsLoading(false);
+    }
+  };
+  
+
   const upDateGrowth = async (data, id = null) => {
     setIsLoading(true)
     setIsSubmitting(true)
@@ -232,6 +316,14 @@ function KoiDetails() {
     }
   }
 
+  const onSubmitRemark = async (data) => {
+    if (currentRemark) {
+      upDateRemark(data, currentRemark.id)
+    } else {
+      upDateRemark(data)
+    }
+  }
+
   const toggleCloseForm = () => {
     setIsEditFormVisible(false)
   }
@@ -287,6 +379,32 @@ function KoiDetails() {
       setIsEditGrowthFormVisible(false)
     } catch (error) {
       console.error('Error deleting growth history:', error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const deleteRemark = async (id) => {
+    const isConfirmed = window.confirm('Are you sure to delete remark!')
+    if (!isConfirmed) {
+      return
+    }
+    setIsLoading(true)
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+      await axios.delete(`https://koicaresystem.azurewebsites.net/api/remark/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      reset()
+      getRemark()
+      setIsEditRemarkFormVisible(false)
+    } catch (error) {
+      console.error('Error deleting remark:', error)
     } finally {
       setIsLoading(false)
     }
@@ -562,10 +680,28 @@ function KoiDetails() {
 
             {/* Remarks Section */}
             <div className="remarks pl-20">
-              <h2 className="font-bold text-xl mb-4">Remarks</h2>
+              <div className="flex justify-between items-center pb-4">
+                <h2 className="font-bold text-xl mb-4">Remarks</h2>
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-8 h-8 text-red-500 cursor-pointer"
+                    onClick={toggleAddRemarkFormVisibility}
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    />
+                  </svg>
+              </div>          
               {remarks.length > 0 ? (
                 remarks.map((remark, index) => (
-                  <div key={index} className={`text-lg mb-4 rounded-lg p-4 ${isDarkMode ? 'bg-slate-700' : 'bg-gray-100'}`}>
+                  <div key={index} onClick={() => {toggleEditRemarkFormVisibility(remark); reset(remark);
+                  }} className={`text-lg mb-4 rounded-lg p-4 cursor-pointer ${isDarkMode ? 'bg-slate-700' : 'bg-gray-100'}` }>
                     <h3 className="font-semibold mb-2">Title: {remark.title}</h3>
                     <p className=" mb-2"><strong>Date:</strong> {formatDate(remark.createDate)}</p>
                     <p className=''><strong>Note:</strong> {remark.note}</p>
@@ -1070,7 +1206,6 @@ function KoiDetails() {
             </div>
           )}
 
-
           {isEditGrowthFormVisible && currentGrowth && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40">
               <div className="bg-white min-w-[40vw] m-auto p-6 rounded-lg shadow-lg">
@@ -1267,6 +1402,209 @@ function KoiDetails() {
               </div>
             </div>
           )}
+
+          {isAddRemarkFormVisible && koi && (
+            <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40 '>
+              <div className='bg-white min-w-[80vh] m-auto p-6 rounded-lg shadow-lg'>
+                {/* Form for adding growth record */}
+                <form onSubmit={handleSubmit(onSubmitRemark)} noValidate>
+                  <div className='flex justify-between mb-5'>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      onClick={toggleCloseRemarkForm}
+                      className='size-10 text-red-500 cursor-pointer'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                      />
+                    </svg>
+
+                    <button type='submit' disabled={isSubmitting}>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='size-10 text-green-500 cursor-pointer'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                        />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div className='grid grid-cols-2 gap-4'>                  
+                    {/* Title input */}
+                    <div className='relative col-span-2'>
+                      <label htmlFor='title' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                        Title
+                      </label>
+                      <input
+                        type='text'
+                        id='title'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('title', { required: true })} 
+                      />
+                    </div>
+
+                    {/* Note input */}
+                    <div className='relative col-span-2'>
+                      <label htmlFor='note' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                        Note
+                      </label>
+                      <textarea
+                        id='note'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('note', { required: true })} 
+                        rows={4}
+                      />
+                    </div>
+
+                    {/* Creation Date input */}
+                    <div className='relative col-span-2'>
+                      <label htmlFor='createDate' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                        Date
+                      </label>
+                      <input
+                        type='datetime-local'
+                        id='createDate'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        defaultValue={new Date().toISOString().slice(0, 16)}
+                        {...register('createDate', { required: true })}                        
+                      />
+                    </div>
+
+                    {/* Hidden koiFishId input */}
+                    <div className='relative'>
+                      <input
+                        type='hidden'
+                        id='koiFishId'
+                        className=''
+                        value={koi.id}
+                        {...register('koiFishId')}
+                      />
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {isEditRemarkFormVisible && currentRemark && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40">
+              <div className="bg-white min-w-[40vw] m-auto p-6 rounded-lg shadow-lg">
+                {/* Form for adding growth record */}
+                <form onSubmit={handleSubmit(onSubmitRemark)} noValidate>
+                  <div className='flex justify-between mb-5'>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      onClick={toggleCloseRemarkForm}
+                      className='size-10 text-red-500 cursor-pointer'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                      />
+                    </svg>
+
+                    <button type='submit' disabled={isSubmitting}>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='size-10 text-green-500 cursor-pointer'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                        />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div className='grid grid-cols-2 gap-4'>                  
+                    {/* Title input */}
+                    <div className='relative col-span-2'>
+                      <label htmlFor='title' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                        Title
+                      </label>
+                      <input
+                        type='text'
+                        id='title'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('title', { required: true })} 
+                      />
+                    </div>
+
+                    {/* Note input */}
+                    <div className='relative col-span-2'>
+                      <label htmlFor='note' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                        Note
+                      </label>
+                      <textarea
+                        id='note'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('note', { required: true })} 
+                        rows={4}
+                      />
+                    </div>
+
+                    {/* Creation Date input */}
+                    <div className='relative col-span-2'>
+                      <label htmlFor='createDate' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                        Date
+                      </label>
+                      <input
+                        type='datetime-local'
+                        id='createDate'
+                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        {...register('createDate', { required: true })}                        
+                      />
+                    </div>
+                  </div>
+                </form>
+
+                <div className="flex justify-center items-center">
+                  <button className="mx-auto" onClick={() => deleteRemark(currentRemark.id)}>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-10 h-10 p-2 rounded-full bg-red-500 text-white cursor-pointer mt-5"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M20.25 7.5l-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M9.75 11.25v6M14.25 11.25v6M5.25 7.5h13.5m-12-2.25h10.5a2.25 2.25 0 0 1 2.25 2.25v.75H3v-.75a2.25 2.25 0 0 1 2.25-2.25z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+
  
         </div>
       </div>
