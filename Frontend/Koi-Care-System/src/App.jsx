@@ -46,7 +46,12 @@ import UpdateTag from './pages/Shop/Tag/UpdateTag'
 import Supplier from './pages/Shop/Supplier/Supplier'
 import CreateSupplier from './pages/Shop/Supplier/CreateSupplier'
 import UpdateSupplier from './pages/Shop/Supplier/UpdateSupplier'
-
+import Promotion from './pages/Shop/Promotion/Promotion'
+import CreatePromotion from './pages/Shop/Promotion/CreatePromotion'
+import UpdatePromotion from './pages/Shop/Promotion/UpdatePromotion'
+import Production from './pages/Shop/Production/Production'
+import CreateProduct from './pages/Shop/Production/CreateProduct'
+import UpdateProduct from './pages/Shop/Production/UpdateProduct'
 function App() {
   const routeElements = useRoutes([
     {
@@ -220,7 +225,32 @@ function App() {
     {
       path: path.updateSupplier,
       element: <UpdateSupplier />
+    },
+    {
+      path: path.promotion,
+      element: <Promotion />
+    },
+    {
+      path: path.createPromotion,
+      element: <CreatePromotion />
+    },
+    {
+      path: path.updatePromotion,
+      element: <UpdatePromotion />
+    },
+    {
+      path: path.production,
+      element: <Production />
+    },
+    {
+      path: path.createProduct,
+      element: <CreateProduct/>
+    },
+    {
+      path: path.updateProduct,
+      element: <UpdateProduct/>
     }
+
   ])
 
   const data = [

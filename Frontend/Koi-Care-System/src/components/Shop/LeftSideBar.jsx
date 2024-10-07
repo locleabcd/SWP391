@@ -8,7 +8,8 @@ import logo from '../../assets/logo.png'
 import { useEffect, useState } from 'react'
 import { AiFillShop } from "react-icons/ai"
 import { FaBoxArchive } from "react-icons/fa6"
-
+import { RiCoupon2Fill } from "react-icons/ri";
+import { FaBox } from "react-icons/fa";
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
   const [isClosed, setClosed] = useState(() => {
@@ -220,6 +221,50 @@ function LeftSideBar() {
                       <FaBoxArchive className='w-full h-full' />
                       </div>
                       {!isClosed && <span className='font-semibold'>Supplier</span>}
+                    </div>
+                  </NavLink>
+                </div>
+              )}
+              {isShopOpen && (
+                <div className=''>
+                  <NavLink
+                    to={path.promotion}
+                    className={({ isActive }) => {
+                      const active = isActive
+                        ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                        : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        isClosed ? 'flex-col' : ''
+                      }`
+                    }}
+                  >
+                    <div className='flex items-center'>
+                      <div className='w-6 h-6 mr-3'>
+                      <RiCoupon2Fill className='w-full h-full' />
+                      </div>
+                      {!isClosed && <span className='font-semibold'>Promotion</span>}
+                    </div>
+                  </NavLink>
+                </div>
+              )}
+              {isShopOpen && (
+                <div className=''>
+                  <NavLink
+                    to={path.production}
+                    className={({ isActive }) => {
+                      const active = isActive
+                        ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                        : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        isClosed ? 'flex-col' : ''
+                      }`
+                    }}
+                  >
+                    <div className='flex items-center'>
+                      <div className='w-6 h-6 mr-3'>
+                      <FaBox className='w-full h-full' />
+                      </div>
+                      {!isClosed && <span className='font-semibold'>Production</span>}
                     </div>
                   </NavLink>
                 </div>
