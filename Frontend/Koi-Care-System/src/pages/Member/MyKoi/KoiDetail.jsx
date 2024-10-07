@@ -164,6 +164,10 @@ function KoiDetails() {
     }
   }
 
+  useEffect(() => {
+    getRemark()
+  }, [])
+
   const upDateGrowth = async (data, id = null) => {
     setIsLoading(true)
     setIsSubmitting(true)
@@ -508,7 +512,7 @@ function KoiDetails() {
                   viewBox="0 0 24 24"
                   strokeWidth={1.5}
                   stroke="currentColor"
-                  className="w-8 h-8  text-red-500 cursor-pointer"
+                  className="w-8 h-8 text-red-500 cursor-pointer"
                   onClick={toggleAddGrowthFormVisibility}
                 >
                   <path
@@ -524,14 +528,13 @@ function KoiDetails() {
                   <div
                     key={index}
                     className={`flex items-center rounded-lg mb-4 max-h-28 overflow-hidden cursor-pointer ${
-                      isDarkMode ? 'text-white bg-black' : 'text-black bg-white'
+                      isDarkMode ? 'text-white bg-slate-700' : 'text-black bg-white'
                     }`}
                     onClick={() => {
                       toggleEditGrowthFormVisibility(g);
                       reset(g);
                     }}
                   >
-                    {/* Image section */}
                     <div className="w-2/5 rounded-l-lg overflow-hidden">
                       <img
                         src={g.imageUrl}
@@ -539,8 +542,6 @@ function KoiDetails() {
                         className="w-full h-full object-cover min-w-[200px]"
                       />
                     </div>
-
-                    {/* Growth details */}
                     <div className="w-3/5 pl-4">
                       <p className="mb-2">
                         <strong>Date:</strong> {formatDate(g.createDate)}
@@ -555,16 +556,24 @@ function KoiDetails() {
                   </div>
                 ))
               ) : (
-                <p className="text-center text-sm text-gray-500">
-                  No growth history available
-                </p>
+                <p className="text-center text-sm text-gray-500">No growth history available</p>
               )}
             </div>
 
             {/* Remarks Section */}
             <div className="remarks pl-20">
               <h2 className="font-bold text-xl mb-4">Remarks</h2>
-              <p> {/* Add your remarks content here */} </p>
+              {remarks.length > 0 ? (
+                remarks.map((remark, index) => (
+                  <div key={index} className={`text-lg mb-4 rounded-lg p-4 ${isDarkMode ? 'bg-slate-700' : 'bg-gray-100'}`}>
+                    <h3 className="font-semibold mb-2">Title: {remark.title}</h3>
+                    <p className=" mb-2"><strong>Date:</strong> {formatDate(remark.createDate)}</p>
+                    <p className=''><strong>Note:</strong> {remark.note}</p>
+                  </div>
+                ))
+              ) : (
+                <p className="text-center text-sm text-gray-500">No remarks available</p>
+              )}
             </div>
           </div>
 
