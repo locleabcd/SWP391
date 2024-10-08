@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.models;
 
+import com.swpproject.koi_care_system.enums.PromotionStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,7 +25,8 @@ public class Promotion {
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private PromotionStatus status;
 
     @ManyToMany(mappedBy = "promotions",cascade = CascadeType.ALL)
     private Set<Product> products = new HashSet<Product>();

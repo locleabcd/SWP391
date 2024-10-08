@@ -18,5 +18,7 @@ public interface IPromotionService {
     List<PromotionDto> getAllPromotions();
     void addProductsToPromotion(Long promotionId, List<Long> productIds);
 
+    void upToDate();
+
 
 }

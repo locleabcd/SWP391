@@ -1,6 +1,7 @@
 package com.swpproject.koi_care_system.service.promotion;
 
 import com.swpproject.koi_care_system.dto.PromotionDto;
+import com.swpproject.koi_care_system.enums.PromotionStatus;
 import com.swpproject.koi_care_system.exceptions.AlreadyExistsException;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.mapper.PromotionMapper;
@@ -43,7 +44,12 @@ public class PromotionService implements IPromotionService {
     public PromotionDto updatePromotion(Long id, PromotionUpdateRequest promotionUpdateRequest) {
         Promotion promotion = promotionRepository.findById(promotionUpdateRequest.getId())
                 .orElseThrow(()-> new ResourceNotFoundException("No promotion found with this id"));
-        promotionMapper.updatePromotion(promotion,promotionUpdateRequest);
+        promotion.setName(promotionUpdateRequest.getName());
+        promotion.setDescription(promotionUpdateRequest.getDescription());
+        promotion.setDiscountRate(promotionUpdateRequest.getDiscountRate());
+        promotion.setEndDate(promotionUpdateRequest.getEndDate());
+        promotion.setStartDate(promotionUpdateRequest.getStartDate());
+        promotion.setStatus(promotionUpdateRequest.getStatus());
         return promotionMapper.mapToDto(promotionRepository.save(promotion));
     }
 
@@ -62,20 +68,47 @@ public class PromotionService implements IPromotionService {
 
     @Override
     public List<PromotionDto> getAllPromotions() {
-        return promotionRepository.findAll().stream().map(promotionMapper::mapToDto).toList();
+        return promotionRepository.findAll().stream().map(promotion ->{
+            switch (promotion.getStatus()){
+                case ACCEPTED -> {
+                    if(promotion.getStartDate().isBefore(LocalDate.now())){
+                        promotion.setStatus(PromotionStatus.PROCESSING);
+                        this.applyPromotionToProduct(promotion);
+                    }
+                }
+                case PROCESSING -> {
+                    if(promotion.getEndDate().isBefore(LocalDate.now())){
+                        promotion.setStatus(PromotionStatus.ENDED);
+                    }
+                }
+            }
+            promotionRepository.save(promotion);
+           return promotionMapper.mapToDto(promotion);
+        }).toList();
     }
 
     @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void addProductsToPromotion(Long promotionId, List<Long> productIds) {
         Promotion promotion = promotionRepository.findById(promotionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Promotion not found with id: " + promotionId));
 
         List<Product> products = productRepository.findAllById(productIds);
         for (Product product : products) {
-            product.getPromotions().add(promotion);
             promotion.getProducts().add(product);
         }
         productRepository.saveAll(products);
         promotionRepository.save(promotion);
     }
+    private void applyPromotionToProduct(Promotion promotion){
+        promotion.getProducts().forEach(product ->
+            product.getPromotions().add(promotion)
+        );
+    }
+
+    @Override
+    public void upToDate(){
+        this.getAllPromotions();
+    }
+
 }

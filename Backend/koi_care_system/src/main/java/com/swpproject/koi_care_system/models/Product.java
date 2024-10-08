@@ -56,9 +56,13 @@ public class Product {
     public void updateRating() {
         this.rating = this.calculateAverageRating();
     }
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="issue_id")
-    private Issue issue;
+    @ManyToMany
+    @JoinTable(
+            name = "issue_type_product",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "issue_type_id")
+    )
+    private Set<IssueType> issues = new HashSet<>();
 
     @ManyToMany
     @JoinTable(

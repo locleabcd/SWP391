@@ -60,4 +60,13 @@ public class WaterParametersController {
                 .data(waterParameterService.getAllWaterParametersByKoiPondId(koiPondId))
                 .build());
     }
+
+    @GetMapping("/getByUserId/{userId}")
+    public ResponseEntity<ApiResponse> getWaterParametersByUserId(@PathVariable Long userId){
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("Water parameters found")
+                .data(waterParameterService.getAllWaterParametersByUserId(userId))
+                .build()
+        );
+    }
 }

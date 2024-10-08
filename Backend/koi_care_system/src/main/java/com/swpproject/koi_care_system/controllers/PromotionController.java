@@ -7,6 +7,8 @@ import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.promotion.IPromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,7 +32,7 @@ public class PromotionController {
     }
 
     @PutMapping("/promotion/{id}/update")
-    public ResponseEntity<ApiResponse> updatePromotion(@PathVariable Long id, PromotionUpdateRequest promotionUpdateRequest){
+    public ResponseEntity<ApiResponse> updatePromotion(@PathVariable Long id, @RequestBody PromotionUpdateRequest promotionUpdateRequest){
         try{
             PromotionDto promotionDto = promotionService.updatePromotion(id,promotionUpdateRequest);
             return ResponseEntity.ok(new ApiResponse("Update promotion success", promotionDto));

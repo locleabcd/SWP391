@@ -64,7 +64,6 @@ public class OrderService implements IOrderService {
                     cartItem.getQuantity(),
                     cartItem.getUnitPrice());
         }).toList();
-
     }
 
     private BigDecimal calculateTotalAmount(List<OrderItem> orderItemList) {

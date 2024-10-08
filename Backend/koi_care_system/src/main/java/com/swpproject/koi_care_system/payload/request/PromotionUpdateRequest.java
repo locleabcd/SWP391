@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.payload.request;
 
+import com.swpproject.koi_care_system.enums.PromotionStatus;
 import lombok.Data;
 import java.time.LocalDate;
 
@@ -11,5 +12,5 @@ public class PromotionUpdateRequest {
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String status;
+    private PromotionStatus status;
 }

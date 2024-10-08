@@ -160,6 +160,20 @@ public class ProductController {
             return ResponseEntity.ok(new ApiResponse(e.getMessage(), null));
         }
     }
+    @GetMapping("/recommend/{issueTypeId}")
+    public ResponseEntity<ApiResponse> getProductsByIssueType(@PathVariable Long issueTypeId) {
+        try {
+            List<Product> products = productService.getProductsByIssueType(issueTypeId);
+            if (products.isEmpty()) {
+                return ResponseEntity.status(NOT_FOUND).body(new ApiResponse("No products found ", null));
+            }
+            List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
+            return ResponseEntity.ok(new ApiResponse("success", convertedProducts));
+        } catch (Exception e) {
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("error", e.getMessage()));
+        }
+    }
+
 
 
 }

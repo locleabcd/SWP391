@@ -12,5 +12,4 @@ public class AddPromotionRequest {
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String status;
 }

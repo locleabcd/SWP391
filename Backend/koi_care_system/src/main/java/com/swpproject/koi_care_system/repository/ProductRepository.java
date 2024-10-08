@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.repository;
 
+import com.swpproject.koi_care_system.models.IssueType;
 import com.swpproject.koi_care_system.models.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -18,4 +19,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     List<Product> findByBrandAndName(String brand, String name);
 
     Long countByBrandAndName(String brand, String name);
+    List<Product> findByIssues(IssueType issueType);
 }

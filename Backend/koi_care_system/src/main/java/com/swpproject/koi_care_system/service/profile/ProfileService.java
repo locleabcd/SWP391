@@ -7,12 +7,14 @@ import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.models.UserProfile;
 import com.swpproject.koi_care_system.payload.request.ProfileUpdateRequest;
 import com.swpproject.koi_care_system.repository.UserProfileRepository;
+import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 @Service
@@ -21,6 +23,7 @@ import java.time.LocalDate;
 public class ProfileService implements IProfileService {
     UserProfileMapper userProfileMapper;
     UserProfileRepository userProfileRepository;
+    ImageStorage imageStorage;
 
     @Override
     public UserProfile createProfile(User user) {
@@ -31,8 +34,11 @@ public class ProfileService implements IProfileService {
 
     @Override
     @PostAuthorize("returnObject.name == authentication.name")
-    public UserProfileDto updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) {
+    public UserProfileDto updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) throws IOException {
         UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.PROFILE_NOT_FOUND));
+        if(profileUpdateRequest.getFile()!=null){
+            userProfile.setAvatar(!profileUpdateRequest.getFile().isEmpty()?imageStorage.uploadImage(profileUpdateRequest.getFile()): userProfile.getAvatar());
+        }
         userProfileMapper.updateUserProfile(userProfile, profileUpdateRequest);
         //userName
         return userProfileMapper.mapToUserProfileDto(userProfileRepository.save(userProfile));

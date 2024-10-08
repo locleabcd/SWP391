@@ -26,6 +26,7 @@ public interface UserProfileMapper {
 
     UserProfileDto mapToUserProfileDto(UserProfile userProfile);
 
+    @Mapping(target = "avatar", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "role", ignore = true)
     @Mapping(target = "name", ignore = true)
