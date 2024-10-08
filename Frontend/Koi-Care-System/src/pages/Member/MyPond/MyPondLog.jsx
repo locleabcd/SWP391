@@ -548,7 +548,7 @@ function MyPondLog() {
                       >
                         Note:
                       </label>
-                      <input
+                      <textarea
                         type='text'
                         value={note}
                         onChange={(e) => setNote(e.target.value)}

@@ -59,32 +59,34 @@ function WaterParameters() {
     getPond()
   }, [])
 
-   const getParameter = async(data)=>{
-    setIsLoading(true)
-    setIsSubmitting(true)   
+  const getParameter = async (userId) => {
+    setIsLoading(true);
+    setIsSubmitting(true);
     try {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('No token found')
+        throw new Error('No token found');
       }
-      console.log(data)
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/water-parameters`, 
-        
-        {
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/water-parameters/getByUserId/${userId}`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
-       console.log(res.data.data);
-       
-      setParameters(res.data.data)
+      setParameters(res.data.data);
     } catch (error) {
-      console.error('Error fetching water:', error)
+      console.error('Error fetching water parameters:', error);
+    } finally {
+      setIsLoading(false);
+      setIsSubmitting(false);
     }
+  };
+  useEffect(() => {
+    const userId = localStorage.getItem('id');
+    getPond();
+    if (userId) {
+      getParameter(userId);
     }
-    useEffect(() => {
-      getParameter()
-    }, [])
+  }, [])
   const toggleButtons = () => {
     setShowButtons(!showButtons)
   }

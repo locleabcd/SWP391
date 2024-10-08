@@ -143,7 +143,7 @@ function UpdateSupplier() {
                   {...register('address', { 
                     required: 'Address is required', 
                     minLength: { value: 5, message: 'Address must be at least 5 characters long' },
-                    maxLength: { value: 200, message: 'Address must not exceed 200 characters' }
+                    maxLength: { value: 100, message: 'Address must not exceed 200 characters' }
                   })}
                 />
                 {errors.address && <p className='text-red-500 text-xs mt-1'>{errors.address.message}</p>}
