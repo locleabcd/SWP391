@@ -1,15 +1,1 @@
-server:
-  port: 8080
-  servlet:
-    context-path: /api
-  error:
-    include-message: always
-spring:
-  profiles:
-    active: dev
-  thymeleaf:
-    prefix: classpath:/templates/
-    suffix: .html
-    cache: false
-jwt:
-  signerKey: "1Xt6QiR02nO30C3YVxkkG/qxQQ9sECaUY44pi2Do2SgF/OACYM7RKc/M+ED95TsX"
+=
