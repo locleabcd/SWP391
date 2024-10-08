@@ -122,7 +122,7 @@ function LeftSideBar() {
                 const active = isActive
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                return `${active} min-w-full mt-2 p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
+                return `${active} min-w-full mt-2 p-4  cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 }`
               }}

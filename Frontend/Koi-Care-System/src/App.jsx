@@ -37,16 +37,22 @@ import CreateNews from './pages/Shop/News/CreateNews'
 import UpdateNews from './pages/Shop/News/UpdateNews'
 import ViewNews from './pages/Shop/News/ViewNews'
 import Tag from './pages/Shop/Tag/Tag'
+import './index.css'
+import MyPondLogId from './pages/Member/MyPond/MyPondLogId'
+import WishList from './pages/Member/WishList/WishList'
+import CartList from './pages/Member/CartList/CartList'
 import CreateTag from './pages/Shop/Tag/CreateTag'
 import UpdateTag from './pages/Shop/Tag/UpdateTag'
 import Supplier from './pages/Shop/Supplier/Supplier'
 import CreateSupplier from './pages/Shop/Supplier/CreateSupplier'
 import UpdateSupplier from './pages/Shop/Supplier/UpdateSupplier'
-import './index.css'
-import MyPondLogId from './pages/Member/MyPond/MyPondLogId'
-import WishList from './pages/Member/WishList/WishList'
-import CartList from './pages/Member/CartList/CartList'
 
+import Promotion from './pages/Shop/Promotion/Promotion'
+import CreatePromotion from './pages/Shop/Promotion/CreatePromotion'
+import UpdatePromotion from './pages/Shop/Promotion/UpdatePromotion'
+import Production from './pages/Shop/Production/Production'
+import CreateProduct from './pages/Shop/Production/CreateProduct'
+import UpdateProduct from './pages/Shop/Production/UpdateProduct'
 function App() {
   const routeElements = useRoutes([
     {
@@ -182,8 +188,24 @@ function App() {
       element: <ViewNews />
     },
     {
+      path: path.myPondLogDetail,
+      element: <MyPondLogId />
+    },
+    {
       path: path.tag,
       element: <Tag />
+    },
+    {
+      path: path.myPondLogDetail,
+      element: <MyPondLogId />
+    },
+    {
+      path: path.wishList,
+      element: <WishList />
+    },
+    {
+      path: path.cartList,
+      element: <CartList />
     },
     {
       path: path.createTag,
@@ -210,12 +232,28 @@ function App() {
       element: <MyPondLogId />
     },
     {
-      path: path.wishList,
-      element: <WishList />
+      path: path.promotion,
+      element: <Promotion />
     },
     {
-      path: path.cartList,
-      element: <CartList />
+      path: path.createPromotion,
+      element: <CreatePromotion />
+    },
+    {
+      path: path.updatePromotion,
+      element: <UpdatePromotion />
+    },
+    {
+      path: path.production,
+      element: <Production />
+    },
+    {
+      path: path.createProduct,
+      element: <CreateProduct />
+    },
+    {
+      path: path.updateProduct,
+      element: <UpdateProduct />
     }
   ])
 

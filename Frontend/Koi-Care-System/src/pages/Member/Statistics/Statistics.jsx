@@ -209,7 +209,6 @@ function Statistics() {
     }))
   }
 
-  // Event handler for changing the time filter (Day, Month, Year)
   const handleFilterChange = (e) => {
     setDateFilter(e.target.value)
   }
