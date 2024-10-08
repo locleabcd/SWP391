@@ -14,6 +14,8 @@ function CreateNews() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
+  const [tags, setTags] = useState([])
+  const [selectedTagIds, setSelectedTagIds] = useState([])
 
   const {
     register,
@@ -21,6 +23,30 @@ function CreateNews() {
     formState: { errors },
     reset
   } = useForm()
+
+  const getTag = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/tag`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setTags(res.data.data)
+      console.log(res.data.data)
+    } catch (error) {
+      console.log('Error fetching tags:', error)
+    }
+  }
+
+  useEffect(() => {
+    getTag()
+  }, [])
 
   const onSubmit = async (data) => {
     console.log('onSubmit:', data)
@@ -34,11 +60,15 @@ function CreateNews() {
 
       const formData = new FormData()
 
+      
+
       // Append all fields to formData
       formData.append('blogTitle', data.blogTitle)
       formData.append('blogContent', data.blogContent)
       formData.append('blogImage', data.blogImage)
-      formData.append('tagIds', data.tagIds)
+      selectedTagIds.forEach(tagId => {
+        formData.append('tagIds', tagId)
+      });
       formData.append('file', data.file[0])
 
       console.log(data)
@@ -59,6 +89,18 @@ function CreateNews() {
       setIsLoading(false)
     }
   }
+
+  const handleTagChange = (tagId) => {
+    setSelectedTagIds((prevSelected) => {
+      if (prevSelected.includes(tagId)) {
+        // If already selected, remove it
+        return prevSelected.filter(id => id !== tagId);
+      } else {
+        // Otherwise, add it
+        return [...prevSelected, tagId];
+      }
+    });
+  };
   
   return(
     <div className="h-screen flex">
@@ -83,7 +125,7 @@ function CreateNews() {
                 
               />
               {errors.blogTitle && <p className='text-red-500 text-xs mt-1'>{errors.blogTitle.message}</p>}
-            </div>
+            </div>         
 
             <div className='mb-4'>
               <label htmlFor="blogContent" className='block text-sm font-medium mb-2'>
@@ -108,17 +150,31 @@ function CreateNews() {
             </div>
 
             <div className='mb-4'>
-              <label htmlFor="tagIds" className='block text-sm font-medium mb-2'>
-                Tags ID
+              <label className='block text-sm font-medium mb-2'>
+                Select Tags
               </label>
-              <input
-                type="text"
-                id="tagIds"
-                className={`w-full p-2 border rounded-md ${errors.tagIds ? 'border-red-500' : 'border-gray-300'}`}
-                {...register('tagIds', { required: 'At least one tag ID is required' })}
-              />
-                {errors.tagIds && <p className='text-red-500 text-xs mt-1'>Enter valid tag ID</p>}
+              <div>
+                {tags.length > 0 ? (
+                  tags.map(tag => (
+                    <div key={tag.id} className="flex items-center mb-2">
+                      <input
+                        type="checkbox"
+                        id={`tag-${tag.tagId}`}
+                        value={tag.id}
+                        checked={selectedTagIds.includes(tag.tagId)}
+                        onChange={() => handleTagChange(tag.tagId)}
+                        className='mr-2'
+                      />
+                      <label htmlFor={`tag-${tag.tagId}`} className='text-sm'>{tag.tagName}</label>
+                    </div>
+                  ))
+                ) : (
+                  <p>Loading tags...</p>
+                )}
+              </div>
+              {selectedTagIds.length === 0 && <p className='text-red-500 text-xs mt-1'>At least one tag is required</p>}
             </div>
+
 
             <div className='mb-4'>
               <label htmlFor="file" className='block text-sm font-medium mb-2'>

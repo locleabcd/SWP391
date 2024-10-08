@@ -25,32 +25,32 @@ function MyKoi() {
     register,
     handleSubmit,
     watch,
-    setValue ,
+    setValue,
     formState: { errors },
     reset
   } = useForm()
 
-    // Watch for length and physique changes
+  // Watch for length and physique changes
   const length = watch('length')
   const physique = watch('physique')
 
   // // Calculate weight when length or physique changes
   useEffect(() => {
     if (length && physique) {
-      let calculatedWeight = 0;
-      const lengthCubed = Math.pow(length, 3); // length^3
+      let calculatedWeight = 0
+      const lengthCubed = Math.pow(length, 3) // length^3
 
       if (physique === 'Slim') {
-        calculatedWeight = (1.5 * lengthCubed) / 100;
+        calculatedWeight = (1.5 * lengthCubed) / 100
       } else if (physique === 'Normal') {
-        calculatedWeight = (1.7 * lengthCubed) / 100;
+        calculatedWeight = (1.7 * lengthCubed) / 100
       } else if (physique === 'Corpulent') {
-        calculatedWeight = (2 * lengthCubed) / 100;
+        calculatedWeight = (2 * lengthCubed) / 100
       }
 
-      setValue('weight', calculatedWeight.toFixed(2));
+      setValue('weight', calculatedWeight.toFixed(2))
     }
-  }, [length, physique, setValue]);
+  }, [length, physique, setValue])
 
   useEffect(() => {
     AOS.init({ duration: 500, offset: 500 })
@@ -72,8 +72,6 @@ function MyKoi() {
     setIsAddFormVisible(!isAddFormVisible)
     reset()
   }
-
-  
 
   const onSubmit = async (data) => {
     console.log('onSubmit:', data)
@@ -375,9 +373,9 @@ function MyKoi() {
                     type='text'
                     id='name'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('name', { 
-                      required: 'Name is required', 
-                      maxLength: { value: 20, message: 'Name must be at most 50 characters long' } 
+                    {...register('name', {
+                      required: 'Name is required',
+                      maxLength: { value: 20, message: 'Name must be at most 50 characters long' }
                     })}
                   />
                   {errors.name && (
@@ -442,8 +440,9 @@ function MyKoi() {
                     id='length'
                     placeholder='cm'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('length', { required: 'Length is required', 
-                      max:  { value: 200 , message: 'Length must not exceed 200 cm' } 
+                    {...register('length', {
+                      required: 'Length is required',
+                      max: { value: 200, message: 'Length must not exceed 200 cm' }
                     })}
                   />
                   {errors.length && (
@@ -550,11 +549,13 @@ function MyKoi() {
                     {...register('price', { 
                       required: false, 
                       maxLength: { value: 10, message: 'Price must be at most 10 characters long' },
-                      min: { value: 1, message: 'Price must be greater than 0' } 
+                      min: { value: 1, message: 'Price must be greater than 0' }
                     })}
                   />
                 </div>
-                {errors.price && ( <p className='absolute -bottom-1 left-3 text-red-500 text-sm'>{errors.price.message}</p> )}
+                {errors.price && (
+                  <p className='absolute -bottom-1 left-3 text-red-500 text-sm'>{errors.price.message}</p>
+                )}
                 <div className='relative col-span-1 mb-2 mt-2'>
                   <label
                     className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
