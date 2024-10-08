@@ -19,7 +19,7 @@ import java.time.LocalDate;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class ProfileSerivce implements IProfileService {
+public class ProfileService implements IProfileService {
     UserProfileMapper userProfileMapper;
     UserProfileRepository userProfileRepository;
 

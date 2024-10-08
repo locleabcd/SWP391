@@ -2,7 +2,7 @@ package com.swpproject.koi_care_system.controllers;
 
 import com.swpproject.koi_care_system.payload.request.ProfileUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.profile.ProfileSerivce;
+import com.swpproject.koi_care_system.service.profile.ProfileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserProfileController {
-    ProfileSerivce profileSerivce;
+    ProfileService profileService;
 
     @PutMapping("/update/{userId}")
     public ResponseEntity<ApiResponse> updateProfile(@PathVariable Long userId, @RequestBody ProfileUpdateRequest request) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("Profile has been updated")
-                .data(profileSerivce.updateProfile(userId, request))
+                .data(profileService.updateProfile(userId, request))
                 .build());
     }
 
@@ -28,7 +28,7 @@ public class UserProfileController {
     public ResponseEntity<ApiResponse> getProfile(@PathVariable Long userId) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("Profile found")
-                .data(profileSerivce.getProfile(userId))
+                .data(profileService.getProfile(userId))
                 .build());
     }
 }

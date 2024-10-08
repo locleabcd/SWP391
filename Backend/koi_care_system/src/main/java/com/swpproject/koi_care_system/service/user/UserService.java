@@ -12,7 +12,7 @@ import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.repository.UserRepository;
 import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
 import com.swpproject.koi_care_system.service.email.IEmailService;
-import com.swpproject.koi_care_system.service.profile.ProfileSerivce;
+import com.swpproject.koi_care_system.service.profile.ProfileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -30,7 +30,7 @@ public class UserService implements IUserService {
 
     UserRepository userRepo;
     UserMapper userMapper;
-    ProfileSerivce profileSerivce;
+    ProfileService profileService;
     PasswordEncoder passwordEncoder;
     IEmailService emailService;
     IAuthenticationService authenticationService;
@@ -83,7 +83,7 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         user.setStatus(true);
         user.setRole(Role.MEMBER);
-        user.setUserProfile(profileSerivce.createProfile(user));
+        user.setUserProfile(profileService.createProfile(user));
         userRepo.save(user);
     }
 
@@ -96,12 +96,14 @@ public class UserService implements IUserService {
             throw new AppException(ErrorCode.EMAIL_EXISTED);
         }
         User user = userMapper.maptoUser(request);
-        user.setEmail(request.getUsername() + "@koicare.comany.vn");
+        if (request.getEmail() == null || request.getEmail().isEmpty())
+            user.setEmail(request.getUsername() + "@koicare.comany.vn");
+        else user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode("ABC@123"));
         user.setRole(Role.SHOP);
         user.setStatus(true);
         userRepo.save(user);
-        user.setUserProfile(profileSerivce.createProfile(user));
+        user.setUserProfile(profileService.createProfile(user));
         return userMapper.maptoUserDTO(userRepo.save(user));
     }
 

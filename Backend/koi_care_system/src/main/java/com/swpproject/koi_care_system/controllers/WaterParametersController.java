@@ -3,7 +3,7 @@ package com.swpproject.koi_care_system.controllers;
 import com.swpproject.koi_care_system.payload.request.ParametersCreateRequest;
 import com.swpproject.koi_care_system.payload.request.ParametersUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.waterparameter.WaterParameterService;
+import com.swpproject.koi_care_system.service.waterparameter.IWaterParametersService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("water-parameters")
 @RequiredArgsConstructor
 public class WaterParametersController {
-    private final WaterParameterService waterParameterService;
+    private final IWaterParametersService waterParameterService;
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createWaterParameters(@RequestBody ParametersCreateRequest request) {

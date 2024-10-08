@@ -6,7 +6,7 @@ import com.swpproject.koi_care_system.payload.request.ParametersUpdateRequest;
 
 import java.util.List;
 
-public interface IWaterParameters {
+public interface IWaterParametersService {
     WaterParameterDto createWaterParameters(ParametersCreateRequest parametersCreateRequest);
 
     WaterParameterDto updateWaterParameters(long id, ParametersUpdateRequest request);

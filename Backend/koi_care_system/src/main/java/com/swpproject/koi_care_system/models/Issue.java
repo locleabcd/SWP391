@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @AllArgsConstructor
@@ -20,7 +18,11 @@ public class Issue {
 
     private String name;
     private String description;
+    @ManyToOne
+    @JoinColumn(name = "water_parameters_id")
+    private WaterParameters waterParameters;
 
-    @OneToMany(mappedBy ="issue",cascade = CascadeType.ALL,orphanRemoval = false)
-    List<Product> productList;
+    @ManyToOne
+    @JoinColumn(name = "issue_type_id")
+    private IssueType issueType;
 }

@@ -59,7 +59,7 @@ public class SecurityConfig {
                         .permitAll())
                 .oauth2Login(oauth -> oauth
                         .loginPage("/login")
-                        .defaultSuccessUrl("/profile", true)
+                        .defaultSuccessUrl("https://koi-care-system.vercel.app/member", true)
                         .failureUrl("/login?error=true")
                 );
 
