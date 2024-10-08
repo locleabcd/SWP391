@@ -48,7 +48,10 @@ const path = {
   updatePromotion: '/shop/promotion/:id',
   production: '/shop/production',
   createrProduct: '/shop/createProduct',
-  updateProduct: '/shop/production/:id'
+  updateProduct: '/shop/production/:id',
+  category: '/shop/category',
+  createCategory: '/shop/createCategory',
+  updateCategory: '/shop/category/:id',
 }
 
 export default path

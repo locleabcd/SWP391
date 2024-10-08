@@ -54,6 +54,9 @@ import UpdatePromotion from './pages/Shop/Promotion/UpdatePromotion'
 import Production from './pages/Shop/Production/Production'
 import CreateProduct from './pages/Shop/Production/CreateProduct'
 import UpdateProduct from './pages/Shop/Production/UpdateProduct'
+import Category from './pages/Shop/Category/Category'
+import CreateCategory from './pages/Shop/Category/CreateCategory'
+import UpdateCategory from './pages/Shop/Category/UpdateCategory'
 function App() {
   const routeElements = useRoutes([
     {
@@ -259,6 +262,18 @@ function App() {
     {
       path: path.updateProduct,
       element: <UpdateProduct />
+    },
+    {
+      path: path.category,
+      element: <Category />
+    },
+    {
+      path: path.createCategory,
+      element: <CreateCategory />
+    },
+    {
+      path: path.updateCategory,
+      element: <UpdateCategory />
     }
   ])
 
