@@ -187,7 +187,7 @@ function MyKoi() {
       <div className='h-screen flex'>
         <LeftSideBar />
         <div
-          className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-gray-200 text-black'} 
+          className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} 
            shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
