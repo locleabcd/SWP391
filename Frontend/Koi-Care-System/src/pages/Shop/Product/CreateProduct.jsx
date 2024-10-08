@@ -15,7 +15,7 @@ export default function CreateProduct() {
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
   const [categories,setCategories] = useState([])
-  const [suppliers,setSuppliers] = useState([])
+  const [suppliers,setSuppliers] = useState([]) 
 
   const {
     register,
@@ -91,7 +91,7 @@ export default function CreateProduct() {
         description_detail: data.description_detail,
         category: data.category,
         supplierName: data.supplierName,
-        issueTypeId: Array.isArray(data.issueTypeId) ? data.issueTypeId : [data.issueTypeId] 
+        issueTypeId: data.issueTypeId.split(',').map(id => parseInt(id.trim())).filter(id => !isNaN(id)) 
       },
       {
         headers: {
