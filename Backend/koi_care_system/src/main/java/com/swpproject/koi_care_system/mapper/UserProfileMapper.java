@@ -11,6 +11,7 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserProfileMapper {
 
+    @Mapping(target = "subscribePlan", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "user", source = "user")
     @Mapping(target = "phone", ignore = true)
@@ -21,11 +22,12 @@ public interface UserProfileMapper {
     @Mapping(target = "bio", ignore = true)
     @Mapping(target = "avatar", ignore = true)
     @Mapping(target = "address", ignore = true)
-    @Mapping(target = "status", constant = "NORMAL")
     UserProfile mapToUserProfile(User user);
 
+    @Mapping(target = "status", source = "userProfile.subscribePlan.subscribe")
     UserProfileDto mapToUserProfileDto(UserProfile userProfile);
 
+    @Mapping(target = "subscribePlan", ignore = true)
     @Mapping(target = "avatar", ignore = true)
     @Mapping(target = "user", ignore = true)
     @Mapping(target = "role", ignore = true)

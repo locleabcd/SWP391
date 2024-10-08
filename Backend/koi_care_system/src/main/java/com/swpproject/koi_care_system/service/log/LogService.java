@@ -15,6 +15,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -64,6 +65,15 @@ public class LogService implements ILogService {
     @Override
     public List<LogDto> getLogsByPondId(long pondId) {
         return logRepository.findAllByKoiPondId(pondId).stream().map(logMapper::mapToLogDto).toList();
+    }
+
+    @Override
+    public List<LogDto> getLogsByUserId(Long userId) {
+        List<Log> logs = new ArrayList<>();
+        koiPondRepository.findKoiPondsByUserId(userId).forEach(koiPond -> {
+            logs.addAll(logRepository.findAllByKoiPondId(koiPond.getId()));
+        });
+        return logs.stream().map(logMapper::mapToLogDto).toList();
     }
 
     @Override

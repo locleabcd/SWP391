@@ -21,5 +21,5 @@ public class ProductDto {
     private List<ImageDto> images;
     private List<PromotionDto> promotions;
     private Double rating;
-
+    private Boolean status;
 }

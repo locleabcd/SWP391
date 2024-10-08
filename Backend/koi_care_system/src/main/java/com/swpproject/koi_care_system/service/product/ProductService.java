@@ -49,6 +49,8 @@ public class ProductService implements IProductService {
         request.setCategory(category);
         Supplier supplier = supplierRepository.findByName(request.getSupplierName());
         Product product=createProduct(request, category,supplier);
+        if(request.getInventory()>0)
+            product.setStatus(true);
         if (!request.getIssueTypeId().isEmpty()) {
             Set<IssueType> issueTypes = new HashSet<>();
             for (Long issueTypeId : request.getIssueTypeId()) {
@@ -106,6 +108,13 @@ public class ProductService implements IProductService {
         Category category = categoryRepository.findByName(request.getCategory().getName());
         existingProduct.setSupplier(supplier);
         existingProduct.setCategory(category);
+        existingProduct.setStatus((request.getInventory() > 0));
+        Set<IssueType> issueTypes = new HashSet<>();
+        for (Long issueID : request.getIssueTypeId()){
+            IssueType issueType = issueTypeRepository.findById(issueID).orElseThrow(()->new RuntimeException("Issue Type not found"));
+            issueTypes.add(issueType);
+        }
+        existingProduct.setIssues(issueTypes);
         return  existingProduct;
 
     }

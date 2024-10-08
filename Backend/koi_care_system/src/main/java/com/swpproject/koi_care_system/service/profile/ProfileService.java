@@ -8,6 +8,7 @@ import com.swpproject.koi_care_system.models.UserProfile;
 import com.swpproject.koi_care_system.payload.request.ProfileUpdateRequest;
 import com.swpproject.koi_care_system.repository.UserProfileRepository;
 import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
+import com.swpproject.koi_care_system.service.subscribe.ISubscribePlanService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -23,12 +24,14 @@ import java.time.LocalDate;
 public class ProfileService implements IProfileService {
     UserProfileMapper userProfileMapper;
     UserProfileRepository userProfileRepository;
+    ISubscribePlanService subscribePlanService;
     ImageStorage imageStorage;
 
     @Override
     public UserProfile createProfile(User user) {
         UserProfile userProfile = userProfileMapper.mapToUserProfile(user);
         userProfile.setCreatedDate(LocalDate.now());
+        userProfile.setSubscribePlan(subscribePlanService.initDefault(user.getId()));
         return userProfileRepository.save(userProfile);
     }
 

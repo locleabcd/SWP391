@@ -19,6 +19,8 @@ public interface ILogService {
 
     List<LogDto> getLogsByPondId(long pondId);
 
+    List<LogDto> getLogsByUserId(Long userId);
+
     List<LogDto> getLogsByCategory(String category);
 
 

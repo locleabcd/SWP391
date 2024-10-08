@@ -70,6 +70,14 @@ public class LogController {
                 .build());
     }
 
+    @GetMapping("/user/{userId}/getAll")
+    public ResponseEntity<ApiResponse> getLogsByUserId(@PathVariable long userId){
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("List of logs")
+                .data(logService.getLogsByUserId(userId))
+                .build());
+    }
+
 }
 
 

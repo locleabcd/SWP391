@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Product {
     private String brand;
     private BigDecimal price;
     private int inventory;
+    private Boolean status;
     @Lob
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
     private String description;
@@ -31,7 +33,7 @@ public class Product {
     @Column(name = "description_detail", nullable = false, columnDefinition = "TEXT")
     private String description_detail;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
@@ -56,6 +58,7 @@ public class Product {
     public void updateRating() {
         this.rating = this.calculateAverageRating();
     }
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "issue_type_product",
@@ -72,7 +75,7 @@ public class Product {
     )
     private Set<Promotion> promotions = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name="supplier_id")
     private Supplier supplier;
     public Product(String name, String brand, BigDecimal price, int inventory, String description,String description_detail, Category category, Supplier supplier) {

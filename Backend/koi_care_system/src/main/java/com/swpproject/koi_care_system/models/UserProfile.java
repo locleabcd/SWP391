@@ -27,8 +27,10 @@ public class UserProfile {
     String bio;
     LocalDate dateOfBirth;
     LocalDate createdDate;
-    @Enumerated(EnumType.STRING)
-    ProfileStatus status;//NORMAL, PREMIUM
+
+    @OneToOne(mappedBy = "userProfile", cascade = CascadeType.ALL, orphanRemoval = true)
+    SubscribePlan subscribePlan;
+
     String role;
 
     @OneToOne
