@@ -53,9 +53,6 @@ const path = {
   category: '/shop/category',
   createCategory: '/shop/createCategory',
   updateCategory: '/shop/category/:id',
-  productImage: '/shop/productImage',
-  createImage: '/shop/createImage',
-  updateImage: '/shop/productImage/:id',
 }
 
 export default path

@@ -57,9 +57,6 @@ import Category from './pages/Shop/Category/Category'
 import CreateCategory from './pages/Shop/Category/CreateCategory'
 import UpdateCategory from './pages/Shop/Category/UpdateCategory'
 import ViewProduct from './pages/Shop/Product/ViewProduct'
-import ProductImage from './pages/Shop/ProductImage/ProductImage'
-import UpdateImage from './pages/Shop/ProductImage/UpdateImage'
-import CreateImage from './pages/Shop/ProductImage/CreateImage'
 
 function App() {
   const routeElements = useRoutes([
@@ -282,18 +279,6 @@ function App() {
     {
       path: path.viewProduct,
       element: <ViewProduct />
-    },
-    {
-      path: path.productImage,
-      element: <ProductImage />
-    },
-    {
-      path: path.createImage,
-      element: <CreateImage />
-    },
-    {
-      path: path.updateImage,
-      element: <UpdateImage />
     },
   ])
 
