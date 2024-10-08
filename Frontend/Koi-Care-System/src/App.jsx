@@ -47,7 +47,6 @@ import Supplier from './pages/Shop/Supplier/Supplier'
 import CreateSupplier from './pages/Shop/Supplier/CreateSupplier'
 import UpdateSupplier from './pages/Shop/Supplier/UpdateSupplier'
 import Checkout from './pages/Member/Recommendations/Checkout'
-
 import Promotion from './pages/Shop/Promotion/Promotion'
 import CreatePromotion from './pages/Shop/Promotion/CreatePromotion'
 import UpdatePromotion from './pages/Shop/Promotion/UpdatePromotion'
@@ -57,6 +56,11 @@ import UpdateProduct from './pages/Shop/Product/UpdateProduct'
 import Category from './pages/Shop/Category/Category'
 import CreateCategory from './pages/Shop/Category/CreateCategory'
 import UpdateCategory from './pages/Shop/Category/UpdateCategory'
+import ViewProduct from './pages/Shop/Product/ViewProduct'
+import ProductImage from './pages/Shop/ProductImage/ProductImage'
+import UpdateImage from './pages/Shop/ProductImage/UpdateImage'
+import CreateImage from './pages/Shop/ProductImage/CreateImage'
+
 function App() {
   const routeElements = useRoutes([
     {
@@ -274,7 +278,23 @@ function App() {
     {
       path: path.updateCategory,
       element: <UpdateCategory />
-    }
+    },
+    {
+      path: path.viewProduct,
+      element: <ViewProduct />
+    },
+    {
+      path: path.productImage,
+      element: <ProductImage />
+    },
+    {
+      path: path.createImage,
+      element: <CreateImage />
+    },
+    {
+      path: path.updateImage,
+      element: <UpdateImage />
+    },
   ])
 
   const data = [

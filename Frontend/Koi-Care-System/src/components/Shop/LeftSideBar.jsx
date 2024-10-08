@@ -11,6 +11,7 @@ import { FaBoxArchive } from "react-icons/fa6"
 import { RiCoupon2Fill } from "react-icons/ri";
 import { FaBox } from "react-icons/fa";
 import { BiSolidCategory } from "react-icons/bi";
+import { FaImage } from "react-icons/fa";
 
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
@@ -287,6 +288,27 @@ function LeftSideBar() {
                         <BiSolidCategory className='w-full h-full' />
                         </div>
                         {!isClosed && <span className='font-semibold'>Category</span>}
+                      </div>
+                    </NavLink>
+                  </div>
+
+                  <div className=''>
+                    <NavLink
+                      to={path.productImage}
+                      className={({ isActive }) => {
+                        const active = isActive
+                          ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                          : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                          isClosed ? 'flex-col' : ''
+                        }`
+                      }}
+                    >
+                      <div className='flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
+                        <FaImage className='w-full h-full' />
+                        </div>
+                        {!isClosed && <span className='font-semibold'>Product Image</span>}
                       </div>
                     </NavLink>
                   </div>

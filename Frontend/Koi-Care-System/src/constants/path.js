@@ -49,9 +49,13 @@ const path = {
   product: '/shop/product',
   createProduct: '/shop/createProduct',
   updateProduct: '/shop/product/:id',
+  viewProduct: 'shop/product/view/:id',
   category: '/shop/category',
   createCategory: '/shop/createCategory',
   updateCategory: '/shop/category/:id',
+  productImage: '/shop/productImage',
+  createImage: '/shop/createImage',
+  updateImage: '/shop/productImage/:id',
 }
 
 export default path
