@@ -105,7 +105,6 @@ function Product() {
             <thead className=''>
               <tr className='border-b'>
                 <th className='py-3 px-4 text-center text-xs font-bold uppercase'>No</th>
-                {/* <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Image</th> */}
                 <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Name</th>
                 <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Brand</th>
                 <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Price</th>
@@ -120,7 +119,6 @@ function Product() {
               {products.map((product, index) => (
                 <tr key={product.id} className=''>
                   <td className='py-2 px-1 text-center border-b border-gray-200'>{index+1}</td>
-                  {/* <td className='py-2 px-1 text-center border-b border-gray-200'><img src={product.images[0]} alt="" /></td> */}
                   <td className='py-2 pl-4 text-center border-b border-gray-200'>{product.name}</td>
                   <td className='py-2 px-1 text-center border-b border-gray-200'>{product.brand}</td>
                   <td className='py-2 px-1 text-center border-b border-gray-200'>{`$${product.price.toFixed(2)}`}</td>
