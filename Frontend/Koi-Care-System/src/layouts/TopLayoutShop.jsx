@@ -8,7 +8,7 @@ function TopLayout({ text, textName, links }) {
   return (
     <div
       className={`${
-        isDarkMode ? ' bg-custom-layout-dark text-white' : 'bg-custom-layout-light '
+        isDarkMode ? 'bg-custom-layout-dark text-white' : 'bg-custom-layout-light '
       }  flex w-full rounded-xl py-[30px] px-[25px] mb-[30px] relative`}
     >
       <div>

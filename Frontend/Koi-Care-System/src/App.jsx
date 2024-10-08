@@ -51,9 +51,9 @@ import Checkout from './pages/Member/Recommendations/Checkout'
 import Promotion from './pages/Shop/Promotion/Promotion'
 import CreatePromotion from './pages/Shop/Promotion/CreatePromotion'
 import UpdatePromotion from './pages/Shop/Promotion/UpdatePromotion'
-import Production from './pages/Shop/Production/Production'
-import CreateProduct from './pages/Shop/Production/CreateProduct'
-import UpdateProduct from './pages/Shop/Production/UpdateProduct'
+import Product from './pages/Shop/Product/Product'
+import CreateProduct from './pages/Shop/Product/CreateProduct'
+import UpdateProduct from './pages/Shop/Product/UpdateProduct'
 import Category from './pages/Shop/Category/Category'
 import CreateCategory from './pages/Shop/Category/CreateCategory'
 import UpdateCategory from './pages/Shop/Category/UpdateCategory'
@@ -252,8 +252,8 @@ function App() {
       element: <UpdatePromotion />
     },
     {
-      path: path.production,
-      element: <Production />
+      path: path.product,
+      element: <Product />
     },
     {
       path: path.createProduct,

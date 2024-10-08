@@ -9,7 +9,7 @@ import TopLayout from '../../../layouts/TopLayoutShop';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-export default function UpdateCategory() {
+function UpdateCategory() {
   const { id } = useParams();
   const { isDarkMode } = useDarkMode();
   const navigate = useNavigate();
@@ -130,3 +130,4 @@ export default function UpdateCategory() {
     </div>
   );
 }
+export default UpdateCategory

@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { useForm } from 'react-hook-form'
 
-export default function CreateCategory() {
+function CreateCategory() {
   const { isDarkMode } = useDarkMode()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -92,3 +92,4 @@ export default function CreateCategory() {
     </div>
   )
 }
+export default CreateCategory

@@ -8,7 +8,7 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 
-export default function Category() {
+function Category() {
   const { isDarkMode } = useDarkMode()
   const [categories,setCategories] = useState([])
   // const [showButtons, setShowButtons] = useState(false)
@@ -165,3 +165,4 @@ export default function Category() {
     </div>
   )
 }
+export default Category

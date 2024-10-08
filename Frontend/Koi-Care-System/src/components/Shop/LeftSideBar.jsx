@@ -251,7 +251,7 @@ function LeftSideBar() {
 
                   <div className=''>
                     <NavLink
-                      to={path.production}
+                      to={path.product}
                       className={({ isActive }) => {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
@@ -265,7 +265,7 @@ function LeftSideBar() {
                         <div className='w-6 h-6 mr-3'>
                         <FaBox className='w-full h-full' />
                         </div>
-                        {!isClosed && <span className='font-semibold'>Production</span>}
+                        {!isClosed && <span className='font-semibold'>Product</span>}
                       </div>
                     </NavLink>
                   </div>
