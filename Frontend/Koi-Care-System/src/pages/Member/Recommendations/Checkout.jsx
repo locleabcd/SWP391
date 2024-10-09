@@ -11,6 +11,7 @@ function Checkout() {
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
   const [payment, SetPayment] = useState([])
+  const [cart, setCart] = useState([])
   const { isDarkMode } = useDarkMode()
   const [tinh, setTinh] = useState([])
   const [selectedTinh, setSelectedTinh] = useState('0')
@@ -18,7 +19,17 @@ function Checkout() {
   const [selectedQuan, setSelectedQuan] = useState('0')
   const [phuong, setPhuong] = useState([])
   const [selectedPhuong, setSelectedPhuong] = useState('0')
+  const [destination, setDestination] = useState('')
 
+  useEffect(() => {
+    const selectedProvince = tinh.find((item) => item.id === selectedTinh)?.full_name || ''
+
+    const selectedDistrict = quan.find((item) => item.id === selectedQuan)?.full_name || ''
+
+    const selectedWard = phuong.find((item) => item.id === selectedPhuong)?.full_name || ''
+
+    setDestination(`${address}, ${selectedWard}, ${selectedDistrict}, ${selectedProvince}`.trim())
+  }, [address, selectedTinh, selectedQuan, selectedPhuong, tinh, quan, phuong])
   const addAddress = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -27,7 +38,7 @@ function Checkout() {
         'https://koicaresystem.azurewebsites.net/api/orders/order',
         {
           userId: userId,
-          address: address,
+          address: destination,
           phone: phone,
           recipientName: name
         },
@@ -48,14 +59,13 @@ function Checkout() {
   const createPayment = async () => {
     try {
       const token = localStorage.getItem('token')
-      const amount = 1000000
       const orderId = 3
       const res = await axios.get('https://koicaresystem.azurewebsites.net/api/payment/vn-pay', {
         headers: {
           Authorization: `Bearer ${token}`
         },
         params: {
-          amount: amount,
+          amount: cart.totalAmount,
           orderId: orderId
         }
       })
@@ -65,6 +75,31 @@ function Checkout() {
       console.log(err)
     }
   }
+
+  const getCartId = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const cartId = localStorage.getItem('cartId')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const response = await axios.get(`https://koicaresystem.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setCart(response.data.data)
+      console.log(response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getCartId()
+  }, [])
 
   useEffect(() => {
     axios
@@ -249,12 +284,14 @@ function Checkout() {
                 <div className='text-2xl font-semibold'>Order Summary</div>
                 <div className='flex mt-7 text-xl justify-between'>
                   <div className=''>Sub Total</div>
-                  <div className=''></div>
+                  <div className=''>
+                    {(cart?.totalAmount ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                  </div>
                 </div>
 
                 <div className='flex mt-7 text-xl justify-between'>
                   <div className=''>Discount</div>
-                  <div className=''>$0.00</div>
+                  <div className=''> {(0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
                 </div>
 
                 <div className='flex mt-7 text-xl justify-between'>
@@ -264,7 +301,9 @@ function Checkout() {
 
                 <div className='flex mt-7 text-xl justify-between'>
                   <div className='font-medium'>Total</div>
-                  <div className=''></div>
+                  <div className=''>
+                    {(cart?.totalAmount ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                  </div>
                 </div>
               </div>
 
