@@ -12,6 +12,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { AddToWishlist, RemoveFromWishlist } from '../../../redux/store/wishList'
 import { addToCartList } from '../../../redux/store/cartList'
+import { motion } from 'framer-motion'
 
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
@@ -441,9 +442,24 @@ function Recommendations() {
 
                 {paginatedProducts.length > 0 ? (
                   <>
-                    <div className='grid grid-cols-3 gap-8 py-3 mt-4'>
-                      {paginatedProducts.map((products) => (
-                        <div
+                    <motion.div
+                      initial='hidden'
+                      animate='visible'
+                      variants={{
+                        visible: {
+                          transition: {
+                            staggerChildren: 0.3
+                          }
+                        }
+                      }}
+                      className='grid grid-cols-3 gap-8 py-3 mt-4'
+                    >
+                      {paginatedProducts.map((products, index) => (
+                        <motion.div
+                          variants={{
+                            hidden: { opacity: 0, x: 100 },
+                            visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
+                          }}
                           key={products.id}
                           className='border border-gray-200 rounded-xl hover:scale-[102%] duration-300'
                         >
@@ -553,9 +569,9 @@ function Recommendations() {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
-                    </div>
+                    </motion.div>
                     <div className='flex justify-center items-center mt-6'>
                       <button
                         disabled={currentPage === 1}

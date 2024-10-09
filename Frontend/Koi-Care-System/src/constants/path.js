@@ -9,7 +9,7 @@ const path = {
   policy: '/policy',
   otp: '/otp',
   resetPassword: '/resetPassword',
-  verify: '/verifyPending',
+  verify: '/api/verifyEmail',
   verifySuccess: '/verify',
   myAccount: '/member/myAccount',
   profile: '/member/myAccount/profile',

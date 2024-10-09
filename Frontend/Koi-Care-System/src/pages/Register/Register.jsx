@@ -30,13 +30,13 @@ function Register() {
         password: data.password
       })
 
-      if (response.status === 200) {
-        navigate('/verifyPending')
+      if (response.status === 201) {
+        navigate('/api/verifyEmail')
       } else {
         toast.error('Registration failed')
       }
-      // eslint-disable-next-line no-unused-vars
     } catch (error) {
+      console.log(error)
       toast.error('Registration failed')
     } finally {
       setLoading(false)
