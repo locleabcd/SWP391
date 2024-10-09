@@ -10,6 +10,7 @@ import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { FaSpinner } from 'react-icons/fa'
 import TopLayout from '../../../layouts/TopLayout'
+import { motion } from 'framer-motion'
 
 function MyKoi() {
   const { isDarkMode } = useDarkMode()
@@ -211,9 +212,24 @@ function MyKoi() {
           <div className='py-5 px-[30px] mx-auto' data-aos='fade-left'>
             <TopLayout text='My Koi' />
             <div className='w-full '>
-              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 py-3'>
-                {kois.map((koi) => (
-                  <div
+              <motion.div
+                initial='hidden'
+                animate='visible'
+                variants={{
+                  visible: {
+                    transition: {
+                      staggerChildren: 0.3
+                    }
+                  }
+                }}
+                className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 py-3'
+              >
+                {kois.map((koi, index) => (
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, x: 100 },
+                      visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
+                    }}
                     key={koi.id}
                     className={`${
                       isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
@@ -245,9 +261,9 @@ function MyKoi() {
                         </div>
                       </div>
                     </Link>
-                  </div>
+                  </motion.div>
                 ))}
-              </div>
+              </motion.div>
             </div>
           </div>
         </div>
