@@ -6,19 +6,18 @@ import { useDarkMode } from '../../../components/DarkModeContext'
 import TopLayout from '../../../layouts/TopLayout'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import { loadCart, removeToCartList } from '../../../redux/store/cartList'
+import { addToCartList, loadCart, removeToCartList } from '../../../redux/store/cartList'
 import { Link } from 'react-router-dom'
 
 const CartList = () => {
-  const wishlist = useSelector((state) => state.cart.cartList)
-  const dispatch = useDispatch()
   const { isDarkMode } = useDarkMode()
   const [count, setCount] = useState(1)
   const [cart, setCart] = useState([])
+  const dispatch = useDispatch()
 
   const subTotal = cart.reduce((acc, item) => acc + item.totalPrice, 0)
 
-  const increment = (itemId) => {
+  const increment = async (itemId) => {
     const updatedCart = cart.map((item) => {
       if (item.product.id === itemId) {
         return {
@@ -29,10 +28,31 @@ const CartList = () => {
       }
       return item
     })
+
     setCart(updatedCart)
+
+    try {
+      const token = localStorage.getItem('token')
+      const cartId = localStorage.getItem('cartId')
+      if (!token) throw new Error('No token found')
+
+      await axios.put(
+        `https://koicaresystem.azurewebsites.net/api/cartItems/cart/${cartId}/product/${itemId}/update`,
+        {
+          quantity: updatedCart.find((item) => item.product.id === itemId).quantity
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+    } catch (error) {
+      console.log(error)
+    }
   }
 
-  const decrement = (itemId) => {
+  const decrement = async (itemId) => {
     const updatedCart = cart.map((item) => {
       if (item.product.id === itemId && item.quantity > 1) {
         return {
@@ -43,7 +63,28 @@ const CartList = () => {
       }
       return item
     })
+
     setCart(updatedCart)
+
+    try {
+      const token = localStorage.getItem('token')
+      const cartId = localStorage.getItem('cartId')
+      if (!token) throw new Error('No token found')
+
+      await axios.put(
+        `https://koicaresystem.azurewebsites.net/api/cartItems/cart/${cartId}/product/${itemId}/update`,
+        {
+          quantity: updatedCart.find((item) => item.product.id === itemId).quantity
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const getCartId = async () => {
@@ -79,6 +120,10 @@ const CartList = () => {
     await dispatch(removeToCartList(productId))
     dispatch(loadCart())
     getCartId()
+  }
+
+  const handleAddToCart = (product) => {
+    dispatch(addToCartList(product, count))
   }
 
   return (
@@ -253,10 +298,14 @@ const CartList = () => {
                   <div className=''>${subTotal.toFixed(2)}</div>
                 </div>
               </div>
-
               <div className='flex justify-between mt-8'>
-                <button className='px-6 py-3 bg-gray-300 text-white rounded-lg cursor-pointer'>Back</button>
-                <Link to='/member/checkout' className='px-6 py-3 bg-blue-400 text-white rounded-lg cursor-pointer'>
+                <button className='px-6 py-3 bg-gray-300 hover:bg-gray-400 text-white rounded-lg cursor-pointer'>
+                  Back
+                </button>
+                <Link
+                  to='/member/checkout'
+                  className='px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg cursor-pointer'
+                >
                   Checkout
                 </Link>
               </div>

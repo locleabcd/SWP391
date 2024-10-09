@@ -2,9 +2,5 @@
 import React from 'react'
 
 export default function UpdateProduct() {
-  return (
-    <div>
-      abd
-    </div>
-  )
+  return <div>abd</div>
 }

@@ -31,49 +31,52 @@ function CreateSupplier() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.post(`https://koicaresystem.azurewebsites.net/api/suppliers/add`, 
-      {
-        name: data.name, 
-        phone: data.phone,
-        address: data.address,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const res = await axios.post(
+        `https://koicaresystem.azurewebsites.net/api/suppliers/add`,
+        {
+          name: data.name,
+          phone: data.phone,
+          address: data.address
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      })
+      )
       toast.success('Supplier created successfully!')
       navigate('/shop/supplier')
-      
     } catch (error) {
       console.log(error)
-      toast.error('Failed to create Supplier.');
+      toast.error('Failed to create Supplier.')
     } finally {
       setIsSubmitting(false)
       setIsLoading(false)
     }
   }
   return (
-    <div className="h-screen flex">
+    <div className='h-screen flex'>
       <LeftSideBar />
-      <div className={`relative ${
+      <div
+        className={`relative ${
           isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'
-      } overflow-y-auto flex-1 flex-col  overflow-x-hidden duration-200 ease-linear`}>
+        } overflow-y-auto flex-1 flex-col  overflow-x-hidden duration-200 ease-linear`}
+      >
         <Header />
         <div className='py-5 pb-0 px-[30px] mx-auto'>
           <TopLayout text='Supplier' textName='Create Supplier' links='shop/supplier' />
           <div className='bg-white p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className='mb-4'>
-                <label htmlFor="name" className='block text-sm font-medium mb-2'>
-                Supllier Name
+                <label htmlFor='name' className='block text-sm font-medium mb-2'>
+                  Supllier Name
                 </label>
                 <input
                   type='text'
-                  id="name"
+                  id='name'
                   className={`relative w-full p-2 border rounded-md ${errors.tagName ? 'border-red-500' : 'border-gray-300'}`}
-                  {...register('name', { 
-                    required: 'Name is required', 
+                  {...register('name', {
+                    required: 'Name is required',
                     minLength: { value: 2, message: 'Name must be at least 2 characters long' },
                     maxLength: { value: 50, message: 'Name must not exceed 50 characters' }
                   })}
@@ -81,34 +84,33 @@ function CreateSupplier() {
                 {errors.name && <p className='text-red-500 text-xs mt-1'>{errors.name.message}</p>}
               </div>
               <div className='mb-4'>
-                <label htmlFor="phone" className='block text-sm font-medium mb-2'>
-                Supplier Phone
+                <label htmlFor='phone' className='block text-sm font-medium mb-2'>
+                  Supplier Phone
                 </label>
                 <input
                   type='number'
-                  id="phone"
+                  id='phone'
                   className={`relative w-full p-2 border rounded-md ${errors.tagDescription ? 'border-red-500' : 'border-gray-300'}`}
-                  {...register('phone', { 
-                    required: 'Phone is required', 
+                  {...register('phone', {
+                    required: 'Phone is required',
                     pattern: {
-                      value: /^0[0-9]{8,9}$/, 
+                      value: /^0[0-9]{8,9}$/,
                       message: 'Phone number must start with 0 and between 9 and 10 numbers'
                     }
                   })}
-                  
                 />
                 {errors.phone && <p className='text-red-500 text-xs mt-1'>{errors.phone.message}</p>}
               </div>
               <div className='mb-4'>
-                <label htmlFor="address" className='block text-sm font-medium mb-2'>
-                Supllier Address
+                <label htmlFor='address' className='block text-sm font-medium mb-2'>
+                  Supllier Address
                 </label>
                 <input
                   type='text'
-                  id="address"
+                  id='address'
                   className={`relative w-full p-2 border rounded-md ${errors.tagName ? 'border-red-500' : 'border-gray-300'}`}
-                  {...register('address', { 
-                    required: 'Address is required', 
+                  {...register('address', {
+                    required: 'Address is required',
                     minLength: { value: 5, message: 'Address must be at least 5 characters long' },
                     maxLength: { value: 200, message: 'Address must not exceed 200 characters' }
                   })}
@@ -116,19 +118,16 @@ function CreateSupplier() {
                 {errors.address && <p className='text-red-500 text-xs mt-1'>{errors.address.message}</p>}
               </div>
               <button
-              type="submit"
-              className={`px-4 py-2 bg-blue-600 text-white rounded-md ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
-              disabled={isSubmitting}
-            >
-              {isSubmitting ? 'Submitting...' : 'Create Supplier'}
-            </button>
+                type='submit'
+                className={`px-4 py-2 bg-blue-600 text-white rounded-md ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? 'Submitting...' : 'Create Supplier'}
+              </button>
             </form>
           </div>
         </div>
       </div>
-
-
-      
     </div>
   )
 }

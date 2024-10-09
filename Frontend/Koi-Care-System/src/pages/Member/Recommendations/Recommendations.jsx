@@ -359,8 +359,8 @@ function Recommendations() {
                               ? 'bg-custom-layout-dark'
                               : 'bg-custom-layout-light'
                             : isDarkMode
-                            ? 'hover:bg-custom-layout-dark'
-                            : 'hover:bg-custom-layout-light'
+                              ? 'hover:bg-custom-layout-dark'
+                              : 'hover:bg-custom-layout-light'
                         }`}
                       >
                         <input type='radio' className='scale-150' checked={pricing === range} readOnly />
@@ -383,8 +383,8 @@ function Recommendations() {
                               ? 'bg-custom-layout-dark'
                               : 'bg-custom-layout-light'
                             : isDarkMode
-                            ? 'hover:bg-custom-layout-dark'
-                            : 'hover:bg-custom-layout-light'
+                              ? 'hover:bg-custom-layout-dark'
+                              : 'hover:bg-custom-layout-light'
                         }`}
                       >
                         <div className='flex items-center gap-1'>

@@ -2,9 +2,5 @@
 import React from 'react'
 
 export default function Production() {
-  return (
-    <div>
-      abc
-    </div>
-  )
+  return <div>abc</div>
 }

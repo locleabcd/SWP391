@@ -3,14 +3,21 @@ import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import TopLayout from '../../../layouts/TopLayout'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 
 function Checkout() {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
+  const [payment, SetPayment] = useState([])
   const { isDarkMode } = useDarkMode()
+  const [tinh, setTinh] = useState([])
+  const [selectedTinh, setSelectedTinh] = useState('0')
+  const [quan, setQuan] = useState([])
+  const [selectedQuan, setSelectedQuan] = useState('0')
+  const [phuong, setPhuong] = useState([])
+  const [selectedPhuong, setSelectedPhuong] = useState('0')
 
   const addAddress = async () => {
     try {
@@ -37,6 +44,69 @@ function Checkout() {
       console.log(error)
     }
   }
+
+  const createPayment = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const amount = 1000000
+      const orderId = 3
+      const res = await axios.get('https://koicaresystem.azurewebsites.net/api/payment/vn-pay', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: {
+          amount: amount,
+          orderId: orderId
+        }
+      })
+      console.log(res.data)
+      SetPayment(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    axios
+      .get('https://esgoo.net/api-tinhthanh/1/0.htm')
+      .then((response) => {
+        if (response.data.error === 0) {
+          setTinh(response.data.data)
+        }
+      })
+      .catch((error) => console.error('Error fetching provinces:', error))
+  }, [])
+
+  useEffect(() => {
+    if (selectedTinh !== '0') {
+      axios
+        .get(`https://esgoo.net/api-tinhthanh/2/${selectedTinh}.htm`)
+        .then((response) => {
+          if (response.data.error === 0) {
+            setQuan(response.data.data)
+            setPhuong([])
+          }
+        })
+        .catch((error) => console.error('Error fetching districts:', error))
+    }
+  }, [selectedTinh])
+
+  useEffect(() => {
+    if (selectedQuan !== '0') {
+      axios
+        .get(`https://esgoo.net/api-tinhthanh/3/${selectedQuan}.htm`)
+        .then((response) => {
+          if (response.data.error === 0) {
+            setPhuong(response.data.data)
+          }
+        })
+        .catch((error) => console.error('Error fetching wards:', error))
+    }
+  }, [selectedQuan])
+
+  useEffect(() => {
+    createPayment()
+  }, [])
 
   return (
     <div>
@@ -98,31 +168,79 @@ function Checkout() {
                 <div className='text-2xl font-semibold'>Address</div>
                 <div className='flex mt-7 text-xl gap-24 justify-between items-center w-full'>
                   <div className='flex flex-col w-full'>
-                    <div className=''>Full Name</div>
                     <input
                       type='text'
                       onChange={(e) => setName(e.target.value)}
-                      placeholder='Nguyen Van A'
-                      className='border px-2 mt-3 rounded-lg py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
+                      placeholder='Name'
+                      className='border px-4 mt-3 rounded-lg py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
                     ></input>
                   </div>
                   <div className='flex flex-col w-full'>
-                    <div className=''>Phone</div>
                     <input
                       type='text'
                       onChange={(e) => setPhone(e.target.value)}
-                      placeholder='0123456789'
-                      className='border px-2 mt-3 rounded-lg py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
+                      placeholder='Phone'
+                      className='border px-4 mt-3 rounded-lg py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
                     ></input>
                   </div>
                 </div>
+                <div className='flex gap-7 mt-7'>
+                  <select
+                    className='border border-gray-200 py-3 px-4 rounded-lg'
+                    id='tinh'
+                    name='tinh'
+                    value={selectedTinh}
+                    onChange={(e) => setSelectedTinh(e.target.value)}
+                    title='Chọn Tỉnh Thành'
+                  >
+                    <option value='0'>Province</option>
+                    {tinh.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.full_name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    className='border border-gray-200 py-3 px-4 rounded-lg'
+                    id='quan'
+                    name='quan'
+                    value={selectedQuan}
+                    onChange={(e) => setSelectedQuan(e.target.value)}
+                    title='Chọn Quận Huyện'
+                    disabled={selectedTinh === '0'}
+                  >
+                    <option value='0'>District</option>
+                    {quan.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.full_name}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    className='border border-gray-200 py-3 px-4 rounded-lg'
+                    id='phuong'
+                    name='phuong'
+                    value={selectedPhuong}
+                    onChange={(e) => setSelectedPhuong(e.target.value)}
+                    title='Chọn Phường Xã'
+                    disabled={selectedQuan === '0'}
+                  >
+                    <option value='0'>Ward</option>
+                    {phuong.map((item) => (
+                      <option key={item.id} value={item.id}>
+                        {item.full_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <div className='flex flex-col w-full mt-7 text-xl'>
-                  <div className=''>Address</div>
                   <input
                     type='text'
                     onChange={(e) => setAddress(e.target.value)}
-                    placeholder='Quan 9, TP Ho Chi Minh'
-                    className='border px-2 mt-3 rounded-lg py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
+                    placeholder='Address'
+                    className='border px-4 mt-3 rounded-lg py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
                   ></input>
                 </div>
               </div>
@@ -151,16 +269,20 @@ function Checkout() {
               </div>
 
               <div className='flex justify-between mt-8'>
-                <Link to='/member/cartList' className='px-6 py-3 bg-gray-300 text-white rounded-lg cursor-pointer'>
+                <Link
+                  to='/member/cartList'
+                  className='px-6 py-3 bg-gray-300 hover:bg-gray-400 text-white rounded-lg cursor-pointer'
+                >
                   Back
                 </Link>
-                <button
+                <Link
+                  to={payment.paymentUrl}
                   type='submit'
                   onClick={() => addAddress()}
-                  className='px-6 py-3 bg-blue-400 text-white rounded-lg cursor-pointer'
+                  className='px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg cursor-pointer'
                 >
                   Complete order
-                </button>
+                </Link>
               </div>
             </div>
           </div>

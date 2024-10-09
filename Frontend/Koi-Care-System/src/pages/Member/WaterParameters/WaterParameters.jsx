@@ -886,8 +886,8 @@ function WaterParameters() {
                               parameter.totalChlorine <= 0.001
                                 ? 'green'
                                 : parameter.totalChlorine <= 0.02
-                                ? 'orange'
-                                : 'red'
+                                  ? 'orange'
+                                  : 'red'
                           }}
                         >
                           Total chlorines: {parameter.totalChlorine} mg/l

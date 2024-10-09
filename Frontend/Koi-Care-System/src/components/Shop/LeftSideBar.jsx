@@ -1,15 +1,15 @@
-import { PiNewspaperClipping } from "react-icons/pi"
-import { FaTags } from "react-icons/fa";
+import { PiNewspaperClipping } from 'react-icons/pi'
+import { FaTags } from 'react-icons/fa'
 import { FaRegNewspaper } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import path from '../../constants/path'
 import { useDarkMode } from '../DarkModeContext'
 import logo from '../../assets/logo.png'
 import { useEffect, useState } from 'react'
-import { AiFillShop } from "react-icons/ai"
-import { FaBoxArchive } from "react-icons/fa6"
-import { RiCoupon2Fill } from "react-icons/ri";
-import { FaBox } from "react-icons/fa";
+import { AiFillShop } from 'react-icons/ai'
+import { FaBoxArchive } from 'react-icons/fa6'
+import { RiCoupon2Fill } from 'react-icons/ri'
+import { FaBox } from 'react-icons/fa'
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
   const [isClosed, setClosed] = useState(() => {
@@ -129,13 +129,23 @@ function LeftSideBar() {
                   <div className='w-7 h-7 mr-3'>
                     <FaRegNewspaper className='w-full h-full' />
                   </div>
-                  {!isClosed && 
-                  <span className='flex items-center'>
-                    <p className='font-semibold'>Manage News</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 ml-2 mt-1">
-                      <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clipRule="evenodd" />
-                    </svg>
-                  </span>}
+                  {!isClosed && (
+                    <span className='flex items-center'>
+                      <p className='font-semibold'>Manage News</p>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 24 24'
+                        fill='currentColor'
+                        className='size-5 ml-2 mt-1'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
+                    </span>
+                  )}
                 </div>
               </button>
 
@@ -154,7 +164,7 @@ function LeftSideBar() {
                   >
                     <div className='flex items-center'>
                       <div className='w-7 h-7 mr-3'>
-                        <PiNewspaperClipping  className='w-full h-full' />
+                        <PiNewspaperClipping className='w-full h-full' />
                       </div>
                       {!isClosed && <span className='font-semibold'>News</span>}
                     </div>
@@ -173,7 +183,7 @@ function LeftSideBar() {
                   >
                     <div className='flex items-center'>
                       <div className='w-7 h-7 mr-3'>
-                      <FaTags className='w-full h-full' />
+                        <FaTags className='w-full h-full' />
                       </div>
                       {!isClosed && <span className='font-semibold'>Tag</span>}
                     </div>
@@ -193,13 +203,23 @@ function LeftSideBar() {
                   <div className='w-7 h-7 mr-3'>
                     <AiFillShop className='w-full h-full' />
                   </div>
-                  {!isClosed && 
-                  <span className='flex items-center'>
-                    <p className='font-semibold'>Manage Shop</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 ml-2 mt-1">
-                      <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clipRule="evenodd" />
-                    </svg>
-                  </span>}
+                  {!isClosed && (
+                    <span className='flex items-center'>
+                      <p className='font-semibold'>Manage Shop</p>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 24 24'
+                        fill='currentColor'
+                        className='size-5 ml-2 mt-1'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
+                    </span>
+                  )}
                 </div>
               </button>
 
@@ -218,7 +238,7 @@ function LeftSideBar() {
                   >
                     <div className='flex items-center'>
                       <div className='w-6 h-6 mr-3'>
-                      <FaBoxArchive className='w-full h-full' />
+                        <FaBoxArchive className='w-full h-full' />
                       </div>
                       {!isClosed && <span className='font-semibold'>Supplier</span>}
                     </div>
@@ -240,7 +260,7 @@ function LeftSideBar() {
                   >
                     <div className='flex items-center'>
                       <div className='w-6 h-6 mr-3'>
-                      <RiCoupon2Fill className='w-full h-full' />
+                        <RiCoupon2Fill className='w-full h-full' />
                       </div>
                       {!isClosed && <span className='font-semibold'>Promotion</span>}
                     </div>
@@ -262,7 +282,7 @@ function LeftSideBar() {
                   >
                     <div className='flex items-center'>
                       <div className='w-6 h-6 mr-3'>
-                      <FaBox className='w-full h-full' />
+                        <FaBox className='w-full h-full' />
                       </div>
                       {!isClosed && <span className='font-semibold'>Production</span>}
                     </div>
@@ -270,7 +290,6 @@ function LeftSideBar() {
                 </div>
               )}
             </div>
-
           </div>
         </div>
       </div>

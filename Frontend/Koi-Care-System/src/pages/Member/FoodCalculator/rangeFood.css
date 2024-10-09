@@ -17,7 +17,11 @@
   background-color: #ff0000; /* Màu chấm */
   border-radius: 50%; /* Bo tròn chấm */
   cursor: pointer; /* Con trỏ khi di chuột lên chấm */
-  transition: background-color 0.2s, width 0.2s, height 0.2s, transform 0.2s; /* Thêm hiệu ứng chuyển đổi */
+  transition:
+    background-color 0.2s,
+    width 0.2s,
+    height 0.2s,
+    transform 0.2s; /* Thêm hiệu ứng chuyển đổi */
 }
 
 /* Hiệu ứng hover */
@@ -41,7 +45,11 @@
   background-color: #ff0000; /* Màu chấm */
   border-radius: 50%; /* Bo tròn chấm */
   cursor: pointer; /* Con trỏ khi di chuột lên chấm */
-  transition: background-color 0.2s, width 0.2s, height 0.2s, transform 0.2s; /* Thêm hiệu ứng chuyển đổi */
+  transition:
+    background-color 0.2s,
+    width 0.2s,
+    height 0.2s,
+    transform 0.2s; /* Thêm hiệu ứng chuyển đổi */
 }
 
 /* Hiệu ứng khi nhấn */
