@@ -57,8 +57,12 @@ import Category from './pages/Shop/Category/Category'
 import CreateCategory from './pages/Shop/Category/CreateCategory'
 import UpdateCategory from './pages/Shop/Category/UpdateCategory'
 import ViewProduct from './pages/Shop/Product/ViewProduct'
+import Payment from './pages/Member/Recommendations/Payment'
+import ProtectedRoute from './ProtectedRoute'
 
 function App() {
+  const isAuthenticated = Boolean(localStorage.getItem('token'))
+
   const routeElements = useRoutes([
     {
       path: path.home,
@@ -98,119 +102,247 @@ function App() {
     },
     {
       path: path.member,
-      element: <Member />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Member />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.myAccount,
-      element: <MyAccount />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <MyAccount />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.profile,
-      element: <Profile />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Profile />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.shopCart,
-      element: <ShopCart />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ShopCart />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.dashboard,
-      element: <Dashboard />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Dashboard />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.myKoi,
-      element: <MyKoi />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <MyKoi />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.myPond,
-      element: <MyPond />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <MyPond />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.waterParameters,
-      element: <WaterParameters />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <WaterParameters />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.reminders,
-      element: <Reminders />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Reminders />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.recommendations,
-      element: <Recommendations />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Recommendations />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.foodCalculator,
-      element: <FoodCalculator />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <FoodCalculator />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.saltCalculator,
-      element: <SaltCalculator />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <SaltCalculator />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.statistics,
-      element: <Statistics />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Statistics />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.news,
-      element: <News />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <News />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.newsDetails,
-      element: <NewsDetail />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <NewsDetail />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.koiDetail,
-      element: <KoiDetail />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <KoiDetail />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.recommendationDetail,
-      element: <RecommendationDetail />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <RecommendationDetail />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.aboutMember,
-      element: <About />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <About />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.myPondLog,
-      element: <MyPondLog />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <MyPondLog />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.shop,
-      element: <Shop />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Shop />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.shopNews,
-      element: <ShopNews />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ShopNews />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.createNews,
-      element: <CreateNews />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <CreateNews />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updateNews,
-      element: <UpdateNews />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <UpdateNews />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.viewNews,
-      element: <ViewNews />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <ViewNews />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.myPondLogDetail,
-      element: <MyPondLogId />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <MyPondLogId />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.tag,
-      element: <Tag />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Tag />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.myPondLogDetail,
-      element: <MyPondLogId />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <MyPondLogId />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.wishList,
-      element: <WishList />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <WishList />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.cartList,
-      element: <CartList />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <CartList />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: path.payment,
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Payment />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: path.payment,
+      element: <Payment />
     },
     {
       path: path.createTag,

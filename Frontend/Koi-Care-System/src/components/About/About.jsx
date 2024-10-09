@@ -1,13 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 
-import AOS from "aos"
+import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { useEffect } from 'react'
 
 function About() {
-
   useEffect(() => {
-    AOS.init({duration:800, offset:100, delay:200, })
+    AOS.init({ duration: 800, offset: 100, delay: 200 })
   })
 
   return (
@@ -65,11 +64,9 @@ function About() {
             can confidently manage your pond and enhance your Koi's health and beauty, knowing that you have a trusted
             partner by your side.
           </p>
-          </div>
-          
-          </div>
+        </div>
       </div>
-      
+    </div>
   )
 }
 

@@ -1,5 +1,5 @@
-import { PiNewspaperClipping } from "react-icons/pi"
-import { FaTags } from "react-icons/fa";
+import { PiNewspaperClipping } from 'react-icons/pi'
+import { FaTags } from 'react-icons/fa'
 import { FaRegNewspaper } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import path from '../../constants/path'
@@ -132,13 +132,23 @@ function LeftSideBar() {
                   <div className='w-7 h-7 mr-3'>
                     <FaRegNewspaper className='w-full h-full' />
                   </div>
-                  {!isClosed && 
-                  <span className='flex items-center'>
-                    <p className='font-semibold'>Manage News</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 ml-2 mt-1">
-                      <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clipRule="evenodd" />
-                    </svg>
-                  </span>}
+                  {!isClosed && (
+                    <span className='flex items-center'>
+                      <p className='font-semibold'>Manage News</p>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 24 24'
+                        fill='currentColor'
+                        className='size-5 ml-2 mt-1'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
+                    </span>
+                  )}
                 </div>
               </button>
 
@@ -157,7 +167,7 @@ function LeftSideBar() {
                   >
                     <div className='flex items-center'>
                       <div className='w-7 h-7 mr-3'>
-                        <PiNewspaperClipping  className='w-full h-full' />
+                        <PiNewspaperClipping className='w-full h-full' />
                       </div>
                       {!isClosed && <span className='font-semibold'>News</span>}
                     </div>
@@ -176,7 +186,7 @@ function LeftSideBar() {
                   >
                     <div className='flex items-center'>
                       <div className='w-7 h-7 mr-3'>
-                      <FaTags className='w-full h-full' />
+                        <FaTags className='w-full h-full' />
                       </div>
                       {!isClosed && <span className='font-semibold'>Tag</span>}
                     </div>
@@ -196,13 +206,23 @@ function LeftSideBar() {
                   <div className='w-7 h-7 mr-3'>
                     <AiFillShop className='w-full h-full' />
                   </div>
-                  {!isClosed && 
-                  <span className='flex items-center'>
-                    <p className='font-semibold'>Manage Shop</p>
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-5 ml-2 mt-1">
-                      <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clipRule="evenodd" />
-                    </svg>
-                  </span>}
+                  {!isClosed && (
+                    <span className='flex items-center'>
+                      <p className='font-semibold'>Manage Shop</p>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 24 24'
+                        fill='currentColor'
+                        className='size-5 ml-2 mt-1'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
+                    </span>
+                  )}
                 </div>
               </button>
 

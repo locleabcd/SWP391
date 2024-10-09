@@ -51,7 +51,6 @@ function ViewNews() {
     getBlogDetail()
   }, [])
 
-
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
@@ -250,5 +249,5 @@ function ViewNews() {
     </div>
   )
 }
-  
+
 export default ViewNews

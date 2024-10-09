@@ -209,4 +209,3 @@ function CreateNews() {
 }
 
 export default CreateNews
-

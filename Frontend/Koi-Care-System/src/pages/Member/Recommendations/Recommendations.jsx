@@ -12,6 +12,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { AddToWishlist, RemoveFromWishlist } from '../../../redux/store/wishList'
 import { addToCartList } from '../../../redux/store/cartList'
+import { motion } from 'framer-motion'
 
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
@@ -358,8 +359,8 @@ function Recommendations() {
                               ? 'bg-custom-layout-dark'
                               : 'bg-custom-layout-light'
                             : isDarkMode
-                            ? 'hover:bg-custom-layout-dark'
-                            : 'hover:bg-custom-layout-light'
+                              ? 'hover:bg-custom-layout-dark'
+                              : 'hover:bg-custom-layout-light'
                         }`}
                       >
                         <input type='radio' className='scale-150' checked={pricing === range} readOnly />
@@ -382,8 +383,8 @@ function Recommendations() {
                               ? 'bg-custom-layout-dark'
                               : 'bg-custom-layout-light'
                             : isDarkMode
-                            ? 'hover:bg-custom-layout-dark'
-                            : 'hover:bg-custom-layout-light'
+                              ? 'hover:bg-custom-layout-dark'
+                              : 'hover:bg-custom-layout-light'
                         }`}
                       >
                         <div className='flex items-center gap-1'>
@@ -441,9 +442,24 @@ function Recommendations() {
 
                 {paginatedProducts.length > 0 ? (
                   <>
-                    <div className='grid grid-cols-3 gap-8 py-3 mt-4'>
-                      {paginatedProducts.map((products) => (
-                        <div
+                    <motion.div
+                      initial='hidden'
+                      animate='visible'
+                      variants={{
+                        visible: {
+                          transition: {
+                            staggerChildren: 0.3
+                          }
+                        }
+                      }}
+                      className='grid grid-cols-3 gap-8 py-3 mt-4'
+                    >
+                      {paginatedProducts.map((products, index) => (
+                        <motion.div
+                          variants={{
+                            hidden: { opacity: 0, x: 100 },
+                            visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
+                          }}
                           key={products.id}
                           className='border border-gray-200 rounded-xl hover:scale-[102%] duration-300'
                         >
@@ -451,11 +467,11 @@ function Recommendations() {
                             <div className='border-b border-gray-200 max-h-[300px]'>
                               <Link
                                 to={`/member/recommendations/${products.id}`}
-                                key={products.images[0].id}
+                                key={products?.images[0]?.id}
                                 className='min-h-[150px] cursor-pointer'
                               >
                                 <img
-                                  src={products.images[0].downloadUrl}
+                                  src={products?.images[0]?.downloadUrl}
                                   alt=''
                                   className='w-full h-[290px] rounded-t-lg'
                                 />
@@ -520,7 +536,10 @@ function Recommendations() {
                           <div className='px-7 py-5 text-xl mt-5 font-medium'>
                             <div className='line-clamp-1'>{products.name}</div>
                             <div className='flex justify-between'>
-                              <div className='mt-3'>${products.price}</div>
+                              <div className='mt-3'>
+                                {' '}
+                                {products.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                              </div>
                               <div className='mt-3 flex'>
                                 {[...Array(5)].map((_, index) => {
                                   const fullStar = index < Math.floor(products.rating)
@@ -553,9 +572,9 @@ function Recommendations() {
                               </div>
                             </div>
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
-                    </div>
+                    </motion.div>
                     <div className='flex justify-center items-center mt-6'>
                       <button
                         disabled={currentPage === 1}
