@@ -467,11 +467,11 @@ function Recommendations() {
                             <div className='border-b border-gray-200 max-h-[300px]'>
                               <Link
                                 to={`/member/recommendations/${products.id}`}
-                                key={products.images[0].id}
+                                key={products?.images[0]?.id}
                                 className='min-h-[150px] cursor-pointer'
                               >
                                 <img
-                                  src={products.images[0].downloadUrl}
+                                  src={products?.images[0]?.downloadUrl}
                                   alt=''
                                   className='w-full h-[290px] rounded-t-lg'
                                 />
