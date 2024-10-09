@@ -87,6 +87,8 @@ const CartList = () => {
     }
   }
 
+  localStorage.setItem('totalPrice', subTotal)
+
   const getCartId = async () => {
     try {
       const token = localStorage.getItem('token')

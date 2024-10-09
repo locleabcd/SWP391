@@ -30,6 +30,7 @@ function Checkout() {
 
     setDestination(`${address}, ${selectedWard}, ${selectedDistrict}, ${selectedProvince}`.trim())
   }, [address, selectedTinh, selectedQuan, selectedPhuong, tinh, quan, phuong])
+
   const addAddress = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -56,26 +57,6 @@ function Checkout() {
     }
   }
 
-  const createPayment = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const orderId = 3
-      const res = await axios.get('https://koicaresystem.azurewebsites.net/api/payment/vn-pay', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        params: {
-          amount: cart.totalAmount,
-          orderId: orderId
-        }
-      })
-      console.log(res.data)
-      SetPayment(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   const getCartId = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -99,6 +80,30 @@ function Checkout() {
 
   useEffect(() => {
     getCartId()
+  }, [])
+
+  const createPayment = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const orderId = 3
+      const totalPrice = localStorage.getItem('totalPrice')
+      const res = await axios.get('https://koicaresystem.azurewebsites.net/api/payment/vn-pay', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: {
+          amount: totalPrice,
+          orderId: orderId
+        }
+      })
+      SetPayment(res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    createPayment()
   }, [])
 
   useEffect(() => {
@@ -138,10 +143,6 @@ function Checkout() {
         .catch((error) => console.error('Error fetching wards:', error))
     }
   }, [selectedQuan])
-
-  useEffect(() => {
-    createPayment()
-  }, [])
 
   return (
     <div>
