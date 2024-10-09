@@ -15,7 +15,7 @@ import org.thymeleaf.context.Context;
 
 import java.util.Map;
 
-import static com.swpproject.koi_care_system.ultis.EmailUtils.getVerificationUrl;
+import static com.swpproject.koi_care_system.utils.EmailUtils.getVerificationUrl;
 
 @Service
 @RequiredArgsConstructor

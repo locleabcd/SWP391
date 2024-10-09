@@ -3,6 +3,7 @@ package com.swpproject.koi_care_system.service.issue;
 import com.swpproject.koi_care_system.enums.RangeParameter;
 import com.swpproject.koi_care_system.models.IssueType;
 import com.swpproject.koi_care_system.repository.IssueTypeRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 public class IssueTypeService implements IIssueTypeService {
     IssueTypeRepository issueTypeRepository;
 
+    @PostConstruct
     public void init() {
         for (RangeParameter parameter : RangeParameter.values()) {
             // Create HIGH IssueType if it doesn't exist

@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.ultis;
+package com.swpproject.koi_care_system.utils;
 
 public class EmailUtils {
 

@@ -2,7 +2,7 @@ package com.swpproject.koi_care_system.service.vnpay;
 
 import com.swpproject.koi_care_system.config.VnPayConfig;
 import com.swpproject.koi_care_system.dto.PaymentDto;
-import com.swpproject.koi_care_system.ultis.VNPayUtil;
+import com.swpproject.koi_care_system.utils.VNPayUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,11 +28,11 @@ public class VnPayService {
         if (bankCode != null && !bankCode.isEmpty()) {
             vnpParamsMap.put("vnp_BankCode", bankCode);
         }
-        vnpParamsMap.put("vnp_IpAddr", VNPayUtil.getIpAddress(request));
+        vnpParamsMap.put("vnp_IpAddr", VNPayUtils.getIpAddress(request));
         //build query url
-        String queryUrl = VNPayUtil.getPaymentURL(vnpParamsMap, true);
-        String hashData = VNPayUtil.getPaymentURL(vnpParamsMap, false);
-        String vnpSecureHash = VNPayUtil.hmacSHA512(secretKey, hashData);
+        String queryUrl = VNPayUtils.getPaymentURL(vnpParamsMap, true);
+        String hashData = VNPayUtils.getPaymentURL(vnpParamsMap, false);
+        String vnpSecureHash = VNPayUtils.hmacSHA512(secretKey, hashData);
         queryUrl += "&vnp_SecureHash=" + vnpSecureHash;
         String paymentUrl = vnp_PayUrl + "?" + queryUrl;
         return PaymentDto.builder()

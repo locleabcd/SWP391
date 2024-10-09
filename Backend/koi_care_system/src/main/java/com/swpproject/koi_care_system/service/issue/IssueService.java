@@ -24,18 +24,16 @@ public class IssueService implements IIssueService {
     IssueMapper issueMapper;
 
     public void detectIssues(WaterParameters waterParameters) {
+        List<Issue> existIssue = issueRepository.findAll();
+        if (!existIssue.isEmpty()) {
+            issueRepository.deleteAll(existIssue);
+        }
         for (RangeParameter parameter : RangeParameter.values()) {
             double value = getParameterValue(waterParameters, parameter);
 
-            if (parameter.isLow(value)) {
-                createIssue("LOW", parameter, waterParameters);
-            } else if (parameter.isHigh(value)) {
-                createIssue("HIGH", parameter, waterParameters);
-            } else {
-                Issue issue = issueRepository.findByWaterParametersAndName(waterParameters, parameter.name());
-                if (issue != null) {
-                    issueRepository.delete(issue);
-                }
+            if (parameter.isLow(value) || parameter.isHigh(value)) {
+                String conditionType = parameter.isLow(value) ? "LOW" : "HIGH";
+                createIssue(conditionType, parameter, waterParameters);
             }
         }
     }

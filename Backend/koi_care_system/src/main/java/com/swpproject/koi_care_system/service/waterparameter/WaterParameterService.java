@@ -37,7 +37,6 @@ public class WaterParameterService implements IWaterParametersService {
         WaterParameters waterParameters = waterParameterMapper.mapToWaterParameters(parametersCreateRequest);
         waterParameters.setKoiPond(koiPond);
         waterParametersRepository.save(waterParameters);
-        issueTypeService.init();//RUN THROUGH AND CREATE ISSUE TYPES
         issueService.detectIssues(waterParameters);//check issue
         return waterParameterMapper.mapToWaterParameterDto(waterParameters);
     }
