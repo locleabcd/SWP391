@@ -288,7 +288,7 @@ const CartList = () => {
 
                 <div className='flex mt-7 text-xl justify-between'>
                   <div className=''>Discount</div>
-                  <div className=''>$0.00</div>
+                  <div className=''> {(0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
                 </div>
 
                 <div className='flex mt-7 text-xl justify-between'>
