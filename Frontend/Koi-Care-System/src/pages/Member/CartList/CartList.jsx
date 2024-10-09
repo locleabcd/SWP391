@@ -199,7 +199,7 @@ const CartList = () => {
                       <td className='px-6 py-4 text-center whitespace-nowrap flex gap-5'>
                         <div className=''>
                           <img
-                            src={item.product.images[0].downloadUrl}
+                            src={item.product?.images[0]?.downloadUrl}
                             alt=''
                             className='mx-auto w-[120px] h-[120px] rounded-lg border border-gray-200'
                           />
@@ -270,7 +270,10 @@ const CartList = () => {
                         </div>
                       </td>
 
-                      <td className='px-6 py-4 text-start whitespace-nowrap'>$ {item.totalPrice}</td>
+                      <td className='px-6 py-4 text-start whitespace-nowrap'>
+                        {' '}
+                        {item.totalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -280,7 +283,7 @@ const CartList = () => {
                 <div className='text-2xl font-semibold'>Order Summary</div>
                 <div className='flex mt-7 text-xl justify-between'>
                   <div className=''>Sub Total</div>
-                  <div className=''>${subTotal.toFixed(2)}</div>
+                  <div className=''> {subTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
                 </div>
 
                 <div className='flex mt-7 text-xl justify-between'>
@@ -295,7 +298,7 @@ const CartList = () => {
 
                 <div className='flex mt-7 text-xl justify-between'>
                   <div className='font-medium'>Total</div>
-                  <div className=''>${subTotal.toFixed(2)}</div>
+                  <div className=''> {subTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
                 </div>
               </div>
               <div className='flex justify-between mt-8'>

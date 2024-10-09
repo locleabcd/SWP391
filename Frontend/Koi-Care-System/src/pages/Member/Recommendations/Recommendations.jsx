@@ -536,7 +536,10 @@ function Recommendations() {
                           <div className='px-7 py-5 text-xl mt-5 font-medium'>
                             <div className='line-clamp-1'>{products.name}</div>
                             <div className='flex justify-between'>
-                              <div className='mt-3'>${products.price}</div>
+                              <div className='mt-3'>
+                                {' '}
+                                {products.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                              </div>
                               <div className='mt-3 flex'>
                                 {[...Array(5)].map((_, index) => {
                                   const fullStar = index < Math.floor(products.rating)
