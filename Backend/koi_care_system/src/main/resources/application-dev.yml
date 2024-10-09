@@ -59,3 +59,12 @@ spring:
 
 jwt:
   signerKey: ${JWT_SIGNER_KEY}
+payment:
+  vnPay:
+    url: ${VN_PAY_URL}
+    tmnCode: ${VN_PAY_TMN_CODE}
+    secretKey: ${VN_PAY_SECRET_KEY}
+    returnUrl: http://localhost:8080/api/payment/vn-pay-callback
+    version: "2.1.0"
+    command: "pay"
+    orderType: other
