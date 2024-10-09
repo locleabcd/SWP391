@@ -163,18 +163,17 @@ function Checkout() {
                 <li className='flex items-center after:mx-2 after:mb-10 after:h-1 after:w-full w-full after:border-b after:border-gray-400 dark:text-primary-500'>
                   <span className='flex flex-col'>
                     <svg
-                      className='size-10 rounded-full bg-gray-400 flex items-center justify-center text-white'
-                      focusable='false'
-                      aria-hidden='true'
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
                       viewBox='0 0 24 24'
-                      data-testid='CheckCircleIcon'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='size-10 bg-blue-400 rounded-full text-white'
                     >
                       <path
-                        d='M12 0a12 12 0 1 0 0 24 12 12 0 0 0 0-24zm-3 16l-5-5 1.4-1.4 3.2 3.2 7.6-7.6L19 8l-9 9z'
-                        fill='none'
-                        stroke='currentColor'
-                        strokeWidth='1'
-                        className='text-white '
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
                       />
                     </svg>
 

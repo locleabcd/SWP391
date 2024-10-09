@@ -24,6 +24,7 @@ const path = {
   saltCalculator: '/member/saltCalculator',
   statistics: '/member/statistics',
   news: '/member/news',
+  payment: '/member/payment',
   newsDetails: '/member/news/:id',
   koiDetail: '/member/myKoi/:id',
   recommendationDetail: '/member/recommendations/:id',

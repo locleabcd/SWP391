@@ -54,6 +54,7 @@ import UpdatePromotion from './pages/Shop/Promotion/UpdatePromotion'
 import Production from './pages/Shop/Production/Production'
 import CreateProduct from './pages/Shop/Production/CreateProduct'
 import UpdateProduct from './pages/Shop/Production/UpdateProduct'
+import Payment from './pages/Member/Recommendations/Payment'
 function App() {
   const routeElements = useRoutes([
     {
@@ -207,6 +208,10 @@ function App() {
     {
       path: path.cartList,
       element: <CartList />
+    },
+    {
+      path: path.payment,
+      element: <Payment />
     },
     {
       path: path.createTag,
