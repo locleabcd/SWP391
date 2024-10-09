@@ -174,14 +174,6 @@ function MyKoi() {
     getPond()
   }, [])
 
-  // if (isLoading) {
-  //   return (
-  //     <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-  //       <FaSpinner className='animate-spin text-green-500 text-4xl' />
-  //     </div>
-  //   )
-  // }
-
   return (
     <div>
       <div className='h-screen flex'>
@@ -597,6 +589,11 @@ function MyKoi() {
               </div>
             </form>
           </div>
+        </div>
+      )}
+      {isLoading && (
+        <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+          <FaSpinner className='animate-spin text-green-500 text-6xl' />
         </div>
       )}
     </div>

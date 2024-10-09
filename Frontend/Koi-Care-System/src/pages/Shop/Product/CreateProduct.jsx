@@ -9,7 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { useForm } from 'react-hook-form'
 
-export default function CreateProduct() {
+function CreateProduct() {
   const { isDarkMode } = useDarkMode()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
@@ -98,6 +98,29 @@ export default function CreateProduct() {
           Authorization: `Bearer ${token}`,
         }
       })
+      const productId = res.data.data.id; // Assuming the response includes the product ID
+
+      // Prepare files for upload
+      const files = data.files; 
+      if (files && files.length > 0) {
+        const formData = new FormData();
+        for (const file of files) {
+          formData.append('files', file); // Ghi từng file vào formData
+        }
+        formData.append('productId', productId);
+
+        // Upload images
+        await axios.post(
+          `https://koicaresystem.azurewebsites.net/api/images/upload`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data', 
+            },
+          }
+        );
+      }
       toast.success('Product created successfully!')
       navigate('/shop/product')
       
@@ -164,7 +187,7 @@ export default function CreateProduct() {
                 <textarea
                   id="description"
                   className={`relative w-full p-2 border rounded-md ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
-                  {...register('description', { required: 'Description is required', minLength: 10, maxLength: 500 })}
+                  {...register('description', { required: 'Description is required'})}
                 />
                 {errors.description && <p className='text-red-500 text-xs mt-1'>{errors.description.message}</p>}
               </div>
@@ -173,7 +196,7 @@ export default function CreateProduct() {
                 <textarea
                   id="description_detail"
                   className={`relative w-full p-2 border rounded-md ${errors.description_detail ? 'border-red-500' : 'border-gray-300'}`}
-                  {...register('description_detail', { required: 'Detailed description is required', minLength: 10, maxLength: 1000 })}
+                  {...register('description_detail', { required: 'Detailed description is required'})}
                 />
                 {errors.description_detail && <p className='text-red-500 text-xs mt-1'>{errors.description_detail.message}</p>}
               </div>
@@ -218,6 +241,18 @@ export default function CreateProduct() {
                 />
                 {errors.issueTypeId && <p className='text-red-500 text-xs mt-1'>{errors.issueTypeId.message}</p>}
               </div>
+
+              <div className='mb-4'>
+                <label htmlFor="files" className='block text-sm font-medium mb-2'>Upload Images</label>
+                <input
+                  type='file'
+                  id="files"
+                  multiple
+                  className={`relative w-full p-2 border rounded-md ${errors.files ? 'border-red-500' : 'border-gray-300'}`}
+                  {...register('files')}
+                />
+                {errors.files && <p className='text-red-500 text-xs mt-1'>{errors.files.message}</p>}
+              </div>
               <button
                 type="submit"
                 className={`mt-5 w-full bg-blue-600 text-white p-2 rounded-md ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
@@ -232,3 +267,4 @@ export default function CreateProduct() {
     </div>
   )
 }
+export default CreateProduct

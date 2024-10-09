@@ -17,16 +17,16 @@ function KoiDetails() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isEditFormVisible, setIsEditFormVisible] = useState(false)
   const [koi, setKoi] = useState(null)
-  const [isLoading, setIsLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(false)
   const [ponds, setPonds] = useState([])
   const navigate = useNavigate()
   const [baseImage, setBaseImage] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
-  const [growth, setGrowth] = useState(null)
+  const [growth, setGrowth] = useState([])
   const [currentGrowth, setCurrentGrowth] = useState(null)
   const [isAddGrowthFormVisible, setIsAddGrowthFormVisible] = useState(false)
   const [isEditGrowthFormVisible, setIsEditGrowthFormVisible] = useState(false)
-  const [remarks, setRemarks] = useState(null)
+  const [remarks, setRemarks] = useState([])
   const [currentRemark, setCurrentRemark] = useState(null)
   const [isAddRemarkFormVisible, setIsAddRemarkFormVisible] = useState(false)
   const [isEditRemarkFormVisible, setIsEditRemarkFormVisible] = useState(false)
@@ -333,7 +333,6 @@ function KoiDetails() {
   }
 
   const getKoi = async () => {
-    setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -345,17 +344,17 @@ function KoiDetails() {
           Authorization: `Bearer ${token}`
         }
       })
-
-      
-      console.log(res.data.data);
-      setKoi(res.data.data)    
+        console.log(res.data.data);
+        setKoi(res.data.data); 
     } catch (error) {
       console.error('Error fetching koi:', error)
       alert('Failed to load koi details, please try again later.')
-    } finally {
-      setIsLoading(false)
-    }
+    } 
   }
+
+  useEffect(() => {
+    getKoi()
+  }, [])
 
   const deleteGrowth = async (id) => {
     const isConfirmed = window.confirm('Are you sure to delete growth history!')
@@ -408,11 +407,7 @@ function KoiDetails() {
       setIsLoading(false)
     }
   }
-
-  useEffect(() => {
-    getKoi()
-  }, [])
-
+ 
   const getPond = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -425,12 +420,22 @@ function KoiDetails() {
           Authorization: `Bearer ${token}`
         }
       })
-
-      console.log('data', res.data)
+      console.log(res.data.data)
       setPonds(res.data.data)
     } catch (error) {
-      console.error('Error fetching ponds:', error)
-      alert('Failed to load ponds, please try again later.')
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          console.error('Unauthorized access - Token expired or invalid. Logging out...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('id')
+          toast.error('Token expired navigate to login')
+          navigate('/login')
+        } else {
+          console.error('Error fetching ponds:', error.response?.status, error.message)
+        }
+      } else {
+        console.error('An unexpected error occurred:', error)
+      }
     }
   }
 
@@ -512,183 +517,124 @@ function KoiDetails() {
     updateKoi(data, id)
   }
 
-  if (isLoading) {
-    return (     
-        <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-          <FaSpinner className='animate-spin text-green-500 text-6xl' />
-        </div>   
-    )
-  }
-
+  // if (isLoading) {
+  //   return (     
+  //       <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+  //         <FaSpinner className='animate-spin text-green-500 text-6xl' />
+  //       </div>   
+  //   )
+  // }
   return (
     <div>
-      <div className=' flex'>
+      <div className='h-screen flex'>
         <LeftSideBar />
         <div
           className={`relative ${
             isDarkMode ? 'bg-custom-light text-white' : 'bg-gray-200 text-black'
-          } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
+          } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
+
           <div className='py-5 pb-0 px-[30px] mx-auto'>
-            <TopLayout text='My Koi' textName='My Koi Detail' links='member/myKoi' />
-          </div>
-          <div className='flex items-center justify-end pr-12'>
-            <button>
-              <MdSystemUpdateAlt className='size-7' onClick={() => toggleEditFormVisibility(koi)} />
-            </button>
-          </div>
-          {/* Main content section */}
-          <div className='flex justify-around py-5'>
-            {/* Left content koi */}
-            {koi && (
-              <div
-                className={`${
-                  isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                } flex rounded-xl shadow-lg w-[50%]`}
-              >
-                {/* Image section */}
-                <div className='h-full w-[50%] rounded-l-xl overflow-hidden'>
-                  <img
-                    className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105'
-                    src={koi.imageUrl } 
-                    alt={koi.name }            
-                  />
-                </div>
-
-                {/* Right content koi */}
-                <div className='w-[55%] pl-4 pr-3 py-4 flex flex-col justify-between'>
-                  <div>
-                    <div className='flex items-center'>
-                      <h2 className='w-[90%] font-semibold text-3xl text-start text-nowrap'>
-                        {koi.name || 'Unnamed Koi'}
-                      </h2>
-                    </div>
-                    <p className='text-start my-2'>
-                      Variety: <strong>{koi.variety || 'Unknown'}</strong>
-                    </p>
-                    <p className='text-start mb-3'>
-                      Pond: <strong>{koi.koiPond?.name || 'No pond information'}</strong>
-                    </p>
-                  </div>
-                  <div className='flex justify-between gap-4 bg-gray-400 rounded-2xl p-3'>
-                    <div className='text-center'>
-                      <h1 className='text-red-500 font-semibold'>Age</h1>
-                      <p className='text-sm'>{koi.age ? `${koi.age} years` : 'N/A'}</p>
-                    </div>
-                    <div className='text-center'>
-                      <h1 className='text-red-500 font-semibold'>Length</h1>
-                      <p className='text-sm'>{koi.length ? `${koi.length} cm` : 'N/A'}</p>
-                    </div>
-                    <div className='text-center'>
-                      <h1 className='text-red-500 font-semibold'>Weight</h1>
-                      <p className='text-sm'>{koi.weight ? `${koi.weight} g` : 'N/A'}</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {/* Koi description */}
-            {koi && (
-              <div
-                className={`${
-                  isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                } text-start p-4 rounded-xl shadow-lg w-[40%]`}
-              >
-                <h2 className='font-bold text-center text-xl mb-2'>Koi Description</h2>
-                <p className='mb-4'>
-                  <strong>{koi.name || 'Unnamed Koi'}</strong> with size{' '}
-                  <strong>{koi.physique || 'Unknown'}</strong> has been swimming in the pond "
-                  <strong>{koi.koiPond?.name || 'No pond information'}</strong>" since{' '}
-                  <strong>{formatDate(koi.pondDate) || 'Unknown Date'}</strong>.
-                </p>
-                <p className='mb-4'>
-                  <strong>{koi.name || 'Unnamed Koi'}</strong> was bought for{' '}
-                  <strong>{koi.price ? `${koi.price}€` : 'Unknown Price'}</strong> and was bred by{' '}
-                  <strong>{koi.breeder || 'Unknown Breeder'}</strong>.
-                </p>
-                <p className='mb-2'>
-                  <strong>{koi.name || 'Unnamed Koi'}</strong> was{' '}
-                  <strong>{koi.status || 'Unknown Status'}</strong>.
-                </p>
-              </div>
-            )}
-          </div>
-        
-
-          {/* Growth history and remarks */}
-          <div className="grid grid-cols-2 gap-10 px-44 py-5">
-            {/* Growth History Section */}
-            <div className="growth-history w-[85%]">
-              <div className="flex justify-between items-center pb-4">
-                <h2 className="font-bold text-xl">Growth History</h2>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-8 h-8 text-red-500 cursor-pointer"
-                  onClick={toggleAddGrowthFormVisibility}
+            <TopLayout text='My Koi' textName='My Koi Detail' links='member/myKoi' />           
+            <div className='flex items-center justify-end pr-12'>
+              <button>
+                <MdSystemUpdateAlt className='size-7' onClick={() => toggleEditFormVisibility(koi)} />
+              </button>
+            </div>
+            {/* Main content section */}
+            <div className='flex justify-around py-5'>
+              {/* Left content koi */}
+              {koi && (
+                <div
+                  className={`${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } flex rounded-xl shadow-lg w-[50%]`}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                  />
-                </svg>
-              </div>
+                  {/* Image section */}
+                  <div className='h-full w-[50%] rounded-l-xl overflow-hidden'>
+                    <img
+                      className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105'
+                      src={koi.imageUrl } 
+                      alt={koi.name }            
+                    />
+                  </div>
 
-              {growth.length > 0 ? (
-                growth.map((g, index) => (
-                  <div
-                    key={index}
-                    className={`flex items-center rounded-lg mb-4 max-h-28 overflow-hidden cursor-pointer ${
-                      isDarkMode ? 'text-white bg-slate-700' : 'text-black bg-white'
-                    }`}
-                    onClick={() => {
-                      toggleEditGrowthFormVisibility(g);
-                      reset(g);
-                    }}
-                  >
-                    <div className="w-2/5 rounded-l-lg overflow-hidden">
-                      <img
-                        src={g.imageUrl}
-                        alt={`Growth ${index + 1}`}
-                        className="w-full h-full object-cover min-w-[200px]"
-                      />
+                  {/* Right content koi */}
+                  <div className='w-[55%] pl-4 pr-3 py-4 flex flex-col justify-between'>
+                    <div>
+                      <div className='flex items-center'>
+                        <h2 className='w-[90%] font-semibold text-3xl text-start text-nowrap'>
+                          {koi.name || 'Unnamed Koi'}
+                        </h2>
+                      </div>
+                      <p className='text-start my-2'>
+                        Variety: <strong>{koi.variety || 'Unknown'}</strong>
+                      </p>
+                      <p className='text-start mb-3'>
+                        Pond: <strong>{koi.koiPond?.name || 'No pond information'}</strong>
+                      </p>
                     </div>
-                    <div className="w-3/5 pl-4">
-                      <p className="mb-2">
-                        <strong>Date:</strong> {formatDate(g.createDate)}
-                      </p>
-                      <p className="mb-2">
-                        <strong>Length:</strong> {g.length} cm
-                      </p>
-                      <p className="mb-2">
-                        <strong>Weight:</strong> {g.weight} g
-                      </p>
+                    <div className='flex justify-between gap-4 bg-gray-400 rounded-2xl p-3'>
+                      <div className='text-center'>
+                        <h1 className='text-red-500 font-semibold'>Age</h1>
+                        <p className='text-sm'>{koi.age ? `${koi.age} years` : 'N/A'}</p>
+                      </div>
+                      <div className='text-center'>
+                        <h1 className='text-red-500 font-semibold'>Length</h1>
+                        <p className='text-sm'>{koi.length ? `${koi.length} cm` : 'N/A'}</p>
+                      </div>
+                      <div className='text-center'>
+                        <h1 className='text-red-500 font-semibold'>Weight</h1>
+                        <p className='text-sm'>{koi.weight ? `${koi.weight} g` : 'N/A'}</p>
+                      </div>
                     </div>
                   </div>
-                ))
-              ) : (
-                <p className="text-center text-sm text-gray-500">No growth history available</p>
+                </div>
+              )}
+
+              {/* Koi description */}
+              {koi && (
+                <div
+                  className={`${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } text-start p-4 rounded-xl shadow-lg w-[40%]`}
+                >
+                  <h2 className='font-bold text-center text-xl mb-2'>Koi Description</h2>
+                  <p className='mb-4'>
+                    <strong>{koi.name || 'Unnamed Koi'}</strong> with size{' '}
+                    <strong>{koi.physique || 'Unknown'}</strong> has been swimming in the pond "
+                    <strong>{koi.koiPond?.name || 'No pond information'}</strong>" since{' '}
+                    <strong>{formatDate(koi.pondDate) || 'Unknown Date'}</strong>.
+                  </p>
+                  <p className='mb-4'>
+                    <strong>{koi.name || 'Unnamed Koi'}</strong> was bought for{' '}
+                    <strong>{koi.price ? `${koi.price}€` : 'Unknown Price'}</strong> and was bred by{' '}
+                    <strong>{koi.breeder || 'Unknown Breeder'}</strong>.
+                  </p>
+                  <p className='mb-2'>
+                    <strong>{koi.name || 'Unnamed Koi'}</strong> was{' '}
+                    <strong>{koi.status || 'Unknown Status'}</strong>.
+                  </p>
+                </div>
               )}
             </div>
+          
 
-            {/* Remarks Section */}
-            <div className="remarks pl-20">
-              <div className="flex justify-between items-center pb-4">
-                <h2 className="font-bold text-xl mb-4">Remarks</h2>
-                <svg
+            {/* Growth history and remarks */}
+            <div className="grid grid-cols-2 gap-10 px-44 py-5">
+              {/* Growth History Section */}
+              <div className="growth-history w-[85%]">
+                <div className="flex justify-between items-center pb-4">
+                  <h2 className="font-bold text-xl">Growth History</h2>
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
                     strokeWidth={1.5}
                     stroke="currentColor"
                     className="w-8 h-8 text-red-500 cursor-pointer"
-                    onClick={toggleAddRemarkFormVisibility}
+                    onClick={toggleAddGrowthFormVisibility}
                   >
                     <path
                       strokeLinecap="round"
@@ -696,19 +642,78 @@ function KoiDetails() {
                       d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                     />
                   </svg>
-              </div>          
-              {remarks.length > 0 ? (
-                remarks.map((remark, index) => (
-                  <div key={index} onClick={() => {toggleEditRemarkFormVisibility(remark); reset(remark);
-                  }} className={`text-lg mb-4 rounded-lg p-4 cursor-pointer ${isDarkMode ? 'bg-slate-700' : 'bg-gray-100'}` }>
-                    <h3 className="font-semibold mb-2">Title: {remark.title}</h3>
-                    <p className=" mb-2"><strong>Date:</strong> {formatDate(remark.createDate)}</p>
-                    <p className=''><strong>Note:</strong> {remark.note}</p>
-                  </div>
-                ))
-              ) : (
-                <p className="text-center text-sm text-gray-500">No remarks available</p>
-              )}
+                </div>
+
+                {growth.length > 0 ? (
+                  growth.map((g, index) => (
+                    <div
+                      key={index}
+                      className={`flex items-center rounded-lg mb-4 max-h-28 overflow-hidden cursor-pointer ${
+                        isDarkMode ? 'text-white bg-slate-700' : 'text-black bg-white'
+                      }`}
+                      onClick={() => {
+                        toggleEditGrowthFormVisibility(g);
+                        reset(g);
+                      }}
+                    >
+                      <div className="w-2/5 rounded-l-lg overflow-hidden">
+                        <img
+                          src={g.imageUrl}
+                          alt={`Growth ${index + 1}`}
+                          className="w-full h-full object-cover min-w-[200px]"
+                        />
+                      </div>
+                      <div className="w-3/5 pl-4">
+                        <p className="mb-2">
+                          <strong>Date:</strong> {formatDate(g.createDate)}
+                        </p>
+                        <p className="mb-2">
+                          <strong>Length:</strong> {g.length} cm
+                        </p>
+                        <p className="mb-2">
+                          <strong>Weight:</strong> {g.weight} g
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-center text-sm text-gray-500">No growth history available</p>
+                )}
+              </div>
+
+              {/* Remarks Section */}
+              <div className="remarks pl-20">
+                <div className="flex justify-between items-center pb-4">
+                  <h2 className="font-bold text-xl mb-4">Remarks</h2>
+                  <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth={1.5}
+                      stroke="currentColor"
+                      className="w-8 h-8 text-red-500 cursor-pointer"
+                      onClick={toggleAddRemarkFormVisibility}
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>
+                </div>          
+                {remarks.length > 0 ? (
+                  remarks.map((remark, index) => (
+                    <div key={index} onClick={() => {toggleEditRemarkFormVisibility(remark); reset(remark);
+                    }} className={`text-lg mb-4 rounded-lg p-4 cursor-pointer ${isDarkMode ? 'bg-slate-700' : 'bg-gray-100'}` }>
+                      <h3 className="font-semibold mb-2">Title: {remark.title}</h3>
+                      <p className=" mb-2"><strong>Date:</strong> {formatDate(remark.createDate)}</p>
+                      <p className=''><strong>Note:</strong> {remark.note}</p>
+                    </div>
+                  ))
+                ) : (
+                  <p className="text-center text-sm text-gray-500">No remarks available</p>
+                )}
+              </div>
             </div>
           </div>
 
@@ -1603,8 +1608,11 @@ function KoiDetails() {
             </div>
           )}
 
-
- 
+      {isLoading && (
+        <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+          <FaSpinner className='animate-spin text-green-500 text-6xl' />
+        </div>
+      )}
         </div>
       </div>
     </div>

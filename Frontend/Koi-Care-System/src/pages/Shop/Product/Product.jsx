@@ -14,6 +14,7 @@ function Product() {
   // const [showButtons, setShowButtons] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
+  const fallbackImage = 'https://5sfashion.vn/storage/upload/images/posts/Z5FgdGRa5ycTaCqcMZnHfZTkb7FyHATji17rlS4q.jpg'
 
   const getProduct = async () => {
     try {
@@ -105,6 +106,7 @@ function Product() {
             <thead className=''>
               <tr className='border-b'>
                 <th className='py-3 px-4 text-center text-xs font-bold uppercase'>No</th>
+                <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Image</th>
                 <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Name</th>
                 <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Brand</th>
                 <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Price</th>
@@ -119,15 +121,22 @@ function Product() {
               {products.map((product, index) => (
                 <tr key={product.id} className=''>
                   <td className='py-2 px-1 text-center border-b border-gray-200'>{index+1}</td>
+                  <td className='py-2 pl-4 text-center border-b border-gray-200'>
+                    <img
+                      src={product.images && product.images.length > 0 ? product.images[0].downloadUrl : fallbackImage}
+                      alt='Product'
+                      className='w-40 h-20 object-cover rounded-md'
+                    />
+                  </td>
                   <td className='py-2 pl-4 text-center border-b border-gray-200'>{product.name}</td>
                   <td className='py-2 px-1 text-center border-b border-gray-200'>{product.brand}</td>
                   <td className='py-2 px-1 text-center border-b border-gray-200'>{`$${product.price.toFixed(2)}`}</td>
                   <td className='py-2 px-1 text-center border-b border-gray-200'>{product.inventory}</td>
-                  <td className='py-2 text-start border-b border-gray-200  max-w-sm'>
+                  <td className='py-2 text-start border-b border-gray-200'>
                     <span title={product.description}>{product.description.length > 120 ? `${product.description.slice(0, 120)} ...` : product.description}</span>
                   </td>
-                  <td className='py-2 px-1 text-center border-b border-gray-200'>{product.category.name}</td>
-                  <td className='py-2 text-center border-b border-gray-200'>{product.supplier.name}</td>
+                  <td className='py-2 px-1 text-center border-b border-gray-200'>{product.category && product.category.name > 0 ? product.category.name : 'Null'}</td>
+                  <td className='py-2 text-center border-b border-gray-200'>{product.supplier && product.supplier.name > 0 ? product.supplier.name : 'Null'}</td>
                   <td className='py-2 px-1 text-center border-b border-gray-200'>
                     <div className='flex justify-center items-center'>
                       <Link to={`/shop/product/${product.id}`} className='p-1 hover:bg-green-500 text-green-500 hover:text-white rounded-full'>
