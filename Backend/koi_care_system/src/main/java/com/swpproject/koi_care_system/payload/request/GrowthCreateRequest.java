@@ -25,7 +25,6 @@ public class GrowthCreateRequest {
     @NotNull
     @Min(value = 0, message = "Weight must be positive")
     Double weight;
-    String imageUrl;
     MultipartFile file;
     @NotBlank
     Long koiFishId;

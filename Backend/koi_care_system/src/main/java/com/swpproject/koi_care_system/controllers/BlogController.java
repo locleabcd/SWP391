@@ -27,7 +27,6 @@ public class BlogController {
     public ResponseEntity<ApiResponse> createBlog(@ModelAttribute BlogCreateRequest blogCreateRequest, Authentication authentication){
         try {
             String username = authentication.getName();
-            blogCreateRequest.setBlogImage(!blogCreateRequest.getFile().isEmpty() ? imageStorage.uploadImage(blogCreateRequest.getFile()) : "");
             return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
                     .data(blogService.createBlog(blogCreateRequest, username))
                     .message("Blog has been created")

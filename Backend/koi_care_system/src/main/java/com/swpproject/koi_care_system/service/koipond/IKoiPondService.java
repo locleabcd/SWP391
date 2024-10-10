@@ -10,14 +10,9 @@ import java.util.List;
 
 public interface IKoiPondService {
 
-    KoiPond addKoiPond(AddKoiPondRequest addKoiPondRequest) throws IOException;
-    KoiPond getKoiPondById(Long id);
-    List<KoiPond> getKoiPondByUserID(Long userID);
+    KoiPondDto addKoiPond(AddKoiPondRequest addKoiPondRequest) throws IOException;
+    KoiPondDto getKoiPondById(Long id);
+    List<KoiPondDto> getKoiPondByUserID(Long userID);
     void deleteKoiPond(Long id);
-    KoiPond updateKoiPond(KoiPondUpdateRequest koiPondUpdateRequest, Long koiPondId );
-    List<KoiPondDto> getConvertedKoiPonds(List<KoiPond> koiPonds);
-    KoiPondDto convertToDto(KoiPond koiPond);
-
-
-
+    KoiPondDto updateKoiPond(KoiPondUpdateRequest koiPondUpdateRequest, Long koiPondId );
 }

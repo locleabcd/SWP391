@@ -14,15 +14,12 @@ public interface IUserService {
     List<UserDTO> getListUser();
 
     UserDTO findUserByID(Long userID);
-    User findUserByUserName(String username);
 
     UserDTO updateUserByID(Long id, UpdateUserRequest request);
 
     void deleteUserByID(Long id);
 
     void verifyUser(String email, String token);
-
-    UserDTO convertToDto(User user);
 
     UserDTO createStaff(CreateUserRequest request);
 }

@@ -1,7 +1,6 @@
 package com.swpproject.koi_care_system.service.koifish;
 
 import com.swpproject.koi_care_system.dto.KoiFishDto;
-import com.swpproject.koi_care_system.models.KoiFish;
 import com.swpproject.koi_care_system.payload.request.AddKoiFishRequest;
 import com.swpproject.koi_care_system.payload.request.KoiFishUpdateRequest;
 
@@ -10,20 +9,16 @@ import java.util.List;
 
 public interface IKoiFishService {
 
-    KoiFish addKoiFish(AddKoiFishRequest addKoiFishRequest) throws IOException;
+    KoiFishDto addKoiFish(AddKoiFishRequest addKoiFishRequest) throws IOException;
 
-    KoiFish getKoiFishById(Long id);
+    KoiFishDto getKoiFishById(Long id);
 
-    List<KoiFish> getKoiFishByKoiPond(Long koiPondId);
-    List<KoiFish> getAllFishByUserId(Long userId);
+    List<KoiFishDto> getKoiFishByKoiPond(Long koiPondId);
+    List<KoiFishDto> getAllFishByUserId(Long userId);
 
     void deleteKoiFish(Long id);
 
-    KoiFish updateKoiFish(KoiFishUpdateRequest koiFishUpdateRequest, Long koiFishId);
-
-    List<KoiFishDto> getConvertedKoiPonds (List<KoiFish> koiFishList);
-
-    KoiFishDto convertToDto(KoiFish koiFish);
+    KoiFishDto updateKoiFish(KoiFishUpdateRequest koiFishUpdateRequest, Long koiFishId);
 
 
 }

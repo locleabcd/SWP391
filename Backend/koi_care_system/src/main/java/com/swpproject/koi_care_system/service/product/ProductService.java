@@ -84,8 +84,12 @@ public class ProductService implements IProductService {
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deleteProductById(Long id) {
         productRepository.findById(id)
-                .ifPresentOrElse(productRepository::delete,
-                        () -> {throw new ResourceNotFoundException("Product not found!");});
+                .map(existingProduct -> {
+                    existingProduct.setStatus(false);
+                    return existingProduct;
+                })
+                .map(productRepository :: save)
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found!"));
     }
 
     @Override
@@ -123,7 +127,7 @@ public class ProductService implements IProductService {
         Sort sort = ("Asc".equalsIgnoreCase(sortDir)) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
         promotionService.upToDate();
-        List<Product> productsTmp = productRepository.findAll();
+        List<Product> productsTmp = productRepository.findAllAvaiable();
         productsTmp.forEach(product->{
             updateProductRating(product);
             product.getPromotions().forEach(promotion -> {

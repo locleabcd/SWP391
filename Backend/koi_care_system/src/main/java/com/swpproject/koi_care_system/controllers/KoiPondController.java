@@ -7,6 +7,7 @@ import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
+import com.swpproject.koi_care_system.repository.UserRepository;
 import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import com.swpproject.koi_care_system.service.user.IUserService;
 import lombok.RequiredArgsConstructor;
@@ -25,16 +26,16 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("/koiponds")
 public class KoiPondController {
     private final IKoiPondService koiPondService;
-    private final IUserService userService;
+    private final UserRepository userRepository;
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createKoiPond(@ModelAttribute AddKoiPondRequest addKoiPondRequest, Authentication authentication) {
         try{
             String username = authentication.getName();
-            User user = userService.findUserByUserName(username);
+            User user = userRepository.findByUsername(username)
+                    .orElseThrow(()->new RuntimeException("User not found"));
             addKoiPondRequest.setUser(user);
-            KoiPond koiPond = koiPondService.addKoiPond(addKoiPondRequest);
-            KoiPondDto koiPondDto = koiPondService.convertToDto(koiPond);
-            return ResponseEntity.ok(new ApiResponse("Add Koi pond success!", koiPondDto));
+            KoiPondDto koiPond = koiPondService.addKoiPond(addKoiPondRequest);
+            return ResponseEntity.ok(new ApiResponse("Add Koi pond success!", koiPond));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
@@ -42,8 +43,7 @@ public class KoiPondController {
     @GetMapping("/user/{userID}/koiponds")
     public ResponseEntity<ApiResponse> getAllKoiPondByUserID(@PathVariable Long userID) {
         try {
-            List<KoiPond> koiPonds = koiPondService.getKoiPondByUserID(userID);
-            List<KoiPondDto> koiPondDtos = koiPondService.getConvertedKoiPonds(koiPonds);
+            List<KoiPondDto> koiPondDtos = koiPondService.getKoiPondByUserID(userID);
             return ResponseEntity.ok(new ApiResponse("Found!", koiPondDtos));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error", INTERNAL_SERVER_ERROR));
@@ -52,8 +52,7 @@ public class KoiPondController {
     @GetMapping("/koipond/{id}")
     public ResponseEntity<ApiResponse> getKoiPondByID(@PathVariable Long id){
         try{
-            KoiPond theKoiPond = koiPondService.getKoiPondById(id);
-            KoiPondDto koiPondDto = koiPondService.convertToDto(theKoiPond);
+            KoiPondDto koiPondDto = koiPondService.getKoiPondById(id);
             return ResponseEntity.ok(new ApiResponse("Found",koiPondDto));
         }catch(ResolutionException e){
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
@@ -71,8 +70,7 @@ public class KoiPondController {
     @PutMapping("/koipond/{id}/update")
     public ResponseEntity<ApiResponse> updateKoiPond(@PathVariable Long id,@ModelAttribute KoiPondUpdateRequest koiPondUpdateRequest) {
         try {
-            KoiPond updatedKoiPond = koiPondService.updateKoiPond(koiPondUpdateRequest, id);
-            KoiPondDto koiPondDto = koiPondService.convertToDto(updatedKoiPond);
+            KoiPondDto koiPondDto = koiPondService.updateKoiPond(koiPondUpdateRequest, id);
             return ResponseEntity.ok(new ApiResponse("Update success!", koiPondDto));
         } catch (Exception e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));

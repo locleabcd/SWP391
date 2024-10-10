@@ -42,11 +42,11 @@ public class BlogService implements IBlogService {
         if (blogRepository.existsByBlogTitle(blogCreateRequest.getBlogTitle())) {
             throw new RuntimeException("Blog already exists");
         }
-        if(blogCreateRequest.getFile()!=null)
-            blogCreateRequest.setBlogImage(!blogCreateRequest.getFile().isEmpty()?imageStorage.uploadImage(blogCreateRequest.getFile()):"https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
-        else
-            blogCreateRequest.setBlogImage("https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
         Blog blog = blogMapper.mapToBlog(blogCreateRequest);
+        if(blogCreateRequest.getFile()!=null)
+            blog.setBlogImage(!blogCreateRequest.getFile().isEmpty()?imageStorage.uploadImage(blogCreateRequest.getFile()):"https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
+        else
+            blog.setBlogImage("https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
         blog.setBlogDate(java.time.LocalDate.now());
         Set<Tag> tags = new HashSet<>();
         for (int tagId : blogCreateRequest.getTagIds()) {
@@ -90,7 +90,16 @@ public class BlogService implements IBlogService {
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deleteBlog(int id) {
-        blogRepository.findById(id).ifPresentOrElse(blogRepository::delete,()->{
+        blogRepository.findById(id).ifPresentOrElse(blog -> {
+            if(!blog.getBlogImage().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg")){
+                try {
+                    imageStorage.deleteImage(blog.getBlogImage());
+                }catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+                blogRepository.delete(blog);
+            }
+        },()->{
             throw new ResourceNotFoundException("Blog not found!");
         });
     }
