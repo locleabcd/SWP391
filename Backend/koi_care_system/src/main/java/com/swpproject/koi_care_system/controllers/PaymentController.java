@@ -10,9 +10,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/payment")
@@ -20,19 +18,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class PaymentController {
     private final VnPayService vnPayService;
     private final IPaymentService paymentService;
+
     @GetMapping("/vn-pay")
     public ResponseEntity<VnPayDto> pay(HttpServletRequest request) {
         return new ResponseEntity<>(vnPayService.createVnPayPayment(request), HttpStatus.OK);
     }
+
     @PostMapping("/vn-response")
-    public ResponseEntity<ApiResponse> storePayment(@RequestBody @Valid PaymentStoreRequest request){
+    public ResponseEntity<ApiResponse> storePayment(@RequestBody @Valid PaymentStoreRequest request) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("Store successful")
                 .data(paymentService.storePayment(request))
                 .build());
     }
+
     @GetMapping("/all")
-    public ResponseEntity<ApiResponse> getAllPayment(){
+    public ResponseEntity<ApiResponse> getAllPayment() {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("Get successful")
                 .data(paymentService.getAllPayment())
@@ -40,7 +41,7 @@ public class PaymentController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<ApiResponse> getPaymentsByUserId(@PathVariable Long userId){
+    public ResponseEntity<ApiResponse> getPaymentsByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("Get successful")
                 .data(paymentService.getAllPaymentByUserId(userId))

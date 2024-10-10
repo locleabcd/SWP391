@@ -9,6 +9,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 
 public interface KoiPondMapper {
@@ -17,7 +19,7 @@ public interface KoiPondMapper {
     @Mapping(target = "waterParametersList", ignore = true)
     @Mapping(target = "logList", ignore = true)
     KoiPond mapToKoiPond(AddKoiPondRequest addKoiPondRequest);
-
+    List<KoiPondDto> mapToKoiPondDto(List<KoiPond> list);
     @Mapping(target = "imageUrl", ignore = true)
     @Mapping(target = "waterParametersList", ignore = true)
     @Mapping(target = "user", ignore = true)

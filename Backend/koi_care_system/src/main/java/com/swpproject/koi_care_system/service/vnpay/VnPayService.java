@@ -1,7 +1,7 @@
 package com.swpproject.koi_care_system.service.vnpay;
 
 import com.swpproject.koi_care_system.config.VnPayConfig;
-import com.swpproject.koi_care_system.dto.PaymentDto;
+import com.swpproject.koi_care_system.dto.VnPayDto;
 import com.swpproject.koi_care_system.utils.VNPayUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
