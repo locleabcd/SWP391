@@ -47,15 +47,19 @@ import Supplier from './pages/Shop/Supplier/Supplier'
 import CreateSupplier from './pages/Shop/Supplier/CreateSupplier'
 import UpdateSupplier from './pages/Shop/Supplier/UpdateSupplier'
 import Checkout from './pages/Member/Recommendations/Checkout'
-
 import Promotion from './pages/Shop/Promotion/Promotion'
 import CreatePromotion from './pages/Shop/Promotion/CreatePromotion'
 import UpdatePromotion from './pages/Shop/Promotion/UpdatePromotion'
-import Production from './pages/Shop/Production/Production'
-import CreateProduct from './pages/Shop/Production/CreateProduct'
-import UpdateProduct from './pages/Shop/Production/UpdateProduct'
+import Product from './pages/Shop/Product/Product'
+import CreateProduct from './pages/Shop/Product/CreateProduct'
+import UpdateProduct from './pages/Shop/Product/UpdateProduct'
+import Category from './pages/Shop/Category/Category'
+import CreateCategory from './pages/Shop/Category/CreateCategory'
+import UpdateCategory from './pages/Shop/Category/UpdateCategory'
+import ViewProduct from './pages/Shop/Product/ViewProduct'
 import Payment from './pages/Member/Recommendations/Payment'
 import ProtectedRoute from './ProtectedRoute'
+
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -417,12 +421,8 @@ function App() {
       )
     },
     {
-      path: path.production,
-      element: (
-        <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Production />
-        </ProtectedRoute>
-      )
+      path: path.product,
+      element: <Product />
     },
     {
       path: path.createProduct,

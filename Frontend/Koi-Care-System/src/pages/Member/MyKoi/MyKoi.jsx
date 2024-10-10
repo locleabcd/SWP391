@@ -175,14 +175,6 @@ function MyKoi() {
     getPond()
   }, [])
 
-  // if (isLoading) {
-  //   return (
-  //     <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-  //       <FaSpinner className='animate-spin text-green-500 text-4xl' />
-  //     </div>
-  //   )
-  // }
-
   return (
     <div>
       <div className='h-screen flex'>
@@ -515,9 +507,7 @@ function MyKoi() {
                     type='text'
                     id='variety'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('variety', {
-                      required: false
-                    })}
+                    {...register('variety', { required: false })}
                   />
                 </div>
 
@@ -548,9 +538,7 @@ function MyKoi() {
                     type='text'
                     id='breeder'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('breeder', {
-                      required: false
-                    })}
+                    {...register('breeder', { required: false })}
                   />
                 </div>
 
@@ -566,8 +554,8 @@ function MyKoi() {
                     id='price'
                     placeholder='$'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('price', {
-                      required: false,
+                    {...register('price', { 
+                      required: false, 
                       maxLength: { value: 10, message: 'Price must be at most 10 characters long' },
                       min: { value: 1, message: 'Price must be greater than 0' }
                     })}
@@ -617,6 +605,11 @@ function MyKoi() {
               </div>
             </form>
           </div>
+        </div>
+      )}
+      {isLoading && (
+        <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+          <FaSpinner className='animate-spin text-green-500 text-6xl' />
         </div>
       )}
     </div>

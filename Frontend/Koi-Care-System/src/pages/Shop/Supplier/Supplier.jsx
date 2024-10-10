@@ -109,21 +109,21 @@ function Supplier() {
               <table className='min-w-full border-spacing-x-1 border-gray-200'>
                 <thead className='border-gray-200'>
                   <tr className='border-b'>
-                    <th className='py-3 border-r text-center text-xs font-bold uppercase'>ID</th>
-                    <th className='py-3 border-r text-center text-xs font-bold uppercase'>Name</th>
-                    <th className='py-3 border-r text-center text-xs font-bold uppercase'>Phone</th>
-                    <th className='py-3 border-r text-center text-xs font-bold uppercase'>Address</th>
-                    <th className='py-3 border-r text-center text-xs font-bold uppercase'>Action</th>
+                    <th className='py-3 text-center text-xs font-bold uppercase'>ID</th>
+                    <th className='py-3 text-center text-xs font-bold uppercase'>Name</th>
+                    <th className='py-3 text-center text-xs font-bold uppercase'>Phone</th>
+                    <th className='py-3 text-center text-xs font-bold uppercase'>Address</th>
+                    <th className='py-3 text-center text-xs font-bold uppercase'>Action</th>
                   </tr>
                 </thead>
                 <tbody>
                   {suppliers.map((supplier) => (
                     <tr key={supplier.id}>
-                      <td className='py-2 px-1 text-center border-b border-r border-gray-200'>{supplier.id}</td>
-                      <td className='py-2 px-1 text-center border-b border-r border-gray-200'>{supplier.name}</td>
-                      <td className='py-2 px-1 text-center border-b border-r border-gray-200'>{supplier.phone}</td>
-                      <td className='py-2 px-1 text-center border-b border-r border-gray-200'>{supplier.address}</td>
-                      <td className='py-2 px-1 text-center border-b border-r border-gray-200'>
+                      <td className='py-2 px-1 text-center border-b border-gray-200'>{supplier.id}</td>
+                      <td className='py-2 px-1 text-center border-b border-gray-200'>{supplier.name}</td>
+                      <td className='py-2 px-1 text-center border-b border-gray-200'>{supplier.phone}</td>
+                      <td className='py-2 px-1 text-center border-b border-gray-200'>{supplier.address}</td>
+                      <td className='py-2 px-1 text-center border-b border-gray-200'>
                         <div className='flex justify-center items-center'>
                           <Link
                             to={`/shop/supplier/${supplier.id}`}
