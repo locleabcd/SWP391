@@ -62,6 +62,7 @@ import ProtectedRoute from './ProtectedRoute'
 import ProductImage from './pages/Shop/ProductImage/ProductImage'
 import CreateImage from './pages/Shop/ProductImage/CreateImage'
 import UpdateImage from './pages/Shop/ProductImage/UpdateImage'
+import ViewUser from './pages/Shop/User/ViewUser'
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
@@ -426,6 +427,10 @@ function App() {
     {
       path: path.updateImage,
       element: <UpdateImage />
+    },
+    {
+      path: path.viewUser,
+      element: <ViewUser />
     }
   ])
 
