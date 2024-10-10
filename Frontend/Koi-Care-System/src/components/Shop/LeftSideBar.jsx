@@ -119,6 +119,26 @@ function LeftSideBar() {
                 {!isClosed && <span className='font-semibold'>Dashboard</span>}
               </div>
             </NavLink>
+
+            <NavLink
+              to={path.viewUser}
+              end
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                  isClosed ? 'flex-col' : ''
+                }`
+              }}
+            >
+              <div className='flex items-center'>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-7 mr-3">
+                <path d="M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z" />
+              </svg>
+                {!isClosed && <span className='font-semibold'>Manage User</span>}
+              </div>
+            </NavLink>
             {/* sidebar items  */}
             {/* News and Blogs */}
             <div>
@@ -272,27 +292,6 @@ function LeftSideBar() {
 
                   <div className=''>
                     <NavLink
-                      to={path.product}
-                      className={({ isActive }) => {
-                        const active = isActive
-                          ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
-                          : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
-                          isClosed ? 'flex-col' : ''
-                        }`
-                      }}
-                    >
-                      <div className='flex items-center'>
-                        <div className='w-6 h-6 mr-3'>
-                        <FaBox className='w-full h-full' />
-                        </div>
-                        {!isClosed && <span className='font-semibold'>Product</span>}
-                      </div>
-                    </NavLink>
-                  </div>
-
-                  <div className=''>
-                    <NavLink
                       to={path.category}
                       className={({ isActive }) => {
                         const active = isActive
@@ -311,8 +310,49 @@ function LeftSideBar() {
                       </div>
                     </NavLink>
                   </div>
-                </div>
-                       
+
+                  <div className=''>
+                    <NavLink
+                      to={path.productImage}
+                      className={({ isActive }) => {
+                        const active = isActive
+                          ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                          : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                          isClosed ? 'flex-col' : ''
+                        }`
+                      }}
+                    >
+                      <div className='flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
+                        <FaImage className='w-full h-full' />
+                        </div>
+                        {!isClosed && <span className='font-semibold'>Images</span>}
+                      </div>
+                    </NavLink>
+                  </div>
+
+                  <div className=''>
+                    <NavLink
+                      to={path.product}
+                      className={({ isActive }) => {
+                        const active = isActive
+                          ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                          : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                          isClosed ? 'flex-col' : ''
+                        }`
+                      }}
+                    >
+                      <div className='flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
+                        <FaBox className='w-full h-full' />
+                        </div>
+                        {!isClosed && <span className='font-semibold'>Product</span>}
+                      </div>
+                    </NavLink>
+                  </div>           
+                </div>                                 
               )}
             </div>
           </div>

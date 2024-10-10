@@ -294,6 +294,7 @@ function KoiDetails() {
 
       reset()
       getGrowthHistory()
+      getKoi()
       setIsAddGrowthFormVisible(false)
       setIsEditGrowthFormVisible(false)
     } catch (error) {
@@ -371,6 +372,7 @@ function KoiDetails() {
       })
       reset()
       getGrowthHistory()
+      getKoi()
       setIsEditGrowthFormVisible(false)
     } catch (error) {
       console.error('Error deleting growth history:', error)
