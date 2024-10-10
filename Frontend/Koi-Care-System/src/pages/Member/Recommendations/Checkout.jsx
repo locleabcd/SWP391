@@ -12,6 +12,7 @@ function Checkout() {
   const [address, setAddress] = useState('')
   const [payment, SetPayment] = useState([])
   const [cart, setCart] = useState([])
+  const [orders, setOrders] = useState([])
   const { isDarkMode } = useDarkMode()
   const [tinh, setTinh] = useState([])
   const [selectedTinh, setSelectedTinh] = useState('0')
@@ -82,10 +83,35 @@ function Checkout() {
     getCartId()
   }, [])
 
+  const getOrder = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const response = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/user/${userId}/order`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setOrders(response.data.data)
+      console.log('aaa', response.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getOrder()
+  }, [])
+
   const createPayment = async () => {
     try {
       const token = localStorage.getItem('token')
-      const orderId = 3
+      const orderId = orders.userId
       const totalPrice = localStorage.getItem('totalPrice')
       const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/payment/vn-pay', {
         headers: {
