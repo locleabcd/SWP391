@@ -4,21 +4,20 @@ import com.swpproject.koi_care_system.dto.KoiPondDto;
 import com.swpproject.koi_care_system.exceptions.AlreadyExistsException;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.mapper.KoiPondMapper;
+import com.swpproject.koi_care_system.models.KoiPond;
 import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
-import com.swpproject.koi_care_system.models.KoiPond;
 import com.swpproject.koi_care_system.repository.KoiPondRepository;
 import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +29,7 @@ public class KoiPondService implements IKoiPondService {
 
     @Override
     @PreAuthorize("hasRole('MEMBER')")
+    @Async
     public KoiPondDto addKoiPond(AddKoiPondRequest addKoiPondRequest) throws IOException {
         if (koiPondRepository.existsByNameAndUserId(addKoiPondRequest.getName(), addKoiPondRequest.getUser().getId())) {
             throw new AlreadyExistsException("Koi Pond with name " + addKoiPondRequest.getName() + " already exists!");
@@ -49,6 +49,7 @@ public class KoiPondService implements IKoiPondService {
 
     @Override
     @PreAuthorize("hasRole('MEMBER')")
+    @Async
     public List<KoiPondDto> getKoiPondByUserID(Long userID) {
         return koiPondRepository.findByUserId(userID).stream().map(koiPondMapper::toDto).toList();
     }
