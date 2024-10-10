@@ -22,7 +22,7 @@ import ShopCart from './pages/Member/MyAccount/ShopCart/ShopCart'
 import MyPond from './pages/Member/MyPond/MyPond'
 import VerifyEmail from './pages/VerifyEmail/VerifyEmail'
 import VerifySuccess from './pages/VerifyEmail/VerifySuccess'
-import { DarkModeProvider } from './components/DarkModeContext'
+import { DarkModeProvider } from './hooks/DarkModeContext'
 import Policy from './pages/Policy/Policy'
 import NewsDetail from './pages/Member/News/NewsDetail'
 import Email from './pages/RecoveryPassword/Email'
@@ -337,60 +337,108 @@ function App() {
       )
     },
     {
-      path: path.payment,
-      element: <Payment />
-    },
-    {
       path: path.createTag,
-      element: <CreateTag />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <CreateTag />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updateTag,
-      element: <UpdateTag />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <UpdateTag />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.supplier,
-      element: <Supplier />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Supplier />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.createSupplier,
-      element: <CreateSupplier />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <CreateSupplier />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updateSupplier,
-      element: <UpdateSupplier />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <UpdateSupplier />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.checkout,
-      element: <Checkout />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Checkout />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.myPondLogDetail,
-      element: <MyPondLogId />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <MyPondLogId />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.promotion,
-      element: <Promotion />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Promotion />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.createPromotion,
-      element: <CreatePromotion />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <CreatePromotion />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updatePromotion,
-      element: <UpdatePromotion />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <UpdatePromotion />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.production,
-      element: <Production />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Production />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.createProduct,
-      element: <CreateProduct />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <CreateProduct />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updateProduct,
-      element: <UpdateProduct />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <UpdateProduct />
+        </ProtectedRoute>
+      )
     }
   ])
 

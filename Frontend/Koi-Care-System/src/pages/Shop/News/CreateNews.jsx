@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
@@ -43,7 +43,7 @@ function CreateNews() {
 
       console.log(data)
       // eslint-disable-next-line no-unused-vars
-      const res = await axios.post(`https://koicaresystem.azurewebsites.net/api/blog/create`, formData, {
+      const res = await axios.post(`https://koicaresystemv3.azurewebsites.net/api/blog/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

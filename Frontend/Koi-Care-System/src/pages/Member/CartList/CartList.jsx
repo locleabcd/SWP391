@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import TopLayout from '../../../layouts/TopLayout'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
@@ -37,7 +37,7 @@ const CartList = () => {
       if (!token) throw new Error('No token found')
 
       await axios.put(
-        `https://koicaresystem.azurewebsites.net/api/cartItems/cart/${cartId}/product/${itemId}/update`,
+        `https://koicaresystemv3.azurewebsites.net/api/cartItems/cart/${cartId}/product/${itemId}/update`,
         {
           quantity: updatedCart.find((item) => item.product.id === itemId).quantity
         },
@@ -72,7 +72,7 @@ const CartList = () => {
       if (!token) throw new Error('No token found')
 
       await axios.put(
-        `https://koicaresystem.azurewebsites.net/api/cartItems/cart/${cartId}/product/${itemId}/update`,
+        `https://koicaresystemv3.azurewebsites.net/api/cartItems/cart/${cartId}/product/${itemId}/update`,
         {
           quantity: updatedCart.find((item) => item.product.id === itemId).quantity
         },
@@ -97,7 +97,7 @@ const CartList = () => {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`https://koicaresystem.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
+      const response = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useDarkMode } from '../components/DarkModeContext'
+import { useDarkMode } from '../hooks/DarkModeContext'
 import { motion } from 'framer-motion'
 import { FadeRight } from '../utils/animation'
 

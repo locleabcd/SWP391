@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
@@ -32,7 +32,7 @@ function UpdatePromotion() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/promotions/promotion/${id}`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/promotions/promotion/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -73,7 +73,7 @@ function UpdatePromotion() {
         throw new Error('No token found')
       }
       const res = await axios.put(
-        `https://koicaresystem.azurewebsites.net/api/promotions/promotion/${id}/update`,
+        `https://koicaresystemv3.azurewebsites.net/api/promotions/promotion/${id}/update`,
         {
           id: id,
           name: data.name,

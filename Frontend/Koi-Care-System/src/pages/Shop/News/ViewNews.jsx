@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
@@ -21,7 +21,7 @@ function ViewNews() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/blog/getID/${id}`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/blog/getID/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

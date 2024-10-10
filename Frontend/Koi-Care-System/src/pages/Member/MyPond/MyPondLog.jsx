@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import TopLayout from '../../../layouts/TopLayout'
@@ -59,7 +59,7 @@ function MyPondLog() {
         console.log('not found token')
       }
 
-      const res = await axios.get('https://koicaresystem.azurewebsites.net/api/log', {
+      const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/log', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -80,7 +80,7 @@ function MyPondLog() {
       }
       const logId = localStorage.getItem('logId')
 
-      await axios.delete(`https://koicaresystem.azurewebsites.net/api/log/delete/${logId}`, {
+      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/log/delete/${logId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -99,7 +99,7 @@ function MyPondLog() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -128,7 +128,7 @@ function MyPondLog() {
       const token = localStorage.getItem('token')
 
       await axios.post(
-        'https://koicaresystem.azurewebsites.net/api/log/create',
+        'https://koicaresystemv3.azurewebsites.net/api/log/create',
         {
           logTitle: title,
           logDate: dateTime,
@@ -154,7 +154,7 @@ function MyPondLog() {
       const token = localStorage.getItem('token')
       const logId = localStorage.getItem('logId')
       await axios.put(
-        `https://koicaresystem.azurewebsites.net/api/log/update/${logId}`,
+        `https://koicaresystemv3.azurewebsites.net/api/log/update/${logId}`,
         {
           logTitle: title,
           logDate: dateTime,

@@ -31,7 +31,7 @@ function Login() {
     //  }
 
     try {
-      const response = await axios.post('https://koicaresystem.azurewebsites.net/api/auth/loginKoiCare', {
+      const response = await axios.post('https://koicaresystemv3.azurewebsites.net/api/auth/loginKoiCare', {
         username: data.username,
         password: data.password
       })
@@ -152,7 +152,7 @@ function Login() {
 
         <div className='flex items-center justify-between mt-2'>
           <Link
-            to='https://koicaresystem.azurewebsites.net/api/oauth2/authorization/google'
+            to='https://koicaresystemv3.azurewebsites.net/api/oauth2/authorization/google'
             className='flex items-center justify-center bg-white border hover:bg-gray-100 border-gray-300 text-gray-800 w-full py-3 rounded-lg mr-2'
           >
             <img src='https://www.google.com/favicon.ico' alt='Google' className='h-5 mr-2' />

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
@@ -32,7 +32,7 @@ function CreateSupplier() {
         throw new Error('No token found')
       }
       const res = await axios.post(
-        `https://koicaresystem.azurewebsites.net/api/suppliers/add`,
+        `https://koicaresystemv3.azurewebsites.net/api/suppliers/add`,
         {
           name: data.name,
           phone: data.phone,

@@ -53,7 +53,7 @@ export const addToCartList = (product, quantity) => async (dispatch) => {
     const token = localStorage.getItem('token')
     const productQuantity = quantity || product.quantity || 1
     await axios.post(
-      'https://koicaresystem.azurewebsites.net/api/cartItems/item/add',
+      'https://koicaresystemv3.azurewebsites.net/api/cartItems/item/add',
       {
         cartId: cartId,
         productId: product.id,
@@ -89,7 +89,7 @@ export const loadCart = () => async (dispatch) => {
   }
 
   try {
-    const response = await axios.get(`https://koicaresystem.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
+    const response = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -118,7 +118,7 @@ export const removeToCartList = (productId) => async (dispatch) => {
   try {
     const token = localStorage.getItem('token')
     const response = await axios.delete(
-      `https://koicaresystem.azurewebsites.net/api/cartItems/cart/${cartId}/product/${productId}/remove`,
+      `https://koicaresystemv3.azurewebsites.net/api/cartItems/cart/${cartId}/product/${productId}/remove`,
       {
         headers: {
           Authorization: `Bearer ${token}`

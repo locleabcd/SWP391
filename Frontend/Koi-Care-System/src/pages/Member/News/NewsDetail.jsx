@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import Header from '../../../components/Member/Header'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayout'
@@ -21,7 +21,7 @@ function NewsDetail() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/blog/getID/${id}`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/blog/getID/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

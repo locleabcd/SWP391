@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
@@ -45,7 +45,7 @@ function UpdateNews() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/blog/getID/${id}`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/blog/getID/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -82,7 +82,7 @@ function UpdateNews() {
         formData.append('file', data.file[0])
       }
 
-      const res = await axios.put(`https://koicaresystem.azurewebsites.net/api/blog/update/${id}`, formData, {
+      const res = await axios.put(`https://koicaresystemv3.azurewebsites.net/api/blog/update/${id}`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`

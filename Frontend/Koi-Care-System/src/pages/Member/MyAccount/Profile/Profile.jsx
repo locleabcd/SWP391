@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import axios from 'axios'
-import { useDarkMode } from '../../../../components/DarkModeContext'
+import { useDarkMode } from '../../../../hooks/DarkModeContext'
 import Header from '../../../../components/Member/Header'
 import LeftSideBar from '../../../../components/Member/LeftSideBar'
 import { useEffect, useState } from 'react'
@@ -29,7 +29,7 @@ function Profile() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/profile/${id}`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -64,7 +64,7 @@ function Profile() {
         formData.append('file', selectedFile)
       }
 
-      const res = await axios.put(`https://koicaresystem.azurewebsites.net/api/profile/update/${id}`, formData, {
+      const res = await axios.put(`https://koicaresystemv3.azurewebsites.net/api/profile/update/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'

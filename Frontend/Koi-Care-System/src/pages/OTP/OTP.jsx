@@ -20,7 +20,7 @@ function OTP() {
     if (disable) return
     setLoading(true)
     axios
-      .post(`https://koicaresystem.azurewebsites.net/api/auth/forgotPassword/${email}`)
+      .post(`https://koicaresystemv3.azurewebsites.net/api/auth/forgotPassword/${email}`)
       .then(() => {
         setDisable(true)
         setTimer(60)
@@ -33,7 +33,7 @@ function OTP() {
     const otp = OTPinput.join('')
     localStorage.setItem('otp', otp)
     axios
-      .post(`https://koicaresystem.azurewebsites.net/api/auth/verifyOtp/${email}/${otp}`)
+      .post(`https://koicaresystemv3.azurewebsites.net/api/auth/verifyOtp/${email}/${otp}`)
       .then(() => {
         navigate('/resetPassword')
         toast.success('input OTP success')

@@ -1,4 +1,4 @@
-import { useDarkMode } from '../../components/DarkModeContext'
+import { useDarkMode } from '../../hooks/DarkModeContext'
 import '../../App.css'
 import path from '../../constants/path'
 import { Link, NavLink } from 'react-router-dom'

@@ -8,7 +8,7 @@ import { IoStatsChartSharp } from 'react-icons/io5'
 import { FaRegNewspaper } from 'react-icons/fa'
 import { NavLink } from 'react-router-dom'
 import path from '../../constants/path'
-import { useDarkMode } from '../DarkModeContext'
+import { useDarkMode } from '../../hooks/DarkModeContext'
 import logo from '../../assets/logo.png'
 import { useEffect, useState } from 'react'
 

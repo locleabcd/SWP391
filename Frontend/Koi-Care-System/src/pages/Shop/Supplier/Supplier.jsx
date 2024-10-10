@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
@@ -22,7 +22,7 @@ function Supplier() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/suppliers/all`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/suppliers/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -50,7 +50,7 @@ function Supplier() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystem.azurewebsites.net/api/suppliers/supplier/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/suppliers/supplier/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
