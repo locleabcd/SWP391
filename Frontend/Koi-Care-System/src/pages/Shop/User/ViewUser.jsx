@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
@@ -36,8 +36,6 @@ function ViewUser() {
   useEffect(() => {
     getUser()
   }, [])
-  return (
-    <div>ViewUser</div>
-  )
+  return <div>ViewUser</div>
 }
 export default ViewUser

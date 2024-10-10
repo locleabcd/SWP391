@@ -2,14 +2,12 @@ import { useDarkMode } from '../../hooks/DarkModeContext'
 import '../../App.css'
 import path from '../../constants/path'
 import { Link, NavLink } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useState } from 'react'
 
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
 
   const [isOpen, setIsOpen] = useState(false)
-  const [user, setUser] = useState([])
 
   const toggleList = () => {
     setIsOpen(!isOpen)
@@ -21,29 +19,6 @@ function Header() {
 
   const name = localStorage.getItem('name')
   const role = localStorage.getItem('role')
-
-  const getUser = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const id = localStorage.getItem('id')
-      if (!token) {
-        throw new Error('No token found')
-      }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      setUser(res.data.data)
-      console.log(res.data.data)
-    } catch (error) {
-      console.error('Error fetching users:', error)
-    }
-  }
-
-  useEffect(() => {
-    getUser()
-  }, [])
 
   return (
     <div

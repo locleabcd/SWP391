@@ -554,8 +554,8 @@ function MyKoi() {
                     id='price'
                     placeholder='$'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('price', { 
-                      required: false, 
+                    {...register('price', {
+                      required: false,
                       maxLength: { value: 10, message: 'Price must be at most 10 characters long' },
                       min: { value: 1, message: 'Price must be greater than 0' }
                     })}

@@ -16,9 +16,9 @@ function UpdateNews() {
   const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
-  const [blogData, setBlogData] = useState(null);
-  const [tags, setTags] = useState([]); // To hold available tags
-  const [selectedTagIds, setSelectedTagIds] = useState([]); // To hold selected tag IDs
+  const [blogData, setBlogData] = useState(null)
+  const [tags, setTags] = useState([]) // To hold available tags
+  const [selectedTagIds, setSelectedTagIds] = useState([]) // To hold selected tag IDs
 
   const {
     register,
@@ -46,11 +46,11 @@ function UpdateNews() {
     } finally {
       setIsLoading(false)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchBlog();
-  }, [id]);
+    fetchBlog()
+  }, [id])
 
   const getTag = async () => {
     try {
@@ -89,9 +89,9 @@ function UpdateNews() {
       formData.append('blogContent', data.blogContent)
       // formData.append('blogImage', data.blogImage)
       formData.append('blogDate', data.blogDate)
-      selectedTagIds.forEach(tagId => {
+      selectedTagIds.forEach((tagId) => {
         formData.append('tagIds', tagId)
-      });      
+      })
       if (data.file && data.file.length > 0) {
         formData.append('file', data.file[0])
       }
@@ -122,13 +122,13 @@ function UpdateNews() {
     setSelectedTagIds((prevSelected) => {
       if (prevSelected.includes(tagId)) {
         // If already selected, remove it
-        return prevSelected.filter(id => id !== tagId);
+        return prevSelected.filter((id) => id !== tagId)
       } else {
         // Otherwise, add it
-        return [...prevSelected, tagId];
+        return [...prevSelected, tagId]
       }
-    });
-  };
+    })
+  }
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
@@ -181,31 +181,33 @@ function UpdateNews() {
                 {errors.blogDate && <p className='text-red-500 text-sm'>{errors.blogDate.message}</p>}
               </div>
 
-            <div className='mb-4'>
-              <label className='block text-sm font-medium mb-2'>
-                Select Tags
-              </label>
-              <div>
-                {tags.length > 0 ? (
-                  tags.map(tag => (
-                    <div key={tag.id} className="flex items-center mb-2">
-                      <input
-                        type="checkbox"
-                        id={`tag-${tag.tagId}`}
-                        value={tag.id}
-                        checked={selectedTagIds.includes(tag.tagId)}
-                        onChange={() => handleTagChange(tag.tagId)}
-                        className='mr-2'
-                      />
-                      <label htmlFor={`tag-${tag.tagId}`} className='text-sm'>{tag.tagName}</label>
-                    </div>
-                  ))
-                ) : (
-                  <p>Loading tags...</p>
+              <div className='mb-4'>
+                <label className='block text-sm font-medium mb-2'>Select Tags</label>
+                <div>
+                  {tags.length > 0 ? (
+                    tags.map((tag) => (
+                      <div key={tag.id} className='flex items-center mb-2'>
+                        <input
+                          type='checkbox'
+                          id={`tag-${tag.tagId}`}
+                          value={tag.id}
+                          checked={selectedTagIds.includes(tag.tagId)}
+                          onChange={() => handleTagChange(tag.tagId)}
+                          className='mr-2'
+                        />
+                        <label htmlFor={`tag-${tag.tagId}`} className='text-sm'>
+                          {tag.tagName}
+                        </label>
+                      </div>
+                    ))
+                  ) : (
+                    <p>Loading tags...</p>
+                  )}
+                </div>
+                {selectedTagIds.length === 0 && (
+                  <p className='text-red-500 text-xs mt-1'>At least one tag is required</p>
                 )}
               </div>
-              {selectedTagIds.length === 0 && <p className='text-red-500 text-xs mt-1'>At least one tag is required</p>}
-            </div>
 
               <div>
                 <label htmlFor='file' className='block text-sm font-bold'>

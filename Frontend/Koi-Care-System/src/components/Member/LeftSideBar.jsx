@@ -11,6 +11,7 @@ import path from '../../constants/path'
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import logo from '../../assets/logo.png'
 import { useEffect, useState } from 'react'
+import axios from 'axios'
 
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
@@ -18,14 +19,39 @@ function LeftSideBar() {
     const savedState = localStorage.getItem('isSidebarClosed')
     return savedState ? JSON.parse(savedState) : false
   })
+  const [user, setUser] = useState([])
 
   useEffect(() => {
     localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
   }, [isClosed])
 
+  const getUser = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const id = localStorage.getItem('id')
+      if (!token) {
+        throw new Error('No token found')
+      }
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setUser(res.data.data)
+      console.log(res.data.data)
+    } catch (error) {
+      console.error('Error fetching users:', error)
+    }
+  }
+
+  useEffect(() => {
+    getUser()
+  }, [])
+
+  const isMember = user?.status === 'NORMAL'
+
   return (
     <div>
-      {/* open close button  */}
       <div className='relative '>
         {isClosed ? (
           <button
@@ -65,7 +91,7 @@ function LeftSideBar() {
           </button>
         )}
       </div>
-      {/* sidebar */}
+
       <div
         className={`absolute top-0 left-0 z-999 flex h-screen flex-col no-scroll-bar overflow-y-auto border-r ${
           isDarkMode ? 'bg-custom-dark text-white border-gray-700' : 'bg-white text-black border-gray-200'
@@ -156,12 +182,15 @@ function LeftSideBar() {
             </NavLink>
 
             <NavLink
-              to={path.waterParameters}
+              to={isMember ? path.pricing : path.waterParameters}
               className={({ isActive }) => {
                 const active = isActive
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
+
+                const memberStyles = isMember ? 'opacity-50 line-through cursor-not-allowed bg-white' : ''
+
+                return `${active} ${memberStyles} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 }`
               }}
@@ -175,12 +204,15 @@ function LeftSideBar() {
             </NavLink>
 
             <NavLink
-              to={path.reminders}
+              to={isMember ? path.pricing : path.reminders}
               className={({ isActive }) => {
                 const active = isActive
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
+
+                const memberStyles = isMember ? 'opacity-50 line-through cursor-not-allowed bg-white' : ''
+
+                return `${active} ${memberStyles} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 }`
               }}
@@ -213,12 +245,15 @@ function LeftSideBar() {
             </NavLink>
 
             <NavLink
-              to={path.foodCalculator}
+              to={isMember ? path.pricing : path.foodCalculator}
               className={({ isActive }) => {
                 const active = isActive
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
+
+                const memberStyles = isMember ? 'opacity-50 line-through cursor-not-allowed bg-white' : ''
+
+                return `${active} ${memberStyles} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 }`
               }}
@@ -232,12 +267,15 @@ function LeftSideBar() {
             </NavLink>
 
             <NavLink
-              to={path.saltCalculator}
+              to={isMember ? path.pricing : path.saltCalculator}
               className={({ isActive }) => {
                 const active = isActive
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
+
+                const memberStyles = isMember ? 'opacity-50 line-through cursor-not-allowed bg-white' : ''
+
+                return `${active} ${memberStyles} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 }`
               }}

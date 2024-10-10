@@ -16,6 +16,7 @@ const path = {
   shopCart: '/member/myAccount/shopCart',
   dashboard: '/member/dashboard',
   myKoi: '/member/myKoi',
+  pricing: '/member/pricing',
   myPond: '/member/myPond',
   waterParameters: '/member/waterParameters',
   reminders: '/member/reminders',
@@ -55,9 +56,9 @@ const path = {
   createCategory: '/shop/createCategory',
   updateCategory: '/shop/category/:id',
   productImage: '/shop/productImage',
-  createImage:'/shop/createImage',
+  createImage: '/shop/createImage',
   updateImage: '/shop/productImage/:id',
-  viewUser: '/shop/viewUser',
+  viewUser: '/shop/viewUser'
 }
 
 export default path

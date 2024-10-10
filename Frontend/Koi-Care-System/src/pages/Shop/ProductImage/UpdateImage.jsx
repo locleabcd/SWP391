@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
@@ -20,7 +20,7 @@ function UpdateImage() {
     register,
     handleSubmit,
     formState: { errors },
-    reset 
+    reset
   } = useForm()
 
   const updateImage = async (data) => {
@@ -31,7 +31,7 @@ function UpdateImage() {
       if (!token) {
         throw new Error('No token found')
       }
-      const formData = new FormData()    
+      const formData = new FormData()
       if (data.file && data.file.length > 0) {
         formData.append('file', data.file[0])
       }
@@ -58,26 +58,30 @@ function UpdateImage() {
     updateImage(data)
   }
   return (
-    <div className="h-screen flex">
+    <div className='h-screen flex'>
       <LeftSideBar />
-      <div className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} flex-1 overflow-y-auto`}>
+      <div
+        className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} flex-1 overflow-y-auto`}
+      >
         <Header />
         <div className='py-5 pb-0 px-[30px] mx-auto'>
           <TopLayout text='Product Images' textName='Create Images' links='shop/productImage' />
           <div className=' p-6 rounded-md border'>
-            <form onSubmit={handleSubmit(onSubmit)} noValidate>            
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className='mb-4'>
-                <label htmlFor="file" className='block text-sm font-medium mb-2'>Upload Images</label>
+                <label htmlFor='file' className='block text-sm font-medium mb-2'>
+                  Upload Images
+                </label>
                 <input
                   type='file'
-                  id="file"
+                  id='file'
                   className={`relative w-full p-2 border rounded-md ${errors.files ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('file')}
                 />
                 {errors.file && <p className='text-red-500 text-xs mt-1'>{errors.file.message}</p>}
               </div>
               <button
-                type="submit"
+                type='submit'
                 className={`mt-5 w-full bg-blue-600 text-white p-2 rounded-md ${isSubmitting ? 'opacity-50 cursor-not-allowed' : ''}`}
                 disabled={isSubmitting}
               >
