@@ -32,9 +32,9 @@ public class KoiPondService implements IKoiPondService {
             throw new AlreadyExistsException("Koi Pond with name " + addKoiPondRequest.getName() + " already exists!");
         }
         if(addKoiPondRequest.getFile()!=null)
-            addKoiPondRequest.setImageUrl(!addKoiPondRequest.getFile().isEmpty()?imageStorage.uploadImage(addKoiPondRequest.getFile()):"https://koicaresystem.blob.core.windows.net/koicare-blob/defaultKoiPond.jpg");
+            addKoiPondRequest.setImageUrl(!addKoiPondRequest.getFile().isEmpty()?imageStorage.uploadImage(addKoiPondRequest.getFile()):"https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg");
         else
-            addKoiPondRequest.setImageUrl("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultKoiPond.jpg");
+            addKoiPondRequest.setImageUrl("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg");
         return koiPondRepository.save(koiPondMapper.mapToKoiPond(addKoiPondRequest));
     }
     @Override
@@ -64,7 +64,7 @@ public class KoiPondService implements IKoiPondService {
             if(koiPondUpdateRequest.getFile()!=null) {
                 if(!koiPondUpdateRequest.getFile().isEmpty())
                     try {
-                        if(!oldKoiPond.getImageUrl().equals("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultKoiPond.jpg"))
+                        if(!oldKoiPond.getImageUrl().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg"))
                             imageStorage.deleteImage(oldKoiPond.getImageUrl());
                         oldKoiPond.setImageUrl(imageStorage.uploadImage(koiPondUpdateRequest.getFile()));
                     } catch (IOException e) {

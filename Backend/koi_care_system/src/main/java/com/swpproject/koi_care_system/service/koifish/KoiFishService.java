@@ -37,9 +37,9 @@ public class KoiFishService implements IKoiFishService {
         }
         addKoiFishRequest.setKoiPond(koiPondService.getKoiPondById(addKoiFishRequest.getKoiPondId()));
         if(addKoiFishRequest.getFile()!=null)
-            addKoiFishRequest.setImageUrl(!addKoiFishRequest.getFile().isEmpty()?imageStorage.uploadImage(addKoiFishRequest.getFile()):"https://koicaresystem.blob.core.windows.net/koicare-blob/defaultKoiFish.jpeg");
+            addKoiFishRequest.setImageUrl(!addKoiFishRequest.getFile().isEmpty()?imageStorage.uploadImage(addKoiFishRequest.getFile()):"https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg");
         else
-            addKoiFishRequest.setImageUrl("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultKoiFish.jpeg");
+            addKoiFishRequest.setImageUrl("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg");
         KoiFish koiFish = koiFishMapper.mapToKoiFish(addKoiFishRequest);
         koiFish.setStatus("Alive");
         return koiFishRepository.save(koiFish);

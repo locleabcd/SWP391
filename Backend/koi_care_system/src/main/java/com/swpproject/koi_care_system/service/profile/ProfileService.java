@@ -33,7 +33,7 @@ public class ProfileService implements IProfileService {
         userProfile.setCreatedDate(LocalDate.now());
         userProfileRepository.save(userProfile);
         userProfile.setSubscribePlan(subscribePlanService.initDefault(user.getId()));
-        userProfile.setAvatar("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultProfile.jpg");
+        userProfile.setAvatar("https://koicareimage.blob.core.windows.net/koicarestorage/defaultProfile.jpg");
         return userProfileRepository.save(userProfile);
     }
 
@@ -44,7 +44,7 @@ public class ProfileService implements IProfileService {
         if(profileUpdateRequest.getFile()!=null){
             if(!profileUpdateRequest.getFile().isEmpty()){
                 try{
-                    if(!userProfile.getAvatar().equals("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultProfile.jpg"))
+                    if(!userProfile.getAvatar().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultProfile.jpg"))
                         imageStorage.deleteImage(userProfile.getAvatar());
                     userProfile.setAvatar(imageStorage.uploadImage(profileUpdateRequest.getFile()));
                 }catch (Exception e) {

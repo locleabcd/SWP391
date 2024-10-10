@@ -23,7 +23,7 @@ public class AzureImageStorage implements ImageStorage {
     @Override
     public String uploadImage(MultipartFile file)  {
         try(InputStream inputStream = file.getInputStream()){
-            String containerName="koicare-blob";
+            String containerName="koicarestorage";
             BlobContainerClient blobContainerClient= blobServiceClient.getBlobContainerClient(containerName);
             String newImageName = UUID.randomUUID()+ Objects.requireNonNull(file.getOriginalFilename()).substring(file.getOriginalFilename().lastIndexOf("."));
             BlobClient blobClient = blobContainerClient.getBlobClient(newImageName);
@@ -45,7 +45,7 @@ public class AzureImageStorage implements ImageStorage {
     @Override
     public void deleteImage(String imageUrl) {
         try {
-            String containerName = "koicare-blob";
+            String containerName = "koicarestorage";
             BlobContainerClient blobContainerClient = blobServiceClient.getBlobContainerClient(containerName);
             String blobName = extractBlobNameFromUrl(imageUrl);
             BlobClient blobClient = blobContainerClient.getBlobClient(blobName);
