@@ -59,6 +59,9 @@ import UpdateCategory from './pages/Shop/Category/UpdateCategory'
 import ViewProduct from './pages/Shop/Product/ViewProduct'
 import Payment from './pages/Member/Recommendations/Payment'
 import ProtectedRoute from './ProtectedRoute'
+import ProductImage from './pages/Shop/ProductImage/ProductImage'
+import CreateImage from './pages/Shop/ProductImage/CreateImage'
+import UpdateImage from './pages/Shop/ProductImage/UpdateImage'
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
@@ -412,6 +415,18 @@ function App() {
       path: path.viewProduct,
       element: <ViewProduct />
     },
+    {
+      path: path.productImage,
+      element: <ProductImage />
+    },
+    {
+      path: path.createImage,
+      element: <CreateImage />
+    },
+    {
+      path: path.updateImage,
+      element: <UpdateImage />
+    }
   ])
 
   const data = [

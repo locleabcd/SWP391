@@ -297,6 +297,7 @@ function KoiDetails() {
 
       reset()
       getGrowthHistory()
+      getKoi()
       setIsAddGrowthFormVisible(false)
       setIsEditGrowthFormVisible(false)
     } catch (error) {
@@ -374,6 +375,7 @@ function KoiDetails() {
       })
       reset()
       getGrowthHistory()
+      getKoi()
       setIsEditGrowthFormVisible(false)
     } catch (error) {
       console.error('Error deleting growth history:', error)
@@ -517,13 +519,6 @@ function KoiDetails() {
     updateKoi(data, id)
   }
 
-  // if (isLoading) {
-  //   return (     
-  //       <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-  //         <FaSpinner className='animate-spin text-green-500 text-6xl' />
-  //       </div>   
-  //   )
-  // }
   return (
     <div>
       <div className='h-screen flex'>
