@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+
 @RestController
 @RequestMapping("/log")
 @RequiredArgsConstructor
@@ -68,8 +70,15 @@ public class LogController {
                 .build());
     }
 
-}
+    @GetMapping("/user/{userId}/getAll")
+    public ResponseEntity<ApiResponse> getLogsByUserId(@PathVariable long userId){
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("List of logs")
+                .data(logService.getLogsByUserId(userId))
+                .build());
+    }
 
+}
 
 
 

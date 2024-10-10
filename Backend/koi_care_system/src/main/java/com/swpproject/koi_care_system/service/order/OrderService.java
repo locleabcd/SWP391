@@ -3,17 +3,17 @@ package com.swpproject.koi_care_system.service.order;
 import com.swpproject.koi_care_system.dto.OrderDto;
 import com.swpproject.koi_care_system.enums.OrderStatus;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
+import com.swpproject.koi_care_system.mapper.OrderMapper;
 import com.swpproject.koi_care_system.models.Cart;
 import com.swpproject.koi_care_system.models.Order;
-import com.swpproject.koi_care_system.mapper.OrderMapper;
 import com.swpproject.koi_care_system.models.OrderItem;
 import com.swpproject.koi_care_system.models.Product;
+import com.swpproject.koi_care_system.payload.request.PlaceOrderRequest;
 import com.swpproject.koi_care_system.repository.OrderRepository;
 import com.swpproject.koi_care_system.repository.ProductRepository;
 import com.swpproject.koi_care_system.service.cart.CartService;
-import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,24 +24,27 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class OrderService implements IOrderService {
-    OrderRepository orderRepository;
-    ProductRepository productRepository;
-    CartService cartService;
-    OrderMapper orderMapper;  // This will be automatically injected by Spring
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final CartService cartService;
+    private final OrderMapper orderMapper;
 
     @Transactional
     @Override
-    public Order placeOrder(Long userId) {
-        Cart cart   = cartService.getCartByUserId(userId);
+    public OrderDto placeOrder(PlaceOrderRequest request) {
+        Cart cart   = cartService.getCartByUserId(request.getUserId());
         Order order = createOrder(cart);
         List<OrderItem> orderItemList = createOrderItems(order, cart);
+        order.setAddress(request.getAddress());
+        order.setPhone(request.getPhone());
+        order.setRecipientName(request.getRecipientName());
+        order.setNote(request.getNote());
         order.setOrderItems(new HashSet<>(orderItemList));
         order.setTotalAmount(calculateTotalAmount(orderItemList));
         Order savedOrder = orderRepository.save(order);
         cartService.clearCart(cart.getId());
-        return savedOrder;
+        return orderMapper.toDto(savedOrder);
     }
 
     private Order createOrder(Cart cart) {
@@ -49,40 +52,51 @@ public class OrderService implements IOrderService {
         order.setUser(cart.getUser());
         order.setOrderStatus(OrderStatus.PENDING);
         order.setOrderDate(LocalDate.now());
-        return order;
+        return  order;
     }
 
     private List<OrderItem> createOrderItems(Order order, Cart cart) {
-        return cart.getItems().stream().map(cartItem -> {
+        return  cart.getItems().stream().map(cartItem -> {
             Product product = cartItem.getProduct();
-            product.setInventory(product.getInventory() - cartItem.getQuantity());
+            product.setInventory((product.getInventory() - cartItem.getQuantity()));
+            if(product.getInventory()==0)
+                product.setStatus(false);
             productRepository.save(product);
-            return new OrderItem(
+            return  new OrderItem(
                     order,
                     product,
                     cartItem.getQuantity(),
-                    cartItem.getUnitPrice()
-            );
+                    cartItem.getUnitPrice());
         }).toList();
     }
 
     private BigDecimal calculateTotalAmount(List<OrderItem> orderItemList) {
-        return orderItemList
+        return  orderItemList
                 .stream()
-                .map(item -> item.getPrice().multiply(new BigDecimal(item.getQuantity())))
+                .map(item -> item.getPrice()
+                        .multiply(new BigDecimal(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    @Override
     public OrderDto getOrder(Long orderId) {
         return orderRepository.findById(orderId)
-                .map(orderMapper::toDto) // Use orderMapper here instead of modelMapper
+                .map(orderMapper::toDto)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
     }
 
+    @Override
     public List<OrderDto> getUserOrders(Long userId) {
         List<Order> orders = orderRepository.findByUserId(userId);
-        return orders.stream()
-                .map(orderMapper::toDto) // Use orderMapper here instead of modelMapper
-                .toList();
+        return  orders.stream().map(orderMapper :: toDto).toList();
     }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
+    public void updateDeliveredStatus(Long orderId) {
+        Order order = orderRepository.findByOrderId(orderId);
+        order.setOrderStatus(OrderStatus.DELIVERED);
+        orderRepository.save(order);
+    }
+
 }

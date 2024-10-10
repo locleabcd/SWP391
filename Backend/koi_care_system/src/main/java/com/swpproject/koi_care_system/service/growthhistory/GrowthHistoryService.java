@@ -10,11 +10,13 @@ import com.swpproject.koi_care_system.payload.request.GrowthCreateRequest;
 import com.swpproject.koi_care_system.payload.request.GrowthUpdateRequest;
 import com.swpproject.koi_care_system.repository.GrowthHistoryRepository;
 import com.swpproject.koi_care_system.repository.KoiFishRepository;
+import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -24,13 +26,15 @@ public class GrowthHistoryService implements IGrowthHistoryService {
     GrowthHistoryRepository growthHistoryRepository;
     GrowthHistoryMapper growthHistoryMapper;
     KoiFishRepository koiFishRepository;
-
+    ImageStorage imageStorage;
     @Override
     public GrowthHistoryDto createGrowthHistory(GrowthCreateRequest growthCreateRequest) {
         KoiFish koiFish = koiFishRepository.findById(growthCreateRequest.getKoiFishId()).orElseThrow(() -> new AppException(ErrorCode.KOI_FISH_NOT_FOUND));
         GrowthHistory growthHistory = growthHistoryMapper.mapToGrowthHistory(growthCreateRequest);
+        if(growthCreateRequest.getFile()!=null){
+            growthCreateRequest.setImageUrl(!growthCreateRequest.getFile().isEmpty()? imageStorage.uploadImage(growthCreateRequest.getFile()):"https://koicareimage.blob.core.windows.net/koicarestorage/defaultGrowthHistory.png");
+        }
         growthHistory.setKoiFish(koiFish);//relation between growHistory and koiFish
-        if (growthCreateRequest.getImageUrl().isEmpty()) growthHistory.setImageUrl("defaultGrowth.png");
         //If new growthHistory is the latest, update KoiFish
         GrowthHistory savedGrowthHistory = growthHistoryRepository.save(growthHistory);
         long latestId = growthHistoryRepository.findLatestByKoiFishId(koiFish.getId());
@@ -47,11 +51,17 @@ public class GrowthHistoryService implements IGrowthHistoryService {
         GrowthHistory growthHistory = growthHistoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.GROWTH_HISTORY_NOT_FOUND));
         growthHistoryMapper.updateGrowthHistory(growthHistory, growthUpdateRequest);
         KoiFish koiFish = growthHistory.getKoiFish();
-        if (growthUpdateRequest.getImageUrl().isEmpty()) growthHistory.setImageUrl("defaultGrowth.png");
         GrowthHistory updatedGrowthHistory = growthHistoryRepository.save(growthHistory);
         //Update latest KoiFish
         long latestId = growthHistoryRepository.findLatestByKoiFishId(koiFish.getId());
         GrowthHistory growthHistoryLatest = growthHistoryRepository.findById(latestId).orElseThrow(() -> new AppException(ErrorCode.GROWTH_HISTORY_NOT_FOUND));
+        if (growthUpdateRequest.getFile()!=null){
+            try{
+                GrowthHistory.setImageUrl(!growthUpdateRequest.getFile().isEmpty()? imageStorage.uploadImage(growthUpdateRequest.getFile()): GrowthHistory.getImageUrl());
+            }catch (Exception e){
+                throw new RuntimeException(e);
+            }
+        }
         updateKoiFish(growthHistoryLatest);
         koiFishRepository.save(koiFish);
 

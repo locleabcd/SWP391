@@ -15,13 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.InputStream;
 import java.lang.module.ResolutionException;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
@@ -36,112 +31,53 @@ public class KoiPondController {
     private final UserRepository userRepository;
 
     @PostMapping("/create")
-    public ResponseEntity<ApiResponse> createKoiPond(@RequestParam String name, @RequestParam Double depth, @RequestParam int drainCount,
-                                                     @RequestParam int volume, @RequestParam int skimmer, @RequestParam Double pumpCapacity, @RequestParam(required = false) MultipartFile file, Authentication authentication) {
-        try {
-            String imageUrl;
-            try (InputStream inputStream = file.getInputStream()) {
-                imageUrl = this.imageStorage.uploadImage(file.getOriginalFilename(), inputStream, file.getSize());
-            } catch (Exception e) {
-                imageUrl = "1234567";
-            }
+    public ResponseEntity<ApiResponse> createKoiPond(@ModelAttribute AddKoiPondRequest addKoiPondRequest, Authentication authentication) {
+        try{
             String username = authentication.getName();
             User user = userRepository.findByUsername(username).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-            KoiPondDto koiPondDto = koiPondService.addKoiPond(new AddKoiPondRequest(name, drainCount, volume, depth, skimmer, pumpCapacity, user, imageUrl));
+            addKoiPondRequest.setUser(user);
+            KoiPondDto koiPondDto = koiPondService.addKoiPond(addKoiPondRequest);
             return ResponseEntity.ok(new ApiResponse("Add Koi pond success!", koiPondDto));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
     }
-
-    @GetMapping("/user/{userID}/koiponds/sorted-by-name")
-    public ResponseEntity<ApiResponse> getSortedKoiPondsByUserID(@PathVariable Long userID, @RequestParam(defaultValue = "asc") String order) {
+    @GetMapping("/user/{userID}/koiponds")
+    public ResponseEntity<ApiResponse> getAllKoiPondByUserID(@PathVariable Long userID) {
         try {
             List<KoiPond> koiPonds = koiPondService.getKoiPondByUserID(userID);
-            if ("desc".equalsIgnoreCase(order)) {
-                koiPonds.sort((a, b) -> b.getName().compareToIgnoreCase(a.getName()));
-            } else {
-                koiPonds.sort((a, b) -> a.getName().compareToIgnoreCase(b.getName()));
-            }
             List<KoiPondDto> koiPondDtos = koiPondService.getConvertedKoiPonds(koiPonds);
-
-            return ResponseEntity.ok(new ApiResponse("Found and sorted!", koiPondDtos));
+            return ResponseEntity.ok(new ApiResponse("Found!", koiPondDtos));
         } catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error", INTERNAL_SERVER_ERROR));
         }
     }
-
-    @GetMapping("/user/{userID}/koiponds/sorted-by-volume")
-    public ResponseEntity<ApiResponse> getSortedKoiPondsByUserIDAndVolume(@PathVariable Long userID, @RequestParam(defaultValue = "asc") String order) {
-        try {
-            List<KoiPond> koiPonds = koiPondService.getKoiPondByUserID(userID);
-
-            if ("desc".equalsIgnoreCase(order)) {
-                koiPonds.sort((a, b) -> Integer.compare(b.getVolume(), a.getVolume()));
-            } else {
-                koiPonds.sort(Comparator.comparingInt(KoiPond::getVolume));
-            }
-            List<KoiPondDto> koiPondDtos = koiPondService.getConvertedKoiPonds(koiPonds);
-            return ResponseEntity.ok(new ApiResponse("Found and sorted by volume!", koiPondDtos));
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error", INTERNAL_SERVER_ERROR));
-        }
-    }
-
-    @GetMapping("/user/{userID}/koiponds/sorted-by-numberOfFish")
-    public ResponseEntity<ApiResponse> getSortedKoiPondsByUserIDAndNumberOfFish(@PathVariable Long userID, @RequestParam(defaultValue = "asc") String order) {
-        try {
-            List<KoiPond> koiPonds = koiPondService.getKoiPondByUserID(userID);
-            koiPonds = koiPonds.stream()
-                    .map(pond -> koiPondService.getKoiPondWithFishCount(pond.getId()))
-                    .collect(Collectors.toList());
-            if ("desc".equalsIgnoreCase(order)) {
-                koiPonds.sort((a, b) -> Integer.compare(b.getNumberOfFish(), a.getNumberOfFish()));
-            } else {
-                koiPonds.sort(Comparator.comparingInt(KoiPond::getNumberOfFish));
-            }
-            List<KoiPondDto> koiPondDtos = koiPondService.getConvertedKoiPonds(koiPonds);
-            return ResponseEntity.ok(new ApiResponse("Found and sorted by number of fish!", koiPondDtos));
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error", INTERNAL_SERVER_ERROR));
-        }
-    }
-
     @GetMapping("/koipond/{id}")
-    public ResponseEntity<ApiResponse> getKoiPondByID(@PathVariable Long id) {
-        try {
+    public ResponseEntity<ApiResponse> getKoiPondByID(@PathVariable Long id){
+        try{
             KoiPond theKoiPond = koiPondService.getKoiPondById(id);
             KoiPondDto koiPondDto = koiPondService.convertToDto(theKoiPond);
-            return ResponseEntity.ok(new ApiResponse("Found", koiPondDto));
-        } catch (ResolutionException e) {
-            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+            return ResponseEntity.ok(new ApiResponse("Found",koiPondDto));
+        }catch(ResolutionException e){
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
     }
-
     @DeleteMapping("/koipond/{id}/delete")
-    public ResponseEntity<ApiResponse> deleteKoiPond(@PathVariable Long id) {
-        try {
+    public ResponseEntity<ApiResponse> deleteKoiPond(@PathVariable Long id){
+        try{
             koiPondService.deleteKoiPond(id);
-            return ResponseEntity.ok(new ApiResponse("Delete success!", null));
-        } catch (ResourceNotFoundException e) {
-            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
+            return ResponseEntity.ok(new ApiResponse("Delete success!",null));
+        }catch(ResourceNotFoundException e){
+            return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(),null));
         }
     }
-
     @PutMapping("/koipond/{id}/update")
-    public ResponseEntity<ApiResponse> updateKoiPond(@PathVariable Long id, @RequestParam String name, @RequestParam Double depth, @RequestParam int drainCount,
-                                                     @RequestParam int volume, @RequestParam int skimmer, @RequestParam Double pumpCapacity, @RequestParam String imageUrl, @RequestParam(required = false) MultipartFile file) {
+    public ResponseEntity<ApiResponse> updateKoiPond(@PathVariable Long id,@ModelAttribute KoiPondUpdateRequest koiPondUpdateRequest) {
         try {
-            String imageUrlNew;
-            try (InputStream inputStream = file.getInputStream()) {
-                imageUrlNew = this.imageStorage.uploadImage(file.getOriginalFilename(), inputStream, file.getSize());
-            } catch (Exception e) {
-                imageUrlNew = imageUrl;
-            }
-            KoiPond updatedKoiPond = koiPondService.updateKoiPond(new KoiPondUpdateRequest(name, drainCount, volume, depth, skimmer, pumpCapacity, imageUrlNew), id);
+            KoiPond updatedKoiPond = koiPondService.updateKoiPond(koiPondUpdateRequest, id);
             KoiPondDto koiPondDto = koiPondService.convertToDto(updatedKoiPond);
             return ResponseEntity.ok(new ApiResponse("Update success!", koiPondDto));
-        } catch (ResourceNotFoundException e) {
+        } catch (Exception e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }
     }

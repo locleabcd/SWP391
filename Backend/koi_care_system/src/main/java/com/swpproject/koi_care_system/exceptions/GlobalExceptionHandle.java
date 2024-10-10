@@ -24,11 +24,11 @@ public class GlobalExceptionHandle {
         ErrorCode errorCode = exception.getErrorCode();
         ApiResponse apiResponse = new ApiResponse();
 
-        apiResponse.setData(errorCode);
+		apiResponse.setData(errorCode);
         apiResponse.setMessage(errorCode.getMessage());
 
 
-        return ResponseEntity.status(errorCode.getStatus()).body(apiResponse);
+		return ResponseEntity.status(errorCode.getStatus()).body(apiResponse);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
@@ -47,11 +47,11 @@ public class GlobalExceptionHandle {
         return ResponseEntity.badRequest().body(apiResponse);
     }
 
-    @ExceptionHandler(value = AccessDeniedException.class)
+	@ExceptionHandler(value = AccessDeniedException.class)
     public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException ex) {
-        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+		ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
 
-        return ResponseEntity.status(errorCode.getStatus()).body(errorCode.getMessage());
+		return ResponseEntity.status(errorCode.getStatus()).body(errorCode.getMessage());
     }
 
     @ExceptionHandler(value = AlreadyExistsException.class)

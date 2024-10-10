@@ -1,15 +1,20 @@
 package com.swpproject.koi_care_system.models;
 
+import com.swpproject.koi_care_system.enums.PromotionStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+
+import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
+
 @Entity
 public class Promotion {
     @Id
@@ -18,12 +23,11 @@ public class Promotion {
     private String name;
     private Double discountRate;
     private String description;
-    private Date startDate;
-    private Date endDate;
-    private String status;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    @Enumerated(EnumType.STRING)
+    private PromotionStatus status;
 
-    @OneToOne
-    @JoinColumn(name="product_id")
-    private Product product;
-
+    @ManyToMany(mappedBy = "promotions",cascade = CascadeType.ALL)
+    private Set<Product> products = new HashSet<Product>();
 }

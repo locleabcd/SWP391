@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -25,7 +25,7 @@ public class KoiFish {
     private Double weight;
     private String gender;
     private String variety;
-    private Date pondDate;
+    private LocalDate pondDate;
     private String breeder;
     private Double price;
     private String status;
@@ -40,7 +40,7 @@ public class KoiFish {
     @OneToMany(mappedBy = "koiFish",cascade = CascadeType.ALL,orphanRemoval = true)
     List<Remark> remarkList;
 
-    public KoiFish(Long id,String name, String physique, int age, Double length, Double weight, String gender, String variety, Date pondDate, String breeder, Double price, KoiPond koiPond, String imageUrl) {
+    public KoiFish(Long id,String name, String physique, int age, Double length, Double weight, String gender, String variety, LocalDate pondDate, String breeder, Double price, KoiPond koiPond, String imageUrl) {
         this.id = id;
         this.name = name;
         this.physique = physique;

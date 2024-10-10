@@ -4,10 +4,11 @@ import com.swpproject.koi_care_system.dto.BlogDto;
 import com.swpproject.koi_care_system.payload.request.BlogCreateRequest;
 import com.swpproject.koi_care_system.payload.request.BlogUpdateRequest;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IBlogService {
-    BlogDto createBlog(BlogCreateRequest blogCreateRequest, String username);
+    BlogDto createBlog(BlogCreateRequest blogCreateRequest, String username) throws IOException;
 
     BlogDto updateBlog(int id, BlogUpdateRequest blogUpdateRequest);
 

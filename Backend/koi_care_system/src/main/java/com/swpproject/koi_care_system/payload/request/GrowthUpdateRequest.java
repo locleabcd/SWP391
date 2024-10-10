@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.payload.request;
 
+import jakarta.mail.Multipart;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;
@@ -7,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -23,5 +25,5 @@ public class GrowthUpdateRequest {
     @NotNull
     @Min(value = 0, message = "Weight must be positive")
     Double weight;
-    String imageUrl;
+    MultipartFile file;
 }

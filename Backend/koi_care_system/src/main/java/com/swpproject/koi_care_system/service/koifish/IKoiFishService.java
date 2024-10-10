@@ -5,11 +5,12 @@ import com.swpproject.koi_care_system.models.KoiFish;
 import com.swpproject.koi_care_system.payload.request.AddKoiFishRequest;
 import com.swpproject.koi_care_system.payload.request.KoiFishUpdateRequest;
 
+import java.io.IOException;
 import java.util.List;
 
 public interface IKoiFishService {
 
-    KoiFish addKoiFish(AddKoiFishRequest addKoiFishRequest);
+    KoiFish addKoiFish(AddKoiFishRequest addKoiFishRequest) throws IOException;
 
     KoiFish getKoiFishById(Long id);
 

@@ -17,6 +17,7 @@ public interface GrowthHistoryMapper {
     @Mapping(target = "koiFishName", source = "koiFish.name")
     GrowthHistoryDto mapToGrowthHistoryDto(GrowthHistory growthHistory);
 
+    @Mapping(target = "imageUrl", ignore = true)
     @Mapping(target = "koiFish", ignore = true)
     @Mapping(target = "id", ignore = true)
     void updateGrowthHistory(@MappingTarget GrowthHistory growthHistory, GrowthUpdateRequest growthUpdateRequest);

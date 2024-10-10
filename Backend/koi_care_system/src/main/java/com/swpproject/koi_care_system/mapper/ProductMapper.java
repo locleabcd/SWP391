@@ -1,13 +1,14 @@
 package com.swpproject.koi_care_system.mapper;
 
 import com.swpproject.koi_care_system.dto.ProductDto;
+import com.swpproject.koi_care_system.dto.PromotionDto;
 import com.swpproject.koi_care_system.models.Product;
+import com.swpproject.koi_care_system.models.Promotion;
 import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper()
 public interface ProductMapper {
 
-    ProductDto toDto(Product product);
-
-//    Product toEntity(ProductDto productDto);
+    ProductDto mapToProductDto(Product product);
+    PromotionDto mapToPromotionDto(Promotion promotion);
 }

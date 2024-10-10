@@ -1,12 +1,12 @@
 package com.swpproject.koi_care_system.dto;
 
-import com.swpproject.koi_care_system.models.KoiPond;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Data
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public class KoiFishDto {
     private Double weight;
     private String gender;
     private String variety;
-    private Date pondDate;
+    private LocalDate pondDate;
     private String breeder;
     private Double price;
     private String imageUrl;

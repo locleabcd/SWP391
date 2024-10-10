@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 
@@ -25,6 +26,7 @@ public class GrowthCreateRequest {
     @Min(value = 0, message = "Weight must be positive")
     Double weight;
     String imageUrl;
+    MultipartFile file;
     @NotBlank
     Long koiFishId;
 }

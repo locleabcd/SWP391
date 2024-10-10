@@ -39,7 +39,7 @@ public class WaterParametersController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllWaterParameters(@RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "4") int pageSize, @RequestParam(defaultValue = "createDateTime") String sortBy, @RequestParam(defaultValue = "Desc") String sortDir) {
+    public ResponseEntity<ApiResponse> getAllWaterParameters(@RequestParam(defaultValue = "0") int pageNumber, @RequestParam(defaultValue = "20") int pageSize, @RequestParam(defaultValue = "createDateTime") String sortBy, @RequestParam(defaultValue = "Desc") String sortDir) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("Water parameters list")
                 .data(waterParameterService.getAllWaterParameters(pageNumber, pageSize, sortBy, sortDir))
@@ -52,5 +52,21 @@ public class WaterParametersController {
                 .message("Water parameters found")
                 .data(waterParameterService.getWaterParametersById(id))
                 .build());
+    }
+    @GetMapping("/getByKoiPondId/{koiPondId}")
+    public ResponseEntity<ApiResponse> getWaterParametersByKoiPondId(@PathVariable Long koiPondId){
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("Water parameters found")
+                .data(waterParameterService.getAllWaterParametersByKoiPondId(koiPondId))
+                .build());
+    }
+
+    @GetMapping("/getByUserId/{userId}")
+    public ResponseEntity<ApiResponse> getWaterParametersByUserId(@PathVariable Long userId){
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("Water parameters found")
+                .data(waterParameterService.getAllWaterParametersByUserId(userId))
+                .build()
+        );
     }
 }

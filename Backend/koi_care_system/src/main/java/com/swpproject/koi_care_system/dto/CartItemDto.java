@@ -1,18 +1,10 @@
 package com.swpproject.koi_care_system.dto;
 
-import com.swpproject.koi_care_system.models.Product;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
-@NoArgsConstructor
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
-@Builder
+@Data
 public class CartItemDto {
     private Long itemId;
     private Integer quantity;

@@ -27,8 +27,6 @@ public class Log {
     @Enumerated(EnumType.STRING)
     LogCategory category;
     String note;
-    String image;
-
     @ManyToOne
     @JoinColumn(name="koiPond_id")
     KoiPond koiPond;

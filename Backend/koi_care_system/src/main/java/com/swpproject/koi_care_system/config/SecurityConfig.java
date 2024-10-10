@@ -55,12 +55,12 @@ public class SecurityConfig {
                 );
         httpSecurity
                 .formLogin(form -> form
-                        .loginPage("/login")
+                        .loginPage("https://koi-care-system.vercel.app/login")
                         .permitAll())
                 .oauth2Login(oauth -> oauth
-                        .loginPage("/login")
+                        .loginPage("https://koi-care-system.vercel.app/login")
                         .defaultSuccessUrl("https://koi-care-system.vercel.app/member", true)
-                        .failureUrl("/login?error=true")
+                        .failureUrl("https://koi-care-system.vercel.app/login?error=true")
                 );
 
 

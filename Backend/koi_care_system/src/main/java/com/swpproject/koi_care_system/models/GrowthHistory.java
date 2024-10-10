@@ -22,7 +22,6 @@ public class GrowthHistory {
     private Double length;
     private Double weight;
     private String imageUrl;
-
     @ManyToOne
     @JoinColumn(name="koifish_id")
     private KoiFish koiFish;

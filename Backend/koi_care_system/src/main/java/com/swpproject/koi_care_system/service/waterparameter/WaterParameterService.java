@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.service.waterparameter;
 
+import com.swpproject.koi_care_system.dto.KoiPondDto;
 import com.swpproject.koi_care_system.dto.WaterParameterDto;
 import com.swpproject.koi_care_system.mapper.WaterParameterMapper;
 import com.swpproject.koi_care_system.models.KoiPond;
@@ -19,7 +20,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -72,5 +76,22 @@ public class WaterParameterService implements IWaterParametersService {
         return waterParametersRepository.findById(id)
                 .map(waterParameterMapper::mapToWaterParameterDto)
                 .orElseThrow(() -> new RuntimeException("WaterParameters not found"));
+    }
+}
+
+    @Override
+    public List<WaterParameterDto> getAllWaterParametersByKoiPondId(Long koiPondId) {
+        List<WaterParameters> waterParameters = waterParametersRepository.findByKoiPondId(koiPondId);
+        return waterParameters.stream()
+                .map(waterParameterMapper::mapToWaterParameterDto)
+                .collect(Collectors.toList());
+    }
+    @Override
+    public List<WaterParameterDto> getAllWaterParametersByUserId(Long userId){
+        List<WaterParameters> waterParameters = new ArrayList<>();
+        koiPondRepository.findKoiPondsByUserId(userId).forEach(koiPond -> {
+            waterParameters.addAll(waterParametersRepository.findByKoiPondId(koiPond.getId()));
+        });
+        return waterParameters.stream().map(waterParameterMapper::mapToWaterParameterDto).toList();
     }
 }

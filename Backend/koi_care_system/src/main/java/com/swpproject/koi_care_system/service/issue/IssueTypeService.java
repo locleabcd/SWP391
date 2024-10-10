@@ -1,6 +1,8 @@
 package com.swpproject.koi_care_system.service.issue;
 
+import com.swpproject.koi_care_system.dto.IssueTypeDto;
 import com.swpproject.koi_care_system.enums.RangeParameter;
+import com.swpproject.koi_care_system.mapper.IssueTypeMapper;
 import com.swpproject.koi_care_system.models.IssueType;
 import com.swpproject.koi_care_system.repository.IssueTypeRepository;
 import jakarta.annotation.PostConstruct;
@@ -9,12 +11,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class IssueTypeService implements IIssueTypeService {
     IssueTypeRepository issueTypeRepository;
 
+    IssueTypeMapper issueTypeMapper;
     @PostConstruct
     public void init() {
         for (RangeParameter parameter : RangeParameter.values()) {
@@ -36,4 +41,8 @@ public class IssueTypeService implements IIssueTypeService {
         }
     }
 
+    @Override
+    public List<IssueTypeDto> getAllIssueType() {
+        return issueTypeRepository.findAll().stream().map(issueTypeMapper::maptodto).toList();
+    }
 }

@@ -22,8 +22,6 @@ public class LogCreateRequest {
     LocalDateTime logDate;
     LogCategory category;
     String note;
-    String image;
     @NotNull
     long koiPondId;
-
 }

@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -21,7 +20,6 @@ public class LogUpdateRequest {
     LocalDateTime logDate;
     String category;
     String note;
-    String image;
     @NotNull
     long koiPondId;
 }

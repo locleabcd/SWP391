@@ -16,6 +16,7 @@ import com.swpproject.koi_care_system.service.profile.ProfileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,8 +37,6 @@ public class UserService implements IUserService {
     IAuthenticationService authenticationService;
 
     public UserDTO createUser(CreateUserRequest request) {
-
-
         if (userRepo.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         } else if (userRepo.existsByEmail(request.getEmail())) {

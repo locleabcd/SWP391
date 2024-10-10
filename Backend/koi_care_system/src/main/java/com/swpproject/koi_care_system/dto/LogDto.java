@@ -19,6 +19,5 @@ public class LogDto {
     LocalDateTime logDate;
     LogCategory category;
     String note;
-    String image;
     String koiPondName;
 }

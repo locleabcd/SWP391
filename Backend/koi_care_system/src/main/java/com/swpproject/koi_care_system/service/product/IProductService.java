@@ -12,13 +12,16 @@ public interface IProductService {
     Product getProductById(Long id);
     void deleteProductById(Long id);
     Product updateProduct(ProductUpdateRequest product, Long productId);
-    List<Product> getAllProducts();
+    List<Product> getAllProducts(int pageNumber, int pageSize, String sortBy, String sortDir);
     List<Product> getProductsByCategory(String category);
     List<Product> getProductsByBrand(String brand);
     List<Product> getProductsByCategoryAndBrand(String category, String brand);
     List<Product> getProductsByName(String name);
     List<Product> getProductsByBrandAndName(String category, String name);
+    List<Product> getProductsBySupplier(String supplierName);
     Long countProductsByBrandAndName(String brand, String name);
+    List<Product> getProductsByIssueType(Long issueTypeId);
+
 
     List<Product> getProductsByIssueType(Long issueTypeId);
 
