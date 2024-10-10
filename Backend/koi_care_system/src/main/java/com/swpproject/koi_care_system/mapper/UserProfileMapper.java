@@ -24,9 +24,9 @@ public interface UserProfileMapper {
     @Mapping(target = "address", ignore = true)
     UserProfile mapToUserProfile(User user);
 
-    @Mapping(target = "status", source = "userProfile.subscribePlan.subscribe")
+    @Mapping(target = "status", source = "subscribePlan.subscribe")
     UserProfileDto mapToUserProfileDto(UserProfile userProfile);
-
+    
     @Mapping(target = "subscribePlan", ignore = true)
     @Mapping(target = "avatar", ignore = true)
     @Mapping(target = "user", ignore = true)

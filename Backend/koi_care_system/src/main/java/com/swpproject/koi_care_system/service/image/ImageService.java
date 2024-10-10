@@ -2,6 +2,7 @@ package com.swpproject.koi_care_system.service.image;
 
 import com.swpproject.koi_care_system.dto.ImageDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
+import com.swpproject.koi_care_system.mapper.ImageMapper;
 import com.swpproject.koi_care_system.models.Image;
 import com.swpproject.koi_care_system.models.Product;
 import com.swpproject.koi_care_system.repository.ImageRepository;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +23,7 @@ public class ImageService implements IImageService {
     private final ImageRepository imageRepository;
     private final IProductService productService;
     private final AzureImageStorage imageStorage;
+    private final ImageMapper imageMapper;
     @Override
     public Image getImageById(Long id) {
         return imageRepository.findById(id)
@@ -73,5 +76,10 @@ public class ImageService implements IImageService {
             image.setFileType(file.getContentType());
             image.setDownloadUrl(newImageUrl);
             imageRepository.save(image);
+    }
+
+    @Override
+    public List<ImageDto> getAll() {
+        return imageRepository.findAll().stream().map(imageMapper::mapToImageDto).collect(Collectors.toList());
     }
 }

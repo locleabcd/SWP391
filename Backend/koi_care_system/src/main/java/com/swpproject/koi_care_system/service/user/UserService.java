@@ -37,8 +37,6 @@ public class UserService implements IUserService {
     ProfileService profileService;
 
     public UserDTO createUser(CreateUserRequest request) {
-
-
         if (userRepo.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
         } else if (userRepo.existsByEmail(request.getEmail())) {
@@ -85,6 +83,7 @@ public class UserService implements IUserService {
         user.setStatus(true);
         user.setRole(Role.MEMBER);
         user.setUserProfile(profileService.createProfile(user));
+
         userRepo.save(user);
     }
     @Override

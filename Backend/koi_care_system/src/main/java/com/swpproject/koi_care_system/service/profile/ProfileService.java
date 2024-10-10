@@ -31,7 +31,9 @@ public class ProfileService implements IProfileService {
     public UserProfile createProfile(User user) {
         UserProfile userProfile = userProfileMapper.mapToUserProfile(user);
         userProfile.setCreatedDate(LocalDate.now());
+        userProfileRepository.save(userProfile);
         userProfile.setSubscribePlan(subscribePlanService.initDefault(user.getId()));
+        userProfile.setAvatar("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultProfile.jpg");
         return userProfileRepository.save(userProfile);
     }
 
@@ -40,10 +42,17 @@ public class ProfileService implements IProfileService {
     public UserProfileDto updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) throws IOException {
         UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.PROFILE_NOT_FOUND));
         if(profileUpdateRequest.getFile()!=null){
-            userProfile.setAvatar(!profileUpdateRequest.getFile().isEmpty()?imageStorage.uploadImage(profileUpdateRequest.getFile()): userProfile.getAvatar());
+            if(!profileUpdateRequest.getFile().isEmpty()){
+                try{
+                    if(!userProfile.getAvatar().equals("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultProfile.jpg"))
+                        imageStorage.deleteImage(userProfile.getAvatar());
+                    userProfile.setAvatar(imageStorage.uploadImage(profileUpdateRequest.getFile()));
+                }catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
         }
         userProfileMapper.updateUserProfile(userProfile, profileUpdateRequest);
-        //userName
         return userProfileMapper.mapToUserProfileDto(userProfileRepository.save(userProfile));
     }
 

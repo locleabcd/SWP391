@@ -12,4 +12,5 @@ public class PlaceOrderRequest {
     private String address;
     private String phone;
     private String recipientName;
+    private String note;
 }

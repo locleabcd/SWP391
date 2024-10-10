@@ -37,7 +37,9 @@ public class KoiFishService implements IKoiFishService {
         }
         addKoiFishRequest.setKoiPond(koiPondService.getKoiPondById(addKoiFishRequest.getKoiPondId()));
         if(addKoiFishRequest.getFile()!=null)
-            addKoiFishRequest.setImageUrl(!addKoiFishRequest.getFile().isEmpty()?imageStorage.uploadImage(addKoiFishRequest.getFile()):"");
+            addKoiFishRequest.setImageUrl(!addKoiFishRequest.getFile().isEmpty()?imageStorage.uploadImage(addKoiFishRequest.getFile()):"https://koicaresystem.blob.core.windows.net/koicare-blob/defaultKoiFish.jpeg");
+        else
+            addKoiFishRequest.setImageUrl("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultKoiFish.jpeg");
         KoiFish koiFish = koiFishMapper.mapToKoiFish(addKoiFishRequest);
         koiFish.setStatus("Alive");
         return koiFishRepository.save(koiFish);
@@ -76,6 +78,8 @@ public class KoiFishService implements IKoiFishService {
             if(koiFishUpdateRequest.getFile()!=null)
                 if(!koiFishUpdateRequest.getFile().isEmpty()){
                     try {
+                        if(!oldKoiFish.getImageUrl().equals("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultKoiFish.jpeg"))
+                            imageStorage.deleteImage(oldKoiFish.getImageUrl());
                         oldKoiFish.setImageUrl(imageStorage.uploadImage(koiFishUpdateRequest.getFile()));
                     }catch (Exception e){
                         throw new RuntimeException(e);

@@ -10,4 +10,6 @@ public interface IOrderService {
     OrderDto placeOrder(PlaceOrderRequest request);
     OrderDto getOrder(Long orderId);
     List<OrderDto> getUserOrders(Long userId);
+
+    void updateDeliveredStatus(Long orderId);
 }

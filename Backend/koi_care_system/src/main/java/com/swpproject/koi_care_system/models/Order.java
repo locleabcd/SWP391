@@ -25,6 +25,7 @@ public class Order {
     private String address;
     private String phone;
     private String recipientName;
+    private String note;
     @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)

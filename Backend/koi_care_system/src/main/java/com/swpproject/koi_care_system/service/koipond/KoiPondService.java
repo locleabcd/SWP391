@@ -32,7 +32,9 @@ public class KoiPondService implements IKoiPondService {
             throw new AlreadyExistsException("Koi Pond with name " + addKoiPondRequest.getName() + " already exists!");
         }
         if(addKoiPondRequest.getFile()!=null)
-            addKoiPondRequest.setImageUrl(!addKoiPondRequest.getFile().isEmpty()?imageStorage.uploadImage(addKoiPondRequest.getFile()):"");
+            addKoiPondRequest.setImageUrl(!addKoiPondRequest.getFile().isEmpty()?imageStorage.uploadImage(addKoiPondRequest.getFile()):"https://koicaresystem.blob.core.windows.net/koicare-blob/defaultKoiPond.jpg");
+        else
+            addKoiPondRequest.setImageUrl("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultKoiPond.jpg");
         return koiPondRepository.save(koiPondMapper.mapToKoiPond(addKoiPondRequest));
     }
     @Override
@@ -62,6 +64,8 @@ public class KoiPondService implements IKoiPondService {
             if(koiPondUpdateRequest.getFile()!=null) {
                 if(!koiPondUpdateRequest.getFile().isEmpty())
                     try {
+                        if(!oldKoiPond.getImageUrl().equals("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultKoiPond.jpg"))
+                            imageStorage.deleteImage(oldKoiPond.getImageUrl());
                         oldKoiPond.setImageUrl(imageStorage.uploadImage(koiPondUpdateRequest.getFile()));
                     } catch (IOException e) {
                         throw new RuntimeException(e);

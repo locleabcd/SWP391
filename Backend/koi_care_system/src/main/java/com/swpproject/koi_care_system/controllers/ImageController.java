@@ -42,6 +42,10 @@ public class ImageController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" +image.getFileName() + "\"")
                 .body(resource);
     }
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse> getAll(){
+        return ResponseEntity.ok(new ApiResponse("Get Image success",imageService.getAll()));
+    }
 
     @PutMapping("/image/{imageId}/update")
     public ResponseEntity<ApiResponse> updateImage(@PathVariable Long imageId, @RequestBody MultipartFile file) {

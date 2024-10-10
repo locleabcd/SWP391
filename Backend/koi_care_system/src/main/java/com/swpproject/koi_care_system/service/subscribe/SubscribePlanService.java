@@ -28,10 +28,9 @@ public class SubscribePlanService implements ISubscribePlanService{
         SubscribePlan subscribePlan = new SubscribePlan();
         subscribePlan.setSubscribe(ProfileStatus.NORMAL);
         subscribePlan.setStartDate(LocalDate.now());
-        subscribePlan.setExpiredDate(LocalDate.MAX);
+        subscribePlan.setExpiredDate(subscribePlan.getStartDate().plusYears(10));
         subscribePlan.setUserProfile(userProfileRepository.findUserProfileByUserId(userId));
-        subscribePlanRepository.save(subscribePlan);
-        return subscribePlan;
+        return subscribePlanRepository.save(subscribePlan);
     }
 
     @Override

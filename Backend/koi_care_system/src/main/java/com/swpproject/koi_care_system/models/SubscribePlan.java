@@ -20,8 +20,10 @@ public class SubscribePlan {
     Long id;
     LocalDate startDate;
     LocalDate expiredDate;
+
     @Enumerated(EnumType.STRING)
     ProfileStatus subscribe;
+
     @OneToOne
     @JoinColumn(name="userProfile_id")
     UserProfile userProfile;

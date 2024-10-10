@@ -21,5 +21,4 @@ public class ProfileUpdateRequest {
     MultipartFile file;
     String bio;
     LocalDate dateOfBirth;
-    ProfileStatus status;
 }

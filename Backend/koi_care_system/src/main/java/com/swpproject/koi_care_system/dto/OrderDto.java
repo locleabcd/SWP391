@@ -14,6 +14,7 @@ public class OrderDto {
     private String address;
     private String phone;
     private String recipientName;
+    private String note;
     private String status;
     private List<OrderItemDto> items;
 }

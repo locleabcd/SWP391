@@ -43,7 +43,9 @@ public class BlogService implements IBlogService {
             throw new RuntimeException("Blog already exists");
         }
         if(blogCreateRequest.getFile()!=null)
-            blogCreateRequest.setBlogImage(!blogCreateRequest.getFile().isEmpty()?imageStorage.uploadImage(blogCreateRequest.getFile()):"");
+            blogCreateRequest.setBlogImage(!blogCreateRequest.getFile().isEmpty()?imageStorage.uploadImage(blogCreateRequest.getFile()):"https://koicaresystem.blob.core.windows.net/koicare-blob/defaultBlog.png");
+        else
+            blogCreateRequest.setBlogImage("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultBlog.png");
         Blog blog = blogMapper.mapToBlog(blogCreateRequest);
         blog.setBlogDate(java.time.LocalDate.now());
         Set<Tag> tags = new HashSet<>();
@@ -68,6 +70,8 @@ public class BlogService implements IBlogService {
         if(blogUpdateRequest.getFile()!=null)
             if(!blogUpdateRequest.getFile().isEmpty()){
                 try{
+                    if(!blog.getBlogImage().equals("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultBlog.png"))
+                        imageStorage.deleteImage(blog.getBlogImage());
                     blog.setBlogImage(imageStorage.uploadImage(blogUpdateRequest.getFile()));
                 }catch (Exception e){
                     throw new RuntimeException(e);

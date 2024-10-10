@@ -47,4 +47,14 @@ public class OrderController {
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Oops!", e.getMessage()));
         }
     }
+
+    @PutMapping("/{orderId}/order/delivery")
+    public ResponseEntity<ApiResponse> updateDelivered(@PathVariable Long orderId) {
+        try {
+            orderService.updateDeliveredStatus(orderId);
+            return ResponseEntity.ok(new ApiResponse("Update order success!",null));
+        } catch (ResourceNotFoundException e) {
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Oops!", e.getMessage()));
+        }
+    }
 }

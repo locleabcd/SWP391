@@ -30,8 +30,9 @@ public class GrowthHistoryService implements IGrowthHistoryService {
         KoiFish koiFish = koiFishRepository.findById(growthCreateRequest.getKoiFishId()).orElseThrow(() -> new IllegalArgumentException("KoiFish not found"));
         //TODO : check if image create then update koiFish image
         if(growthCreateRequest.getFile()!=null){
-            growthCreateRequest.setImageUrl(!growthCreateRequest.getFile().isEmpty()? imageStorage.uploadImage(growthCreateRequest.getFile()):"");
+            growthCreateRequest.setImageUrl(!growthCreateRequest.getFile().isEmpty()? imageStorage.uploadImage(growthCreateRequest.getFile()):"https://koicaresystem.blob.core.windows.net/koicare-blob/defaultProfile.jpg");
         }
+
         GrowthHistory GrowthHistory = growthHistoryMapper.mapToGrowthHistory(growthCreateRequest);
         GrowthHistory.setKoiFish(koiFish);//relation between GrowthHistory and koiFish
         //Update KoiFish
