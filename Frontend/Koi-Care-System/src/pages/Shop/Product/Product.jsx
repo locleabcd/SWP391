@@ -23,7 +23,7 @@ function Product() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/products/all`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/products/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -51,7 +51,7 @@ function Product() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystem.azurewebsites.net/api/products/product/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/products/product/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -135,8 +135,8 @@ function Product() {
                   <td className='py-2 text-start border-b border-gray-200'>
                     <span title={product.description}>{product.description.length > 120 ? `${product.description.slice(0, 120)} ...` : product.description}</span>
                   </td>
-                  <td className='py-2 px-1 text-center border-b border-gray-200'>{product.category && product.category.name > 0 ? product.category.name : 'Null'}</td>
-                  <td className='py-2 text-center border-b border-gray-200'>{product.supplier && product.supplier.name > 0 ? product.supplier.name : 'Null'}</td>
+                  <td className='py-2 px-1 text-center border-b border-gray-200'>{product.category && product.category.name}</td>
+                  <td className='py-2 text-center border-b border-gray-200'>{product.supplier && product.supplier.name }</td>
                   <td className='py-2 px-1 text-center border-b border-gray-200'>
                     <div className='flex justify-center items-center'>
                       <Link to={`/shop/product/${product.id}`} className='p-1 hover:bg-green-500 text-green-500 hover:text-white rounded-full'>

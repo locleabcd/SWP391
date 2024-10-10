@@ -72,7 +72,7 @@ function Statistics() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -105,7 +105,7 @@ function Statistics() {
       const token = localStorage.getItem('token')
 
       const res = await axios.get(
-        `https://koicaresystem.azurewebsites.net/api/water-parameters/getByKoiPondId/${koiPondId}`,
+        `https://koicaresystemv3.azurewebsites.net/api/water-parameters/getByKoiPondId/${koiPondId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`

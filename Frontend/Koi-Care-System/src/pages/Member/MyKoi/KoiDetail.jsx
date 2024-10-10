@@ -131,7 +131,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/growth-history/list/${id}`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/growth-history/list/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -165,7 +165,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/remark/get-all/${id}`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/remark/get-all/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -206,7 +206,7 @@ function KoiDetails() {
   
       if (id) {
         await axios.put(
-          `https://koicaresystem.azurewebsites.net/api/remark/update/${id}`,
+          `https://koicaresystemv3.azurewebsites.net/api/remark/update/${id}`,
           {
             title: data.title,
             createDate: data.createDate,
@@ -221,7 +221,7 @@ function KoiDetails() {
         toast.success('Remark updated successfully!');
       } else {
         await axios.post(
-          'https://koicaresystem.azurewebsites.net/api/remark/create',
+          'https://koicaresystemv3.azurewebsites.net/api/remark/create',
           {
             title: data.title,
             createDate: data.createDate,
@@ -271,7 +271,7 @@ function KoiDetails() {
           formData.append('file', selectedFile)
         }
 
-        await axios.put(`https://koicaresystem.azurewebsites.net/api/growth-history/update/${id}`, formData, {
+        await axios.put(`https://koicaresystemv3.azurewebsites.net/api/growth-history/update/${id}`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -287,7 +287,7 @@ function KoiDetails() {
         if (selectedFile) {
           formData.append('file', selectedFile)
         }
-        await axios.post('https://koicaresystem.azurewebsites.net/api/growth-history/create', formData, {
+        await axios.post('https://koicaresystemv3.azurewebsites.net/api/growth-history/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -339,7 +339,7 @@ function KoiDetails() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koifishs/koifish/${id}`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koifishs/koifish/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -367,7 +367,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystem.azurewebsites.net/api/growth-history/delete/${id}`, {
+      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/growth-history/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -393,7 +393,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystem.azurewebsites.net/api/remark/delete/${id}`, {
+      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/remark/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -415,7 +415,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -466,7 +466,7 @@ function KoiDetails() {
         formData.append('file', selectedFile)
       }
       const res = await axios.put(
-        `https://koicaresystem.azurewebsites.net/api/koifishs/koifish/${id}/update`,formData,
+        `https://koicaresystemv3.azurewebsites.net/api/koifishs/koifish/${id}/update`,formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -497,7 +497,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystem.azurewebsites.net/api/koifishs/koifish/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/koifishs/koifish/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

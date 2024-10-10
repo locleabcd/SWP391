@@ -23,7 +23,7 @@ function Header() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`https://koicaresystem.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
+      const response = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -50,7 +50,7 @@ function Header() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`https://koicaresystem.azurewebsites.net/api/carts/user/${userId}/cartId`, {
+      const response = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/carts/user/${userId}/cartId`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

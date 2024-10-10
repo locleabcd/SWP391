@@ -36,7 +36,7 @@ function Checkout() {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('id')
       await axios.post(
-        'https://koicaresystem.azurewebsites.net/api/orders/order',
+        'https://koicaresystemv3.azurewebsites.net/api/orders/order',
         {
           userId: userId,
           address: destination,
@@ -65,7 +65,7 @@ function Checkout() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`https://koicaresystem.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
+      const response = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -87,7 +87,7 @@ function Checkout() {
       const token = localStorage.getItem('token')
       const orderId = 3
       const totalPrice = localStorage.getItem('totalPrice')
-      const res = await axios.get('https://koicaresystem.azurewebsites.net/api/payment/vn-pay', {
+      const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/payment/vn-pay', {
         headers: {
           Authorization: `Bearer ${token}`
         },

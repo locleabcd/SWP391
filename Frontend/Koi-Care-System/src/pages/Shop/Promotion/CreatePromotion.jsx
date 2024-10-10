@@ -63,7 +63,7 @@ function CreatePromotion() {
         requestBody.status = data.status
       }
 
-      const res = await axios.post(`https://koicaresystem.azurewebsites.net/api/promotions/create`, requestBody, {
+      const res = await axios.post(`https://koicaresystemv3.azurewebsites.net/api/promotions/create`, requestBody, {
         headers: {
           Authorization: `Bearer ${token}`
         }

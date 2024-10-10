@@ -31,7 +31,7 @@ function CreateProduct() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/categories/all`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/categories/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -55,7 +55,7 @@ function CreateProduct() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/suppliers/all`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/suppliers/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -81,7 +81,7 @@ function CreateProduct() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.post(`https://koicaresystem.azurewebsites.net/api/products/add`, 
+      const res = await axios.post(`https://koicaresystemv3.azurewebsites.net/api/products/add`, 
       {
         name: data.name, 
         brand: data.brand,
@@ -111,7 +111,7 @@ function CreateProduct() {
 
         // Upload images
         await axios.post(
-          `https://koicaresystem.azurewebsites.net/api/images/upload`,
+          `https://koicaresystemv3.azurewebsites.net/api/images/upload`,
           formData,
           {
             headers: {

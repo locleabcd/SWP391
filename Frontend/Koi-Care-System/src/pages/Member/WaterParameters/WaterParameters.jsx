@@ -46,7 +46,7 @@ function WaterParameters() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -69,7 +69,7 @@ function WaterParameters() {
         throw new Error('No token found')
       }
       const res = await axios.get(
-        `https://koicaresystem.azurewebsites.net/api/water-parameters/getByUserId/${userId}`,
+        `https://koicaresystemv3.azurewebsites.net/api/water-parameters/getByUserId/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -107,7 +107,7 @@ function WaterParameters() {
       }
 
       const res = await axios.post(
-        `https://koicaresystem.azurewebsites.net/api/water-parameters/create`,
+        `https://koicaresystemv3.azurewebsites.net/api/water-parameters/create`,
         {
           koiPondId: data.pondId,
           createDateTime: data.createDateTime,
@@ -157,7 +157,7 @@ function WaterParameters() {
       }
       console.log(data)
       const res = await axios.put(
-        `https://koicaresystem.azurewebsites.net/api/water-parameters/update/${waterId}`,
+        `https://koicaresystemv3.azurewebsites.net/api/water-parameters/update/${waterId}`,
         {
           koiPondId: data.pondId,
           createDateTime: data.createDateTime,
@@ -200,7 +200,7 @@ function WaterParameters() {
       if (!token) {
         throw new Error('no token found')
       }
-      await axios.delete(`https://koicaresystem.azurewebsites.net/api/water-parameters/delete/${waterId}`, {
+      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/water-parameters/delete/${waterId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

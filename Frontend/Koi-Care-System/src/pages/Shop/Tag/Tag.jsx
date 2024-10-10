@@ -26,7 +26,7 @@ function Tag() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/tag`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/tag`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -54,7 +54,7 @@ function Tag() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystem.azurewebsites.net/api/tag/delete/${id}`, {
+      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/tag/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

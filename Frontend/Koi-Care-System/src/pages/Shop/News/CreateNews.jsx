@@ -31,7 +31,7 @@ function CreateNews() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/tag`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/tag`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -73,7 +73,7 @@ function CreateNews() {
 
       console.log(data)
       // eslint-disable-next-line no-unused-vars
-      const res = await axios.post(`https://koicaresystem.azurewebsites.net/api/blog/create`, formData, {
+      const res = await axios.post(`https://koicaresystemv3.azurewebsites.net/api/blog/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
