@@ -29,22 +29,15 @@ function CreatePromotion() {
     setIsSubmitting(true)
 
     // Kiểm tra ngày bắt đầu và ngày kết thúc
-    const today = new Date().toISOString().split('T')[0] // Lấy ngày hiện tại
-    if (data.startDate > data.endDate) {
+    const startDate = new Date(data.startDate)
+    const endDate = new Date(data.endDate)
+
+    if (startDate > endDate) {
       toast.error('Start date cannot be after end date.')
       setIsSubmitting(false)
       setIsLoading(false)
       return
-    }
-
-    if (data.startDate < today) {
-      toast.error('Start date cannot be in the past.')
-      setIsSubmitting(false)
-      setIsLoading(false)
-      return
-    }
-
-    try {
+    }try {
       const token = localStorage.getItem('token')
       if (!token) {
         throw new Error('No token found')
