@@ -43,6 +43,10 @@ function LeftSideBar() {
   }, [isNewsOpen])
 
   useEffect(() => {
+    localStorage.setItem('isNewsOpen', JSON.stringify(isNewsOpen))
+  }, [isNewsOpen])
+
+  useEffect(() => {
     localStorage.setItem('isShopOpen', JSON.stringify(isShopOpen))
   }, [isShopOpen])
 
