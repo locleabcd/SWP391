@@ -251,7 +251,7 @@ function Header() {
             <button onClick={toggleList} className='flex items-center p-2 rounded-md space-x-2'>
               <div className='flex flex-col'>
                 <p className='text-sm font-medium'>{user.name}</p>
-                <p className='text-xs text-gray-500'>{user.role}</p>
+                <p className='text-xs text-gray-500'>{user.status}</p>
               </div>
               <div className='ml-auto flex items-center space-x-1'>
                 <img src={user.avatar} className='w-12 h-12 rounded-full' />

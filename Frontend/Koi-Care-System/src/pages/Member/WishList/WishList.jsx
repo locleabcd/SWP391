@@ -45,47 +45,47 @@ const WishList = () => {
                 <p>Your wishlist is empty.</p>
               ) : (
                 <table className='min-w-full divide-y divide-gray-200'>
-                  <thead className='bg-gray-50'>
+                  <thead className=''>
                     <tr className=''>
                       <th
                         scope='col'
-                        className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        className='px-6 py-3 text-center border border-gray-200 text-xs font-medium uppercase tracking-wider'
                       >
                         Remove
                       </th>
                       <th
                         scope='col'
-                        className='px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        className='px-6 py-3 text-center border border-gray-200 text-xs font-medium uppercase tracking-wider'
                       >
                         Product
                       </th>
                       <th
                         scope='col'
-                        className='px-6 py-3 text-center border border-gray-200 text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        className='px-6 py-3 text-center border border-gray-200 text-xs font-medium uppercase tracking-wider'
                       >
                         Name
                       </th>
                       <th
                         scope='col'
-                        className='px-6 py-3 text-center border border-gray-200 text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        className='px-6 py-3 text-center border border-gray-200 text-xs font-medium uppercase tracking-wider'
                       >
                         Price
                       </th>
                       <th
                         scope='col'
-                        className='px-6 py-3 text-center border border-gray-200 text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        className='px-6 py-3 text-center border border-gray-200 text-xs font-medium uppercase tracking-wider'
                       >
                         Quantity
                       </th>
                       <th
                         scope='col'
-                        className='px-6 py-3 text-center border border-gray-200 text-xs font-medium text-gray-500 uppercase tracking-wider'
+                        className='px-6 py-3 text-center border border-gray-200 text-xs font-medium uppercase tracking-wider'
                       >
                         Add to cart
                       </th>
                     </tr>
                   </thead>
-                  <tbody className='bg-white divide-y divide-gray-200'>
+                  <tbody className='divide-y divide-gray-200'>
                     {wishlist.map((item) => (
                       <tr key={item.id}>
                         <td className='px-6 py-4 whitespace-nowrap text-center border border-gray-200'>
@@ -120,11 +120,13 @@ const WishList = () => {
                         </td>
 
                         <td className='px-6 py-4 text-center border border-gray-200 whitespace-nowrap'>
-                          <div className='font-medium text-gray-900'>{item.name}</div>
+                          <div className='font-medium '>{item.name}</div>
                         </td>
 
                         <td className='px-6 py-4 text-center border border-gray-200 whitespace-nowrap'>
-                          <div className='text-gray-600'>${item.price}</div>
+                          <div className=''>
+                            {(item.price ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                          </div>
                         </td>
 
                         <td className='px-6 py-4 border border-gray-200 whitespace-nowrap'>

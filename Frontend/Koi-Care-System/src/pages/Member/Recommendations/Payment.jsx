@@ -76,8 +76,7 @@ function Payment() {
   const createPayment = async () => {
     try {
       const token = localStorage.getItem('token')
-
-      const orderId = localStorage.getItem('orderId')
+      const id = localStorage.getItem('id')
       const totalPrice = localStorage.getItem('totalPrice')
 
       const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/payment/vn-pay', {
@@ -86,12 +85,12 @@ function Payment() {
         },
         params: {
           amount: totalPrice,
-          orderId: orderId
+          userId: id
         }
       })
       SetPayment(res.data)
-      console.log('aaaaaaasas', res.data)
     } catch (err) {
+      console.log('abc', localStorage.getItem('id'))
       console.log(err)
     }
   }
