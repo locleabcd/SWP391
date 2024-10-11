@@ -232,7 +232,7 @@ function Statistics() {
   const aggregateGrowthHistory = (data) => {
     const dateMap = {}
     data.forEach((entry) => {
-      const date = entry.createDate
+      const date = formatDate(entry.createDate)
       if (!dateMap[date]) {
         dateMap[date] = { name: date, length: 0, weight: 0, count: 0 }
       }

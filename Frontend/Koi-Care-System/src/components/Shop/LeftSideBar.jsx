@@ -20,12 +20,27 @@ function LeftSideBar() {
     return savedState ? JSON.parse(savedState) : false
   })
 
-  const [isNewsOpen, setIsNewsOpen] = useState(false)
-  const [isShopOpen, setIsShopOpen] = useState(false)
+  const [isNewsOpen, setIsNewsOpen] = useState(() => {
+    const savedState = localStorage.getItem('isNewsOpen');
+    return savedState ? JSON.parse(savedState) : false;
+  });
+
+  const [isShopOpen, setIsShopOpen] = useState(() => {
+    const savedState = localStorage.getItem('isShopOpen');
+    return savedState ? JSON.parse(savedState) : false;
+  });
 
   useEffect(() => {
     localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
   }, [isClosed])
+  
+  useEffect(() => {
+    localStorage.setItem('isNewsOpen', JSON.stringify(isNewsOpen));
+  }, [isNewsOpen]);
+
+  useEffect(() => {
+    localStorage.setItem('isShopOpen', JSON.stringify(isShopOpen));
+  }, [isShopOpen]);
 
   return (
     <div>
