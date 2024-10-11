@@ -3,6 +3,7 @@ package com.swpproject.koi_care_system.config;
 import com.swpproject.koi_care_system.enums.Role;
 import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.repository.UserRepository;
+import com.swpproject.koi_care_system.service.profile.IProfileService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -23,6 +24,8 @@ import java.util.Map;
 public class OAuth2LoginHandler extends SavedRequestAwareAuthenticationSuccessHandler {
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private IProfileService profileService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
@@ -45,6 +48,9 @@ public class OAuth2LoginHandler extends SavedRequestAwareAuthenticationSuccessHa
                 userEntity.setUsername(name);
                 userEntity.setStatus(true);
                 userEntity.setProvider("GOOGLE");
+                userEntity.setPassword("9999999");
+                userRepository.save(userEntity);
+                userEntity.setUserProfile(profileService.createProfile(userEntity));
                 userRepository.save(userEntity);
                 DefaultOAuth2User newUser = new DefaultOAuth2User(List.of(new SimpleGrantedAuthority(userEntity.getRole().name())),
                         attributes, "sub");
