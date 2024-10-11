@@ -26,6 +26,8 @@ const path = {
   statistics: '/member/statistics',
   news: '/member/news',
   payment: '/member/payment',
+  paymentSuccess: '/member/paymentSuccess',
+  paymentError: '/member/paymentError',
   newsDetails: '/member/news/:id',
   koiDetail: '/member/myKoi/:id',
   recommendationDetail: '/member/recommendations/:id',

@@ -64,6 +64,8 @@ import CreateImage from './pages/Shop/ProductImage/CreateImage'
 import UpdateImage from './pages/Shop/ProductImage/UpdateImage'
 import ViewUser from './pages/Shop/User/ViewUser'
 import Pricing from './components/Pricing/Pricing'
+import PaymentSuccess from './pages/Member/Recommendations/PaymentSuccess'
+import PaymentError from './pages/Member/Recommendations/PaymentError'
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
@@ -107,11 +109,7 @@ function App() {
     },
     {
       path: path.member,
-      element: (
-        <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Member />
-        </ProtectedRoute>
-      )
+      element: <Member />
     },
     {
       path: path.myAccount,
@@ -342,6 +340,22 @@ function App() {
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
           <Payment />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: path.paymentSuccess,
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <PaymentSuccess />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: path.paymentError,
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <PaymentError />
         </ProtectedRoute>
       )
     },
