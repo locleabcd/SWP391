@@ -547,11 +547,11 @@ function KoiDetails() {
                   } flex rounded-xl shadow-lg w-[50%]`}
                 >
                   {/* Image section */}
-                  <div className='h-full w-[50%] rounded-l-xl overflow-hidden'>
+                  <div className='h-64 w-[50%] rounded-l-xl overflow-hidden'>
                     <img
                       className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105'
-                      src={koi.imageUrl } 
-                      alt={koi.name }            
+                      src={koi.imageUrl} 
+                      alt={koi.name}            
                     />
                   </div>
 
@@ -835,16 +835,13 @@ function KoiDetails() {
                       >
                         Physique
                       </label>
-                      <select
+                      <input
+                        type='physique'
                         id='physique'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('physique')}
-                      >
-                        {/* <option value=""></option> */}
-                        <option value='Slim'>Slim</option>
-                        <option value='Normal'>Normal</option>
-                        <option value='Corpulent'>Corpulent</option>
-                      </select>
+                        readOnly 
+                      />
                     </div>
                     
                     <div className='relative col-span-1 mb-2 mt-2'>
@@ -907,8 +904,7 @@ function KoiDetails() {
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('variety')}
                       />
-                    </div>
-                    
+                    </div>                
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='pondDate'
@@ -935,6 +931,7 @@ function KoiDetails() {
                       <input
                         type='text'
                         id='breeder'
+                        placeholder='Enter Breeder Name'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('breeder')}
                       />
@@ -947,8 +944,9 @@ function KoiDetails() {
                         Price
                       </label>
                       <input
-                        type='text'
+                        type='number'
                         id='price'
+                        placeholder='VND'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('price')}
                       />
@@ -964,7 +962,7 @@ function KoiDetails() {
                         id='status'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('status')}
-                        // value={koi.status}
+                        defaultValue={koi.status}
                       >
                         <option>Alive</option>
                         <option>Dead</option>
@@ -981,7 +979,7 @@ function KoiDetails() {
                         id='pondId'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('pondId')}
-                        // value={koi.koiPond.id}
+                        defaultValue={koi.koiPond.id}
                       >
                         {ponds.map((pond) => (
                           <option key={pond.id} value={pond.id}>
