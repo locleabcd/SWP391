@@ -4,7 +4,7 @@ import Homepage from '../../components/Homepage/Homepage'
 import About from '../../components/About/About'
 import Feature from '../../components/Features/Feature'
 import { Link as ScrollLink } from 'react-scroll'
-import backgroundVideo from '../../assets/1011.mp4'
+import backgroundVideo from '../../assets/1011(2).mp4'
 
 function Home() {
   return (
