@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import axios from 'axios'
@@ -209,27 +209,6 @@ function News() {
                       isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
                     } mb-4 border rounded-lg shadow-sm  hover:scale-[102%] duration-200`}
                   >
-                    {/* <div className='flex border-b px-5 py-4 border-gray-300 items-center gap-2'>
-                    <img
-                      src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
-                      className='w-10 h-10 rounded-full border border-gray-300'
-                    />
-                    <div>
-                      <p>{blog.user.username}</p>
-                      <div className='flex justify-center items-center'>
-                        {blog.tags.map((tag) => (
-                          <span key={tag.tagId} className='text-sm font-semibold mr-1'>
-                            {tag.tagName}
-                          </span>
-                        ))}
-                        <p className='font-semibold text-sm'>
-                          &bull;{' '}
-                          {formatDistanceToNow(new Date(blog.blogDate), { addSuffix: true }).replace(/^about /, '')}
-                        </p>
-                      </div>
-                    </div>
-                  </div> */}
-
                     <div className='hover:scale-[102%]'>
                       <Link to={`/member/news/${blog.blogId}`}>
                         <div className='relative'>
@@ -260,7 +239,9 @@ function News() {
                             </div>
 
                             <p className='font-semibold text-sm'>
-                              {formatDistanceToNow(new Date(blog.blogDate), { addSuffix: true }).replace(/^about /, '')}
+                              {/* {formatDistanceToNow(new Date(blog.blogDate), { addSuffix: true }).replace(/^about /, '')}
+                               */}
+                              {blog.blogDate}
                             </p>
                           </div>
                         </div>

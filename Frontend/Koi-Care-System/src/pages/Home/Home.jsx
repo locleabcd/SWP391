@@ -1,33 +1,27 @@
-import homepageImage from '../../assets/homepage.png'
 import logo from '../../assets/logo.png'
 import { Link } from 'react-router-dom'
 import Homepage from '../../components/Homepage/Homepage'
 import About from '../../components/About/About'
 import Feature from '../../components/Features/Feature'
 import { Link as ScrollLink } from 'react-scroll'
+import backgroundVideo from '../../assets/1011.mp4'
 
 function Home() {
   return (
     <div>
-      {/* homepage 1  */}
-      <div
-        className='bg-cover bg-no-repeat bg-center min-h-screen '
-        style={{ backgroundImage: `url(${homepageImage})` }}
-      >
-        {/* header */}
-        <div className=' shadow large fixed w-full z-10 bg-white shadow-gray-300'>
-          {/* container for logo and nav */}
+      <div className='h-screen flex flex-col items-center justify-center'>
+        <video className='absolute top-0 left-0 w-full h-full object-cover' src={backgroundVideo} autoPlay loop muted />
+
+        <div className='shadow large fixed top-0 w-full z-10 bg-opacity-0 backdrop-blur-sm bg-white shadow-gray-300'>
           <div className='container  mx-auto flex justify-between items-center py-1 pb-15'>
-            {/* logo */}
             <div className='flex items-center'>
               <button className='p-1 ml-6 rounded-md '>
                 <img className='w-12 animate-slow-spin' src={logo} alt='Logo' />
               </button>
-              <a href='#' className=' text-xl font-bold text-gray-800'>
+              <a href='#' className=' text-xl font-bold text-white'>
                 Koi Care System
               </a>
             </div>
-            {/* nav menu */}
             <nav className='inline-block pr-10'>
               <ul className='flex space-x-8'>
                 <li>
@@ -37,7 +31,7 @@ function Home() {
                     duration={500}
                     spy={true}
                     activeClass='bg-red-500 text-white'
-                    className='cursor-pointer text-black-600 hover:text-white hover:bg-red-500 font-medium text-xl px-3 py-2 rounded-md'
+                    className='cursor-pointer text-white hover:text-white hover:bg-red-500 font-medium text-xl px-3 py-2 rounded-md'
                   >
                     Home
                   </ScrollLink>
@@ -49,7 +43,7 @@ function Home() {
                     duration={500}
                     spy={true}
                     activeClass='bg-red-500 text-white'
-                    className='cursor-pointer text-black-600 hover:text-white hover:bg-red-500 font-medium text-xl px-3 py-2 rounded-md'
+                    className='cursor-pointer text-white hover:text-white hover:bg-red-500 font-medium text-xl px-3 py-2 rounded-md'
                   >
                     Our Features
                   </ScrollLink>
@@ -61,7 +55,7 @@ function Home() {
                     duration={500}
                     spy={true}
                     activeClass='bg-red-500 text-white'
-                    className='cursor-pointer text-black-600 hover:text-white hover:bg-red-500 font-medium text-xl px-3 py-2 rounded-md'
+                    className='cursor-pointer text-white hover:text-white hover:bg-red-500 font-medium text-xl px-3 py-2 rounded-md'
                   >
                     About
                   </ScrollLink>
@@ -69,7 +63,7 @@ function Home() {
                 <li>
                   <Link
                     to='/login'
-                    className='text-black-600 hover:text-white hover:bg-red-500 font-medium text-xl px-3 py-2 rounded-md'
+                    className='text-white hover:text-white hover:bg-red-500 font-medium text-xl px-3 py-2 rounded-md'
                   >
                     Sign in
                   </Link>
@@ -78,7 +72,7 @@ function Home() {
             </nav>
           </div>
         </div>
-        <div id='home'>
+        <div className='absolute' id='home'>
           <Homepage />
         </div>
       </div>

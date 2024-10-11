@@ -79,3 +79,16 @@ input:checked + .slider:before {
   margin-left: 10px;
   font-size: 20px;
 }
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.favicon-spin {
+  animation: spin 4s linear infinite;
+}
