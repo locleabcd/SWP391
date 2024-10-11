@@ -151,6 +151,10 @@ function Checkout() {
         })
         .catch((error) => console.error('Error fetching districts:', error))
     }
+    if (orders && orders.length > 0) {
+      const lastOrderId = orders[orders.length - 1]?.id + 1
+      localStorage.setItem('orderId', lastOrderId)
+    }
   }, [selectedTinh])
 
   useEffect(() => {
