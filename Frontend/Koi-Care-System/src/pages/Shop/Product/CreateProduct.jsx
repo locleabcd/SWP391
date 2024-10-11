@@ -263,9 +263,9 @@ function CreateProduct() {
                   type='text'
                   id='issueTypeId'
                   className={`relative w-full p-2 border rounded-md ${errors.issueTypeId ? 'border-red-500' : 'border-gray-300'}`}
-                  {...register('issueTypeId', { required: 'Issue Type ID is required' })}
+                  {...register('issueTypeId', { required: false })}
                 />
-                {errors.issueTypeId && <p className='text-red-500 text-xs mt-1'>{errors.issueTypeId.message}</p>}
+                
               </div>
 
               <div className='mb-4'>

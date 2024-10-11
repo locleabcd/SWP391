@@ -127,7 +127,7 @@ function ProductImage() {
                           />
                         </div>
                       </td>
-                      <td className='py-2 pl-4 text-center border-b border-gray-200'>{image.fileName}</td>
+                      <td className='py-2 pl-4 text-center border-b border-gray-200'>{image.downloadUrl}</td>
                       <td className='py-2 px-4 text-center border-b border-gray-200'>
                         <div className='flex justify-center items-center'>
                           <Link
