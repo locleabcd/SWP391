@@ -266,7 +266,7 @@ function Header() {
                 <NavLink
                   to={path.profile}
                   end
-                  className=' px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center '
+                  className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
                 >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -284,7 +284,10 @@ function Header() {
                   </svg>
                   <span>My Profile</span>
                 </NavLink>
-                <NavLink to={path.shopCart} className=' px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'>
+                <NavLink
+                  to={path.shopCart}
+                  className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
+                >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -304,7 +307,7 @@ function Header() {
                 <Link
                   onClick={handleLogout}
                   to={path.login}
-                  className='px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'
+                  className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
                 >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
