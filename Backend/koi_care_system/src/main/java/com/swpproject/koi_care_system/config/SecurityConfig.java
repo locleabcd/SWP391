@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +24,8 @@ import javax.crypto.spec.SecretKeySpec;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+    @Autowired
+    private OAuth2LoginHandler oAuth2LoginHandler;
 
     private final String[] PUBLIC_ENDPOINTS = {
             "/users/register",
@@ -55,12 +58,12 @@ public class SecurityConfig {
                 );
         httpSecurity
                 .formLogin(form -> form
-                        .loginPage("https://koi-care-system.vercel.app/login")
+                        .loginPage("/login")
                         .permitAll())
                 .oauth2Login(oauth -> oauth
-                        .loginPage("https://koi-care-system.vercel.app/login")
-                        .defaultSuccessUrl("https://koi-care-system.vercel.app/member", true)
-                        .failureUrl("https://koi-care-system.vercel.app/login?error=true")
+                        .loginPage("/login")
+                        .successHandler(oAuth2LoginHandler)
+                        .failureUrl("/login?error=true")
                 );
 
 

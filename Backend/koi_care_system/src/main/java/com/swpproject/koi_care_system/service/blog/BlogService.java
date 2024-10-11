@@ -43,12 +43,11 @@ public class BlogService implements IBlogService {
         if (blogRepository.existsByBlogTitle(blogCreateRequest.getBlogTitle())) {
             throw new RuntimeException("Blog already exists");
         }
-        if(blogCreateRequest.getFile()!=null)
-            blogCreateRequest.setBlogImage(!blogCreateRequest.getFile().isEmpty()?imageStorage.uploadImage(blogCreateRequest.getFile()):"https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
-        else
-            blogCreateRequest.setBlogImage("https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
         Blog blog = blogMapper.mapToBlog(blogCreateRequest);
-        blog.setBlogImage("default.jpg");
+        if(blogCreateRequest.getFile()!=null)
+            blog.setBlogImage(!blogCreateRequest.getFile().isEmpty() ? imageStorage.uploadImage(blogCreateRequest.getFile()) : "https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
+        else
+            blog.setBlogImage("https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
         blog.setBlogDate(java.time.LocalDate.now());
 
         Set<Tag> tags = new HashSet<>();

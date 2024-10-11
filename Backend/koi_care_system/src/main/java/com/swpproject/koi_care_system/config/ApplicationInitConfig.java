@@ -30,6 +30,7 @@ public class ApplicationInitConfig {
                         .email("admin@gmail.com")
                         .status(true)
                         .role(ADMIN)
+                        .provider("LOCAL")
                         .build();
 
                 userRepository.save(admin);
