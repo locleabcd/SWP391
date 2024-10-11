@@ -140,8 +140,8 @@ function Promotion() {
                     <tr key={promotion.id}>
                       <td className='py-2 px-1 text-center border-b  border-gray-200'>{index + 1}</td>
                       <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.name}</td>
-                      <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.startDate}</td>
-                      <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.endDate}</td>
+                      <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.startDate.replace('T', ' ')}</td>
+                      <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.endDate.replace('T', ' ')}</td>
                       <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.discountRate}%</td>
                       <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.description}</td>
                       <td className='py-2 px-1 text-center border-b  border-gray-200'>
@@ -152,7 +152,7 @@ function Promotion() {
                         </span>
                       </td>
                       <td className='py-2 px-1 text-center border-b  border-gray-200'>
-                        <div className='fle justify-center items-center'>
+                        <div className='flex justify-center items-center'>
                           <Link
                             to={`/shop/promotion/${promotion.id}`}
                             className='p-1 hover:bg-green-500 text-green-500 hover:text-white rounded-full'

@@ -142,7 +142,7 @@ function UpdatePromotion() {
                   Start Date
                 </label>
                 <input
-                  type='date'
+                  type='datetime-local'
                   id='startDate'
                   className={`relative w-full p-2 border rounded-md ${
                     errors.startDate ? 'border-red-500' : 'border-gray-300'
@@ -159,7 +159,7 @@ function UpdatePromotion() {
                   End Date
                 </label>
                 <input
-                  type='date'
+                  type='datetime-local'
                   id='endDate'
                   className={`relative w-full p-2 border rounded-md ${
                     errors.endDate ? 'border-red-500' : 'border-gray-300'

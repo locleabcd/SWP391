@@ -29,7 +29,7 @@ function Profile() {
       if (!token) {
         throw new Error('No token found');
       }
-      const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/profile/${id}`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -65,7 +65,7 @@ function Profile() {
       }
 
       const res = await axios.put(
-        `https://koicaresystem.azurewebsites.net/api/profile/update/${id}`,
+        `https://koicaresystemv3.azurewebsites.net/api/profile/update/${id}`,
         formData,
         {
           headers: {
@@ -162,21 +162,11 @@ function Profile() {
                 <div>
                     <label className='block'>Email:</label>
                     <input
-                      type='email'
-                      {...register('email', {
-                        pattern: {
-                          value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                          message: 'Invalid email address',
-                        },
-                      })}
-                      disabled={!isEditing}
-                      className={`border rounded p-2 w-full ${
-                        isEditing ? 'border' : 'bg-white'
-                      }`}
-                    />
-                    {errors.email && (
-                      <span className='text-red-500'>{errors.email.message}</span>
-                    )}
+                    type='text'
+                    {...register('email')}
+                    disabled
+                    className='border rounded p-2 w-full  cursor-not-allowed'
+                  />
                   </div>
                 <div>
                   <label className='block'>Phone:</label>

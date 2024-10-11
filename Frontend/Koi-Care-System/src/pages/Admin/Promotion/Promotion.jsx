@@ -128,8 +128,8 @@ function Promotion() {
                   <tr key={promotion.id}>
                     <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td>
                     <td className='py-2 px-1 text-center border-b border-gray-200'>{promotion.name}</td>
-                    <td className='py-2 px-1 text-center border-b border-gray-200'>{promotion.startDate}</td>
-                    <td className='py-2 px-1 text-center border-b border-gray-200'>{promotion.endDate}</td>
+                    <td className='py-2 px-1 text-center border-b border-gray-200'>{promotion.startDate.replace('T', ' ')}</td>
+                    <td className='py-2 px-1 text-center border-b border-gray-200'>{promotion.endDate.replace('T', ' ')}</td>
                     <td className='py-2 px-1 text-center border-b border-gray-200'>{promotion.discountRate}%</td>
                     <td className='py-2 px-1 text-center border-b border-gray-200'>{promotion.description}</td>
                     <td className='py-2 px-1 text-center border-b border-gray-200'>
