@@ -12,7 +12,10 @@ import { MdSystemUpdateAlt } from 'react-icons/md'
 import { FaSpinner } from 'react-icons/fa'
 import TopLayout from '../../../layouts/TopLayout'
 import { toast } from 'react-toastify'
-
+import { GiDeathSkull } from "react-icons/gi";
+import { IoMdMale } from "react-icons/io";
+import { IoMdFemale } from "react-icons/io";
+import { FaQuestion } from "react-icons/fa";
 function KoiDetails() {
   const { isDarkMode } = useDarkMode()
   const { id } = useParams()
@@ -518,13 +521,6 @@ function KoiDetails() {
     updateKoi(data, id)
   }
 
-  // if (isLoading) {
-  //   return (
-  //       <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-  //         <FaSpinner className='animate-spin text-green-500 text-6xl' />
-  //       </div>
-  //   )
-  // }
   return (
     <div>
       <div className='h-screen flex'>
@@ -565,9 +561,16 @@ function KoiDetails() {
                   <div className='w-[55%] pl-4 pr-3 py-4 flex flex-col justify-between'>
                     <div>
                       <div className='flex items-center'>
-                        <h2 className='w-[90%] font-semibold text-3xl text-start text-nowrap'>
+                        <h2 className='w-[90%] font-semibold flex items-center gap-2 text-3xl text-start text-nowrap'>
                           {koi.name || 'Unnamed Koi'}
-                        </h2>
+                          {koi.status === 'Dead' && (
+                            <GiDeathSkull className='text-red-500'/>
+                          )}
+
+                        </h2> 
+                        
+                          {koi.gender === 'Male' ? <IoMdMale className='w-8 h-8 text-blue-500'/> : koi.gender === 'Female' ? <IoMdFemale className='w-8 h-8 text-pink-500'/> : <FaQuestion className='w-8 h-8 text-red-500'/>}
+                                                              
                       </div>
                       <p className='text-start my-2'>
                         Variety: <strong>{koi.variety || 'Unknown'}</strong>
@@ -946,7 +949,7 @@ function KoiDetails() {
                         id='breeder'
                         placeholder='Enter Breeder Name'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                        {...register('breeder')}
+                        {...register('breeder',{required: false})}
                       />
                     </div>
                     <div className='relative col-span-1 '>
@@ -961,7 +964,7 @@ function KoiDetails() {
                         id='price'
                         placeholder='VND'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                        {...register('price')}
+                        {...register('price',{required: false})}
                       />
                     </div>
                     <div className='relative col-span-1 '>
@@ -1140,7 +1143,7 @@ function KoiDetails() {
                         Date
                       </label>
                       <input
-                        type='date'
+                        type='datetime-local'
                         id='growthDate'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('createDate')}
