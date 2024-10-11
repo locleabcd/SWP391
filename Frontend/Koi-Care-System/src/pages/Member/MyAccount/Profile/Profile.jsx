@@ -9,7 +9,7 @@ import { toast } from 'react-toastify';
 
 function Profile() {
   const { isDarkMode } = useDarkMode();
-  const [users, setUsers] = useState({});
+  const [users, setUsers] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);

@@ -14,7 +14,7 @@ function TopLayoutAD({ text, textName, links }) {
       <div>
         <div className='text-3xl mb-2'>{text}</div>
         <div className='flex gap-3 items-center'>
-          <Link to='/shop' className='text-gray-400'>
+          <Link to='/admin' className='text-gray-400'>
             Home
           </Link>
           <div className='text-xl'>&bull;</div>

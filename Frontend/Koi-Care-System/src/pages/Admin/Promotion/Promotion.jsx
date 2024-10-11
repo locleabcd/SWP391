@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
       
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../components/DarkModeContext'
@@ -50,20 +51,15 @@ function Promotion() {
         navigate('/login') // Điều hướng đến trang đăng nhập nếu không có token
         return
       }
-
-      if (!data.id) {
+  
+      if (!data.id) {  // Thay đổi từ data.promotionId sang data.id
         throw new Error('Promotion ID not found')
       }
-
+  
       const res = await axios.put(
-        `https://koicaresystemv3.azurewebsites.net/api/promotions/promotion/${data.id}/update`,
+        `https://koicaresystemv3.azurewebsites.net/api/promotions/promotion/confirm`,
         {
-          id: data.id,
-          name: data.name,
-          startDate: data.startDate,
-          endDate: data.endDate,
-          discountRate: data.discountRate,
-          description: data.description,
+          promotionId: data.id,  // Sử dụng id thay cho promotionId
           status: data.status
         },
         {
@@ -72,7 +68,7 @@ function Promotion() {
           }
         }
       )
-
+  
       toast.success('Promotion updated successfully!')
       // Cập nhật lại danh sách promotions
       getPromotion()

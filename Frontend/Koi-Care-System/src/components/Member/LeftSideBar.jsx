@@ -6,23 +6,47 @@ import { FaHandPointRight } from 'react-icons/fa'
 import { CgCalculator } from 'react-icons/cg'
 import { IoStatsChartSharp } from 'react-icons/io5'
 import { FaRegNewspaper } from 'react-icons/fa'
-import { NavLink } from 'react-router-dom'
+import {Link, NavLink } from 'react-router-dom'
 import path from '../../constants/path'
 import { useDarkMode } from '../DarkModeContext'
 import logo from '../../assets/logo.png'
 import { useEffect, useState } from 'react'
-
+import axios from 'axios';
+import { IoPowerOutline } from 'react-icons/io5';
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
   const [isClosed, setClosed] = useState(() => {
     const savedState = localStorage.getItem('isSidebarClosed')
     return savedState ? JSON.parse(savedState) : false
   })
-
+  const [users, setUsers] = useState([])
+  const getUser = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const id = localStorage.getItem('id');
+      if (!token) {
+        throw new Error('No token found');
+      }
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      console.log(res.data.data);
+      setUsers(res.data.data);
+    } catch (error) {
+      console.error('Error fetching user:', error);
+    }
+  };
+    useEffect(() => {
+      getUser();
+    }, []);
   useEffect(() => {
     localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
   }, [isClosed])
-
+  const handleLogout = () => {
+    localStorage.clear()
+  }
   return (
     <div>
       {/* open close button  */}
@@ -307,6 +331,24 @@ function LeftSideBar() {
                 {!isClosed && <span className='font-semibold'>About</span>}
               </div>
             </NavLink>
+            <div className={`p-4 flex justify-between items-center rounded-lg ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}>
+                {/* User avatar, name, and role */}
+                <div className="flex items-center">
+                  <img src={users.avatar || 'default-avatar.png'} alt="User Avatar" className="w-12 h-12 rounded-full object-cover border-2 border-gray-300" />
+                  <div className="ml-3">
+                    <p className="font-semibold text-lg text-black ">{users.name || 'User Name'}</p>
+                    <p className="text-sm text-gray-500 ">{users.role || 'User Role'}</p>
+                  </div>
+                </div>
+
+                {/* Logout button */}
+                <Link onClick={handleLogout} to="/login">
+                  <IoPowerOutline 
+                    className="text-2xl text-gray-500 hover:text-red-500 transition-colors duration-200 cursor-pointer"
+                    title="Logout"
+                  />
+                </Link>
+              </div>
           </div>
         </div>
       </div>

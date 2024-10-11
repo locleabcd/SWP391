@@ -39,6 +39,7 @@ function WaterParameters() {
   const [saltStyle, setSaltStyle] = useState({})
   const [totalChlorineStyle, setTotalChlorineStyle] = useState({})
   const [showInfo, setShowInfo] = useState({})
+  
   const getPond = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -134,9 +135,10 @@ function WaterParameters() {
         }
       )
 
-      setIsAddFormVisible(false)
-      getParameter() // Refresh the list after adding
-      reset()
+      setIsAddFormVisible(false);    // Đóng form sau khi tạo thành công
+      const userId = localStorage.getItem('id');
+      getParameter(userId);          // Gọi lại getParameter để cập nhật dữ liệu mới
+      reset();       
     } catch (error) {
       console.error('Error during parameter creation: ', error)
       alert(`Error: ${error.message}`) // Show error message to the user
@@ -183,9 +185,10 @@ function WaterParameters() {
           }
         }
       )
-      setIsEditFormVisible(false)
-      getParameter()
-      reset()
+      setIsEditFormVisible(false);   // Đóng form sau khi cập nhật thành công
+      const userId = localStorage.getItem('id');
+      getParameter(userId);          // Gọi lại getParameter để cập nhật dữ liệu mới
+      reset();         
     } catch (error) {
       console.log(error)
     } finally {
@@ -205,9 +208,10 @@ function WaterParameters() {
           Authorization: `Bearer ${token}`
         }
       })
-      reset()
-      getParameter()
-      setIsEditFormVisible(false)
+      setIsEditFormVisible(false);   // Đóng form sau khi cập nhật thành công
+    const userId = localStorage.getItem('id');
+    getParameter(userId);          // Gọi lại getParameter để cập nhật dữ liệu mới
+    reset();         
     } catch (error) {
       console.error('Error deleting paramter:', error)
     } finally {
@@ -629,6 +633,7 @@ function WaterParameters() {
       [inputName]: !prevState[inputName]
     }))
   }
+  
   return (
     <div>
       <div className='h-screen flex'>
@@ -777,7 +782,7 @@ function WaterParameters() {
                     <div className='text-lg'>
                       <div className='grid grid-cols-4 w-full'>
                         <h3 className='text-base col-span-2'> {parameter.koiPondName}</h3>
-                        <h3 className='text-base col-span-2'>{parameter.createDateTime}</h3>
+                        <h3 className='text-base col-span-2'>{parameter.createDateTime.replace('T', ' ')}</h3>
                       </div>
                       <div className='grid grid-cols-4 w-full'>
                         <h3

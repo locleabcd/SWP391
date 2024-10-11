@@ -13,7 +13,7 @@ import { RiCoupon2Fill } from "react-icons/ri";
 import { FaBox } from "react-icons/fa";
 import { BiSolidCategory } from "react-icons/bi";
 import { FaImage } from "react-icons/fa";
-
+import axios from 'axios';
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
   const [isClosed, setClosed] = useState(() => {
@@ -23,7 +23,29 @@ function LeftSideBar() {
 
   const [isNewsOpen, setIsNewsOpen] = useState(false)
   const [isShopOpen, setIsShopOpen] = useState(false)
-
+  const [users, setUsers] = useState([])
+  
+const getUser = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const id = localStorage.getItem('id');
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res.data.data);
+    setUsers(res.data.data);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+  }
+};
+  useEffect(() => {
+    getUser();
+  }, []);
   useEffect(() => {
     localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
   }, [isClosed])
@@ -319,6 +341,15 @@ function LeftSideBar() {
                        
               )}
             </div>
+            <div className="flex items-center px-4 py-2 border-t absolute inset-x-0 bottom-14">
+              <img src={users.avatar} alt="User Avatar" className="w-10 h-10 rounded-full mr-3" />
+              <div>
+                <p className="font-semibold">{users.name || 'User Name'}</p> {/* Hiển thị tên hoặc tên mặc định */}
+                <p className="text-sm text-gray-500">{users.role}</p> {/* Hiển thị vai trò của user */}
+              </div>
+            </div>
+
+            {/* Logout button */}
             <Link
               onClick={handleLogout}
               to={path.login}
@@ -338,9 +369,8 @@ function LeftSideBar() {
                   d='M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15'
                 />
               </svg>
-              <span>Log Out</span>
+              <span>Logout</span>
             </Link>
-
           </div>
         </div>
       </div>

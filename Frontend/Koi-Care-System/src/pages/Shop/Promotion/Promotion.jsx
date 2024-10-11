@@ -152,7 +152,7 @@ function Promotion() {
                         </span>
                       </td>
                       <td className='py-2 px-1 text-center border-b  border-gray-200'>
-                        <div className='flex justify-center items-center'>
+                        <div className='fle justify-center items-center'>
                           <Link
                             to={`/shop/promotion/${promotion.id}`}
                             className='p-1 hover:bg-green-500 text-green-500 hover:text-white rounded-full'
