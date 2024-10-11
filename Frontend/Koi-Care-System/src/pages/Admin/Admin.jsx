@@ -1,6 +1,6 @@
-import { useDarkMode } from '../../components/DarkModeContext'
-import Header from '../../components/Admin/HeaderAdmin'
-import LeftSideBar from '../../components/Admin/LeftSideBarAdmin'
+import Header from '../../components/Admin/Header'
+import LeftSideBar from '../../components/Admin/LeftSideBar'
+import { useDarkMode } from '../../hooks/DarkModeContext'
 
 function Admin() {
   const { isDarkMode } = useDarkMode()

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import '../../App.css'
 import path from '../../constants/path'
@@ -13,6 +14,7 @@ function Header() {
   const [isOpen, setIsOpen] = useState(false)
   const [cart, setCart] = useState([])
   const [cartId, setCartId] = useState([])
+  const [user, setUser] = useState([])
   const dispatch = useDispatch()
 
   const getCartId = async () => {
@@ -40,6 +42,29 @@ function Header() {
 
   useEffect(() => {
     getCartId()
+  }, [])
+
+  const getUser = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const id = localStorage.getItem('id')
+      if (!token) {
+        throw new Error('No token found')
+      }
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setUser(res.data.data)
+      console.log(res.data.data)
+    } catch (error) {
+      console.error('Error fetching users:', error)
+    }
+  }
+
+  useEffect(() => {
+    getUser()
   }, [])
 
   const getCart = async () => {
@@ -225,26 +250,11 @@ function Header() {
           <div className='my-account'>
             <button onClick={toggleList} className='flex items-center p-2 rounded-md space-x-2'>
               <div className='flex flex-col'>
-                <p className='text-sm font-medium'>{name}</p>
-                <p className='text-xs text-gray-500'>{role}</p>
+                <p className='text-sm font-medium'>{user.name}</p>
+                <p className='text-xs text-gray-500'>{user.role}</p>
               </div>
               <div className='ml-auto flex items-center space-x-1'>
-                <div>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth='1.5'
-                    stroke='currentColor'
-                    className='size-12'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
-                    />
-                  </svg>
-                </div>
+                <img src={user.avatar} className='w-12 h-12 rounded-full' />
               </div>
             </button>
             {isOpen && (
@@ -256,7 +266,7 @@ function Header() {
                 <NavLink
                   to={path.profile}
                   end
-                  className=' px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center '
+                  className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
                 >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
@@ -274,7 +284,10 @@ function Header() {
                   </svg>
                   <span>My Profile</span>
                 </NavLink>
-                <NavLink to={path.shopCart} className=' px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'>
+                <NavLink
+                  to={path.shopCart}
+                  className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
+                >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -294,7 +307,7 @@ function Header() {
                 <Link
                   onClick={handleLogout}
                   to={path.login}
-                  className='px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'
+                  className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
                 >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'

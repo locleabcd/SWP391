@@ -34,7 +34,7 @@ function Statistics() {
   const navigate = useNavigate()
   const [selectedPond, setSelectedPond] = useState(null)
   const [dateFilter, setDateFilter] = useState('Day')
-  const [growthHistoryData, setGrowthHistoryData] = useState([])  
+  const [growthHistoryData, setGrowthHistoryData] = useState([])
   const [opacity, setOpacity] = useState({
     nitrite: 1,
     nitrate: 1,
@@ -185,14 +185,14 @@ function Statistics() {
 
   useEffect(() => {
     if (selectedKoi) {
-      getGrowthHistory(selectedKoi.id);
+      getGrowthHistory(selectedKoi.id)
     }
-  }, [selectedKoi]);
+  }, [selectedKoi])
 
   const handleKoiChange = (e) => {
     const koiId = e.target.value
     const koi = kois.find((k) => k.id === parseInt(koiId))
-  
+
     if (koi) {
       setSelectedKoi(koi)
       getGrowthHistory(koiId)
@@ -200,7 +200,6 @@ function Statistics() {
       setSelectedKoi(null)
     }
   }
-  
 
   const handleMouseEnter = useCallback(
     (o) => {
@@ -334,7 +333,7 @@ function Statistics() {
           <Header />
 
           <div className='py-5 px-[30px] mx-auto'>
-            <TopLayout text='Statistics' links='member/statistics' />          
+            <TopLayout text='Statistics' links='member/statistics' />
             <div className='pb-6 text-lg flex justify-between items-center'>
               <select
                 id='ponds'
@@ -569,7 +568,7 @@ function Statistics() {
                 </ResponsiveContainer>
               </motion.div>
             </motion.div>
-            
+
             <div className='pb-6 mt-10 text-lg flex justify-between items-center'>
               <select
                 id='kois'
@@ -589,24 +588,22 @@ function Statistics() {
               </select>
             </div>
 
-            {/* Growth History */}          
             <motion.div
               initial='hidden'
               animate='visible'
               variants={{
                 visible: {
                   transition: {
-                    staggerChildren: 0.3,
-                  },
-                },
+                    staggerChildren: 0.3
+                  }
+                }
               }}
               className='grid grid-cols-2 gap-7'
             >
-              {/* Length Chart */}
               <motion.div
                 variants={{
-                  hidden: { opacity: 0, x: -100 }, 
-                  visible: { opacity: 1, x: 0, transition: { delay: 1.2 } },//fade left
+                  hidden: { opacity: 0, x: -100 },
+                  visible: { opacity: 1, x: 0, transition: { delay: 1.2 } }
                 }}
                 className='border py-5 rounded-lg w-full border-gray-200 shadow-lg'
               >
@@ -617,7 +614,7 @@ function Statistics() {
                     className='w-full mx-auto'
                     margin={{
                       top: 5,
-                      right: 60,
+                      right: 60
                     }}
                   >
                     <CartesianGrid strokeDasharray='3 3' />
@@ -642,12 +639,11 @@ function Statistics() {
                   </AreaChart>
                 </ResponsiveContainer>
               </motion.div>
-            
-              {/* Weight Chart */}
+
               <motion.div
                 variants={{
-                  hidden: { opacity: 0, x: -100 }, //fade left
-                  visible: { opacity: 1, x: 0, transition: { delay: 1.5 } },
+                  hidden: { opacity: 0, x: -100 },
+                  visible: { opacity: 1, x: 0, transition: { delay: 1.5 } }
                 }}
                 className='border py-5 rounded-lg w-full border-gray-200 shadow-lg'
               >
@@ -658,7 +654,7 @@ function Statistics() {
                     data={sortedGrowthData}
                     margin={{
                       top: 5,
-                      right: 60,
+                      right: 60
                     }}
                   >
                     <CartesianGrid strokeDasharray='3 3' />
@@ -685,7 +681,6 @@ function Statistics() {
               </motion.div>
             </motion.div>
           </div>
-          
         </div>
       </div>
     </div>

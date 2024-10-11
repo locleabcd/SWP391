@@ -227,7 +227,11 @@ Over 28°C is not a good temperature to feed at!`
     }
     return false // All sizes are enabled for other temperatures
   }
-
+  useEffect(() => {
+    if (['6-8', '9-12'].includes(selectedTemperature) && selectedSize !== 'low') {
+      setSelectedSize('low') // Reset to low if the temperature requires it
+    }
+  }, [selectedTemperature, selectedSize])
   return (
     <div>
       <div className='h-screen flex'>

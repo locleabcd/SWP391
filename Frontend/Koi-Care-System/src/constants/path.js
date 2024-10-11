@@ -16,6 +16,7 @@ const path = {
   shopCart: '/member/myAccount/shopCart',
   dashboard: '/member/dashboard',
   myKoi: '/member/myKoi',
+  pricing: '/member/pricing',
   myPond: '/member/myPond',
   waterParameters: '/member/waterParameters',
   reminders: '/member/reminders',
@@ -25,6 +26,8 @@ const path = {
   statistics: '/member/statistics',
   news: '/member/news',
   payment: '/member/payment',
+  paymentSuccess: '/member/paymentSuccess',
+  paymentError: '/member/paymentError',
   newsDetails: '/member/news/:id',
   koiDetail: '/member/myKoi/:id',
   recommendationDetail: '/member/recommendations/:id',
@@ -54,10 +57,11 @@ const path = {
   category: '/shop/category',
   createCategory: '/shop/createCategory',
   updateCategory: '/shop/category/:id',
+  promotionAD: '/admin/promotion',
   productImage: '/shop/productImage',
-  createImage:'/shop/createImage',
+  createImage: '/shop/createImage',
   updateImage: '/shop/productImage/:id',
-  viewUser: '/shop/viewUser',
+  viewUser: '/shop/viewUser'
 }
 
 export default path

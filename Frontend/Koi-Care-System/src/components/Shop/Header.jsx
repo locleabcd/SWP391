@@ -2,14 +2,12 @@ import { useDarkMode } from '../../hooks/DarkModeContext'
 import '../../App.css'
 import path from '../../constants/path'
 import { Link, NavLink } from 'react-router-dom'
-import { useEffect, useState } from 'react'
-import axios from 'axios'
+import { useState } from 'react'
 
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
 
   const [isOpen, setIsOpen] = useState(false)
-  const [user, setUser] = useState([])
 
   const toggleList = () => {
     setIsOpen(!isOpen)
@@ -21,29 +19,6 @@ function Header() {
 
   const name = localStorage.getItem('name')
   const role = localStorage.getItem('role')
-
-  const getUser = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const id = localStorage.getItem('id')
-      if (!token) {
-        throw new Error('No token found')
-      }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      setUser(res.data.data)
-      console.log(res.data.data)
-    } catch (error) {
-      console.error('Error fetching users:', error)
-    }
-  }
-
-  useEffect(() => {
-    getUser()
-  }, [])
 
   return (
     <div
@@ -159,11 +134,7 @@ function Header() {
                   isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
                 }`}
               >
-                <NavLink
-                  to={path.profile}
-                  end
-                  className=' px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center '
-                >
+                <NavLink to={path.profile} end className=' px-4 py-2 hover:bg-gray-100 flex items-center '>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -180,7 +151,7 @@ function Header() {
                   </svg>
                   <span>My Profile</span>
                 </NavLink>
-                <NavLink to={path.shopCart} className=' px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'>
+                <NavLink to={path.shopCart} className=' px-4 py-2 hover:bg-gray-100 flex items-center'>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -197,11 +168,7 @@ function Header() {
                   </svg>
                   <span>Shop Cart</span>
                 </NavLink>
-                <Link
-                  onClick={handleLogout}
-                  to={path.login}
-                  className='px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center'
-                >
+                <Link onClick={handleLogout} to={path.login} className='px-4 py-2 hover:bg-gray-100 flex items-center'>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
