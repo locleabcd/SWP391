@@ -6,11 +6,12 @@ import { FaHandPointRight } from 'react-icons/fa'
 import { CgCalculator } from 'react-icons/cg'
 import { IoStatsChartSharp } from 'react-icons/io5'
 import { FaRegNewspaper } from 'react-icons/fa'
-import { NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import path from '../../constants/path'
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import logo from '../../assets/logo.png'
 import { useEffect, useState } from 'react'
+import { IoPowerOutline } from 'react-icons/io5'
 import axios from 'axios'
 
 function LeftSideBar() {
@@ -47,6 +48,10 @@ function LeftSideBar() {
   useEffect(() => {
     getUser()
   }, [])
+
+  const handleLogout = () => {
+    localStorage.clear()
+  }
 
   const isMember = user?.status === 'NORMAL'
 
@@ -346,6 +351,29 @@ function LeftSideBar() {
               </div>
             </NavLink>
           </div>
+        </div>
+
+        <div
+          className={`p-4 flex justify-between items-center rounded-lg ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
+        >
+          <div className='flex items-center'>
+            <img
+              src={user.avatar}
+              alt='User Avatar'
+              className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
+            />
+            <div className='ml-3'>
+              <p className='font-semibold text-lg text-black '>{user.name}</p>
+              <p className='text-sm text-gray-500 '>{user.role || 'User Role'}</p>
+            </div>
+          </div>
+
+          <Link onClick={handleLogout} to='/login'>
+            <IoPowerOutline
+              className='text-2xl text-gray-500 hover:text-red-500 transition-colors duration-200 cursor-pointer'
+              title='Logout'
+            />
+          </Link>
         </div>
       </div>
     </div>

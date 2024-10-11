@@ -588,7 +588,6 @@ function Statistics() {
               </select>
             </div>
 
-            {/* Growth History */}
             <motion.div
               initial='hidden'
               animate='visible'
@@ -601,11 +600,10 @@ function Statistics() {
               }}
               className='grid grid-cols-2 gap-7'
             >
-              {/* Length Chart */}
               <motion.div
                 variants={{
                   hidden: { opacity: 0, x: -100 },
-                  visible: { opacity: 1, x: 0, transition: { delay: 1.2 } } //fade left
+                  visible: { opacity: 1, x: 0, transition: { delay: 1.2 } }
                 }}
                 className='border py-5 rounded-lg w-full border-gray-200 shadow-lg'
               >
@@ -642,10 +640,9 @@ function Statistics() {
                 </ResponsiveContainer>
               </motion.div>
 
-              {/* Weight Chart */}
               <motion.div
                 variants={{
-                  hidden: { opacity: 0, x: -100 }, //fade left
+                  hidden: { opacity: 0, x: -100 },
                   visible: { opacity: 1, x: 0, transition: { delay: 1.5 } }
                 }}
                 className='border py-5 rounded-lg w-full border-gray-200 shadow-lg'

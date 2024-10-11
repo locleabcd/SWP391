@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
@@ -225,7 +226,7 @@ function KoiDetails() {
           title: data.title,
           createDate: data.createDate,
           note: data.note,
-          koiFishId: koiFishId
+          koiFishId: data.koiFishId
         }
         await axios.post('https://koicaresystemv3.azurewebsites.net/api/remark/create', jsonData, {
           headers: {
