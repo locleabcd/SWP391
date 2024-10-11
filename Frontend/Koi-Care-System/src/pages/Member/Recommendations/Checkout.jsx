@@ -21,6 +21,8 @@ function Checkout() {
   const [selectedPhuong, setSelectedPhuong] = useState('0')
   const [destination, setDestination] = useState('')
   const [errorMessage, setErrorMessage] = useState('')
+  const [orders, setOrders] = useState([])
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -71,6 +73,35 @@ function Checkout() {
       console.log(error)
     }
   }
+
+  const getOrder = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const response = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/user/${userId}/order`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setOrders(response.data.data)
+      console.log(response.data.data)
+      if (orders && orders.length > 0) {
+        const lastOrderId = orders[orders.length - 1]?.id + 1
+        localStorage.setItem('orderId', lastOrderId)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getOrder()
+  }, [])
 
   const getCartId = async () => {
     try {

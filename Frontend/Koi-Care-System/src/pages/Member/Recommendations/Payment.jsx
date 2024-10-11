@@ -33,7 +33,12 @@ function Payment() {
       })
 
       setOrders(response.data.data)
-      console.log('aaa', response.data.data)
+      if (orders && orders.length > 0) {
+        const lastOrderId = orders[orders.length - 1]?.id
+        if (lastOrderId !== undefined) {
+          console.log('Last Order ID:', lastOrderId)
+        }
+      }
     } catch (error) {
       console.log(error)
     }
@@ -41,33 +46,6 @@ function Payment() {
 
   useEffect(() => {
     getOrder()
-  }, [])
-
-  const createPayment = async () => {
-    try {
-      const token = localStorage.getItem('token')
-
-      const lastOrderId = orders[orders.length - 1]?.id
-      const totalPrice = localStorage.getItem('totalPrice')
-
-      const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/payment/vn-pay', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        params: {
-          amount: totalPrice,
-          orderId: lastOrderId
-        }
-      })
-      SetPayment(res.data)
-      console.log('aaaaaaasas', res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  useEffect(() => {
-    createPayment()
   }, [])
 
   const getCartId = async () => {
@@ -93,6 +71,34 @@ function Payment() {
 
   useEffect(() => {
     getCartId()
+  }, [])
+
+  const createPayment = async () => {
+    try {
+      const token = localStorage.getItem('token')
+
+      const lastOrderId = orders[orders.length - 1]?.id
+      const totalPrice = localStorage.getItem('totalPrice')
+      console.log(lastOrderId)
+
+      const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/payment/vn-pay', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        },
+        params: {
+          amount: totalPrice,
+          orderId: lastOrderId
+        }
+      })
+      SetPayment(res.data)
+      console.log('aaaaaaasas', res.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    createPayment()
   }, [])
 
   return (
