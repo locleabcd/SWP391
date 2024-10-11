@@ -1,5 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 import demo from '../../assets/left_login.png'
+import pond from '../../assets/KoiPond.png'
+import food from '../../assets/FoodCalculator.png'
+import statistics from '../../assets/Statistic.png'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
 import { useEffect } from 'react'
@@ -24,7 +27,7 @@ function Feature() {
         </div>
         {/* right content */}
         <div className='w-3/5 flex flex-col items-center justify-center min-h-full '>
-          <img className='' src={demo} alt='img' />
+          <img className='' src={pond} alt='img' />
         </div>
       </div>
       {/* homepage content */}
@@ -42,7 +45,7 @@ function Feature() {
         </div>
         {/* right content */}
         <div className='w-3/5 flex flex-col items-center justify-center min-h-full '>
-          <img className='' src={demo} alt='img' />
+          <img className='' src={food} alt='img' />
         </div>
       </div>
 
@@ -62,7 +65,7 @@ function Feature() {
         </div>
         {/* right content */}
         <div className='w-3/5 flex flex-col items-center justify-center min-h-full '>
-          <img className='' src={demo} alt='img' />
+          <img className='' src={statistics} alt='img' />
         </div>
       </div>
 
