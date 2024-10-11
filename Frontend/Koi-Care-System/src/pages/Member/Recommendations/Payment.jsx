@@ -77,9 +77,8 @@ function Payment() {
     try {
       const token = localStorage.getItem('token')
 
-      const lastOrderId = orders[orders.length - 1]?.id
+      const orderId = localStorage.getItem('orderId')
       const totalPrice = localStorage.getItem('totalPrice')
-      console.log(lastOrderId)
 
       const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/payment/vn-pay', {
         headers: {
@@ -87,7 +86,7 @@ function Payment() {
         },
         params: {
           amount: totalPrice,
-          orderId: lastOrderId
+          orderId: orderId
         }
       })
       SetPayment(res.data)
