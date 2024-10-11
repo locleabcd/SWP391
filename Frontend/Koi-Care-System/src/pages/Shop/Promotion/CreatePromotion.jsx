@@ -30,14 +30,15 @@ function CreatePromotion() {
 
     // Kiểm tra ngày bắt đầu và ngày kết thúc
     const startDate = new Date(data.startDate)
-    const endDate = new Date(data.endDate)
+const endDate = new Date(data.endDate)
 
-    if (startDate > endDate) {
-      toast.error('Start date cannot be after end date.')
-      setIsSubmitting(false)
-      setIsLoading(false)
-      return
-    }try {
+  if (startDate > endDate) {
+    toast.error('Start date cannot be after end date.')
+    setIsSubmitting(false)
+    setIsLoading(false)
+    return
+  }
+    try {
       const token = localStorage.getItem('token')
       if (!token) {
         throw new Error('No token found')

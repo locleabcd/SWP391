@@ -54,6 +54,7 @@ const path = {
   category: '/shop/category',
   createCategory: '/shop/createCategory',
   updateCategory: '/shop/category/:id',
+  promotionAD:'/admin/promotion',
 }
 
 export default path

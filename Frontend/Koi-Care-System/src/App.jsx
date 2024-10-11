@@ -59,7 +59,8 @@ import UpdateCategory from './pages/Shop/Category/UpdateCategory'
 import ViewProduct from './pages/Shop/Product/ViewProduct'
 import Payment from './pages/Member/Recommendations/Payment'
 import ProtectedRoute from './ProtectedRoute'
-
+import PromotionAD from './pages/Admin/Promotion/Promotion'
+import Admin from './pages/Admin/Admin'
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -261,6 +262,14 @@ function App() {
       )
     },
     {
+      path: path.admin,
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Admin />
+        </ProtectedRoute>
+      )
+    },
+    {
       path: path.shopNews,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
@@ -412,6 +421,11 @@ function App() {
       path: path.viewProduct,
       element: <ViewProduct />
     },
+    {
+      path: path.promotionAD,
+      element: <PromotionAD />
+    },
+    
   ])
 
   const data = [

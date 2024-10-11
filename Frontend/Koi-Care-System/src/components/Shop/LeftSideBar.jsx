@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 import { PiNewspaperClipping } from 'react-icons/pi'
 import { FaTags } from 'react-icons/fa'
 import { FaRegNewspaper } from 'react-icons/fa'
-import { NavLink } from 'react-router-dom'
+import {Link,  NavLink } from 'react-router-dom'
 import path from '../../constants/path'
 import { useDarkMode } from '../DarkModeContext'
 import logo from '../../assets/logo.png'
@@ -26,7 +27,9 @@ function LeftSideBar() {
   useEffect(() => {
     localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
   }, [isClosed])
-
+  const handleLogout = () => {
+    localStorage.clear()
+  }
   return (
     <div>
       {/* open close button  */}
@@ -311,10 +314,33 @@ function LeftSideBar() {
                       </div>
                     </NavLink>
                   </div>
+                  
                 </div>
                        
               )}
             </div>
+            <Link
+              onClick={handleLogout}
+              to={path.login}
+              className='px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center border-t absolute inset-x-0 bottom-0 w-full'
+            >
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth='1.5'
+                stroke='currentColor'
+                className='size-8 mr-2'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15'
+                />
+              </svg>
+              <span>Log Out</span>
+            </Link>
+
           </div>
         </div>
       </div>
