@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 import LeftSideBar from '../../../components/Member/LeftSideBar'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import { useState, useEffect } from 'react'
 import axios from 'axios'

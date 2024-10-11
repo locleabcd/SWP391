@@ -1,109 +1,105 @@
 /* eslint-disable no-unused-vars */
-import axios from 'axios';
-import { useDarkMode } from '../../../../components/DarkModeContext';
-import Header from '../../../../components/Member/Header';
-import LeftSideBar from '../../../../components/Member/LeftSideBar';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'react-toastify';
+import axios from 'axios'
+import { useDarkMode } from '../../../../hooks/DarkModeContext'
+import Header from '../../../../components/Member/Header'
+import LeftSideBar from '../../../../components/Member/LeftSideBar'
+import { useEffect, useState } from 'react'
+import { useForm } from 'react-hook-form'
+import { toast } from 'react-toastify'
 
 function Profile() {
-  const { isDarkMode } = useDarkMode();
-  const [users, setUsers] = useState({});
-  const [isEditing, setIsEditing] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState(null);
+  const { isDarkMode } = useDarkMode()
+  const [users, setUsers] = useState({})
+  const [isEditing, setIsEditing] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [selectedFile, setSelectedFile] = useState(null)
+  const [avatarPreview, setAvatarPreview] = useState(null)
 
   const {
     register,
     handleSubmit,
     reset,
-    formState: { errors },
-  } = useForm();
+    formState: { errors }
+  } = useForm()
 
   const getUser = async () => {
     try {
-      const token = localStorage.getItem('token');
-      const id = localStorage.getItem('id');
+      const token = localStorage.getItem('token')
+      const id = localStorage.getItem('id')
       if (!token) {
-        throw new Error('No token found');
+        throw new Error('No token found')
       }
       const res = await axios.get(`https://koicaresystem.azurewebsites.net/api/profile/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      console.log(res.data.data);
-      setUsers(res.data.data);
-      setAvatarPreview(res.data.data.avatar); // Set avatar preview
-      reset(res.data.data); // Reset form with user data
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log(res.data.data)
+      setUsers(res.data.data)
+      setAvatarPreview(res.data.data.avatar) // Set avatar preview
+      reset(res.data.data) // Reset form with user data
     } catch (error) {
-      console.error('Error fetching users:', error);
+      console.error('Error fetching users:', error)
     }
-  };
+  }
 
   const updateUser = async (data) => {
-    setIsSubmitting(true);
+    setIsSubmitting(true)
     try {
-      const token = localStorage.getItem('token');
-      const id = localStorage.getItem('id');
+      const token = localStorage.getItem('token')
+      const id = localStorage.getItem('id')
       if (!token) {
-        throw new Error('No token found');
+        throw new Error('No token found')
       }
 
-      const formData = new FormData();
-      formData.append('name', data.name);
-      formData.append('email', data.email);
-      formData.append('phone', data.phone);
-      formData.append('gender', data.gender);
-      formData.append('bio', data.bio);
-      formData.append('address', data.address);
-      formData.append('dateOfBirth', data.dateOfBirth);
+      const formData = new FormData()
+      formData.append('name', data.name)
+      formData.append('email', data.email)
+      formData.append('phone', data.phone)
+      formData.append('gender', data.gender)
+      formData.append('bio', data.bio)
+      formData.append('address', data.address)
+      formData.append('dateOfBirth', data.dateOfBirth)
       if (selectedFile) {
-        formData.append('file', selectedFile);
+        formData.append('file', selectedFile)
       }
 
-      const res = await axios.put(
-        `https://koicaresystem.azurewebsites.net/api/profile/update/${id}`,
-        formData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data',
-          },
+      const res = await axios.put(`https://koicaresystem.azurewebsites.net/api/profile/update/${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
         }
-      );
+      })
 
-      toast.success('Profile updated successfully!');
-      setIsEditing(false);
-      getUser(); // Fetch updated user data
+      toast.success('Profile updated successfully!')
+      setIsEditing(false)
+      getUser() // Fetch updated user data
     } catch (error) {
-      console.error('Error updating user:', error);
-      toast.error('Failed to update profile.');
+      console.error('Error updating user:', error)
+      toast.error('Failed to update profile.')
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setSelectedFile(file);
+    const file = e.target.files[0]
+    setSelectedFile(file)
     if (file) {
-      setAvatarPreview(URL.createObjectURL(file));
+      setAvatarPreview(URL.createObjectURL(file))
     }
-  };
+  }
 
   const onSubmit = (data) => {
-    updateUser(data);
-  };
+    updateUser(data)
+  }
 
   useEffect(() => {
-    getUser();
-  }, []);
+    getUser()
+  }, [])
 
   // Get today's date in yyyy-mm-dd format for date input max value
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toISOString().split('T')[0]
 
   return (
     <div>
@@ -120,7 +116,7 @@ function Profile() {
             <h1 className='text-2xl font-bold'>Profile Information</h1>
             <form onSubmit={handleSubmit(onSubmit)} className='mt-4 w-2/3'>
               <div className='flex justify-center mb-4'>
-              {!isEditing ? (
+                {!isEditing ? (
                   avatarPreview && (
                     <div className='relative w-48 h-48'>
                       <img
@@ -160,24 +156,20 @@ function Profile() {
                   />
                 </div>
                 <div>
-                    <label className='block'>Email:</label>
-                    <input
-                      type='email'
-                      {...register('email', {
-                        pattern: {
-                          value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                          message: 'Invalid email address',
-                        },
-                      })}
-                      disabled={!isEditing}
-                      className={`border rounded p-2 w-full ${
-                        isEditing ? 'border' : 'bg-white'
-                      }`}
-                    />
-                    {errors.email && (
-                      <span className='text-red-500'>{errors.email.message}</span>
-                    )}
-                  </div>
+                  <label className='block'>Email:</label>
+                  <input
+                    type='email'
+                    {...register('email', {
+                      pattern: {
+                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                        message: 'Invalid email address'
+                      }
+                    })}
+                    disabled={!isEditing}
+                    className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
+                  />
+                  {errors.email && <span className='text-red-500'>{errors.email.message}</span>}
+                </div>
                 <div>
                   <label className='block'>Phone:</label>
                   <input
@@ -185,26 +177,20 @@ function Profile() {
                     {...register('phone', {
                       pattern: {
                         value: /(03|07|08|09|01[2|6|8|9])+([0-9]{8})\b/,
-                        message: 'Invalid phone number format',
-                      },
+                        message: 'Invalid phone number format'
+                      }
                     })}
                     disabled={!isEditing}
-                    className={`border rounded p-2 w-full ${
-                      isEditing ? 'border' : 'bg-white'
-                    }`}
+                    className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
                   />
-                  {errors.phone && (
-                    <span className='text-red-500'>{errors.phone.message}</span>
-                  )}
+                  {errors.phone && <span className='text-red-500'>{errors.phone.message}</span>}
                 </div>
                 <div>
                   <label className='block'>Gender:</label>
                   <select
                     {...register('gender')}
                     disabled={!isEditing}
-                    className={`border rounded p-2 w-full ${
-                      isEditing ? 'border' : 'bg-white'
-                    }`}
+                    className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
                   >
                     <option value='male'>Male</option>
                     <option value='female'>Female</option>
@@ -219,9 +205,7 @@ function Profile() {
                     {...register('dateOfBirth')}
                     disabled={!isEditing}
                     max={today}
-                    className={`border rounded p-2 w-full ${
-                      isEditing ? 'border' : 'bg-white'
-                    }`}
+                    className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
                   />
                 </div>
                 <div>
@@ -240,9 +224,7 @@ function Profile() {
                     type='text'
                     {...register('address')}
                     disabled={!isEditing}
-                    className={`border rounded p-2 w-full ${
-                      isEditing ? 'border' : 'bg-white'
-                    }`}
+                    className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
                   />
                 </div>
                 <div className='col-span-2'>
@@ -250,41 +232,39 @@ function Profile() {
                   <textarea
                     {...register('bio')}
                     disabled={!isEditing}
-                    className={`border rounded p-2 w-full ${
-                      isEditing ? 'border' : 'bg-white'
-                    }`}
+                    className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
                   />
                 </div>
               </div>
               <div className='mt-4 flex justify-end'>
+                <button
+                  type='button'
+                  onClick={() => {
+                    setIsEditing(!isEditing)
+                    if (!isEditing) reset(users) // Reset form to current user data when editing starts
+                  }}
+                  className='bg-blue-500 text-white p-2 rounded mr-2 w-20'
+                >
+                  {isEditing ? 'Cancel' : 'Edit'}
+                </button>
+                {isEditing && (
                   <button
-                    type='button'
-                    onClick={() => {
-                      setIsEditing(!isEditing);
-                      if (!isEditing) reset(users); // Reset form to current user data when editing starts
-                    }}
-                    className='bg-blue-500 text-white p-2 rounded mr-2 w-20'
+                    type='submit'
+                    className={`px-4 py-2 bg-green-500 text-white rounded-md ${
+                      isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+                    }`}
+                    disabled={isSubmitting}
                   >
-                    {isEditing ? 'Cancel' : 'Edit'}
+                    {isSubmitting ? 'Submitting...' : 'Update Profile'}
                   </button>
-                  {isEditing && (
-                    <button
-                      type='submit'
-                      className={`px-4 py-2 bg-green-500 text-white rounded-md ${
-                        isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
-                      }`}
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? 'Submitting...' : 'Update Profile'}
-                    </button>
-                  )}
-                </div>
+                )}
+              </div>
             </form>
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
-export default Profile;
+export default Profile
