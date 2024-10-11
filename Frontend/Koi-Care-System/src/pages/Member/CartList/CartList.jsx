@@ -161,7 +161,7 @@ const CartList = () => {
                     <div className='mt-4'>Address</div>
                   </span>
                 </li>
-                <li className='flex items-center '>
+                <li className='flex items-center'>
                   <span className='flex flex-col'>
                     <div className='w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white '>
                       3
@@ -174,19 +174,28 @@ const CartList = () => {
               <table className='min-w-full'>
                 <thead className=''>
                   <tr className=''>
-                    <th scope='col' className='px-8 py-3 text-start text-xs font-medium uppercase tracking-wider'>
+                    <th
+                      scope='col'
+                      className='px-8 py-3 text-start text-gray-500 text-xs font-medium uppercase tracking-wider'
+                    >
                       Product
                     </th>
 
-                    <th scope='col' className='px-6 py-3 text-start text-xs font-medium uppercase tracking-wider'>
+                    <th
+                      scope='col'
+                      className='px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    >
                       Quantity
                     </th>
-                    <th scope='col' className='px-6 py-3 text-start text-xs font-medium uppercase tracking-wider'>
+                    <th
+                      scope='col'
+                      className='px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase tracking-wider'
+                    >
                       Price
                     </th>
                   </tr>
                 </thead>
-                <tbody className='divide-y divide-gray-200'>
+                <tbody className='bg-white divide-y divide-gray-200'>
                   {cart.map((item) => (
                     <tr key={item.itemId}>
                       <td className='px-6 py-4 text-center whitespace-nowrap flex gap-5'>

@@ -22,12 +22,13 @@ function Pricing() {
             <section className='grid grid-cols-3 gap-x-6'>
               <div className='flex flex-col rounded-lg bg-white p-6 shadow border border-gray-200 xl:p-8'>
                 <div className='flex-1'>
-                  <h3 className='mb-4 text-2xl font-semibold '>Premium Bronze</h3>
-                  <div className='mb-4 flex items-baseline '>
-                    <span className='text-3xl font-semibold'>đ</span>
-                    <span className='text-5xl font-extrabold tracking-tight ml-2'>300.000</span>
+                  <h3 className='mb-4 text-2xl font-semibold '>Freelancer</h3>
+                  <div className='mb-4 flex items-baseline  '>
+                    <span className='text-3xl font-semibold '>$</span>
+                    <span className='text-5xl font-extrabold tracking-tight '>49</span>
                     <span className='ml-1 text-2xl font-normal'>/month</span>
                   </div>
+                  <p className='text-lg font-normal '>Great for personal use and for your side projects.</p>
                   <ul className='my-6 space-y-4'>
                     <li className='flex space-x-3'>
                       <svg
@@ -202,19 +203,20 @@ function Pricing() {
                 </div>
                 <Link
                   href='#freelancer'
-                  className='rounded-lg bg-blue-400 px-5 py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
+                  className='rounded-lg bg-orange-400 px-5 py-2.5 text-center text-sm font-medium text-white'
                 >
                   Buy Now
                 </Link>
               </div>
               <div className='flex flex-col rounded-lg bg-white p-6 shadow border border-gray-200  xl:p-8'>
                 <div className='flex-1'>
-                  <h3 className='mb-4 text-2xl font-semibold '>Premium Silver</h3>
+                  <h3 className='mb-4 text-2xl font-semibold '>Company</h3>
                   <div className='mb-4 flex items-baseline'>
-                    <span className='text-3xl font-semibold'>đ</span>
-                    <span className='text-5xl font-extrabold tracking-tight ml-2'>1.000.000</span>
-                    <span className='ml-1 text-2xl font-normal '>/6 months</span>
+                    <span className='text-3xl font-semibold'>$</span>
+                    <span className='text-5xl font-extrabold tracking-tight'>299</span>
+                    <span className='ml-1 text-2xl font-normal '>/month</span>
                   </div>
+                  <p className='text-lg font-normal '>Great for personal use and for your side projects.</p>
                   <ul className='my-6 space-y-4'>
                     <li className='flex space-x-3'>
                       <svg
@@ -381,20 +383,22 @@ function Pricing() {
                 </div>
                 <a
                   href='#company'
-                  className='rounded-lg bg-blue-400 hover:bg-blue-500 px-5 py-4 text-center text-sm font-medium text-white'
+                  className='rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
                 >
-                  Buy Now
+                  Choose plan
                 </a>
               </div>
               <div className='flex flex-col rounded-lg bg-white p-6 shadow border border-gray-200 xl:p-8'>
                 <div className='flex-1'>
-                  <h3 className='mb-4 text-2xl font-semibold '>Premium Gold</h3>
+                  <h3 className='mb-4 text-2xl font-semibold '>Enterprise</h3>
                   <div className='mb-4 flex items-baseline'>
-                    <span className='text-3xl font-semibold'>đ</span>
-                    <span className='text-5xl font-extrabold tracking-tight ml-2'>2.000.000</span>
-                    <span className='ml-1 text-2xl font-normal text-gray-500 dark:text-gray-400'>/year</span>
+                    <span className='text-3xl font-semibold'>$</span>
+                    <span className='text-5xl font-extrabold tracking-tight'>2,999</span>
+                    <span className='ml-1 text-2xl font-normal text-gray-500 dark:text-gray-400'>/month</span>
                   </div>
-
+                  <p className='text-lg font-normal text-gray-500 dark:text-gray-400'>
+                    Great for personal use and for your side projects.
+                  </p>
                   <ul className='my-6 space-y-4'>
                     <li className='flex space-x-3'>
                       <svg
@@ -569,9 +573,9 @@ function Pricing() {
                 </div>
                 <a
                   href='#enterprise'
-                  className='rounded-lg bg-blue-400 hover:bg-blue-500 px-5 py-4 text-center text-sm font-medium text-white'
+                  className='rounded-lg bg-primary-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
                 >
-                  Buy Now
+                  Choose plan
                 </a>
               </div>
             </section>

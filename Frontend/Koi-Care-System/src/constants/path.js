@@ -57,14 +57,11 @@ const path = {
   category: '/shop/category',
   createCategory: '/shop/createCategory',
   updateCategory: '/shop/category/:id',
-<<<<<<< HEAD
-  promotionAD:'/admin/promotion',
-=======
+  promotionAD: '/admin/promotion',
   productImage: '/shop/productImage',
   createImage: '/shop/createImage',
   updateImage: '/shop/productImage/:id',
   viewUser: '/shop/viewUser'
->>>>>>> kien
 }
 
 export default path

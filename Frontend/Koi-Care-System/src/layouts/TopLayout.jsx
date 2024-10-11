@@ -32,8 +32,8 @@ function TopLayout({ text, textName, links }) {
             strokeWidth={2}
             strokeLinecap='round'
             strokeLinejoin='round'
-            className='tabler-icon tabler-icon-chevron-down opacity-35'
-            style={{ transform: 'rotate(-90deg)' }}
+            className='tabler-icon tabler-icon-chevron-down opacity-40'
+            transform='rotate(-90)'
           >
             <path d='M6 9l6 6l6 -6' />
           </svg>
@@ -52,11 +52,11 @@ function TopLayout({ text, textName, links }) {
                 strokeWidth={2}
                 strokeLinecap='round'
                 strokeLinejoin='round'
-                className='tabler-icon tabler-icon-chevron-down opacity-35'
-                style={{ transform: 'rotate(-90deg)' }}
+                className='tabler-icon tabler-icon-chevron-down opacity-40'
+                transform='rotate(-90)'
               >
                 <path d='M6 9l6 6l6 -6' />
-              </svg>
+              </svg>{' '}
               <div className=''>{textName}</div>
             </>
           )}

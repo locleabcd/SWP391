@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { useDarkMode } from '../components/DarkModeContext'
+import { useDarkMode } from '../hooks/DarkModeContext'
 
 // eslint-disable-next-line react/prop-types
 function TopLayoutAD({ text, textName, links }) {
@@ -35,5 +35,3 @@ function TopLayoutAD({ text, textName, links }) {
 }
 
 export default TopLayoutAD
-
-

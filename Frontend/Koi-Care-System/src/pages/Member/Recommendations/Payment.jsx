@@ -10,43 +10,12 @@ function Payment() {
   const { isDarkMode } = useDarkMode()
 
   const [payment, SetPayment] = useState([])
-  const [orders, setOrders] = useState([])
   const [cart, setCart] = useState([])
   const [selectedPayment, setSelectedPayment] = useState('paypal')
 
   const handlePaymentChange = (e) => {
     setSelectedPayment(e.target.value)
   }
-
-  const getOrder = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const userId = localStorage.getItem('id')
-      if (!token) {
-        throw new Error('No token found')
-      }
-
-      const response = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/user/${userId}/order`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-
-      setOrders(response.data.data)
-      if (orders && orders.length > 0) {
-        const lastOrderId = orders[orders.length - 1]?.id
-        if (lastOrderId !== undefined) {
-          console.log('Last Order ID:', lastOrderId)
-        }
-      }
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
-  useEffect(() => {
-    getOrder()
-  }, [])
 
   const getCartId = async () => {
     try {
@@ -76,6 +45,7 @@ function Payment() {
   const createPayment = async () => {
     try {
       const token = localStorage.getItem('token')
+
       const id = localStorage.getItem('id')
       const totalPrice = localStorage.getItem('totalPrice')
 
@@ -90,7 +60,6 @@ function Payment() {
       })
       SetPayment(res.data)
     } catch (err) {
-      console.log('abc', localStorage.getItem('id'))
       console.log(err)
     }
   }

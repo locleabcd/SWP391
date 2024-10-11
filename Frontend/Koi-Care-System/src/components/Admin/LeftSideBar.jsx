@@ -1,22 +1,20 @@
-
-import {  NavLink } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 import path from '../../constants/path'
-import { useDarkMode } from '../DarkModeContext'
 import logo from '../../assets/logo.png'
 import { useEffect, useState } from 'react'
-
+import { useDarkMode } from '../../hooks/DarkModeContext'
 
 function LeftSideBar() {
-    const { isDarkMode } = useDarkMode()
-    const [isClosed, setClosed] = useState(() => {
-      const savedState = localStorage.getItem('isSidebarClosed')
-      return savedState ? JSON.parse(savedState) : false
-    })
-  
-    useEffect(() => {
-      localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
-    }, [isClosed])
-  
+  const { isDarkMode } = useDarkMode()
+  const [isClosed, setClosed] = useState(() => {
+    const savedState = localStorage.getItem('isSidebarClosed')
+    return savedState ? JSON.parse(savedState) : false
+  })
+
+  useEffect(() => {
+    localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
+  }, [isClosed])
+
   return (
     <div>
       {/* open close button  */}
@@ -108,12 +106,10 @@ function LeftSideBar() {
                 {!isClosed && <span className='font-semibold'>Promotion</span>}
               </div>
             </NavLink>
-              </div>
-              </div>
           </div>
         </div>
-      
-    
+      </div>
+    </div>
   )
 }
 export default LeftSideBar

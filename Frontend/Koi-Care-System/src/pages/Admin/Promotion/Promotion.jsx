@@ -1,6 +1,4 @@
-      
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../components/DarkModeContext'
 import Header from '../../../components/Admin/Header'
 import LeftSideBar from '../../../components/Admin/LeftSideBar'
 import axios from 'axios'
@@ -8,6 +6,7 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom'
 import TopLayout from '../../../layouts/TopLayoutAD'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 
 function Promotion() {
   const { isDarkMode } = useDarkMode()
@@ -162,4 +161,4 @@ function Promotion() {
   )
 }
 
-export default Promotion;
+export default Promotion
