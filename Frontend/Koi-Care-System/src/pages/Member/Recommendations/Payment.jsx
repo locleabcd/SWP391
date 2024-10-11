@@ -47,8 +47,7 @@ function Payment() {
     try {
       const token = localStorage.getItem('token')
 
-      const lastOrderId = orders[orders.length - 1].id
-      // console.log(lastOrderId)
+      const lastOrderId = orders[orders.length - 1]?.id
       const totalPrice = localStorage.getItem('totalPrice')
 
       const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/payment/vn-pay', {
@@ -61,7 +60,7 @@ function Payment() {
         }
       })
       SetPayment(res.data)
-      console.log(res.data)
+      console.log('aaaaaaasas', res.data)
     } catch (err) {
       console.log(err)
     }
