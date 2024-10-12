@@ -76,7 +76,8 @@ function MyPond() {
       const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
-        }
+        },
+        withCredentials: true
       })
       console.log(res.data.data)
       setPonds(res.data.data)
