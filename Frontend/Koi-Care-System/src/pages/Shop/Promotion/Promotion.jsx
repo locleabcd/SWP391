@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
@@ -8,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 
 function Promotion() {
   const { isDarkMode } = useDarkMode()
@@ -140,8 +140,8 @@ function Promotion() {
                     <tr key={promotion.id}>
                       <td className='py-2 px-1 text-center border-b  border-gray-200'>{index + 1}</td>
                       <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.name}</td>
-                      <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.startDate}</td>
-                      <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.endDate}</td>
+                      <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.startDate.replace('T', ' ')}</td>
+                      <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.endDate.replace('T', ' ')}</td>
                       <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.discountRate}%</td>
                       <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.description}</td>
                       <td className='py-2 px-1 text-center border-b  border-gray-200'>
