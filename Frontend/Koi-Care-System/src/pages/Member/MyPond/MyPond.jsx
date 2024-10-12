@@ -77,7 +77,7 @@ function MyPond() {
         headers: {
           Authorization: `Bearer ${token}`
         },
-        withCredentials: true
+        withCredentials: 'include'
       })
       console.log(res.data.data)
       setPonds(res.data.data)
