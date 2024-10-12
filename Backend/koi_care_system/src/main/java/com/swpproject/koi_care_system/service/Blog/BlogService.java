@@ -19,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,7 @@ public class BlogService implements IBlogService {
     UserRepository userRepository;
     TagRepository tagRepository;
     ImageStorage imageStorage;
+    @Async
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public BlogDto createBlog(BlogCreateRequest blogCreateRequest, String username) throws IOException {
@@ -58,6 +60,7 @@ public class BlogService implements IBlogService {
 
         return blogMapper.mapToBlogDto(blogRepository.save(blog));
     }
+    @Async
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public BlogDto updateBlog(int id, BlogUpdateRequest blogUpdateRequest) {

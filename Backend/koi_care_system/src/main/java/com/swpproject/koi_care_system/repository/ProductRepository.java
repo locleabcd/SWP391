@@ -12,8 +12,6 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findByBrand(String brand);
 
-    @Query("SELECT g FROM Product g WHERE g.status=true")
-    List<Product> findAllAvaiable();
     List<Product> findByCategoryNameAndBrand(String category, String brand);
 
     List<Product> findBySupplierName(String supplierName);

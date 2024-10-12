@@ -2,6 +2,7 @@ package com.swpproject.koi_care_system.controllers;
 
 import com.swpproject.koi_care_system.dto.PromotionDto;
 import com.swpproject.koi_care_system.payload.request.AddPromotionRequest;
+import com.swpproject.koi_care_system.payload.request.AdminConfirmPromotionRequest;
 import com.swpproject.koi_care_system.payload.request.PromotionUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.promotion.IPromotionService;
@@ -40,6 +41,15 @@ public class PromotionController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
     }
+    @PutMapping("/promotion/confirm")
+    public ResponseEntity<ApiResponse> confirmPromotion(@RequestBody AdminConfirmPromotionRequest request){
+        try{
+            PromotionDto promotionDto = promotionService.verifyByAdmin(request);
+            return ResponseEntity.ok(new ApiResponse("Update promotion success", promotionDto));
+        }catch (Exception e){
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
+        }
+    }
 
     @DeleteMapping("/promotion/{id}/delete")
     public ResponseEntity<ApiResponse> deletePromotion(@PathVariable Long id){
@@ -68,6 +78,17 @@ public class PromotionController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(),null));
         }
     }
+
+    @GetMapping("/promotion/request")
+    public ResponseEntity<ApiResponse> getPromotionRequest(){
+        try {
+            List<PromotionDto> promotionDtoList = promotionService.getAllPromotionsRequest();
+            return ResponseEntity.ok(new ApiResponse("Found",promotionDtoList));
+        }catch (Exception e){
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(),null));
+        }
+    }
+
     @PostMapping("/{promotionId}/products")
     public ResponseEntity<ApiResponse> addProductsToPromotion(@PathVariable Long promotionId, @RequestParam List<Long> productIds) {
         try{

@@ -1,16 +1,18 @@
 package com.swpproject.koi_care_system.service.order;
 
 import com.swpproject.koi_care_system.dto.OrderDto;
+import com.swpproject.koi_care_system.dto.UserProfileDto;
 import com.swpproject.koi_care_system.enums.OrderStatus;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.mapper.OrderMapper;
-import com.swpproject.koi_care_system.models.Cart;
-import com.swpproject.koi_care_system.models.Order;
-import com.swpproject.koi_care_system.models.OrderItem;
-import com.swpproject.koi_care_system.models.Product;
+import com.swpproject.koi_care_system.models.*;
 import com.swpproject.koi_care_system.payload.request.PlaceOrderRequest;
+import com.swpproject.koi_care_system.payload.request.PlacePremiumOrderRequest;
 import com.swpproject.koi_care_system.repository.OrderRepository;
 import com.swpproject.koi_care_system.repository.ProductRepository;
+import com.swpproject.koi_care_system.repository.UserProfileRepository;
+import com.swpproject.koi_care_system.repository.UserRepository;
+import com.swpproject.koi_care_system.service.cart.CartItemService;
 import com.swpproject.koi_care_system.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,8 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +33,8 @@ public class OrderService implements IOrderService {
     private final ProductRepository productRepository;
     private final CartService cartService;
     private final OrderMapper orderMapper;
-
+    private final CartItemService cartItemService;
+    private final UserProfileRepository userProfileRepository;
     @Transactional
     @Override
     public OrderDto placeOrder(PlaceOrderRequest request) {
@@ -45,6 +50,29 @@ public class OrderService implements IOrderService {
         Order savedOrder = orderRepository.save(order);
         cartService.clearCart(cart.getId());
         return orderMapper.toDto(savedOrder);
+    }
+
+    @Override
+    public OrderDto placePremiumPlanOrder(PlacePremiumOrderRequest request) {
+        Cart virtualCart = new Cart();
+        List<Product> products = productRepository.findByBrand("KoiCareSystem")
+                .stream()
+                .sorted(Comparator.comparing(Product::getName))
+                .toList();
+        switch (request.getTime()) {
+            case "1MONTH" -> cartItemService.addItemToCart(virtualCart.getId(), products.get(0).getId(), 1);
+            case "6MONTHS" -> cartItemService.addItemToCart(virtualCart.getId(), products.get(2).getId(), 1);
+            case "1YEAR" -> cartItemService.addItemToCart(virtualCart.getId(), products.get(1).getId(), 1);
+        }
+        UserProfile userProfile = userProfileRepository.findUserProfileByUserId(request.getUserId());
+        Order order = createOrder(virtualCart);
+        List<OrderItem> orderItemList = createOrderItems(order,virtualCart);
+        order.setAddress(userProfile.getAddress());
+        order.setPhone(userProfile.getPhone());
+        order.setRecipientName(userProfile.getName());
+        order.setOrderItems(new HashSet<>(orderItemList));
+        order.setTotalAmount(calculateTotalAmount(orderItemList));
+        return orderMapper.toDto(order);
     }
 
     private Order createOrder(Cart cart) {

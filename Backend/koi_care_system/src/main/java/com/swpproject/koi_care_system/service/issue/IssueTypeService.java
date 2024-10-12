@@ -9,6 +9,8 @@ import jakarta.annotation.PostConstruct;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,6 +43,7 @@ public class IssueTypeService implements IIssueTypeService {
     }
 
     @Override
+    @Cacheable("issueTypes")
     public List<IssueTypeDto> getAllIssueType() {
         return issueTypeRepository.findAll().stream().map(issueTypeMapper::maptodto).toList();
     }

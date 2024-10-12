@@ -8,6 +8,7 @@ import com.swpproject.koi_care_system.mapper.PromotionMapper;
 import com.swpproject.koi_care_system.models.Product;
 import com.swpproject.koi_care_system.models.Promotion;
 import com.swpproject.koi_care_system.payload.request.AddPromotionRequest;
+import com.swpproject.koi_care_system.payload.request.AdminConfirmPromotionRequest;
 import com.swpproject.koi_care_system.payload.request.PromotionUpdateRequest;
 import com.swpproject.koi_care_system.repository.ProductRepository;
 import com.swpproject.koi_care_system.repository.PromotionRepository;
@@ -18,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -44,15 +46,18 @@ public class PromotionService implements IPromotionService {
     public PromotionDto updatePromotion(Long id, PromotionUpdateRequest promotionUpdateRequest) {
         Promotion promotion = promotionRepository.findById(promotionUpdateRequest.getId())
                 .orElseThrow(()-> new ResourceNotFoundException("No promotion found with this id"));
-        promotion.setName(promotionUpdateRequest.getName());
-        promotion.setDescription(promotionUpdateRequest.getDescription());
-        promotion.setDiscountRate(promotionUpdateRequest.getDiscountRate());
-        promotion.setEndDate(promotionUpdateRequest.getEndDate());
-        promotion.setStartDate(promotionUpdateRequest.getStartDate());
-        promotion.setStatus(promotionUpdateRequest.getStatus());
+        promotionMapper.updatePromotion(promotion,promotionUpdateRequest);
         return promotionMapper.mapToDto(promotionRepository.save(promotion));
     }
 
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    public PromotionDto verifyByAdmin(AdminConfirmPromotionRequest request) {
+        Promotion promotion = promotionRepository.findById(request.getPromotionId())
+                .orElseThrow(() -> new ResourceNotFoundException("Promotion not found with id: " + request.getPromotionId()));
+        promotionMapper.confirmPromotion(promotion,request);
+        return promotionMapper.mapToDto(promotionRepository.save(promotion));
+    }
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deletePromotion(Long id) {
@@ -71,13 +76,13 @@ public class PromotionService implements IPromotionService {
         return promotionRepository.findAll().stream().map(promotion ->{
             switch (promotion.getStatus()){
                 case ACCEPTED -> {
-                    if(promotion.getStartDate().isBefore(LocalDate.now())){
+                    if(promotion.getStartDate().isBefore(LocalDateTime.now())){
                         promotion.setStatus(PromotionStatus.PROCESSING);
                         this.applyPromotionToProduct(promotion);
                     }
                 }
                 case PROCESSING -> {
-                    if(promotion.getEndDate().isBefore(LocalDate.now())){
+                    if(promotion.getEndDate().isBefore(LocalDateTime.now())){
                         promotion.setStatus(PromotionStatus.ENDED);
                     }
                 }
@@ -85,6 +90,11 @@ public class PromotionService implements IPromotionService {
             promotionRepository.save(promotion);
            return promotionMapper.mapToDto(promotion);
         }).toList();
+    }
+
+    @Override
+    public List<PromotionDto> getAllPromotionsRequest() {
+        return promotionRepository.findPromotionByStatus(PromotionStatus.PENDING).stream().map(promotionMapper::mapToDto).toList();
     }
 
     @Override
@@ -100,6 +110,9 @@ public class PromotionService implements IPromotionService {
         productRepository.saveAll(products);
         promotionRepository.save(promotion);
     }
+
+
+
     private void applyPromotionToProduct(Promotion promotion){
         promotion.getProducts().forEach(product ->
             product.getPromotions().add(promotion)

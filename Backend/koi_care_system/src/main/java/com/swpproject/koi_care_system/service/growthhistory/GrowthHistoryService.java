@@ -37,11 +37,12 @@ public class GrowthHistoryService implements IGrowthHistoryService {
         }
         else
             growthHistory.setImageUrl("https://koicareimage.blob.core.windows.net/koicarestorage/defaultGrowthHistory.png");
-        growthHistory.setKoiFish(koiFish);//relation between growHistory and koiFish
-        //If new growthHistory is the latest, update KoiFish
+        growthHistory.setKoiFish(koiFish);
         GrowthHistory savedGrowthHistory = growthHistoryRepository.save(growthHistory);
         long latestId = growthHistoryRepository.findLatestByKoiFishId(koiFish.getId());
         if (savedGrowthHistory.getId() == latestId) {
+            if(savedGrowthHistory.getImageUrl().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultGrowthHistory.png"))
+                savedGrowthHistory.setImageUrl(koiFish.getImageUrl());
             //Update KoiFish
             updateKoiFish(savedGrowthHistory);
             koiFishRepository.save(koiFish);

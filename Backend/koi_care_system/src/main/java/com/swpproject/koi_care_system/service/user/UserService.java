@@ -83,7 +83,6 @@ public class UserService implements IUserService {
         user.setStatus(true);
         user.setRole(Role.MEMBER);
         user.setUserProfile(profileService.createProfile(user));
-
         userRepo.save(user);
     }
 

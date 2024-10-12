@@ -86,7 +86,7 @@ public class KoiFishService implements IKoiFishService {
         if(koiFishUpdateRequest.getFile()!=null)
             if(!koiFishUpdateRequest.getFile().isEmpty()){
                 try {
-                    if(!oldKoiFish.getImageUrl().equals("https://koicaresystem.blob.core.windows.net/koicare-blob/defaultKoiFish.jpeg"))
+                    if(!oldKoiFish.getImageUrl().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg"))
                         imageStorage.deleteImage(oldKoiFish.getImageUrl());
                     oldKoiFish.setImageUrl(imageStorage.uploadImage(koiFishUpdateRequest.getFile()));
                 }catch (Exception e){

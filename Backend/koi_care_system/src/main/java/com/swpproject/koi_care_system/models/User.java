@@ -25,7 +25,6 @@ public class User {
     @Column(nullable = false)
     String username;
 
-    @Column(nullable = false)
     String password;
 
     @Column(nullable = false)
@@ -37,6 +36,9 @@ public class User {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     Role role;
+
+//    @Column(nullable = false)
+    String provider;
 
     boolean status;
 

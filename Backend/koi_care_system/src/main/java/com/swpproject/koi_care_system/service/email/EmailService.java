@@ -56,6 +56,7 @@ public class EmailService implements IEmailService {
         }
     }
 
+    @Async
     @Override
     public void sendOtp(String name, String to, String subject, String otp) {
         try {

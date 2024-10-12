@@ -2,6 +2,7 @@ package com.swpproject.koi_care_system.controllers;
 import com.swpproject.koi_care_system.dto.OrderDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.payload.request.PlaceOrderRequest;
+import com.swpproject.koi_care_system.payload.request.PlacePremiumOrderRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.order.IOrderService;
 import jakarta.validation.Valid;
@@ -28,8 +29,18 @@ public class OrderController {
         }
     }
 
+    @PostMapping("/order/premium")
+    public ResponseEntity<ApiResponse> placePremiumOrder(@RequestBody @Valid PlacePremiumOrderRequest request){
+        try {
+            OrderDto order =  orderService.placePremiumPlanOrder(request);
+            return ResponseEntity.ok(new ApiResponse("Order premium Success!", order));
+        } catch (Exception e) {
+            return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Error Occured!", e.getMessage()));
+        }
+    }
+
     @GetMapping("/{orderId}/order")
-    public ResponseEntity<ApiResponse> getOrderById(@PathVariable Long orderId) {
+    public ResponseEntity<ApiResponse> getOrderById(@PathVariable Long orderId){
         try {
             OrderDto order = orderService.getOrder(orderId);
             return ResponseEntity.ok(new ApiResponse("Item Order Success!", order));
