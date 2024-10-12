@@ -1,8 +1,8 @@
-import { useDarkMode } from '../../components/DarkModeContext'
 import '../../App.css'
 import path from '../../constants/path'
 import { Link, NavLink } from 'react-router-dom'
 import { useState } from 'react'
+import { useDarkMode } from '../../hooks/DarkModeContext'
 
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()

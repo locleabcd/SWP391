@@ -22,7 +22,7 @@ import ShopCart from './pages/Member/MyAccount/ShopCart/ShopCart'
 import MyPond from './pages/Member/MyPond/MyPond'
 import VerifyEmail from './pages/VerifyEmail/VerifyEmail'
 import VerifySuccess from './pages/VerifyEmail/VerifySuccess'
-import { DarkModeProvider } from './components/DarkModeContext'
+import { DarkModeProvider } from './hooks/DarkModeContext'
 import Policy from './pages/Policy/Policy'
 import NewsDetail from './pages/Member/News/NewsDetail'
 import Email from './pages/RecoveryPassword/Email'
@@ -61,6 +61,14 @@ import Payment from './pages/Member/Recommendations/Payment'
 import ProtectedRoute from './ProtectedRoute'
 import PromotionAD from './pages/Admin/Promotion/Promotion'
 import Admin from './pages/Admin/Admin'
+import ProductImage from './pages/Shop/ProductImage/ProductImage'
+import CreateImage from './pages/Shop/ProductImage/CreateImage'
+import UpdateImage from './pages/Shop/ProductImage/UpdateImage'
+import ViewUser from './pages/Shop/User/ViewUser'
+import Pricing from './components/Pricing/Pricing'
+import PaymentSuccess from './pages/Member/Recommendations/PaymentSuccess'
+import PaymentError from './pages/Member/Recommendations/PaymentError'
+
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -103,11 +111,7 @@ function App() {
     },
     {
       path: path.member,
-      element: (
-        <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <Member />
-        </ProtectedRoute>
-      )
+      element: <Member />
     },
     {
       path: path.myAccount,
@@ -350,48 +354,100 @@ function App() {
       )
     },
     {
-      path: path.payment,
-      element: <Payment />
+      path: path.paymentSuccess,
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <PaymentSuccess />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: path.paymentError,
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <PaymentError />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.createTag,
-      element: <CreateTag />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <CreateTag />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updateTag,
-      element: <UpdateTag />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <UpdateTag />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.supplier,
-      element: <Supplier />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Supplier />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.createSupplier,
-      element: <CreateSupplier />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <CreateSupplier />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updateSupplier,
-      element: <UpdateSupplier />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <UpdateSupplier />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.checkout,
-      element: <Checkout />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Checkout />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.myPondLogDetail,
-      element: <MyPondLogId />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <MyPondLogId />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.promotion,
-      element: <Promotion />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <Promotion />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.createPromotion,
-      element: <CreatePromotion />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <CreatePromotion />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updatePromotion,
-      element: <UpdatePromotion />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <UpdatePromotion />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.product,
@@ -399,11 +455,19 @@ function App() {
     },
     {
       path: path.createProduct,
-      element: <CreateProduct />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <CreateProduct />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.updateProduct,
-      element: <UpdateProduct />
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <UpdateProduct />
+        </ProtectedRoute>
+      )
     },
     {
       path: path.category,
@@ -425,7 +489,26 @@ function App() {
       path: path.promotionAD,
       element: <PromotionAD />
     },
-    
+    {
+      path: path.productImage,
+      element: <ProductImage />
+    },
+    {
+      path: path.createImage,
+      element: <CreateImage />
+    },
+    {
+      path: path.updateImage,
+      element: <UpdateImage />
+    },
+    {
+      path: path.viewUser,
+      element: <ViewUser />
+    },
+    {
+      path: path.pricing,
+      element: <Pricing />
+    }
   ])
 
   const data = [

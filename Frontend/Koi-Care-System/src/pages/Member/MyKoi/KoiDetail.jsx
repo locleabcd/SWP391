@@ -1,4 +1,6 @@
-import { useDarkMode } from '../../../components/DarkModeContext'
+/* eslint-disable no-unused-vars */
+/* eslint-disable react/no-unescaped-entities */
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import { useParams, useNavigate } from 'react-router-dom'
@@ -10,7 +12,10 @@ import { MdSystemUpdateAlt } from 'react-icons/md'
 import { FaSpinner } from 'react-icons/fa'
 import TopLayout from '../../../layouts/TopLayout'
 import { toast } from 'react-toastify'
-
+import { GiDeathSkull } from 'react-icons/gi'
+import { IoMdMale } from 'react-icons/io'
+import { IoMdFemale } from 'react-icons/io'
+import { FaQuestion } from 'react-icons/fa'
 function KoiDetails() {
   const { isDarkMode } = useDarkMode()
   const { id } = useParams()
@@ -36,29 +41,29 @@ function KoiDetails() {
     handleSubmit,
     formState: { errors },
     reset,
-    watch, 
+    watch,
     setValue
   } = useForm()
 
-  const length = watch('length');
-  const physique = watch('physique');
+  const length = watch('length')
+  const physique = watch('physique')
 
   useEffect(() => {
-    if (length && physique) {     
-      let calculatedWeight = 0;
-      const lengthCubed = Math.pow(length, 3); // length^3
+    if (length && physique) {
+      let calculatedWeight = 0
+      const lengthCubed = Math.pow(length, 3) // length^3
 
       if (physique === 'Slim') {
-        calculatedWeight = (1.5 * lengthCubed) / 100;
+        calculatedWeight = (1.5 * lengthCubed) / 100
       } else if (physique === 'Normal') {
-        calculatedWeight = (1.7 * lengthCubed) / 100;
+        calculatedWeight = (1.7 * lengthCubed) / 100
       } else if (physique === 'Corpulent') {
-        calculatedWeight = (2 * lengthCubed) / 100;
+        calculatedWeight = (2 * lengthCubed) / 100
       }
 
-      setValue('weight', calculatedWeight.toFixed(2));
+      setValue('weight', calculatedWeight.toFixed(2))
     }
-  }, [length, physique, setValue]);
+  }, [length, physique, setValue])
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
@@ -194,62 +199,58 @@ function KoiDetails() {
   }, [])
 
   const upDateRemark = async (data, id = null) => {
-    console.log('upDateRemark:', data, 'id:', id);
-    setIsLoading(true);
-    setIsSubmitting(true);
-  
+    console.log('upDateRemark:', data, 'id:', id)
+    setIsLoading(true)
+    setIsSubmitting(true)
+
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token')
       if (!token) {
-        throw new Error('No token found');
+        throw new Error('No token found')
       }
-  
+
       if (id) {
         await axios.put(
           `https://koicaresystemv3.azurewebsites.net/api/remark/update/${id}`,
           {
             title: data.title,
             createDate: data.createDate,
-            note: data.note,
+            note: data.note
           },
           {
             headers: {
-              Authorization: `Bearer ${token}`,
-            },
+              Authorization: `Bearer ${token}`
+            }
           }
-        );
-        toast.success('Remark updated successfully!');
+        )
+        toast.success('Remark updated successfully!')
       } else {
-        await axios.post(
-          'https://koicaresystemv3.azurewebsites.net/api/remark/create',
-          {
-            title: data.title,
-            createDate: data.createDate,
-            note: data.note,
-            koiFishId: data.koiFishId, 
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const jsonData = {
+          title: data.title,
+          createDate: data.createDate,
+          note: data.note,
+          koiFishId: data.koiFishId
+        }
+        await axios.post('https://koicaresystemv3.azurewebsites.net/api/remark/create', jsonData, {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
-        );
-        toast.success('Remark created successfully!');
+        })
+        toast.success('Remark created successfully!')
       }
-  
-      reset();
-      getRemark();
-      setIsAddRemarkFormVisible(false);
-      setIsEditRemarkFormVisible(false);
+
+      reset()
+      getRemark()
+      setIsAddRemarkFormVisible(false)
+      setIsEditRemarkFormVisible(false)
     } catch (error) {
-      console.log('Error creating/updating remark history:', error);
-      toast.error(error.response?.data?.message || 'Failed to create/update remark.');
+      console.log('Error creating/updating remark history:', error)
+      toast.error(error.response?.data?.message || 'Failed to create/update remark.')
     } finally {
-      setIsSubmitting(false);
-      setIsLoading(false);
+      setIsSubmitting(false)
+      setIsLoading(false)
     }
-  };
-  
+  }
 
   const upDateGrowth = async (data, id = null) => {
     setIsLoading(true)
@@ -297,6 +298,7 @@ function KoiDetails() {
 
       reset()
       getGrowthHistory()
+      getKoi()
       setIsAddGrowthFormVisible(false)
       setIsEditGrowthFormVisible(false)
     } catch (error) {
@@ -344,12 +346,12 @@ function KoiDetails() {
           Authorization: `Bearer ${token}`
         }
       })
-        console.log(res.data.data);
-        setKoi(res.data.data); 
+      console.log(res.data.data)
+      setKoi(res.data.data)
     } catch (error) {
       console.error('Error fetching koi:', error)
       alert('Failed to load koi details, please try again later.')
-    } 
+    }
   }
 
   useEffect(() => {
@@ -374,6 +376,7 @@ function KoiDetails() {
       })
       reset()
       getGrowthHistory()
+      getKoi()
       setIsEditGrowthFormVisible(false)
     } catch (error) {
       console.error('Error deleting growth history:', error)
@@ -407,7 +410,7 @@ function KoiDetails() {
       setIsLoading(false)
     }
   }
- 
+
   const getPond = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -466,7 +469,8 @@ function KoiDetails() {
         formData.append('file', selectedFile)
       }
       const res = await axios.put(
-        `https://koicaresystemv3.azurewebsites.net/api/koifishs/koifish/${id}/update`,formData,
+        `https://koicaresystemv3.azurewebsites.net/api/koifishs/koifish/${id}/update`,
+        formData,
         {
           headers: {
             'Content-Type': 'multipart/form-data',
@@ -517,13 +521,6 @@ function KoiDetails() {
     updateKoi(data, id)
   }
 
-  // if (isLoading) {
-  //   return (     
-  //       <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-  //         <FaSpinner className='animate-spin text-green-500 text-6xl' />
-  //       </div>   
-  //   )
-  // }
   return (
     <div>
       <div className='h-screen flex'>
@@ -536,7 +533,7 @@ function KoiDetails() {
           <Header />
 
           <div className='py-5 pb-0 px-[30px] mx-auto'>
-            <TopLayout text='My Koi' textName='My Koi Detail' links='member/myKoi' />           
+            <TopLayout text='My Koi' textName='My Koi Detail' links='member/myKoi' />
             <div className='flex items-center justify-end pr-12'>
               <button>
                 <MdSystemUpdateAlt className='size-7' onClick={() => toggleEditFormVisibility(koi)} />
@@ -552,11 +549,11 @@ function KoiDetails() {
                   } flex rounded-xl shadow-lg w-[50%]`}
                 >
                   {/* Image section */}
-                  <div className='h-full w-[50%] rounded-l-xl overflow-hidden'>
+                  <div className='h-64 w-[50%] rounded-l-xl overflow-hidden'>
                     <img
                       className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105'
-                      src={koi.imageUrl } 
-                      alt={koi.name }            
+                      src={koi.imageUrl}
+                      alt={koi.name}
                     />
                   </div>
 
@@ -564,9 +561,18 @@ function KoiDetails() {
                   <div className='w-[55%] pl-4 pr-3 py-4 flex flex-col justify-between'>
                     <div>
                       <div className='flex items-center'>
-                        <h2 className='w-[90%] font-semibold text-3xl text-start text-nowrap'>
+                        <h2 className='w-[90%] font-semibold flex items-center gap-2 text-3xl text-start text-nowrap'>
                           {koi.name || 'Unnamed Koi'}
+                          {koi.status === 'Dead' && <GiDeathSkull className='text-red-500' />}
                         </h2>
+
+                        {koi.gender === 'Male' ? (
+                          <IoMdMale className='w-8 h-8 text-blue-500' />
+                        ) : koi.gender === 'Female' ? (
+                          <IoMdFemale className='w-8 h-8 text-pink-500' />
+                        ) : (
+                          <FaQuestion className='w-8 h-8 text-red-500' />
+                        )}
                       </div>
                       <p className='text-start my-2'>
                         Variety: <strong>{koi.variety || 'Unknown'}</strong>
@@ -602,9 +608,8 @@ function KoiDetails() {
                 >
                   <h2 className='font-bold text-center text-xl mb-2'>Koi Description</h2>
                   <p className='mb-4'>
-                    <strong>{koi.name || 'Unnamed Koi'}</strong> with size{' '}
-                    <strong>{koi.physique || 'Unknown'}</strong> has been swimming in the pond "
-                    <strong>{koi.koiPond?.name || 'No pond information'}</strong>" since{' '}
+                    <strong>{koi.name || 'Unnamed Koi'}</strong> with size <strong>{koi.physique || 'Unknown'}</strong>{' '}
+                    has been swimming in the pond "<strong>{koi.koiPond?.name || 'No pond information'}</strong>" since{' '}
                     <strong>{formatDate(koi.pondDate) || 'Unknown Date'}</strong>.
                   </p>
                   <p className='mb-4'>
@@ -613,33 +618,31 @@ function KoiDetails() {
                     <strong>{koi.breeder || 'Unknown Breeder'}</strong>.
                   </p>
                   <p className='mb-2'>
-                    <strong>{koi.name || 'Unnamed Koi'}</strong> was{' '}
-                    <strong>{koi.status || 'Unknown Status'}</strong>.
+                    <strong>{koi.name || 'Unnamed Koi'}</strong> was <strong>{koi.status || 'Unknown Status'}</strong>.
                   </p>
                 </div>
               )}
             </div>
-          
 
             {/* Growth history and remarks */}
-            <div className="grid grid-cols-2 gap-10 px-44 py-5">
+            <div className='grid grid-cols-2 gap-10 px-44 py-5'>
               {/* Growth History Section */}
-              <div className="growth-history w-[85%]">
-                <div className="flex justify-between items-center pb-4">
-                  <h2 className="font-bold text-xl">Growth History</h2>
+              <div className='growth-history w-[85%]'>
+                <div className='flex justify-between items-center pb-4'>
+                  <h2 className='font-bold text-xl'>Growth History</h2>
                   <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
                     strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-8 h-8 text-red-500 cursor-pointer"
+                    stroke='currentColor'
+                    className='w-8 h-8 text-red-500 cursor-pointer'
                     onClick={toggleAddGrowthFormVisibility}
                   >
                     <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
                     />
                   </svg>
                 </div>
@@ -652,66 +655,76 @@ function KoiDetails() {
                         isDarkMode ? 'text-white bg-slate-700' : 'text-black bg-white'
                       }`}
                       onClick={() => {
-                        toggleEditGrowthFormVisibility(g);
-                        reset(g);
+                        toggleEditGrowthFormVisibility(g)
+                        reset(g)
                       }}
                     >
-                      <div className="w-2/5 rounded-l-lg overflow-hidden">
+                      <div className='w-2/5 rounded-l-lg overflow-hidden'>
                         <img
                           src={g.imageUrl}
                           alt={`Growth ${index + 1}`}
-                          className="w-full h-full object-cover min-w-[200px]"
+                          className='w-full h-full object-cover min-w-[200px]'
                         />
                       </div>
-                      <div className="w-3/5 pl-4">
-                        <p className="mb-2">
+                      <div className='w-3/5 pl-4'>
+                        <p className='mb-2'>
                           <strong>Date:</strong> {formatDate(g.createDate)}
                         </p>
-                        <p className="mb-2">
+                        <p className='mb-2'>
                           <strong>Length:</strong> {g.length} cm
                         </p>
-                        <p className="mb-2">
+                        <p className='mb-2'>
                           <strong>Weight:</strong> {g.weight} g
                         </p>
                       </div>
                     </div>
                   ))
                 ) : (
-                  <p className="text-center text-sm text-gray-500">No growth history available</p>
+                  <p className='text-center text-sm text-gray-500'>No growth history available</p>
                 )}
               </div>
 
               {/* Remarks Section */}
-              <div className="remarks pl-20">
-                <div className="flex justify-between items-center pb-4">
-                  <h2 className="font-bold text-xl mb-4">Remarks</h2>
+              <div className='remarks pl-20'>
+                <div className='flex justify-between items-center pb-4'>
+                  <h2 className='font-bold text-xl mb-4'>Remarks</h2>
                   <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-8 h-8 text-red-500 cursor-pointer"
-                      onClick={toggleAddRemarkFormVisibility}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                      />
-                    </svg>
-                </div>          
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='w-8 h-8 text-red-500 cursor-pointer'
+                    onClick={toggleAddRemarkFormVisibility}
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                    />
+                  </svg>
+                </div>
                 {remarks.length > 0 ? (
                   remarks.map((remark, index) => (
-                    <div key={index} onClick={() => {toggleEditRemarkFormVisibility(remark); reset(remark);
-                    }} className={`text-lg mb-4 rounded-lg p-4 cursor-pointer ${isDarkMode ? 'bg-slate-700' : 'bg-gray-100'}` }>
-                      <h3 className="font-semibold mb-2">Title: {remark.title}</h3>
-                      <p className=" mb-2"><strong>Date:</strong> {formatDate(remark.createDate)}</p>
-                      <p className=''><strong>Note:</strong> {remark.note}</p>
+                    <div
+                      key={index}
+                      onClick={() => {
+                        toggleEditRemarkFormVisibility(remark)
+                        reset(remark)
+                      }}
+                      className={`text-lg mb-4 rounded-lg p-4 cursor-pointer ${isDarkMode ? 'bg-slate-700' : 'bg-gray-100'}`}
+                    >
+                      <h3 className='font-semibold mb-2'>Title: {remark.title}</h3>
+                      <p className=' mb-2'>
+                        <strong>Date:</strong> {formatDate(remark.createDate)}
+                      </p>
+                      <p className=''>
+                        <strong>Note:</strong> {remark.note}
+                      </p>
                     </div>
                   ))
                 ) : (
-                  <p className="text-center text-sm text-gray-500">No remarks available</p>
+                  <p className='text-center text-sm text-gray-500'>No remarks available</p>
                 )}
               </div>
             </div>
@@ -755,7 +768,7 @@ function KoiDetails() {
                         />
                       </svg>
                     </button>
-                  </div>                 
+                  </div>
                   <div className='grid grid-cols-2 grid-rows-6 gap-4'>
                     <div
                       id='file'
@@ -840,18 +853,15 @@ function KoiDetails() {
                       >
                         Physique
                       </label>
-                      <select
+                      <input
+                        type='physique'
                         id='physique'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('physique')}
-                      >
-                        {/* <option value=""></option> */}
-                        <option value='Slim'>Slim</option>
-                        <option value='Normal'>Normal</option>
-                        <option value='Corpulent'>Corpulent</option>
-                      </select>
+                        readOnly
+                      />
                     </div>
-                    
+
                     <div className='relative col-span-1 mb-2 mt-2'>
                       <label
                         htmlFor='age'
@@ -913,7 +923,6 @@ function KoiDetails() {
                         {...register('variety')}
                       />
                     </div>
-                    
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='pondDate'
@@ -940,8 +949,9 @@ function KoiDetails() {
                       <input
                         type='text'
                         id='breeder'
+                        placeholder='Enter Breeder Name'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                        {...register('breeder')}
+                        {...register('breeder', { required: false })}
                       />
                     </div>
                     <div className='relative col-span-1 '>
@@ -952,10 +962,11 @@ function KoiDetails() {
                         Price
                       </label>
                       <input
-                        type='text'
+                        type='number'
                         id='price'
+                        placeholder='VND'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                        {...register('price')}
+                        {...register('price', { required: false })}
                       />
                     </div>
                     <div className='relative col-span-1 '>
@@ -969,7 +980,7 @@ function KoiDetails() {
                         id='status'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('status')}
-                        // value={koi.status}
+                        defaultValue={koi.status}
                       >
                         <option>Alive</option>
                         <option>Dead</option>
@@ -986,7 +997,7 @@ function KoiDetails() {
                         id='pondId'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('pondId')}
-                        // value={koi.koiPond.id}
+                        defaultValue={koi.koiPond.id}
                       >
                         {ponds.map((pond) => (
                           <option key={pond.id} value={pond.id}>
@@ -1118,7 +1129,7 @@ function KoiDetails() {
                             id='upload-input'
                             className='absolute ml-20 opacity-0'
                             accept='image/*'
-                            {...register('file')}                            
+                            {...register('file')}
                             onChange={handleImageChange}
                           />
                         </label>
@@ -1134,7 +1145,7 @@ function KoiDetails() {
                         Date
                       </label>
                       <input
-                        type='date'
+                        type='datetime-local'
                         id='growthDate'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('createDate')}
@@ -1154,7 +1165,7 @@ function KoiDetails() {
                         id='physique'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         defaultValue={koi.physique}
-                        {...register('physique')}                
+                        {...register('physique')}
                       >
                         <option value='Slim'>Slim</option>
                         <option value='Normal'>Normal</option>
@@ -1174,7 +1185,7 @@ function KoiDetails() {
                         type='number'
                         id='length'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                        {...register('length')}                   
+                        {...register('length')}
                       />
                     </div>
 
@@ -1195,7 +1206,7 @@ function KoiDetails() {
                     </div>
 
                     {/* Hidden koiFishId input */}
-                    <div className='relative'>                    
+                    <div className='relative'>
                       <input
                         type='hidden'
                         id='koiFishId'
@@ -1211,8 +1222,8 @@ function KoiDetails() {
           )}
 
           {isEditGrowthFormVisible && currentGrowth && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40">
-              <div className="bg-white min-w-[40vw] m-auto p-6 rounded-lg shadow-lg">
+            <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
+              <div className='bg-white min-w-[40vw] m-auto p-6 rounded-lg shadow-lg'>
                 {/* Form for adding growth record */}
                 <form onSubmit={handleSubmit(onSubmitGrowth)} noValidate>
                   <div className='flex justify-between mb-5'>
@@ -1306,7 +1317,7 @@ function KoiDetails() {
                             id='upload-input'
                             className='absolute ml-20 opacity-0'
                             accept='image/*'
-                            {...register('file')}                            
+                            {...register('file')}
                             onChange={handleImageChange}
                           />
                         </label>
@@ -1342,7 +1353,7 @@ function KoiDetails() {
                         id='physique'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         value={koi.physique}
-                        {...register('physique')}                
+                        {...register('physique')}
                       >
                         <option value='Slim'>Slim</option>
                         <option value='Normal'>Normal</option>
@@ -1362,7 +1373,7 @@ function KoiDetails() {
                         type='number'
                         id='length'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                        {...register('length')}                   
+                        {...register('length')}
                       />
                     </div>
 
@@ -1385,20 +1396,20 @@ function KoiDetails() {
                   </div>
                 </form>
 
-                <div className="flex justify-center items-center">
-                  <button className="mx-auto" onClick={() => deleteGrowth(currentGrowth.id)}>
+                <div className='flex justify-center items-center'>
+                  <button className='mx-auto' onClick={() => deleteGrowth(currentGrowth.id)}>
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
                       strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-10 h-10 p-2 rounded-full bg-red-500 text-white cursor-pointer mt-5"
+                      stroke='currentColor'
+                      className='w-10 h-10 p-2 rounded-full bg-red-500 text-white cursor-pointer mt-5'
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M20.25 7.5l-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M9.75 11.25v6M14.25 11.25v6M5.25 7.5h13.5m-12-2.25h10.5a2.25 2.25 0 0 1 2.25 2.25v.75H3v-.75a2.25 2.25 0 0 1 2.25-2.25z"
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M20.25 7.5l-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M9.75 11.25v6M14.25 11.25v6M5.25 7.5h13.5m-12-2.25h10.5a2.25 2.25 0 0 1 2.25 2.25v.75H3v-.75a2.25 2.25 0 0 1 2.25-2.25z'
                       />
                     </svg>
                   </button>
@@ -1447,36 +1458,45 @@ function KoiDetails() {
                     </button>
                   </div>
 
-                  <div className='grid grid-cols-2 gap-4'>                  
+                  <div className='grid grid-cols-2 gap-4'>
                     {/* Title input */}
                     <div className='relative col-span-2'>
-                      <label htmlFor='title' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                      <label
+                        htmlFor='title'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
                         Title
                       </label>
                       <input
                         type='text'
                         id='title'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                        {...register('title', { required: true })} 
+                        {...register('title', { required: true })}
                       />
                     </div>
 
                     {/* Note input */}
                     <div className='relative col-span-2'>
-                      <label htmlFor='note' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                      <label
+                        htmlFor='note'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
                         Note
                       </label>
                       <textarea
                         id='note'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                        {...register('note', { required: true })} 
+                        {...register('note', { required: true })}
                         rows={4}
                       />
                     </div>
 
                     {/* Creation Date input */}
                     <div className='relative col-span-2'>
-                      <label htmlFor='createDate' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                      <label
+                        htmlFor='createDate'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
                         Date
                       </label>
                       <input
@@ -1484,19 +1504,13 @@ function KoiDetails() {
                         id='createDate'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         max={new Date().toISOString().slice(0, 16)}
-                        {...register('createDate', { required: true })}                        
+                        {...register('createDate', { required: true })}
                       />
                     </div>
 
                     {/* Hidden koiFishId input */}
                     <div className='relative'>
-                      <input
-                        type='hidden'
-                        id='koiFishId'
-                        className=''
-                        value={koi.id}
-                        {...register('koiFishId')}
-                      />
+                      <input type='hidden' id='koiFishId' className='' value={koi.id} {...register('koiFishId')} />
                     </div>
                   </div>
                 </form>
@@ -1505,8 +1519,8 @@ function KoiDetails() {
           )}
 
           {isEditRemarkFormVisible && currentRemark && (
-            <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40">
-              <div className="bg-white min-w-[40vw] m-auto p-6 rounded-lg shadow-lg">
+            <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
+              <div className='bg-white min-w-[40vw] m-auto p-6 rounded-lg shadow-lg'>
                 {/* Form for adding growth record */}
                 <form onSubmit={handleSubmit(onSubmitRemark)} noValidate>
                   <div className='flex justify-between mb-5'>
@@ -1544,62 +1558,71 @@ function KoiDetails() {
                     </button>
                   </div>
 
-                  <div className='grid grid-cols-2 gap-4'>                  
+                  <div className='grid grid-cols-2 gap-4'>
                     {/* Title input */}
                     <div className='relative col-span-2'>
-                      <label htmlFor='title' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                      <label
+                        htmlFor='title'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
                         Title
                       </label>
                       <input
                         type='text'
                         id='title'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                        {...register('title', { required: true })} 
+                        {...register('title', { required: true })}
                       />
                     </div>
 
                     {/* Note input */}
                     <div className='relative col-span-2'>
-                      <label htmlFor='note' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                      <label
+                        htmlFor='note'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
                         Note
                       </label>
                       <textarea
                         id='note'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                        {...register('note', { required: true })} 
+                        {...register('note', { required: true })}
                         rows={4}
                       />
                     </div>
 
                     {/* Creation Date input */}
                     <div className='relative col-span-2'>
-                      <label htmlFor='createDate' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                      <label
+                        htmlFor='createDate'
+                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                      >
                         Date
                       </label>
                       <input
                         type='datetime-local'
                         id='createDate'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                        {...register('createDate', { required: true })}                        
+                        {...register('createDate', { required: true })}
                       />
                     </div>
                   </div>
                 </form>
 
-                <div className="flex justify-center items-center">
-                  <button className="mx-auto" onClick={() => deleteRemark(currentRemark.id)}>
+                <div className='flex justify-center items-center'>
+                  <button className='mx-auto' onClick={() => deleteRemark(currentRemark.id)}>
                     <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
                       strokeWidth={1.5}
-                      stroke="currentColor"
-                      className="w-10 h-10 p-2 rounded-full bg-red-500 text-white cursor-pointer mt-5"
+                      stroke='currentColor'
+                      className='w-10 h-10 p-2 rounded-full bg-red-500 text-white cursor-pointer mt-5'
                     >
                       <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M20.25 7.5l-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M9.75 11.25v6M14.25 11.25v6M5.25 7.5h13.5m-12-2.25h10.5a2.25 2.25 0 0 1 2.25 2.25v.75H3v-.75a2.25 2.25 0 0 1 2.25-2.25z"
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M20.25 7.5l-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5M9.75 11.25v6M14.25 11.25v6M5.25 7.5h13.5m-12-2.25h10.5a2.25 2.25 0 0 1 2.25 2.25v.75H3v-.75a2.25 2.25 0 0 1 2.25-2.25z'
                       />
                     </svg>
                   </button>
@@ -1608,11 +1631,11 @@ function KoiDetails() {
             </div>
           )}
 
-      {isLoading && (
-        <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
-          <FaSpinner className='animate-spin text-green-500 text-6xl' />
-        </div>
-      )}
+          {isLoading && (
+            <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+              <FaSpinner className='animate-spin text-green-500 text-6xl' />
+            </div>
+          )}
         </div>
       </div>
     </div>

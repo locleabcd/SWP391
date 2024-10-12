@@ -2,7 +2,7 @@
 import { useDispatch, useSelector } from 'react-redux'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import TopLayout from '../../../layouts/TopLayout'
 import { useEffect, useState } from 'react'
 import axios from 'axios'

@@ -1,24 +1,15 @@
 /* eslint-disable react/no-unescaped-entities */
-
-import AOS from 'aos'
-import 'aos/dist/aos.css'
-import { useEffect } from 'react'
-
 function About() {
-  useEffect(() => {
-    AOS.init({ duration: 800, offset: 100, delay: 200 })
-  })
-
   return (
-    <div className='block  ' data-aos='fade-up'>
+    <div className='block bg-custom-dark text-white'>
       <div className=' justify-center  py-20 px-20  font-medium '>
         <h className='text-3xl block  text-center text-white font-bold py-8 bg-gradient-to-r from-pink-300 to-red-400'>
           About us
         </h>
 
-        <div className='  grid grid-flow-row-dense p-8 grid-cols-4 '>
+        <div className=' grid grid-flow-row-dense p-8 grid-cols-4'>
           <p className='text-wrap text-xl font-bold  text-left pl-8'>Our Mission</p>
-          <p className='text-wrap col-span-3 text-gray-600'>
+          <p className='text-wrap col-span-3'>
             At Koi Care System, our mission is to simplify the art of Koi fish care. We strive to provide Koi
             enthusiasts with an innovative platform that allows for seamless management of their ponds, detailed
             tracking of their fish’s growth, and maintenance of optimal living conditions. We are dedicated to making
@@ -27,7 +18,7 @@ function About() {
         </div>
         <div className=' grid grid-flow-row-dense p-8  grid-cols-4 '>
           <p className='text-wrap text-xl font-bold text-left pl-8 '>Our Vision</p>
-          <p className='text-wrap col-span-3 text-gray-600'>
+          <p className='text-wrap col-span-3'>
             Our vision is to be the leading resource for Koi fish care enthusiasts worldwide, transforming how people
             manage and nurture their Koi. We aim to create a community where knowledge, technology, and passion come
             together to enhance the well-being of Koi fish and their habitats. By continuously improving our platform
@@ -36,7 +27,7 @@ function About() {
         </div>
         <div className=' grid grid-flow-row-dense p-8 grid-cols-4 '>
           <p className='text-wrap text-xl font-bold text-left pl-8'>Our Values</p>
-          <p className='text-wrap col-span-3 text-gray-600'>
+          <p className='text-wrap col-span-3'>
             <p>
               Innovation: We are committed to using cutting-edge technology to provide the best tools and features for
               managing Koi care.
@@ -57,9 +48,9 @@ function About() {
             services.
           </p>
         </div>
-        <div className=' grid grid-flow-row-dense p-8 grid-cols-4 '>
+        <div className=' grid grid-flow-row-dense p-8 grid-cols-4'>
           <p className='text-wrap text-xl font-bold text-left pl-8'>Our Commitment</p>
-          <p className='text-wrap col-span-3 text-gray-600'>
+          <p className='text-wrap col-span-3'>
             We are dedicated to supporting you on your journey of caring for your Koi fish. With Koi Care System, you
             can confidently manage your pond and enhance your Koi's health and beauty, knowing that you have a trusted
             partner by your side.

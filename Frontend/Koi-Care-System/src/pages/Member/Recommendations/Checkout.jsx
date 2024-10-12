@@ -1,5 +1,5 @@
-import { Link } from 'react-router-dom'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { Link, useNavigate } from 'react-router-dom'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import TopLayout from '../../../layouts/TopLayout'
@@ -10,7 +10,7 @@ function Checkout() {
   const [name, setName] = useState('')
   const [phone, setPhone] = useState('')
   const [address, setAddress] = useState('')
-  const [payment, SetPayment] = useState([])
+  const [note, setNote] = useState('')
   const [cart, setCart] = useState([])
   const { isDarkMode } = useDarkMode()
   const [tinh, setTinh] = useState([])
@@ -20,6 +20,9 @@ function Checkout() {
   const [phuong, setPhuong] = useState([])
   const [selectedPhuong, setSelectedPhuong] = useState('0')
   const [destination, setDestination] = useState('')
+  const [errorMessage, setErrorMessage] = useState('')
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     const selectedProvince = tinh.find((item) => item.id === selectedTinh)?.full_name || ''
@@ -35,13 +38,24 @@ function Checkout() {
     try {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('id')
+
+      if (!destination || destination.trim() === '') {
+        throw new Error('Address cannot be empty')
+      }
+
+      const phoneRegex = /^0\d{8,9}$/
+      if (!phoneRegex.test(phone)) {
+        throw new Error('Phone number must be 9 or 10 digits and start with 0')
+      }
+
       await axios.post(
         'https://koicaresystemv3.azurewebsites.net/api/orders/order',
         {
           userId: userId,
           address: destination,
           phone: phone,
-          recipientName: name
+          recipientName: name,
+          note: note
         },
         {
           headers: {
@@ -49,9 +63,11 @@ function Checkout() {
           }
         }
       )
+      navigate('/member/payment')
       setAddress('')
       setPhone('')
       setName('')
+      setErrorMessage('')
     } catch (error) {
       console.log(error)
     }
@@ -80,30 +96,6 @@ function Checkout() {
 
   useEffect(() => {
     getCartId()
-  }, [])
-
-  const createPayment = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const orderId = 3
-      const totalPrice = localStorage.getItem('totalPrice')
-      const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/payment/vn-pay', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        },
-        params: {
-          amount: totalPrice,
-          orderId: orderId
-        }
-      })
-      SetPayment(res.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  useEffect(() => {
-    createPayment()
   }, [])
 
   useEffect(() => {
@@ -190,7 +182,7 @@ function Checkout() {
                   </span>
                 </li>
                 <li className='flex items-center'>
-                  <span className='flex flex-col'>
+                  <span className='fpalex flex-col'>
                     <div className='w-10 h-10 rounded-full bg-gray-400 flex items-center justify-center text-white '>
                       3
                     </div>
@@ -209,6 +201,7 @@ function Checkout() {
                       placeholder='Name'
                       className='border px-4 mt-3 rounded-lg py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
                     ></input>
+                    {errorMessage && <div className='error-message text-2xl'>{errorMessage}</div>}
                   </div>
                   <div className='flex flex-col w-full'>
                     <input
@@ -278,6 +271,14 @@ function Checkout() {
                     className='border px-4 mt-3 rounded-lg py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
                   ></input>
                 </div>
+                <div className='flex flex-col w-full mt-7 text-xl'>
+                  <textarea
+                    type='text'
+                    onChange={(e) => setNote(e.target.value)}
+                    placeholder='Note'
+                    className='border px-4 mt-3 rounded-lg py-6 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
+                  ></textarea>
+                </div>
               </div>
 
               <div className='border border-gray-200 px-10 py-5 mt-10 rounded-xl'>
@@ -314,14 +315,13 @@ function Checkout() {
                 >
                   Back
                 </Link>
-                <Link
-                  to={payment.paymentUrl}
+                <button
                   type='submit'
                   onClick={() => addAddress()}
                   className='px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg cursor-pointer'
                 >
-                  Complete order
-                </Link>
+                  Payment
+                </button>
               </div>
             </div>
           </div>

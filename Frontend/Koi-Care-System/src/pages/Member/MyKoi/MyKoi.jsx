@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import axios from 'axios'
@@ -22,6 +22,7 @@ function MyKoi() {
   const [baseImage, setBaseImage] = useState('')
   const [selectedFile, setSelectedFile] = useState(null)
   const [koiCounts, setKoiCounts] = useState({})
+  const [showButtons, setShowButtons] = useState(false)
   const {
     register,
     handleSubmit,
@@ -30,6 +31,10 @@ function MyKoi() {
     formState: { errors },
     reset
   } = useForm()
+
+  const toggleButtons = () => {
+    setShowButtons(!showButtons)
+  }
 
   // Watch for length and physique changes
   const length = watch('length')
@@ -175,6 +180,32 @@ function MyKoi() {
     getPond()
   }, [])
 
+  const sortKois = (name, sort) => {
+    let sortedArray = [...kois]
+    console.log(sortedArray)
+      if (sort === 'name') { 
+        sortedArray.sort((a, b) => (name === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)))
+      } else if (sort === 'age') { 
+        sortedArray.sort((a, b) => (name === 'asc' ? a.age - b.age : b.age - a.age))
+      } else if (sort === 'length') { 
+        sortedArray.sort((a, b) => (name === 'asc' ? a.length - b.length : b.length - a.length))
+      }
+      setKois(sortedArray)
+    }
+
+    const sortAge = (sortType) => {
+      sortKois(sortType, 'age')
+    }
+
+    const sortLength = (sortType) => {
+      sortKois(sortType, 'length')
+    }
+  
+    const sortByName = (sortType) => {
+      sortKois(sortType, 'name')
+    }
+  
+
   return (
     <div>
       <div className='h-screen flex'>
@@ -201,9 +232,70 @@ function MyKoi() {
             </p>
           </div>
 
-          <div className='py-5 px-[30px] mx-auto' data-aos='fade-left'>
+          <div className='py-5 px-[30px] mx-auto'>
             <TopLayout text='My Koi' />
-            <div className='w-full '>
+            <div>
+              <div className='w-full flex justify-end relative'>
+                <div className='cursor-pointer' onClick={toggleButtons}>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} w-8 h-8 mb-4`}
+                  >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75'
+                  />
+                  </svg>
+
+                  <div
+                    className={`absolute right-0 transition-all duration-500 -mt-3 border z-10 ease-in-out overflow-hidden ${showButtons ? 'max-h-50 opacity-100' : 'max-h-0 opacity-0'}`}
+                  >
+                    <div className={`${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} flex flex-col space-y-2 shadow-lg rounded-lg p-4`}>
+                      <button
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        onClick={() => sortByName('desc')}
+                      >
+                        Sorted by Name (Z-A)
+                      </button>
+                      <button
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        onClick={() => sortByName('asc')}
+                      >
+                        Sorted by Name (A-Z)
+                      </button>
+                      <button
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        onClick={() => sortLength('asc')}
+                      >
+                        Sorted by Length (asc)
+                      </button>
+                      <button
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        onClick={() => sortLength('desc')}
+                      >
+                        Sorted by Length (desc)
+                      </button>
+                      <button
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        onClick={() => sortAge('asc')}
+                      >
+                        Sorted by Age (asc)
+                      </button>
+                      <button
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        onClick={() => sortAge('desc')}
+                      >
+                        Sorted by Age (desc)
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>              
               <motion.div
                 initial='hidden'
                 animate='visible'
@@ -554,8 +646,8 @@ function MyKoi() {
                     id='price'
                     placeholder='$'
                     className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
-                    {...register('price', { 
-                      required: false, 
+                    {...register('price', {
+                      required: false,
                       maxLength: { value: 10, message: 'Price must be at most 10 characters long' },
                       min: { value: 1, message: 'Price must be greater than 0' }
                     })}

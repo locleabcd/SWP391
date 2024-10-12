@@ -1,16 +1,17 @@
 function Home() {
   return (
     <div className='content-homepage'>
-      {/* content home page  */}
       <div className='flex justify-start items-center h-full'>
-        <div className='flex flex-col items-center mr-auto ml-10 pt-56 w-1/2'>
-          <h1 className='text-5xl font-bold text-black mb-4'>Koi Care System</h1>
-          <p className='text-gray-600 text-lg font-medium mb-8'>
-            Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet
-            dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper
-            suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in
-            vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et
-            accumsan et iusto odio dignissim qui blandit
+        <div className='flex flex-col items-center mr-auto ml-10 w-1/2'>
+          <h1 className='text-7xl font-bold text-white text-start w-full mb-20'>Koi Care System</h1>
+          <p className='text-white text-xl text-justify font-medium mb-8'>
+            The Koi Care System Web is an innovative platform designed to simplify and enhance the management of koi
+            ponds. Tailored for koi enthusiasts, breeders, and pond owners, this web application offers a comprehensive
+            suite of tools to monitor and maintain the health, growth, and well-being of koi fish. From tracking
+            individual koi details such as length, weight, and age to managing pond environments and keeping detailed
+            growth histories, the system enables users to effectively oversee their koi collection. With user-friendly
+            features like growth charts, sortable lists, and role-based access, the Koi Care System is a powerful
+            resource for ensuring the optimal care of these prized fish.
           </p>
           <button className='bg-white text-black border border-gray-300 border-solid  hover:bg-red-500 hover:text-white font-bold py-1 px-4 rounded focus:outline-none focus:shadow-outline'>
             Learn More

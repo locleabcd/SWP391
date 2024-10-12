@@ -1,5 +1,5 @@
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { useDarkMode } from '../../../components/DarkModeContext'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import '../../../index.css'
@@ -94,11 +94,14 @@ function Recommendations() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/products/product/${cate}/all/products`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      const res = await axios.get(
+        `https://koicaresystemv3.azurewebsites.net/api/products/product/${cate}/all/products`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      })
+      )
       if (!cate) {
         console.log('No category available')
       }
@@ -346,7 +349,10 @@ function Recommendations() {
                   </div>
                   <div className='text-3xl font-semibold mt-5'>{productId.name}</div>
                   <div className='text-xl text-justify mt-5'>{productId.description}</div>
-                  <div className='text-3xl mt-5 font-semibold'>${productId.price}</div>
+                  <div className='text-3xl mt-5 font-semibold'>
+                    {' '}
+                    {(productId?.price ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                  </div>
                   <div className='flex mt-5 gap-3 items-center'>
                     <div className='flex'>
                       {[...Array(5)].map((_, index) => {
@@ -669,7 +675,7 @@ function Recommendations() {
                         </div>
                         <div className='px-7 py-5 text-xl mt-5 font-medium'>
                           <div className='line-clamp-1'>{products.name}</div>
-                          <div className='mt-3'>${products.price}</div>
+                          {(products?.price ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                         </div>
                       </div>
                     ))
