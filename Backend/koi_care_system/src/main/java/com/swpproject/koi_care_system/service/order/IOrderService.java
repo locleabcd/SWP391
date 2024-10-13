@@ -14,5 +14,7 @@ public interface IOrderService {
     OrderDto getOrder(Long orderId);
     List<OrderDto> getUserOrders(Long userId);
 
+    List<OrderDto> getAllOrders();
+
     void updateDeliveredStatus(Long orderId);
 }

@@ -120,6 +120,11 @@ public class OrderService implements IOrderService {
     }
 
     @Override
+    public List<OrderDto> getAllOrders() {
+        return orderRepository.findAll().stream().map(orderMapper::toDto).toList();
+    }
+
+    @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void updateDeliveredStatus(Long orderId) {
         Order order = orderRepository.findByOrderId(orderId);

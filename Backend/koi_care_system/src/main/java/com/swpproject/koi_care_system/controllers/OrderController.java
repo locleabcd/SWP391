@@ -53,11 +53,24 @@ public class OrderController {
     public ResponseEntity<ApiResponse> getUserOrders(@PathVariable Long userId) {
         try {
             List<OrderDto> order = orderService.getUserOrders(userId);
-            return ResponseEntity.ok(new ApiResponse("Item Order Success!", order));
+            return ResponseEntity.ok(new ApiResponse("Get Order Success", order));
         } catch (ResourceNotFoundException e) {
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Oops!", e.getMessage()));
         }
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<ApiResponse> getAllOrders(){
+        try {
+            return ResponseEntity.ok(ApiResponse.builder()
+                            .message("Get all orders success")
+                            .data(orderService.getAllOrders())
+                    .build());
+        }catch (ResourceNotFoundException e){
+            return ResponseEntity.status((HttpStatus.NOT_FOUND)).body(new ApiResponse("Ooops! Not found",e.getMessage()));
+        }
+    }
+
 
     @PutMapping("/{orderId}/order/delivery")
     public ResponseEntity<ApiResponse> updateDelivered(@PathVariable Long orderId) {

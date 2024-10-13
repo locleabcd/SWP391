@@ -59,7 +59,6 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
-    @PostAuthorize("returnObject.name == authentication.name")
     public UserProfileDto getProfile(Long userId) {
         UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.PROFILE_NOT_FOUND));
         return userProfileMapper.mapToUserProfileDto(userProfile);
