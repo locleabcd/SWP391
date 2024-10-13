@@ -6,6 +6,7 @@ import com.swpproject.koi_care_system.models.UserProfile;
 import com.swpproject.koi_care_system.payload.request.ProfileUpdateRequest;
 
 import java.io.IOException;
+import java.util.List;
 
 public interface IProfileService {
     UserProfile createProfile(User user);
@@ -13,4 +14,9 @@ public interface IProfileService {
     UserProfileDto updateProfile(Long idProfile, ProfileUpdateRequest profileUpdateRequest) throws IOException;
 
     UserProfileDto getProfile(Long userId);
+
+    List<UserProfileDto> getAllProfile();
+
+    UserProfile createProfileOauth(User user, String imageUrl);
+
 }

@@ -14,6 +14,7 @@ import org.mapstruct.MappingTarget;
 public interface UserMapper {
 
 
+    @Mapping(target = "provider", constant = "LOCAL")
     @Mapping(target = "orders", ignore = true)
     @Mapping(target = "userProfile", ignore = true)
     @Mapping(target = "cart", ignore = true)

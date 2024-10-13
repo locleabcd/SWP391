@@ -14,7 +14,6 @@ import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -30,7 +29,6 @@ public class GrowthHistoryService implements IGrowthHistoryService {
     ImageStorage imageStorage;
 
     @Override
-    @Async
     public GrowthHistoryDto createGrowthHistory(GrowthCreateRequest growthCreateRequest) throws IOException {
         KoiFish koiFish = koiFishRepository.findById(growthCreateRequest.getKoiFishId()).orElseThrow(() -> new AppException(ErrorCode.KOI_FISH_NOT_FOUND));
         GrowthHistory growthHistory = growthHistoryMapper.mapToGrowthHistory(growthCreateRequest);
@@ -52,7 +50,6 @@ public class GrowthHistoryService implements IGrowthHistoryService {
     }
 
     @Override
-    @Async
     public GrowthHistoryDto updateGrowthHistory(Long id, GrowthUpdateRequest growthUpdateRequest) {
         GrowthHistory growthHistory = growthHistoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.GROWTH_HISTORY_NOT_FOUND));
         growthHistoryMapper.updateGrowthHistory(growthHistory, growthUpdateRequest);
@@ -101,7 +98,6 @@ public class GrowthHistoryService implements IGrowthHistoryService {
     }
 
     @Override
-    @Async
     public List<GrowthHistoryDto> getListGrowthHistory(long koiFishId) {
         List<GrowthHistory> growHistories = growthHistoryRepository.findAllByKoiFishId(koiFishId);
         return growHistories.stream().map(growthHistoryMapper::mapToGrowthHistoryDto).toList();

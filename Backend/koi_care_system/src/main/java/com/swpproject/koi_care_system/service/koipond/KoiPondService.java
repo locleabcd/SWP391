@@ -12,7 +12,6 @@ import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,6 @@ public class KoiPondService implements IKoiPondService {
 
     @Override
     @PreAuthorize("hasRole('MEMBER')")
-    @Async
     public KoiPondDto addKoiPond(AddKoiPondRequest addKoiPondRequest) throws IOException {
         if (koiPondRepository.existsByNameAndUserId(addKoiPondRequest.getName(), addKoiPondRequest.getUser().getId())) {
             throw new AlreadyExistsException("Koi Pond with name " + addKoiPondRequest.getName() + " already exists!");
@@ -49,7 +47,6 @@ public class KoiPondService implements IKoiPondService {
 
     @Override
     @PreAuthorize("hasRole('MEMBER')")
-    @Async
     public List<KoiPondDto> getKoiPondByUserID(Long userID) {
         return koiPondRepository.findByUserId(userID).stream().map(koiPondMapper::toDto).toList();
     }

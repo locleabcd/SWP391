@@ -14,7 +14,6 @@ import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +34,6 @@ public class KoiFishService implements IKoiFishService {
 
     @Override
     @PreAuthorize("hasRole('MEMBER')")
-    @Async
     public KoiFishDto addKoiFish(AddKoiFishRequest addKoiFishRequest) throws IOException {
         if(koiFishRepository.existsByName(addKoiFishRequest.getName())){
             throw new AlreadyExistsException("A Koi fish with this name already exists");
@@ -64,7 +62,6 @@ public class KoiFishService implements IKoiFishService {
     }
 
     @Override
-    @Async
     public List<KoiFishDto> getAllFishByUserId(Long userId) {
         List<KoiFishDto> koiFishDtos = new ArrayList<>();
         koiPondService.getKoiPondByUserID(userId).forEach(koiPond ->

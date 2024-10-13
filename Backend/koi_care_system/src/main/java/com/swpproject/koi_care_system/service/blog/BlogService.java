@@ -19,7 +19,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -48,18 +47,19 @@ public class BlogService implements IBlogService {
             blog.setBlogImage(!blogCreateRequest.getFile().isEmpty() ? imageStorage.uploadImage(blogCreateRequest.getFile()) : "https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
         else
             blog.setBlogImage("https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
-        blog.setBlogDate(java.time.LocalDate.now());
 
         Set<Tag> tags = new HashSet<>();
+        if (blogCreateRequest.getTagIds() == null || blogCreateRequest.getTagIds().isEmpty()) {
+            throw new RuntimeException("Tags cannot be null");
+        }
         for (int tagId : blogCreateRequest.getTagIds()) {
             Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new RuntimeException("Tag not found"));
             tags.add(tag);
         }
+        blog.setBlogDate(java.time.LocalDate.now());
         blog.setTags(tags);
         blog.setUser(userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found")));
-
         return blogMapper.mapToBlogDto(blogRepository.save(blog));
-
     }
 
     @Override
@@ -71,6 +71,9 @@ public class BlogService implements IBlogService {
                 throw new RuntimeException("Blog title already exists");
             }
         }
+        if (blogUpdateRequest.getTagIds() == null || blogUpdateRequest.getTagIds().isEmpty()) {
+            throw new RuntimeException("Tags cannot be null");
+        }
         if(blogUpdateRequest.getFile()!=null)
             if(!blogUpdateRequest.getFile().isEmpty()){
                 try{
@@ -81,8 +84,10 @@ public class BlogService implements IBlogService {
                     throw new RuntimeException(e);
                 }
             }
+
         blogMapper.updateBlog(blog, blogUpdateRequest);
         Set<Tag> tags = new HashSet<>();
+        //TODO:check null tags
         for (int tagId : blogUpdateRequest.getTagIds()) {
             Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new RuntimeException("Tag not found"));
             tags.add(tag);
@@ -100,7 +105,6 @@ public class BlogService implements IBlogService {
     }
 
     @Override
-    @Async
     public List<BlogDto> getAllBlogs(int pageNumber, int pageSize, String sortBy, String sortDir) {
         Sort sort = ("Asc".equalsIgnoreCase(sortDir)) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
 

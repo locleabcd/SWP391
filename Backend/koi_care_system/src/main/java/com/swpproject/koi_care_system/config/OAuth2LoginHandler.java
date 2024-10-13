@@ -35,6 +35,7 @@ public class OAuth2LoginHandler extends SavedRequestAwareAuthenticationSuccessHa
             Map<String, Object> attributes = principal.getAttributes();
             String email = attributes.getOrDefault("email", "").toString();
             String name = attributes.getOrDefault("name", "").toString();
+            String imageUrl = attributes.getOrDefault("picture", "").toString();
             userRepository.findByEmail(email).ifPresentOrElse(user -> {
                 DefaultOAuth2User newUser = new DefaultOAuth2User(List.of(new SimpleGrantedAuthority(user.getRole().name())),
                         attributes, "sub");
@@ -50,7 +51,7 @@ public class OAuth2LoginHandler extends SavedRequestAwareAuthenticationSuccessHa
                 userEntity.setProvider("GOOGLE");
                 userEntity.setPassword("9999999");
                 userRepository.save(userEntity);
-                userEntity.setUserProfile(profileService.createProfile(userEntity));
+                userEntity.setUserProfile(profileService.createProfileOauth(userEntity, imageUrl));
                 userRepository.save(userEntity);
                 DefaultOAuth2User newUser = new DefaultOAuth2User(List.of(new SimpleGrantedAuthority(userEntity.getRole().name())),
                         attributes, "sub");
