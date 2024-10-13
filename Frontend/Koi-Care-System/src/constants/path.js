@@ -34,6 +34,7 @@ const path = {
   aboutMember: '/member/about',
   myPondLog: '/member/myPond/myPondLog',
   myPondLogDetail: '/member/myPond/myPondLog/:id',
+  myPondIssue: '/member/myPond/myPondIssue/:id',
   shopNews: '/shop/shopNews',
   createNews: '/shop/createNews',
   updateNews: '/shop/shopNews/update/:id',
@@ -61,7 +62,7 @@ const path = {
   productImage: '/shop/productImage',
   createImage: '/shop/createImage',
   updateImage: '/shop/productImage/:id',
-  viewUser: '/shop/viewUser' 
+  viewUser: '/shop/viewUser'
 }
 
 export default path

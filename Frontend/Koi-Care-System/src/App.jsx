@@ -68,6 +68,7 @@ import ViewUser from './pages/Shop/User/ViewUser'
 import Pricing from './components/Pricing/Pricing'
 import PaymentSuccess from './pages/Member/Recommendations/PaymentSuccess'
 import PaymentError from './pages/Member/Recommendations/PaymentError'
+import MyPondIssue from './pages/Member/MyPond/MyPondIssue'
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
@@ -422,6 +423,14 @@ function App() {
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
           <MyPondLogId />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: path.myPondIssue,
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <MyPondIssue />
         </ProtectedRoute>
       )
     },

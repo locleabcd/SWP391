@@ -183,28 +183,27 @@ function MyKoi() {
   const sortKois = (name, sort) => {
     let sortedArray = [...kois]
     console.log(sortedArray)
-      if (sort === 'name') { 
-        sortedArray.sort((a, b) => (name === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)))
-      } else if (sort === 'age') { 
-        sortedArray.sort((a, b) => (name === 'asc' ? a.age - b.age : b.age - a.age))
-      } else if (sort === 'length') { 
-        sortedArray.sort((a, b) => (name === 'asc' ? a.length - b.length : b.length - a.length))
-      }
-      setKois(sortedArray)
+    if (sort === 'name') {
+      sortedArray.sort((a, b) => (name === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name)))
+    } else if (sort === 'age') {
+      sortedArray.sort((a, b) => (name === 'asc' ? a.age - b.age : b.age - a.age))
+    } else if (sort === 'length') {
+      sortedArray.sort((a, b) => (name === 'asc' ? a.length - b.length : b.length - a.length))
     }
+    setKois(sortedArray)
+  }
 
-    const sortAge = (sortType) => {
-      sortKois(sortType, 'age')
-    }
+  const sortAge = (sortType) => {
+    sortKois(sortType, 'age')
+  }
 
-    const sortLength = (sortType) => {
-      sortKois(sortType, 'length')
-    }
-  
-    const sortByName = (sortType) => {
-      sortKois(sortType, 'name')
-    }
-  
+  const sortLength = (sortType) => {
+    sortKois(sortType, 'length')
+  }
+
+  const sortByName = (sortType) => {
+    sortKois(sortType, 'name')
+  }
 
   return (
     <div>
@@ -245,17 +244,19 @@ function MyKoi() {
                     stroke='currentColor'
                     className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} w-8 h-8 mb-4`}
                   >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75'
-                  />
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75'
+                    />
                   </svg>
 
                   <div
                     className={`absolute right-0 transition-all duration-500 -mt-3 border z-10 ease-in-out overflow-hidden ${showButtons ? 'max-h-50 opacity-100' : 'max-h-0 opacity-0'}`}
                   >
-                    <div className={`${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} flex flex-col space-y-2 shadow-lg rounded-lg p-4`}>
+                    <div
+                      className={`${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} flex flex-col space-y-2 shadow-lg rounded-lg p-4`}
+                    >
                       <button
                         className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
                         onClick={() => sortByName('desc')}
@@ -295,7 +296,7 @@ function MyKoi() {
                     </div>
                   </div>
                 </div>
-              </div>              
+              </div>
               <motion.div
                 initial='hidden'
                 animate='visible'
