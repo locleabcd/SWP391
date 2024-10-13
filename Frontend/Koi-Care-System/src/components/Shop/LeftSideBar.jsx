@@ -121,7 +121,7 @@ function LeftSideBar() {
         <div className='flex flex-col justify-center items-center mt-6 duration-200'>
           <div className=''>
             <NavLink
-              to={path.dashboard}
+              to={path.dashboardShop}
               end
               className={({ isActive }) => {
                 const active = isActive

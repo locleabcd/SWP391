@@ -97,7 +97,7 @@ function Payment() {
       >
         <Header />
         <div className='py-5 px-[30px] mx-auto'>
-          <TopLayout text='Orders' />
+          <TopLayout text='Payment' />
           <div className='w-full flex justify-end items-center relative'>
             <input type='text' className='p-2 border rounded-md mr-4' placeholder='Search' />
             <div className='cursor-pointer'>
@@ -154,13 +154,13 @@ function Payment() {
               </tbody>
             </table>
           </div>
-          {isModalOpen && selectedOrder && (
+              {isModalOpen && selectedOrder && (
                 <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
                   <div className='bg-white p-4 border rounded-lg'>
                     <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
                     <div className='bg-white p-4 border rounded-lg shadow-lg'>                      
                       <p className='mb-3 flex items-center gap-2'><FaCartArrowDown className='text-2xl text-blue-500'/><strong>Order ID:</strong> {selectedOrder.id}</p>
-                      <p className='mb-3 flex items-center gap-2'><BsFillCalendarDateFill className='text-2xl text-purple-500'/><strong>Order Date:</strong> {selectedOrder.orderDate}</p>                     
+                      <p className='mb-3 flex items-center gap-2'><BsFillCalendarDateFill className='text-2xl text-purple-500'/><strong>Order Date:</strong> {formatDateTime(selectedOrder.orderDate)}</p>                     
                       <p className='mb-3 flex items-center gap-2'><FaRegAddressCard className='text-2xl text-red-500'/><strong>Address:</strong> {selectedOrder.address}</p> 
                       <p className='mb-3 flex items-center gap-2'><FaPhoneAlt className='text-2xl text-green-500'/><strong>Phone:</strong> {selectedOrder.phone}</p>
                       <p className='mb-3 flex items-center gap-2'><GrNotes className='text-2xl '/><strong>Note:</strong> {selectedOrder.note}</p>                     
@@ -200,7 +200,7 @@ function Payment() {
                   </button>
                   </div>
                 </div>
-            )}
+              )}
         </div>
       </div>
     </div>

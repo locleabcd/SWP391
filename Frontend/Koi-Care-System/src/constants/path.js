@@ -64,7 +64,8 @@ const path = {
   viewUser: '/shop/viewUser',
   userDetail: '/shop/viewUser/:id',
   paymentShop: '/shop/payment',
-  orderShop: '/shop/order'
+  orderShop: '/shop/order',
+  dashboardShop: '/shop/dashboard'
 }
 
 export default path

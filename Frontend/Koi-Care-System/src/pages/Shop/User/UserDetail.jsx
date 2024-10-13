@@ -33,6 +33,8 @@ function UserDetail() {
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
+  const formatCurrency = (amount) => amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
+
   const formatDateTime = (inputDate) => {
     const date = new Date(inputDate);
     const day = String(date.getDate()).padStart(2, '0')
@@ -215,7 +217,7 @@ function UserDetail() {
                               <td className='py-3 px-1 text-center border-b border-gray-200'>{formatDateTime(pay.createDate)}</td>
                               <td className='py-3 px-1 text-center border-b border-gray-200'>{pay.invoiceCode}</td>
                               <td className='py-3 px-1 text-center border-b border-gray-200'>{pay.transactionCode}</td>
-                              <td className='py-3 px-1 text-center border-b border-gray-200'>{pay.amount}</td>                          
+                              <td className='py-3 px-1 text-center border-b border-gray-200'>{formatCurrency(pay.amount)}</td>                          
                               <td className='py-3 px-1 text-center border-b border-gray-200'>{pay.status}</td>   
                               <td className='py-2 px-1 text-center border-b border-gray-200'>
                                 <div className='flex justify-center items-center'>
@@ -255,7 +257,7 @@ function UserDetail() {
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{formatDateTime(ord.orderDate)}</td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{ord.id}</td>
-                              <td className='py-2 px-1 text-center border-b border-gray-200'>{ord.totalAmount}</td>                             
+                              <td className='py-2 px-1 text-center border-b border-gray-200'>{formatCurrency(ord.totalAmount)}</td>                             
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{ord.status}</td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>
                                 <div className='flex justify-center items-center'>
@@ -307,13 +309,13 @@ function UserDetail() {
                     <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
                     <div className='bg-white p-4 border rounded-lg shadow-lg'>                      
                       <p className='mb-3 flex items-center gap-2'><FaCartArrowDown className='text-2xl text-blue-500'/><strong>Order ID:</strong> {selectedOrder.id}</p>
-                      <p className='mb-3 flex items-center gap-2'><BsFillCalendarDateFill className='text-2xl text-purple-500'/><strong>Order Date:</strong> {selectedOrder.orderDate}</p>                     
+                      <p className='mb-3 flex items-center gap-2'><BsFillCalendarDateFill className='text-2xl text-purple-500'/><strong>Order Date:</strong> {formatDateTime(selectedOrder.orderDate)}</p>                     
                       <p className='mb-3 flex items-center gap-2'><FaRegAddressCard className='text-2xl text-red-500'/><strong>Address:</strong> {selectedOrder.address}</p> 
                       <p className='mb-3 flex items-center gap-2'><FaPhoneAlt className='text-2xl text-green-500'/><strong>Phone:</strong> {selectedOrder.phone}</p>
                       <p className='mb-3 flex items-center gap-2'><GrNotes className='text-2xl '/><strong>Note:</strong> {selectedOrder.note}</p>                     
                       <p className='mb-3 flex items-center gap-2'><FaUser  className='text-2xl '/><strong>RecipientName:</strong> {selectedOrder.recipientName}</p>             
                       <p className='mb-3 flex items-center gap-2'><MdPendingActions className='text-2xl text-red-500'/><strong>Status:</strong> {selectedOrder.status}</p> 
-                      <p className='mb-3 flex items-center gap-2'><FaMoneyBillWave className='text-2xl text-green-500'/> <strong>Total Amount:</strong> {selectedOrder.totalAmount} VND</p>
+                      <p className='mb-3 flex items-center gap-2'><FaMoneyBillWave className='text-2xl text-green-500'/> <strong>Total Amount:</strong> {formatCurrency(selectedOrder.totalAmount)}</p>
                     </div>   
                     
                     <div className='Order-Table overflow-auto p-4 mt-4 shadow-lg border rounded-lg'>
@@ -333,7 +335,7 @@ function UserDetail() {
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{item.productName}</td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{item.quantity}</td>                             
-                              <td className='py-2 px-1 text-center border-b border-gray-200'>{item.price} VND</td>
+                              <td className='py-2 px-1 text-center border-b border-gray-200'>{formatCurrency(item.price)}</td>
                             </tr>
                           ))}
                         </tbody>

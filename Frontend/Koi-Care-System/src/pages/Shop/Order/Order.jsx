@@ -145,13 +145,13 @@ function Order() {
                     <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
                     <div className='bg-white p-4 border rounded-lg shadow-lg'>                      
                       <p className='mb-3 flex items-center gap-2'><FaCartArrowDown className='text-2xl text-blue-500'/><strong>Order ID:</strong> {selectedOrder.id}</p>
-                      <p className='mb-3 flex items-center gap-2'><BsFillCalendarDateFill className='text-2xl text-purple-500'/><strong>Order Date:</strong> {selectedOrder.orderDate}</p>                     
+                      <p className='mb-3 flex items-center gap-2'><BsFillCalendarDateFill className='text-2xl text-purple-500'/><strong>Order Date:</strong> {formatDateTime(selectedOrder.orderDate)}</p>                     
                       <p className='mb-3 flex items-center gap-2'><FaRegAddressCard className='text-2xl text-red-500'/><strong>Address:</strong> {selectedOrder.address}</p> 
                       <p className='mb-3 flex items-center gap-2'><FaPhoneAlt className='text-2xl text-green-500'/><strong>Phone:</strong> {selectedOrder.phone}</p>
                       <p className='mb-3 flex items-center gap-2'><GrNotes className='text-2xl '/><strong>Note:</strong> {selectedOrder.note}</p>                     
                       <p className='mb-3 flex items-center gap-2'><FaUser  className='text-2xl '/><strong>RecipientName:</strong> {selectedOrder.recipientName}</p>             
                       <p className='mb-3 flex items-center gap-2'><MdPendingActions className='text-2xl text-red-500'/><strong>Status:</strong> {selectedOrder.status}</p> 
-                      <p className='mb-3 flex items-center gap-2'><FaMoneyBillWave className='text-2xl text-green-500'/> <strong>Total Amount:</strong> {selectedOrder.totalAmount} VND</p>
+                      <p className='mb-3 flex items-center gap-2'><FaMoneyBillWave className='text-2xl text-green-500'/> <strong>Total Amount:</strong> {selectedOrder.totalAmount}₫</p>
                     </div>   
                     
                     <div className='Order-Table overflow-auto p-4 mt-4 shadow-lg border rounded-lg'>
