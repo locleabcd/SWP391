@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
@@ -10,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { useForm } from 'react-hook-form'
 import { Descriptions } from 'antd'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 function CreatePromotion() {
   const { isDarkMode } = useDarkMode()
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -107,7 +107,7 @@ const endDate = new Date(data.endDate)
                   Start Date
                 </label>
                 <input
-                  type='date'
+                  type='datetime-local'
                   id='startDate'
                   className={`relative w-full p-2 border rounded-md ${errors.startDate ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('startDate', {
@@ -122,7 +122,7 @@ const endDate = new Date(data.endDate)
                   End Date
                 </label>
                 <input
-                  type='date'
+                  type='datetime-local'
                   id='endDate'
                   className={`relative w-full p-2 border rounded-md ${errors.endDate ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('endDate', {
