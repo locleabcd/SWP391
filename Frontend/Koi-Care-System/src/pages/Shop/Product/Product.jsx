@@ -106,8 +106,9 @@ function Product() {
             <div className='overflow-x-auto mt-6'>
               <table className='min-w-full border-spacing-x-1 border-gray-200'>
                 <thead className=''>
-                  <tr className='border-b'>
-                    <th className='py-3 px-4 text-center text-xs font-bold uppercase'>No</th>
+                  <tr
+                    className={`border border-gray-200  ${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`}
+                  >
                     <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Image</th>
                     <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Name</th>
                     <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Brand</th>
@@ -119,11 +120,13 @@ function Product() {
                     <th className='py-3  px-4 text-center text-xs font-bold uppercase'>Action</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {products.map((product, index) => (
-                    <tr key={product.id} className=''>
-                      <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td>
-                      <td className='py-2 pl-4 text-center border-b border-gray-200'>
+                <tbody className=''>
+                  {products.map((product) => (
+                    <tr
+                      key={product.id}
+                      className={`border-gray-200 border ${isDarkMode ? 'hover:bg-custom-dark' : 'hover:bg-custom-layout-light'}`}
+                    >
+                      <td className='py-4 pl-4 text-center border-b border-gray-200'>
                         <img
                           src={
                             product.images && product.images.length > 0 ? product.images[0].downloadUrl : fallbackImage
@@ -132,24 +135,24 @@ function Product() {
                           className='w-40 h-20 object-cover rounded-md'
                         />
                       </td>
-                      <td className='py-2 pl-4 text-center border-b border-gray-200'>{product.name}</td>
-                      <td className='py-2 px-1 text-center border-b border-gray-200'>{product.brand}</td>
-                      <td className='py-2 px-1 text-center border-b border-gray-200'>{`$${product.price.toFixed(2)}`}</td>
-                      <td className='py-2 px-1 text-center border-b border-gray-200'>{product.inventory}</td>
-                      <td className='py-2 text-start border-b border-gray-200'>
+                      <td className='py-4 pl-4 text-center border-b border-gray-200'>{product.name}</td>
+                      <td className='py-4 px-1 text-center border-b border-gray-200'>{product.brand}</td>
+                      <td className='py-4 px-1 text-center border-b border-gray-200'>{`$${product.price.toFixed(2)}`}</td>
+                      <td className='py-4 px-1 text-center border-b border-gray-200'>{product.inventory}</td>
+                      <td className='py-4 text-start border-b border-gray-200'>
                         <span title={product.description}>
                           {product.description.length > 120
                             ? `${product.description.slice(0, 120)} ...`
                             : product.description}
                         </span>
                       </td>
-                      <td className='py-2 px-1 text-center border-b border-gray-200'>
+                      <td className='py-4 px-1 text-center border-b border-gray-200'>
                         {product.category && product.category.name}
                       </td>
-                      <td className='py-2 text-center border-b border-gray-200'>
+                      <td className='py-4 text-center border-b border-gray-200'>
                         {product.supplier && product.supplier.name}
                       </td>
-                      <td className='py-2 px-1 text-center border-b border-gray-200'>
+                      <td className='py-4 px-1 text-center border-b border-gray-200'>
                         <div className='flex justify-center items-center'>
                           <Link
                             to={`/shop/product/${product.id}`}
