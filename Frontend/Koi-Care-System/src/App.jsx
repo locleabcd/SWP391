@@ -69,6 +69,10 @@ import Pricing from './components/Pricing/Pricing'
 import PaymentSuccess from './pages/Member/Recommendations/PaymentSuccess'
 import PaymentError from './pages/Member/Recommendations/PaymentError'
 import MyPondIssue from './pages/Member/MyPond/MyPondIssue'
+import UserDetail from './pages/Shop/User/UserDetail'
+import OrderShop from './pages/Shop/Order/Order'
+import PaymentShop from './pages/Shop/Payment/Payment'
+import DashboardShop from './pages/Shop/Dashboard/Dashboard'
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
@@ -515,8 +519,24 @@ function App() {
       element: <ViewUser />
     },
     {
+      path: path.userDetail,
+      element: <UserDetail />
+    },
+    {
       path: path.pricing,
       element: <Pricing />
+    },
+    {
+      path: path.orderShop,
+      element: <OrderShop />
+    },
+    {
+      path: path.paymentShop,
+      element: <PaymentShop />
+    },
+    {
+      path: path.dashboardShop,
+      element: <DashboardShop />
     }
   ])
 

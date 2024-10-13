@@ -1333,7 +1333,7 @@ function KoiDetails() {
                         Date
                       </label>
                       <input
-                        type='date'
+                        type='datetime-local'
                         id='growthDate'
                         className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
                         {...register('createDate')}
