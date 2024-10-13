@@ -28,11 +28,10 @@ function UserDetail() {
   const [order, setOrder] = useState(null)
   const [payment, setPayment] = useState(null)
 //   const [showButtons, setShowButtons] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
   const [activeTable, setActiveTable] = useState('payment')
   const { id } = useParams()
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
   const formatDateTime = (inputDate) => {
     const date = new Date(inputDate);
@@ -42,18 +41,18 @@ function UserDetail() {
     const hours = String(date.getHours()).padStart(2, '0')
     const minutes = String(date.getMinutes()).padStart(2, '0')
     const seconds = String(date.getSeconds()).padStart(2, '0')
-    return `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`;
-};
+    return `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
+  }
 
   const handleShowDetails = (ord) => {
     setSelectedOrder(ord)
     setIsModalOpen(true)
-  };
+  }
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
     setSelectedOrder(null)
-  };
+  }
 
   const getUser = async () => {
     try {
@@ -128,7 +127,25 @@ function UserDetail() {
     setActiveTable(tableType)
   }
 
+  const handleShowOrderDetails = async (orderId) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
 
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api//orders/${orderId}/order`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setSelectedOrder(res.data.data);
+      setIsModalOpen(true);
+    } catch (error) {
+      console.error('Error fetching order details:', error);
+    }
+  };
 
   return (
     <div>
@@ -177,8 +194,7 @@ function UserDetail() {
                   </button>
                 </div>
                 {activeTable === 'payment' ? (
-                  <div className='Payment-Table overflow-x-auto mt-4'>
-                    <h2 className='text-xl font-bold mb-6'>Payment Details</h2>
+                  <div className='Payment-Table overflow-x-auto mt-10'>
                     {payment ? (
                       <table className='min-w-full border-spacing-x-1 border-gray-200'>
                         <thead>
@@ -189,6 +205,7 @@ function UserDetail() {
                             <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Tracsaction Code</th>
                             <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Amount</th>        
                             <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Status</th>
+                            <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Action</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -199,7 +216,17 @@ function UserDetail() {
                               <td className='py-3 px-1 text-center border-b border-gray-200'>{pay.invoiceCode}</td>
                               <td className='py-3 px-1 text-center border-b border-gray-200'>{pay.transactionCode}</td>
                               <td className='py-3 px-1 text-center border-b border-gray-200'>{pay.amount}</td>                          
-                              <td className='py-3 px-1 text-center border-b border-gray-200'>{pay.status}</td>                             
+                              <td className='py-3 px-1 text-center border-b border-gray-200'>{pay.status}</td>   
+                              <td className='py-2 px-1 text-center border-b border-gray-200'>
+                                <div className='flex justify-center items-center'>
+                                  <button className='p-1 hover:bg-green-500 text-green-500 hover:text-white  rounded-full'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6" onClick={() => handleShowOrderDetails(pay.orderId)}>
+                                      <path fillRule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0 1 18 9.375v9.375a3 3 0 0 0 3-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 0 0-.673-.05A3 3 0 0 0 15 1.5h-1.5a3 3 0 0 0-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6ZM13.5 3A1.5 1.5 0 0 0 12 4.5h4.5A1.5 1.5 0 0 0 15 3h-1.5Z" clipRule="evenodd" />
+                                      <path fillRule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375ZM6 12a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V12Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 15a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V15Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 18a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V18Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
+                                    </svg> 
+                                  </button>                                                  
+                                </div>
+                              </td>                          
                             </tr>
                           ))}
                         </tbody>
@@ -209,8 +236,7 @@ function UserDetail() {
                     )}
                   </div>
                 ) : (
-                  <div className='Order-Table overflow-x-auto mt-4'>
-                    <h2 className='text-xl font-bold mb-6'>Order Details</h2>
+                  <div className='Order-Table overflow-x-auto mt-10'>
                     {order ? (
                       <table className='min-w-full border-spacing-x-1 border-gray-200'>
                         <thead>
@@ -250,7 +276,6 @@ function UserDetail() {
                     )}
                   </div>
                 )}
-
               </div>
               {/* user profile  */}
               <div className='mt-6 border rounded-lg p-6 gap-4 w-[35%] overflow-x-auto'>
