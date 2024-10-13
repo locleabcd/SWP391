@@ -77,32 +77,43 @@ function ViewUser() {
                   <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Email</th>
                   <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Gender</th>
                   <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Phone</th>
-                  <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Created Date</th>
-                  <th className='py-3 px-4 text-center text-xs font-bold uppercase'>BirthDay</th>
                   <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Role</th>
                   <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Status</th>
+                  <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Action</th>
                 </tr>
               </thead>
               <tbody>
                 {users.map((user, index) => (
                   <tr key={user.id}>
                     <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td>
-                    <td className='py-2 pl-4 text-center border-b border-gray-200'>
+                    <td className='py-2 pl-8 border-b border-gray-200'>
                       <img
                         src={user.avatar || fallbackImage}
                         alt='User'
-                        className='w-32 h-32 object-cover rounded-md'
+                        className='w-32 h-32 object-cover self-center rounded-md'
                       />
-                    </td>
+                    </td>                 
                     <td className='py-2 pl-4 text-center border-b border-gray-200'>{user.name}</td>
                     <td className='py-2 pl-4 text-center border-b border-gray-200'>{user.address}</td>
                     <td className='py-2 px-1 text-center border-b border-gray-200'>{user.email}</td>
                     <td className='py-2 pl-4 text-center border-b border-gray-200'>{user.gender}</td>
                     <td className='py-2 pl-4 text-center border-b border-gray-200'>{user.phone}</td>
-                    <td className='py-2 pl-4 text-center border-b border-gray-200'>{user.createdDate}</td>
-                    <td className='py-2 pl-4 text-center border-b border-gray-200'>{user.dateOfBirth}</td>
                     <td className='py-2 px-1 text-center border-b border-gray-200'>{user.role}</td>
                     <td className='py-2 px-1 text-center border-b border-gray-200'>{user.status}</td>
+                    <td className='py-2 px-1 text-center border-b border-gray-200'>
+                      <div className='flex justify-center items-center'>
+                        <Link
+                          to={`/shop/viewUser/${user.userId}`}
+                          className=' p-1 hover:bg-green-500 text-green-500 hover:text-white  rounded-full'
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+                            <path fillRule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0 1 18 9.375v9.375a3 3 0 0 0 3-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 0 0-.673-.05A3 3 0 0 0 15 1.5h-1.5a3 3 0 0 0-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6ZM13.5 3A1.5 1.5 0 0 0 12 4.5h4.5A1.5 1.5 0 0 0 15 3h-1.5Z" clipRule="evenodd" />
+                            <path fillRule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375ZM6 12a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V12Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 15a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V15Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 18a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V18Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
+                          </svg>
+
+                        </Link>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
