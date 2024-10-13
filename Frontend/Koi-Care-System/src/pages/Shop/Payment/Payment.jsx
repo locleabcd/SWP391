@@ -3,20 +3,12 @@ import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { FaUser } from "react-icons/fa";
-import { IoMail } from "react-icons/io5";
 import { FaPhoneAlt } from "react-icons/fa";
 import { FaRegAddressCard } from "react-icons/fa";
-import { MdDescription } from "react-icons/md";
-import { FaBirthdayCake } from "react-icons/fa";
 import { BsFillCalendarDateFill } from "react-icons/bs";
-import { FaCrown } from "react-icons/fa";
-import { IoMdMale, IoMdFemale } from 'react-icons/io'
-import {FaQuestion } from 'react-icons/fa'
 import { FaCartArrowDown } from "react-icons/fa";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { GrNotes } from "react-icons/gr";
@@ -38,6 +30,8 @@ function Payment() {
     const seconds = String(date.getSeconds()).padStart(2, '0')
     return `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
   }
+
+  const formatCurrency = (amount) => amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ"
 
 
   const handleCloseModal = () => {
@@ -138,7 +132,7 @@ function Payment() {
                     <td className='py-2 px-2 text-center border-b border-gray-200'>{formatDateTime(pay.createDate)}</td>
                     <td className='py-2 px-2 text-center border-b border-gray-200'>{pay.transactionCode}</td>
                     <td className='py-2 px-2 text-center border-b border-gray-200'>{pay.status}</td>
-                    <td className='py-2 px-2 text-center border-b border-gray-200'>{pay.amount} VND</td>
+                    <td className='py-2 px-2 text-center border-b border-gray-200'>{formatCurrency(pay.amount)}</td>
                     <td className='py-2 px-2 text-center border-b border-gray-200'>                     
                       <div className='flex justify-center items-center'>
                         <button className='p-1 hover:bg-green-500 text-green-500 hover:text-white  rounded-full' onClick={() => handleShowOrderDetails(pay.orderId)}>
@@ -186,7 +180,7 @@ function Payment() {
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{item.productName}</td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{item.quantity}</td>                             
-                              <td className='py-2 px-1 text-center border-b border-gray-200'>{item.price} VND</td>
+                              <td className='py-2 px-1 text-center border-b border-gray-200'>{formatCurrency(item.price)}</td>
                             </tr>
                           ))}
                         </tbody>
