@@ -69,6 +69,8 @@ import Pricing from './components/Pricing/Pricing'
 import PaymentSuccess from './pages/Member/Recommendations/PaymentSuccess'
 import PaymentError from './pages/Member/Recommendations/PaymentError'
 import UserDetail from './pages/Shop/User/UserDetail'
+import OrderShop from './pages/Shop/Order/Order'
+import PaymentShop from './pages/Shop/Payment/Payment'
 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
@@ -513,7 +515,15 @@ function App() {
     {
       path: path.pricing,
       element: <Pricing />
-    }
+    },
+    {
+      path: path.orderShop,
+      element: <OrderShop />
+    },
+    {
+      path: path.paymentShop,
+      element: <PaymentShop />
+    },
   ])
 
   const data = [

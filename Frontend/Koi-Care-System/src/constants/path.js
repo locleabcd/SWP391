@@ -62,7 +62,9 @@ const path = {
   createImage: '/shop/createImage',
   updateImage: '/shop/productImage/:id',
   viewUser: '/shop/viewUser',
-  userDetail: '/shop/viewUser/:id' 
+  userDetail: '/shop/viewUser/:id',
+  paymentShop: '/shop/payment',
+  orderShop: '/shop/order'
 }
 
 export default path
