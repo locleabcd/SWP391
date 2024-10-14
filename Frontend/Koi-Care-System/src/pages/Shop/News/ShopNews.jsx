@@ -16,12 +16,7 @@ function ShopNews() {
   const [tags,setTags] = useState([])
   const [blogs, setBlogs] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-
   const navigate = useNavigate()
-
-  const toggleButtons = () => {
-    setShowButtons(!showButtons)
-  }
 
   const getTag = async () => {
     try {
@@ -43,6 +38,10 @@ function ShopNews() {
     }
   }
 
+  useEffect(() => {
+    getTag()
+  }, [])
+
   const getBlog = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -62,11 +61,7 @@ function ShopNews() {
       console.log('Error fetching blogs:', error)
     }
   }
-
-  useEffect(() => {
-    getTag()
-  }, [])
-
+  
   useEffect(() => {
     getBlog()
   }, [])
