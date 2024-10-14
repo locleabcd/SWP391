@@ -61,7 +61,6 @@ function ShopNews() {
       console.log('Error fetching blogs:', error)
     }
   }
-  
   useEffect(() => {
     getBlog()
   }, [])

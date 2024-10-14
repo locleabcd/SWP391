@@ -85,8 +85,8 @@ function Product() {
         </div>     
       )
     },
-    { field: 'name', headerName: 'Product Name', width: 300 },
-    { field: 'brand', headerName: 'Brand', width: 130 },
+    { field: 'name', headerName: 'Product Name', flex: 0.5 },
+    { field: 'brand', headerName: 'Brand', flex: 0.5 },
     { field: 'price', headerName: 'Price', width: 120, renderCell: (params) => formatPrice(params.row.price),},
     { field: 'inventory', headerName: 'Inventory', width: 150 },
     {
