@@ -14,6 +14,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayout'
 import { motion } from 'framer-motion'
 import { FadeLeft, FadeRight } from '../../../utils/animation'
+import '../../../index.css'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
@@ -27,9 +28,64 @@ function MyPond() {
   const [baseImage, setBaseImage] = useState('')
   const [koiCounts, setKoiCounts] = useState({})
   const [selectedFile, setSelectedFile] = useState(null)
+  const [issue, setIssue] = useState([])
   const [showButtons, setShowButtons] = useState(false)
 
   const navigate = useNavigate()
+
+  const getIssue = async (koipondId) => {
+    try {
+      const token = localStorage.getItem('token')
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/issues/latest/${koipondId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      console.log(res.data.data)
+      setIssue((prevData) => ({
+        ...prevData,
+        [koipondId]: res.data.data
+      }))
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  useEffect(() => {
+    if (ponds.length > 0) {
+      ponds.forEach((pond) => {
+        getIssue(pond.id)
+      })
+    }
+  }, [ponds])
+
+  const getKoi = async (id) => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koifishs/koipond/${id}/allKoi`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      const koiCount = res.data.data.length
+      setKoiCounts((prevCounts) => ({
+        ...prevCounts,
+        [id]: koiCount
+      }))
+    } catch (error) {
+      console.error('Count koi error', error)
+    }
+  }
+
+  useEffect(() => {
+    if (ponds.length > 0) {
+      ponds.forEach((pond) => {
+        getKoi(pond.id)
+      })
+    }
+  }, [ponds])
 
   const toggleButtons = () => {
     setShowButtons(!showButtons)
@@ -76,8 +132,7 @@ function MyPond() {
       const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
-        },
-        withCredentials: true
+        }
       })
       console.log(res.data.data)
       setPonds(res.data.data)
@@ -205,35 +260,6 @@ function MyPond() {
       setIsLoading(false)
     }
   }
-
-  const getKoi = async (id) => {
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koifishs/koipond/${id}/allKoi`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      const koiCount = res.data.data.length
-      setKoiCounts((prevCounts) => ({
-        ...prevCounts,
-        [id]: koiCount
-      }))
-    } catch (error) {
-      console.error(`Error fetching koi for pond ${id}:`, error)
-    }
-  }
-
-  useEffect(() => {
-    if (ponds.length > 0) {
-      ponds.forEach((pond) => {
-        getKoi(pond.id)
-      })
-    }
-  }, [ponds])
 
   const sortPonds = (name, sort) => {
     let sortedArray = [...ponds]
@@ -416,7 +442,7 @@ function MyPond() {
                   whileHover={{ scale: 1.02 }}
                   className={`${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } rounded-xl  border duration-300`}
+                  } rounded-xl  border duration-300 relative`}
                 >
                   <img
                     onClick={() => {
@@ -460,23 +486,7 @@ function MyPond() {
                       <h3 className='text-base font-semibold'>{pond.pumpCapacity} L/min</h3>
                     </div>
                   </div>
-                  <div className='flex justify-between'>
-                    <Link to={`/member/myPond/myPondLog/${pond.id}`}>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        strokeWidth={1.5}
-                        stroke='currentColor'
-                        className='text-lg shadow-lg text-black rounded-es-xl bg-custom-layout-light size-14 p-2 cursor-pointer'
-                      >
-                        <path
-                          strokeLinecap='round'
-                          strokeLinejoin='round'
-                          d='M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z'
-                        />
-                      </svg>
-                    </Link>
+                  {issue[pond.id] && issue[pond.id].length > 0 && (
                     <Link to={`/member/myPond/myPondIssue/${pond.id}`}>
                       <svg
                         fill='#000000'
@@ -484,12 +494,12 @@ function MyPond() {
                         height='800px'
                         viewBox='-8 0 19 19'
                         xmlns='http://www.w3.org/2000/svg'
-                        className='text-lg shadow-lg text-black rounded-ee-xl bg-custom-layout-light size-14 p-2 cursor-pointer'
+                        className='blinking-svg absolute top-0 text-lg shadow-lg text-black rounded-tl-xl bg-custom-layout-light size-14 p-2 cursor-pointer'
                       >
                         <path d='M2.828 15.984A1.328 1.328 0 1 1 1.5 14.657a1.328 1.328 0 0 1 1.328 1.327zM1.5 13.244a1.03 1.03 0 0 1-1.03-1.03V2.668a1.03 1.03 0 0 1 2.06 0v9.548a1.03 1.03 0 0 1-1.03 1.029z' />
                       </svg>
                     </Link>
-                  </div>
+                  )}
                 </motion.div>
               ))}
             </motion.div>

@@ -367,7 +367,7 @@ function LeftSideBar() {
         </div>
 
         <div
-          className={`p-4 flex justify-between items-center rounded-lg ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
+          className={`p-4 flex fixed bottom-0  justify-between items-center rounded-lg ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
         >
           <div className='flex items-center'>
             <img

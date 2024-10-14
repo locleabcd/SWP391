@@ -12,7 +12,7 @@ function Dashboard() {
 
         <div
           className={`relative ${
-            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-100 text-black'
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
