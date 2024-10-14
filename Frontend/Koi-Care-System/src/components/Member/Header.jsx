@@ -254,7 +254,7 @@ function Header() {
                 <p className='text-xs text-gray-500'>{user.role}</p>
               </div>
               <div className='ml-auto flex items-center space-x-1'>
-                <img src={user.avatar} className='w-12 h-12 rounded-full' />
+                <img src={user.avatar} className='w-12 h-12 rounded-full object-cover' />
               </div>
             </button>
             {isOpen && (

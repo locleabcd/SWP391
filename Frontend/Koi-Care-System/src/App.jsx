@@ -71,6 +71,12 @@ import PaymentError from './pages/Member/Recommendations/PaymentError'
 import ShopAD from './pages/Admin/ManageUsers/ShopAD'
 import CustomerAD from './pages/Admin/ManageUsers/CustomerAD'
 import ViewUserAD from './pages/Admin/ManageUsers/ViewUserAD'
+import MyPondIssue from './pages/Member/MyPond/MyPondIssue'
+import UserDetail from './pages/Shop/User/UserDetail'
+import OrderShop from './pages/Shop/Order/Order'
+import PaymentShop from './pages/Shop/Payment/Payment'
+import DashboardShop from './pages/Shop/Dashboard/Dashboard'
+
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -428,6 +434,14 @@ function App() {
       )
     },
     {
+      path: path.myPondIssue,
+      element: (
+        <ProtectedRoute isAuthenticated={isAuthenticated}>
+          <MyPondIssue />
+        </ProtectedRoute>
+      )
+    },
+    {
       path: path.promotion,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
@@ -508,6 +522,10 @@ function App() {
       element: <ViewUser />
     },
     {
+      path: path.userDetail,
+      element: <UserDetail />
+    },
+    {
       path: path.pricing,
       element: <Pricing />
     },
@@ -522,6 +540,18 @@ function App() {
     {
       path: path.viewUserAD,
       element: <ViewUserAD/>
+    },
+    {
+      path: path.orderShop,
+      element: <OrderShop />
+    },
+    {
+      path: path.paymentShop,
+      element: <PaymentShop />
+    },
+    {
+      path: path.dashboardShop,
+      element: <DashboardShop />
     }
     
   ])

@@ -157,4 +157,4 @@ function Promotion() {
   )
 }
 
-export default Promotion
+export default Promotion;

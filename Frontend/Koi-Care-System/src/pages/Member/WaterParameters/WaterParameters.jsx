@@ -1,7 +1,6 @@
 /* eslint-disable no-unused-vars */
 
 import { useEffect, useState } from 'react'
-import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import axios, { AxiosError } from 'axios'
@@ -14,6 +13,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayout'
 import InfoBox from '../../../components/WaterParam/InfoBox'
 import { motion } from 'framer-motion'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 
 function WaterParameters() {
   const { isDarkMode } = useDarkMode()

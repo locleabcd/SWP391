@@ -13,7 +13,11 @@ import { RiCoupon2Fill } from 'react-icons/ri'
 import { FaBox } from 'react-icons/fa'
 import { BiSolidCategory } from 'react-icons/bi'
 import { FaImage } from 'react-icons/fa'
-import axios from 'axios'
+import { FaCartShopping } from "react-icons/fa6"
+import { TbReportSearch } from "react-icons/tb";
+import { FaMoneyBill } from "react-icons/fa";
+
+
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
   const [isClosed, setClosed] = useState(() => {
@@ -21,31 +25,21 @@ function LeftSideBar() {
     return savedState ? JSON.parse(savedState) : false
   })
 
-  const [isNewsOpen, setIsNewsOpen] = useState(false)
-  const [isShopOpen, setIsShopOpen] = useState(false)
-  const [users, setUsers] = useState([])
-  
-const getUser = async () => {
-  try {
-    const token = localStorage.getItem('token');
-    const id = localStorage.getItem('id');
-    if (!token) {
-      throw new Error('No token found');
-    }
-    const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    console.log(res.data.data);
-    setUsers(res.data.data);
-  } catch (error) {
-    console.error('Error fetching user:', error);
-  }
-};
-  useEffect(() => {
-    getUser();
-  }, []);
+  const [isNewsOpen, setIsNewsOpen] = useState(() => {
+    const savedState = localStorage.getItem('isNewsOpen')
+    return savedState ? JSON.parse(savedState) : false
+  })
+
+  const [isShopOpen, setIsShopOpen] = useState(() => {
+    const savedState = localStorage.getItem('isShopOpen')
+    return savedState ? JSON.parse(savedState) : false
+  })
+
+  const [isReportOpen, setIsReportOpen] = useState(() => {
+    const savedState = localStorage.getItem('isReportOpen')
+    return savedState ? JSON.parse(savedState) : false
+  })
+
   useEffect(() => {
     localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
   }, [isClosed])
@@ -58,8 +52,8 @@ const getUser = async () => {
   }, [isNewsOpen])
 
   useEffect(() => {
-    localStorage.setItem('isNewsOpen', JSON.stringify(isNewsOpen))
-  }, [isNewsOpen])
+    localStorage.setItem('isReportOpen', JSON.stringify(isReportOpen))
+  }, [isReportOpen])
 
   useEffect(() => {
     localStorage.setItem('isShopOpen', JSON.stringify(isShopOpen))
@@ -127,7 +121,7 @@ const getUser = async () => {
         <div className='flex flex-col justify-center items-center mt-6 duration-200'>
           <div className=''>
             <NavLink
-              to={path.dashboard}
+              to={path.dashboardShop}
               end
               className={({ isActive }) => {
                 const active = isActive
@@ -393,15 +387,79 @@ const getUser = async () => {
                 </div>
               )}
             </div>
-            <div className="flex items-center px-4 py-2 border-t absolute inset-x-0 bottom-14">
-              <img src={users.avatar} alt="User Avatar" className="w-10 h-10 rounded-full mr-3" />
-              <div>
-                <p className="font-semibold">{users.name || 'User Name'}</p> {/* Hiển thị tên hoặc tên mặc định */}
-                <p className="text-sm text-gray-500">{users.role}</p> {/* Hiển thị vai trò của user */}
-              </div>
-            </div>
+            <div>
+              <button
+                className={`min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                  isClosed ? 'flex-col' : ''
+                } ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
+                onClick={() => setIsReportOpen(!isReportOpen)}
+              >
+                <div className='flex items-center'>
+                  <div className='w-7 h-7 mr-3'>
+                    <TbReportSearch className='w-full h-full' />
+                  </div>
+                  {!isClosed && (
+                    <span className='flex items-center'>
+                      <p className='font-semibold'>Manage Report</p>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 24 24'
+                        fill='currentColor'
+                        className='size-5 ml-2 mt-1'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
+                    </span>
+                  )}
+                </div>
+              </button>
 
-            {/* Logout button */}
+              {isReportOpen && (
+                <div className=''>
+                  <NavLink
+                    to={path.orderShop}
+                    className={({ isActive }) => {
+                      const active = isActive
+                        ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                        : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        isClosed ? 'flex-col' : ''
+                      }`
+                    }}
+                  >
+                    <div className='flex items-center'>
+                      <div className='w-7 h-7 mr-3'>
+                        <FaCartShopping className='w-full h-full' />
+                      </div>
+                      {!isClosed && <span className='font-semibold'>Manage Order</span>}
+                    </div>
+                  </NavLink>
+
+                  <NavLink
+                    to={path.paymentShop}
+                    className={({ isActive }) => {
+                      const active = isActive
+                        ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                        : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        isClosed ? 'flex-col' : ''
+                      }`
+                    }}
+                  >
+                    <div className='flex items-center'>
+                      <div className='w-7 h-7 mr-3'>
+                        <FaMoneyBill  className='w-full h-full' />
+                      </div>
+                      {!isClosed && <span className='font-semibold'>Manage Payment</span>}
+                    </div>
+                  </NavLink>
+                </div>
+              )}
+            </div>
             <Link
               onClick={handleLogout}
               to={path.login}

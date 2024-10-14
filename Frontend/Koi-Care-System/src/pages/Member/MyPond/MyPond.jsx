@@ -76,7 +76,8 @@ function MyPond() {
       const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
-        }
+        },
+        withCredentials: true
       })
       console.log(res.data.data)
       setPonds(res.data.data)
@@ -122,7 +123,6 @@ function MyPond() {
         if (selectedFile) {
           formData.append('file', selectedFile)
         }
-        // formData.append('imageUrl', data.imageUrl)
 
         await axios.put(`https://koicaresystemv3.azurewebsites.net/api/koiponds/koipond/${id}/update`, formData, {
           headers: {
@@ -130,6 +130,7 @@ function MyPond() {
             'Content-Type': 'multipart/form-data'
           }
         })
+        toast.success('Update Pond success!!')
       } else {
         const formData = new FormData()
         formData.append('name', data.name)
@@ -147,6 +148,7 @@ function MyPond() {
             'Content-Type': 'multipart/form-data'
           }
         })
+        toast.success('Create Pond success!!')
       }
 
       reset()
@@ -195,6 +197,7 @@ function MyPond() {
       })
       reset()
       getPond()
+      toast.success('Delete success!!')
       setIsEditFormVisible(false)
     } catch (error) {
       console.error('Error deleting pond:', error)
@@ -280,7 +283,7 @@ function MyPond() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='fixed z-50 bottom-5 right-5 text-lg text-black outline-none rounded-r-xl bg-custom-layout-light shadow-lg size-16 p-2 cursor-pointer'
+              className='fixed z-50 bottom-2 right-5 text-lg text-black outline-none rounded-r-xl bg-custom-layout-light shadow-lg size-16 p-2 cursor-pointer'
               onClick={() => {
                 toggleAddFormVisibility()
               }}
@@ -298,12 +301,12 @@ function MyPond() {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed z-50 bottom-5 right-[84px] text-lg shadow-lg text-black rounded-l-xl bg-custom-layout-light size-16 p-2 cursor-pointer'
+                className='fixed z-50 bottom-2 right-[84px] text-lg shadow-lg text-black rounded-l-xl bg-custom-layout-light size-16 p-2 cursor-pointer'
               >
                 <path
                   strokeLinecap='round'
                   strokeLinejoin='round'
-                  d='m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10'
+                  d='M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z'
                 />
               </svg>
             </Link>
@@ -410,18 +413,19 @@ function MyPond() {
                     visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
                   }}
                   key={pond.id}
+                  whileHover={{ scale: 1.02 }}
                   className={`${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } rounded-xl cursor-pointer border hover:scale-[102%] duration-300`}
-                  onClick={() => {
-                    toggleEditFormVisibility(pond)
-                    reset(pond)
-                  }}
+                  } rounded-xl  border duration-300`}
                 >
                   <img
+                    onClick={() => {
+                      toggleEditFormVisibility(pond)
+                      reset(pond)
+                    }}
                     src={pond.imageUrl}
                     alt={pond.name}
-                    className='w-full h-60 object-cover rounded-t-xl overflow-hidden'
+                    className='w-full cursor-pointer h-60 object-cover rounded-t-xl overflow-hidden'
                     style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
                   />
                   <div className='p-4'>
@@ -455,6 +459,36 @@ function MyPond() {
                       <h3 className='text-base w-56'>Pump Capacity:</h3>
                       <h3 className='text-base font-semibold'>{pond.pumpCapacity} L/min</h3>
                     </div>
+                  </div>
+                  <div className='flex justify-between'>
+                    <Link to={`/member/myPond/myPondLog/${pond.id}`}>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='text-lg shadow-lg text-black rounded-es-xl bg-custom-layout-light size-14 p-2 cursor-pointer'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z'
+                        />
+                      </svg>
+                    </Link>
+                    <Link to={`/member/myPond/myPondIssue/${pond.id}`}>
+                      <svg
+                        fill='#000000'
+                        width='800px'
+                        height='800px'
+                        viewBox='-8 0 19 19'
+                        xmlns='http://www.w3.org/2000/svg'
+                        className='text-lg shadow-lg text-black rounded-ee-xl bg-custom-layout-light size-14 p-2 cursor-pointer'
+                      >
+                        <path d='M2.828 15.984A1.328 1.328 0 1 1 1.5 14.657a1.328 1.328 0 0 1 1.328 1.327zM1.5 13.244a1.03 1.03 0 0 1-1.03-1.03V2.668a1.03 1.03 0 0 1 2.06 0v9.548a1.03 1.03 0 0 1-1.03 1.029z' />
+                      </svg>
+                    </Link>
                   </div>
                 </motion.div>
               ))}

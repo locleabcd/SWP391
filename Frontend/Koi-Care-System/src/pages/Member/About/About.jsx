@@ -11,27 +11,27 @@ function About() {
     {
       name: 'The Vinh',
       role: 'Frontend Developer',
-      img: 'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3447.jpg?w=740'
+      img: 'https://koicareimage.blob.core.windows.net/koicarestorage/Vinh.jpg'
     },
     {
       name: 'Duc Loc',
       role: 'Leader-Backend Developer',
-      img: 'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3447.jpg?w=740'
+      img: 'https://koicareimage.blob.core.windows.net/koicarestorage/Loc.jpg'
     },
     {
       name: 'Trung Kien',
       role: 'Frontend Developer',
-      img: 'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3447.jpg?w=740'
+      img: 'https://koicareimage.blob.core.windows.net/koicarestorage/Kien.jpg'
     },
     {
       name: 'Minh Thoai',
       role: 'Frontend Developer',
-      img: 'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3447.jpg?w=740'
+      img: 'https://koicareimage.blob.core.windows.net/koicarestorage/Thoai.jpg'
     },
     {
       name: 'An Phuoc',
       role: 'Backend Developer',
-      img: 'https://img.freepik.com/premium-vector/cute-boy-smiling-cartoon-kawaii-boy-illustration-boy-avatar-happy-kid_1001605-3447.jpg?w=740'
+      img: 'https://koicareimage.blob.core.windows.net/koicarestorage/Phuoc.jpg'
     }
   ]
 

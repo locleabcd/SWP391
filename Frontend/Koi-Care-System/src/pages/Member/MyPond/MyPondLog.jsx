@@ -55,11 +55,12 @@ function MyPondLog() {
   const pondLog = async () => {
     try {
       const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
       if (!token) {
         console.log('not found token')
       }
 
-      const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/log', {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/log/user/${userId}/getAll`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
