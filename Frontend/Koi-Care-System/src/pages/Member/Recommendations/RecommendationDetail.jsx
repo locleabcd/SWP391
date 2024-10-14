@@ -427,9 +427,13 @@ function Recommendations() {
                 </div>
 
                 <div className='flex mt-5 gap-5 items-center border-b border-gray-200 pb-10 pt-5'>
-                  <button className='text-xl py-4 px-10 bg-blue-400 hover:bg-blue-500 text-white rounded-lg'>
+                  <Link
+                    to='/member/checkout'
+                    onClick={() => handleAddToCart(productId)}
+                    className='text-xl py-4 px-10 bg-blue-400 hover:bg-blue-500 text-white rounded-lg'
+                  >
                     Buy Now
-                  </button>
+                  </Link>
                   <button
                     onClick={() => handleAddToCart(productId)}
                     className='text-xl py-4 px-10 bg-orange-500 hover:bg-orange-600 text-white rounded-lg'
