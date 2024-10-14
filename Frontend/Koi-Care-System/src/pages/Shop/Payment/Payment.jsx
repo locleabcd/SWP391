@@ -152,7 +152,7 @@ function Payment() {
           <div className='w-full flex justify-end items-center relative'>
             <button onClick={exportToExcel} className="mb-4 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md">
                 Download Excel
-              </button>     
+            </button>     
           </div>
           <Paper sx={{ height: 670}}>
               <DataGrid
