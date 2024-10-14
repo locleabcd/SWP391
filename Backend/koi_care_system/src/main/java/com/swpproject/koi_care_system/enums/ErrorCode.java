@@ -25,6 +25,8 @@ public enum ErrorCode {
     KOI_FISH_NOT_FOUND(1014, "Koi Fish Not Found", HttpStatus.NOT_FOUND),
     GROWTH_HISTORY_NOT_FOUND(1015, "Growth History Not Found", HttpStatus.NOT_FOUND),
     PROFILE_NOT_FOUND(1016, "Profile Not Found", HttpStatus.NOT_FOUND),
+    WRONG_PASSWORD(1017, "Wrong Password", HttpStatus.BAD_REQUEST),
+    PASSWORD_NOT_MATCH(1018, "Password are not the same", HttpStatus.BAD_REQUEST),
     ;
 
 

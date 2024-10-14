@@ -7,6 +7,7 @@ import com.swpproject.koi_care_system.enums.Role;
 import com.swpproject.koi_care_system.exceptions.AppException;
 import com.swpproject.koi_care_system.mapper.UserMapper;
 import com.swpproject.koi_care_system.models.User;
+import com.swpproject.koi_care_system.payload.request.ChangePasswordRequest;
 import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.repository.UserRepository;
@@ -16,12 +17,12 @@ import com.swpproject.koi_care_system.service.profile.ProfileService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.util.List;
 
 @Service
@@ -62,6 +63,7 @@ public class UserService implements IUserService {
         return userMapper.maptoUserDTO(userRepo.findById(userID).orElseThrow(() -> new RuntimeException("User Not Found")));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public UserDTO updateUserByID(Long id, UpdateUserRequest request) {
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
@@ -70,10 +72,25 @@ public class UserService implements IUserService {
         return userMapper.maptoUserDTO(userRepo.save(user));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     public void deleteUserByID(Long id) {
         userRepo.findById(id).ifPresentOrElse(userRepo::delete, () -> {
             throw new RuntimeException("User not found");
         });
+    }
+
+    @Override
+    public void changePassword(ChangePasswordRequest request, Principal connectedUser) {
+        var user = userRepo.findByUsername(connectedUser.getName())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        if (!passwordEncoder.matches(request.getCurrentPassword(), user.getPassword())) {
+            throw new AppException(ErrorCode.WRONG_PASSWORD);
+        }
+        if (!request.getNewPassword().equals(request.getConfirmationPassword())) {
+            throw new AppException(ErrorCode.PASSWORD_NOT_MATCH);
+        }
+        user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        userRepo.save(user);
     }
 
     @Override
