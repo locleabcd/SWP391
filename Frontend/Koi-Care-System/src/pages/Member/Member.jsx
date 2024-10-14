@@ -5,6 +5,12 @@ import LeftSideBar from '../../components/Member/LeftSideBar'
 function Member() {
   const { isDarkMode } = useDarkMode()
 
+  // eslint-disable-next-line no-undef
+  const token = response.headers['authorization']
+  if (token) {
+    localStorage.setItem('token', token.replace('Bearer ', ''))
+  }
+
   return (
     <div>
       {/* member page */}
