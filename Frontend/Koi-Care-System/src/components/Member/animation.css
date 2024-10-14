@@ -1,0 +1,48 @@
+body, html {
+    min-height: 100vh; /* Ensure the body takes the full viewport height */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .main-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .neon-border {
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      border-radius: 10px; /* Adjust based on your design */
+  }
+  
+  .neon-border::before {
+      content: '';
+      position: absolute;
+      top: -4px;
+      left: -4px;
+      right: -4px;
+      bottom: -4px;
+      border-radius: inherit; /* Match the border-radius of the main div */
+      background: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #ff0080); /* Neon gradient colors */
+      background-size: 400% 400%;
+      z-index: -1;
+      filter: blur(8px); /* Adds the glow effect */
+      animation: neon-border-animation 8s ease infinite; /* Smooth animation */
+  }
+  
+  @keyframes neon-border-animation {
+      0% {
+          background-position: 0% 50%;
+      }
+      50% {
+          background-position: 100% 50%;
+      }
+      100% {
+          background-position: 0% 50%;
+      }
+  }
+  

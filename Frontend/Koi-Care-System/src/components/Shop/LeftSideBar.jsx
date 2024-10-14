@@ -13,7 +13,7 @@ import { RiCoupon2Fill } from 'react-icons/ri'
 import { FaBox } from 'react-icons/fa'
 import { BiSolidCategory } from 'react-icons/bi'
 import { FaImage } from 'react-icons/fa'
-
+import axios from 'axios'
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
   const [isClosed, setClosed] = useState(() => {
@@ -21,16 +21,31 @@ function LeftSideBar() {
     return savedState ? JSON.parse(savedState) : false
   })
 
-  const [isNewsOpen, setIsNewsOpen] = useState(() => {
-    const savedState = localStorage.getItem('isNewsOpen')
-    return savedState ? JSON.parse(savedState) : false
-  })
-
-  const [isShopOpen, setIsShopOpen] = useState(() => {
-    const savedState = localStorage.getItem('isShopOpen')
-    return savedState ? JSON.parse(savedState) : false
-  })
-
+  const [isNewsOpen, setIsNewsOpen] = useState(false)
+  const [isShopOpen, setIsShopOpen] = useState(false)
+  const [users, setUsers] = useState([])
+  
+const getUser = async () => {
+  try {
+    const token = localStorage.getItem('token');
+    const id = localStorage.getItem('id');
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log(res.data.data);
+    setUsers(res.data.data);
+  } catch (error) {
+    console.error('Error fetching user:', error);
+  }
+};
+  useEffect(() => {
+    getUser();
+  }, []);
   useEffect(() => {
     localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
   }, [isClosed])
