@@ -14,4 +14,6 @@ public interface IssueRepository extends JpaRepository<Issue, Long> {
     boolean existsByWaterParametersAndDescription(WaterParameters waterParameters, String description);
 
     List<Issue> findByWaterParametersId(Long waterParametersId);
+
+    List<Issue> findByWaterParametersKoiPondId(Long id);
 }

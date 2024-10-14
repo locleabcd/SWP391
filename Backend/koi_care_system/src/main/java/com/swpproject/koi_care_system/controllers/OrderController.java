@@ -48,7 +48,13 @@ public class OrderController {
             return  ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Oops!", e.getMessage()));
         }
     }
-
+    @GetMapping("/order/inMonth")
+    public ResponseEntity<ApiResponse> getOrderInMonth(){
+        return ResponseEntity.ok(ApiResponse.builder()
+                        .message("Get order successful")
+                        .data(orderService.getOrdersInOneMonth())
+                .build());
+    }
     @GetMapping("/user/{userId}/order")
     public ResponseEntity<ApiResponse> getUserOrders(@PathVariable Long userId) {
         try {

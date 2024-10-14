@@ -15,15 +15,18 @@ import com.swpproject.koi_care_system.repository.UserRepository;
 import com.swpproject.koi_care_system.service.cart.CartItemService;
 import com.swpproject.koi_care_system.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,7 +41,7 @@ public class OrderService implements IOrderService {
     @Transactional
     @Override
     public OrderDto placeOrder(PlaceOrderRequest request) {
-        Cart cart   = cartService.getCartByUserId(request.getUserId());
+        Cart cart = cartService.getCartByUserId(request.getUserId());
         Order order = createOrder(cart);
         List<OrderItem> orderItemList = createOrderItems(order, cart);
         order.setAddress(request.getAddress());
@@ -79,7 +82,7 @@ public class OrderService implements IOrderService {
         Order order = new Order();
         order.setUser(cart.getUser());
         order.setOrderStatus(OrderStatus.PENDING);
-        order.setOrderDate(LocalDate.now());
+        order.setOrderDate(LocalDateTime.now());
         return  order;
     }
 
@@ -122,6 +125,14 @@ public class OrderService implements IOrderService {
     @Override
     public List<OrderDto> getAllOrders() {
         return orderRepository.findAll().stream().map(orderMapper::toDto).toList();
+    }
+
+    @Override
+    public List<OrderDto> getOrdersInOneMonth() {
+        return  orderRepository.findAll().stream()
+                .map(orderMapper::toDto)
+                .filter(order -> order.getOrderDate().isAfter(LocalDateTime.now().minusMonths(1))&& (order.getStatus().equals(OrderStatus.DELIVERED.toString())||order.getStatus().equals(OrderStatus.PROCESSING.toString())))
+                .toList();
     }
 
     @Override

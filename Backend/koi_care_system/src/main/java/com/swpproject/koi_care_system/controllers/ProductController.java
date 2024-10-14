@@ -20,6 +20,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+
     private final IProductService productService;
 
     @GetMapping("/all")
@@ -28,7 +29,7 @@ public class ProductController {
         List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
         return  ResponseEntity.ok(new ApiResponse("success", convertedProducts));
     }
-    @GetMapping("product/{productId}/product")
+    @GetMapping("/product/{productId}/product")
     public ResponseEntity<ApiResponse> getProductById(@PathVariable Long productId) throws ResourceNotFoundException {
         Product product = productService.getProductById(productId);
         ProductDto productDto = productService.convertToDto(product);

@@ -69,4 +69,11 @@ public class WaterParametersController {
                 .build()
         );
     }
+    @GetMapping("/getLatestByKoiPondId/{koiPondId}")
+    public ResponseEntity<ApiResponse> getLatestWaterParametersByKoiPondId(@PathVariable Long koiPondId){
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("Water parameters found")
+                .data(waterParameterService.getLatestWaterParametersByKoiPondId(koiPondId))
+                .build());
+    }
 }

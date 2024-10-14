@@ -94,4 +94,11 @@ public class WaterParameterService implements IWaterParameters {
         });
         return waterParameters.stream().map(waterParameterMapper::mapToWaterParameterDto).toList();
     }
+
+    @Override
+    public WaterParameterDto getLatestWaterParametersByKoiPondId(Long koiPondId) {
+        WaterParameters lastestWaterParameters = waterParametersRepository.findTopByKoiPondId(koiPondId);
+        return waterParameterMapper.mapToWaterParameterDto(lastestWaterParameters);
+    }
+
 }

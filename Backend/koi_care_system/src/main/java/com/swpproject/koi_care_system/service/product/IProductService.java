@@ -1,6 +1,7 @@
 package com.swpproject.koi_care_system.service.product;
 
 import com.swpproject.koi_care_system.dto.ProductDto;
+import com.swpproject.koi_care_system.dto.ProductReportDto;
 import com.swpproject.koi_care_system.models.Product;
 import com.swpproject.koi_care_system.payload.request.AddProductRequest;
 import com.swpproject.koi_care_system.payload.request.ProductUpdateRequest;
@@ -21,9 +22,6 @@ public interface IProductService {
     List<Product> getProductsBySupplier(String supplierName);
     Long countProductsByBrandAndName(String brand, String name);
     List<Product> getProductsByIssueType(Long issueTypeId);
-
-
     List<ProductDto> getConvertedProducts(List<Product> products);
-
     ProductDto convertToDto(Product product);
 }

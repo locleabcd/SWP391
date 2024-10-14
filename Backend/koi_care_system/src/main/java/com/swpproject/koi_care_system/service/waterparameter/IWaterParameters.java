@@ -19,5 +19,5 @@ public interface IWaterParameters {
     List<WaterParameterDto> getAllWaterParametersByKoiPondId(Long koiPondId);
 
     List<WaterParameterDto> getAllWaterParametersByUserId(Long userId);
-
+    WaterParameterDto getLatestWaterParametersByKoiPondId(Long koiPondId);
 }

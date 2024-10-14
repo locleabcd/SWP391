@@ -16,5 +16,7 @@ public interface IOrderService {
 
     List<OrderDto> getAllOrders();
 
+    List<OrderDto> getOrdersInOneMonth();
+
     void updateDeliveredStatus(Long orderId);
 }

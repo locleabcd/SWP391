@@ -1,7 +1,5 @@
 package com.swpproject.koi_care_system.service.product;
-import com.swpproject.koi_care_system.dto.ImageDto;
-import com.swpproject.koi_care_system.dto.ProductDto;
-import com.swpproject.koi_care_system.dto.PromotionDto;
+import com.swpproject.koi_care_system.dto.*;
 import com.swpproject.koi_care_system.enums.PromotionStatus;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.mapper.ImageMapper;
@@ -10,9 +8,12 @@ import com.swpproject.koi_care_system.models.*;
 import com.swpproject.koi_care_system.payload.request.AddProductRequest;
 import com.swpproject.koi_care_system.payload.request.ProductUpdateRequest;
 import com.swpproject.koi_care_system.repository.*;
+import com.swpproject.koi_care_system.service.order.IOrderService;
 import com.swpproject.koi_care_system.service.promotion.IPromotionService;
 import com.swpproject.koi_care_system.service.promotion.PromotionService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,11 +21,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicInteger; // Add this import
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +39,6 @@ public class ProductService implements IProductService {
     private final SupplierRepository supplierRepository;
     private final IPromotionService promotionService;
     private final IssueTypeRepository issueTypeRepository;
-
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public Product addProduct(AddProductRequest request) {
@@ -197,4 +198,5 @@ public class ProductService implements IProductService {
         product.updateRating();
         productRepository.save(product);
     }
+
 }

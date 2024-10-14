@@ -10,6 +10,7 @@ import com.swpproject.koi_care_system.repository.FeedbackRepository;
 import com.swpproject.koi_care_system.repository.ProductRepository;
 import com.swpproject.koi_care_system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,6 +68,12 @@ public class FeedbackService implements IFeedbackService {
         feedbackRepository.findById(feedbackId).ifPresentOrElse(feedbackRepository::delete,()->{
             throw new RuntimeException("Feedback not found");
         });
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
+    public List<FeedbackDto> findFeedbackByUserId(Long userId) {
+        return feedbackRepository.findFeedbackByUserId(userId).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     private FeedbackDto convertToDto(Feedback feedback) {

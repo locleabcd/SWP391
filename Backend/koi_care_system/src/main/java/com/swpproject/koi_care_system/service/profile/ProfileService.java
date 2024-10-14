@@ -1,6 +1,7 @@
 package com.swpproject.koi_care_system.service.profile;
 import com.swpproject.koi_care_system.dto.UserProfileDto;
 import com.swpproject.koi_care_system.enums.ErrorCode;
+import com.swpproject.koi_care_system.enums.Role;
 import com.swpproject.koi_care_system.exceptions.AppException;
 import com.swpproject.koi_care_system.mapper.UserProfileMapper;
 import com.swpproject.koi_care_system.models.User;
@@ -68,6 +69,12 @@ public class ProfileService implements IProfileService {
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public List<UserProfileDto> getAllProfile(){
         return userProfileRepository.findAll().stream().map(userProfileMapper::mapToUserProfileDto).toList();
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
+    public List<UserProfileDto> getAllMemberProfile() {
+        return userProfileRepository.findUserProfileByRole("MEMBER").stream().map(userProfileMapper::mapToUserProfileDto).toList();
     }
 
     @Override

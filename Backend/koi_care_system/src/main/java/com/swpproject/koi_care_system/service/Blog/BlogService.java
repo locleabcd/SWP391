@@ -37,7 +37,6 @@ public class BlogService implements IBlogService {
     UserRepository userRepository;
     TagRepository tagRepository;
     ImageStorage imageStorage;
-    @Async
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public BlogDto createBlog(BlogCreateRequest blogCreateRequest, String username) throws IOException {
@@ -49,6 +48,9 @@ public class BlogService implements IBlogService {
             blog.setBlogImage(!blogCreateRequest.getFile().isEmpty()?imageStorage.uploadImage(blogCreateRequest.getFile()):"https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
         else
             blog.setBlogImage("https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
+        if (blogCreateRequest.getTagIds() == null || blogCreateRequest.getTagIds().isEmpty()) {
+            throw new RuntimeException("Tags cannot be null");
+        }
         blog.setBlogDate(java.time.LocalDate.now());
         Set<Tag> tags = new HashSet<>();
         for (int tagId : blogCreateRequest.getTagIds()) {
@@ -60,7 +62,6 @@ public class BlogService implements IBlogService {
 
         return blogMapper.mapToBlogDto(blogRepository.save(blog));
     }
-    @Async
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public BlogDto updateBlog(int id, BlogUpdateRequest blogUpdateRequest) {
@@ -80,6 +81,9 @@ public class BlogService implements IBlogService {
                     throw new RuntimeException(e);
                 }
             }
+        if (blogUpdateRequest.getTagIds() == null || blogUpdateRequest.getTagIds().isEmpty()) {
+            throw new RuntimeException("Tags cannot be null");
+        }
         blogMapper.updateBlog(blog, blogUpdateRequest);
         Set<Tag> tags = new HashSet<>();
         for (int tagId : blogUpdateRequest.getTagIds()) {

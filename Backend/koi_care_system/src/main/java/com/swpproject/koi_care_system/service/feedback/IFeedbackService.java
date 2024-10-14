@@ -15,6 +15,6 @@ public interface IFeedbackService {
 
     void deleteFeedback(Long feedbackId);
 
-
+    List<FeedbackDto> findFeedbackByUserId(Long userId);
 
 }

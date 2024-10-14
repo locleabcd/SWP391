@@ -48,6 +48,15 @@ public class FeedbackController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error",INTERNAL_SERVER_ERROR));
         }
     }
+    @GetMapping("/{userId}/all")
+    public ResponseEntity<ApiResponse> getFeedbacksByUserId(@PathVariable Long userId){
+        try{
+            List<FeedbackDto> feedbacks = feedbackService.findFeedbackByUserId(userId);
+            return ResponseEntity.ok(new ApiResponse("Found",feedbacks));
+        }catch (Exception e){
+            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse("Error",INTERNAL_SERVER_ERROR));
+        }
+    }
     @DeleteMapping("/feedback/{id}/delete")
     public ResponseEntity<ApiResponse> deleteFeedbackById(@PathVariable Long id){
         try{

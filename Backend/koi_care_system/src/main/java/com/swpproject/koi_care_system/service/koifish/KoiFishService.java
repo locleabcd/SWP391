@@ -36,12 +36,9 @@ public class KoiFishService implements IKoiFishService {
     @Override
     @PreAuthorize("hasRole('MEMBER')")
     public KoiFishDto addKoiFish(AddKoiFishRequest addKoiFishRequest) throws IOException {
-        if(koiFishRepository.existsByName(addKoiFishRequest.getName())){
-            throw new AlreadyExistsException("A Koi fish with this name already exists");
-        }
         KoiFish koiFish = koiFishMapper.mapToKoiFish(addKoiFishRequest);
         if(addKoiFishRequest.getFile()!=null)
-            koiFish.setImageUrl(!addKoiFishRequest.getFile().isEmpty()?imageStorage.uploadImage(addKoiFishRequest.getFile()):"https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg");
+            koiFish.setImageUrl(imageStorage.uploadImage(addKoiFishRequest.getFile()));
         else
             koiFish.setImageUrl("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg");
         koiFish.setStatus("Alive");

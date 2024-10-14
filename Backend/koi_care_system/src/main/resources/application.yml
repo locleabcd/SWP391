@@ -1,0 +1,39 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+  error:
+    include-message: always
+  http2:
+    enabled: true
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+spring:
+  profiles:
+    active: dev
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .html
+    cache: false
+  main:
+    lazy-initialization: true
+
+jwt:
+  signerKey: "1Xt6QiR02nO30C3YVxkkG/qxQQ9sECaUY44pi2Do2SgF/OACYM7RKc/M+ED95TsX"
+vnpay:
+  tmncode: 7FZC7HJY
+  hashsecret: XVFXGIYGHYIG81N5BF6HSBZ9GV5GS7JN
+  payurl: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+  returnurl: http://localhost:8080/vnpay_return
+  apiurl: https://sandbox.vnpayment.vn/merchant_webapi/merchant.html
+payment:
+  vnPay:
+    url: https://sandbox.vnpayment.vn/paymentv2/vpcpay.html
+    tmnCode: VB4QBYHD
+    secretKey: UO27N2WHXZB1I1UYQFVW3BQIPF2URZDT
+    returnUrl: https://koicaresystemv3.azurewebsites.net/api/payment/vn-pay-return
+    version: "2.1.0"
+    command: "pay"
+    orderType: other
