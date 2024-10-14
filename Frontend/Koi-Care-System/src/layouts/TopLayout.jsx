@@ -19,7 +19,7 @@ function TopLayout({ text, textName, links }) {
       <div>
         {textName ? <div className='text-3xl mb-2'>{textName}</div> : <div className='text-3xl mb-2'>{text}</div>}
         <div className='flex gap-3 items-center justify-center'>
-          <Link to='/member' className='text-gray-400'>
+          <Link to='/member/dashboard' className='text-gray-400'>
             Home
           </Link>
           <svg

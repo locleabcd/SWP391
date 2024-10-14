@@ -309,7 +309,7 @@ function MyPond() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='fixed z-50 bottom-2 right-5 text-lg text-black outline-none rounded-r-xl bg-custom-layout-light shadow-lg size-16 p-2 cursor-pointer'
+              className='fixed z-50 bottom-2 right-5 text-lg text-black outline-none rounded-r-xl bg-custom-left-bar shadow-lg size-16 p-2 cursor-pointer'
               onClick={() => {
                 toggleAddFormVisibility()
               }}
@@ -327,7 +327,7 @@ function MyPond() {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed z-50 bottom-2 right-[84px] text-lg shadow-lg text-black rounded-l-xl bg-custom-layout-light size-16 p-2 cursor-pointer'
+                className='fixed z-50 bottom-2 right-[84px] text-lg shadow-lg text-black rounded-l-xl bg-custom-left-bar size-16 p-2 cursor-pointer'
               >
                 <path
                   strokeLinecap='round'
@@ -494,7 +494,7 @@ function MyPond() {
                         height='800px'
                         viewBox='-8 0 19 19'
                         xmlns='http://www.w3.org/2000/svg'
-                        className='blinking-svg absolute top-0 text-lg shadow-lg text-black rounded-tl-xl bg-custom-layout-light size-14 p-2 cursor-pointer'
+                        className='blinking-svg absolute top-0 text-lg shadow-lg text-white rounded-tl-xl bg-red-500 size-14 p-2 cursor-pointer'
                       >
                         <path d='M2.828 15.984A1.328 1.328 0 1 1 1.5 14.657a1.328 1.328 0 0 1 1.328 1.327zM1.5 13.244a1.03 1.03 0 0 1-1.03-1.03V2.668a1.03 1.03 0 0 1 2.06 0v9.548a1.03 1.03 0 0 1-1.03 1.029z' />
                       </svg>

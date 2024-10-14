@@ -39,7 +39,7 @@ function WaterParameters() {
   const [saltStyle, setSaltStyle] = useState({})
   const [totalChlorineStyle, setTotalChlorineStyle] = useState({})
   const [showInfo, setShowInfo] = useState({})
-  
+
   const getPond = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -92,6 +92,7 @@ function WaterParameters() {
       getParameter(userId)
     }
   }, [])
+
   const toggleButtons = () => {
     setShowButtons(!showButtons)
   }
@@ -135,10 +136,10 @@ function WaterParameters() {
         }
       )
 
-      setIsAddFormVisible(false);    // Đóng form sau khi tạo thành công
-      const userId = localStorage.getItem('id');
-      getParameter(userId);          // Gọi lại getParameter để cập nhật dữ liệu mới
-      reset();       
+      setIsAddFormVisible(false) // Đóng form sau khi tạo thành công
+      const userId = localStorage.getItem('id')
+      getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
+      reset()
     } catch (error) {
       console.error('Error during parameter creation: ', error)
       alert(`Error: ${error.message}`) // Show error message to the user
@@ -185,10 +186,10 @@ function WaterParameters() {
           }
         }
       )
-      setIsEditFormVisible(false);   // Đóng form sau khi cập nhật thành công
-      const userId = localStorage.getItem('id');
-      getParameter(userId);          // Gọi lại getParameter để cập nhật dữ liệu mới
-      reset();         
+      setIsEditFormVisible(false) // Đóng form sau khi cập nhật thành công
+      const userId = localStorage.getItem('id')
+      getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
+      reset()
     } catch (error) {
       console.log(error)
     } finally {
@@ -208,10 +209,10 @@ function WaterParameters() {
           Authorization: `Bearer ${token}`
         }
       })
-      setIsEditFormVisible(false);   // Đóng form sau khi cập nhật thành công
-    const userId = localStorage.getItem('id');
-    getParameter(userId);          // Gọi lại getParameter để cập nhật dữ liệu mới
-    reset();         
+      setIsEditFormVisible(false) // Đóng form sau khi cập nhật thành công
+      const userId = localStorage.getItem('id')
+      getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
+      reset()
     } catch (error) {
       console.error('Error deleting paramter:', error)
     } finally {
@@ -633,7 +634,7 @@ function WaterParameters() {
       [inputName]: !prevState[inputName]
     }))
   }
-  
+
   return (
     <div>
       <div className='h-screen flex'>
