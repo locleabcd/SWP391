@@ -12,6 +12,7 @@ import { useDarkMode } from '../../../hooks/DarkModeContext'
 function Promotion() {
   const { isDarkMode } = useDarkMode()
   const [promotions, setPromotion] = useState([])
+  const [products, setProducts]= useState([])
   // const [showButtons, setShowButtons] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [sortConfig, setSortConfig] = useState({ key: '', direction: '' })
@@ -40,7 +41,28 @@ function Promotion() {
   useEffect(() => {
     getPromotion()
   }, [])
+  const getProduct = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
 
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/products/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setProducts(res.data.data)
+      console.log(res.data.data)
+    } catch (error) {
+      console.log('Error fetching tags:', error)
+    }
+  }
+  useEffect(() => {
+    getProduct()
+  }, [])
   const deletePromotion = async (id) => {
     const isConfirmed = window.confirm('Are you sure to delete promotion')
     if (!isConfirmed) {

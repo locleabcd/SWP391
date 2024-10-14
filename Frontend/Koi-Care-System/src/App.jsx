@@ -68,12 +68,15 @@ import ViewUser from './pages/Shop/User/ViewUser'
 import Pricing from './components/Pricing/Pricing'
 import PaymentSuccess from './pages/Member/Recommendations/PaymentSuccess'
 import PaymentError from './pages/Member/Recommendations/PaymentError'
+import ShopAD from './pages/Admin/ManageUsers/ShopAD'
+import CustomerAD from './pages/Admin/ManageUsers/CustomerAD'
+import ViewUserAD from './pages/Admin/ManageUsers/ViewUserAD'
 import MyPondIssue from './pages/Member/MyPond/MyPondIssue'
 import UserDetail from './pages/Shop/User/UserDetail'
 import OrderShop from './pages/Shop/Order/Order'
 import PaymentShop from './pages/Shop/Payment/Payment'
 import DashboardShop from './pages/Shop/Dashboard/Dashboard'
-
+import ProfileShop from './pages/Shop/ShopAccount/ProfileShop'
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -527,6 +530,18 @@ function App() {
       element: <Pricing />
     },
     {
+      path: path.shopAD,
+      element: <ShopAD/>
+    },
+    {
+      path: path.customerAD,
+      element: <CustomerAD/>
+    },
+    {
+      path: path.viewUserAD,
+      element: <ViewUserAD/>
+    },
+    {
       path: path.orderShop,
       element: <OrderShop />
     },
@@ -537,7 +552,12 @@ function App() {
     {
       path: path.dashboardShop,
       element: <DashboardShop />
+    },
+    {
+      path: path.profileShop,
+      element: <ProfileShop/>
     }
+    
   ])
 
   const data = [
