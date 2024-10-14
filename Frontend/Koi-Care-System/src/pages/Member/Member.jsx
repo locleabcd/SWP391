@@ -1,15 +1,16 @@
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import Header from '../../components/Member/Header'
 import LeftSideBar from '../../components/Member/LeftSideBar'
+import { useParams } from 'react-router-dom'
+import { useEffect } from 'react'
 
 function Member() {
   const { isDarkMode } = useDarkMode()
-
-  // eslint-disable-next-line no-undef
-  const token = response.headers['authorization']
-  if (token) {
-    localStorage.setItem('token', token.replace('Bearer ', ''))
-  }
+  const [searchParams] = useParams()
+  const token = searchParams.get('token')
+  useEffect(() => {
+    localStorage.setItem('token', token)
+  }, [])
 
   return (
     <div>
