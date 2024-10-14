@@ -232,6 +232,13 @@ Over 28°C is not a good temperature to feed at!`
       setSelectedSize('low') // Reset to low if the temperature requires it
     }
   }, [selectedTemperature, selectedSize])
+  useEffect(() => {
+    if (ponds.length === 1) {
+        const pond = ponds[0];
+        setSelectedPond(pond);
+        getFishes(pond.id); // Gọi hàm để lấy cá cho hồ đầu tiên
+    }
+}, [ponds]);
   return (
     <div>
       <div className='h-screen flex'>
@@ -245,6 +252,7 @@ Over 28°C is not a good temperature to feed at!`
           <div className='py-5 px-[30px] mx-auto'>
             <TopLayout text='Food Calculator' />
             <div className='p-4 text-lg'>
+              
               <label htmlFor='ponds'>Select a Pond:</label>
               <select
                 id='ponds'
@@ -252,7 +260,7 @@ Over 28°C is not a good temperature to feed at!`
                 value={selectedPond ? selectedPond.id : 'all'} // 'all' là giá trị mặc định nếu chưa có pond nào được chọn
                 onChange={handlePondChange}
               >
-                <option value='all' disabled>
+                <option value='all' disabled >
                   All Ponds
                 </option>
                 {ponds.map((pond) => (
@@ -265,7 +273,7 @@ Over 28°C is not a good temperature to feed at!`
                 {fishes.length > 0 ? (
                   <div>
                     <p>
-                      Total Fish Weight: <strong>{totalWeight}g</strong>
+                      Total Fish Weight: <strong>{totalWeight.toFixed(2)}g</strong>
                     </p>
                   </div>
                 ) : (

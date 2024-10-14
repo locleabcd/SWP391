@@ -355,26 +355,24 @@ function LeftSideBar() {
         </div>
 
         <div className={`mt-auto w-full p-4 flex justify-between items-center ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}>
-          {/* User avatar, name, and role */}
-          <div className="card-content flex items-center">
-            <img src={user.avatar || 'default-avatar.png'} alt="User Avatar" className="w-12 h-12 rounded-full object-cover border-2 border-gray-300" />
-            <div className="ml-3">
-              <p className="font-semibold text-lg text-black">{user.name || 'User Name'}</p>
-              <p className="text-sm text-gray-500">{user.role || 'User Role'}</p>
-            </div>
-          </div>
-
-          {/* Logout button */}
-          <Link onClick={handleLogout} to="/login">
-            <IoPowerOutline 
-              className="text-2xl text-gray-500 hover:text-red-500 transition-colors duration-200 cursor-pointer"
-              title="Logout"
-            />
-          </Link>
+          
+      {/* User avatar, name, and role */}
+     
+      <div className="card-content flex items-center">
+        
+        <img src={user.avatar || 'default-avatar.png'} alt="User Avatar" className="w-12 h-12 rounded-full object-cover border-2 border-gray-300" />
+        <div className="ml-3">
+          <p className="font-semibold text-lg text-black">{user.name || 'User Name'}</p>
+          <p className="text-sm text-gray-500">{user.role || 'User Role'}</p>
         </div>
-
-
-
+      </div>
+      <Link onClick={handleLogout} to="/login"  >
+        <IoPowerOutline 
+          className="text-2xl text-gray-500 hover:text-red-500 transition-colors duration-200 cursor-pointer"
+          title="Logout"
+        />
+      </Link>
+      </div>
       </div>
     </div>
   )

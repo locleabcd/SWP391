@@ -314,7 +314,9 @@ const sortParameter = (order, field) => {
     // Thay đổi style dựa vào loại và giá trị
     switch (type) {
         case 'nitrate':
-            if (numericValue <= 20) {
+            if (numericValue < 0 || numericValue > 500) {
+                newStyle = { border: '1px solid blue', color: 'blue' };
+            } else if (numericValue <= 20) {
                 newStyle = { border: '1px solid green', color: 'green' };
             } else if (numericValue <= 80) {
                 newStyle = { border: '1px solid orange', color: 'orange' };
@@ -324,7 +326,9 @@ const sortParameter = (order, field) => {
             break;
 
         case 'nitrite':
-            if (numericValue <= 0.1) {
+            if (numericValue < 0 || numericValue > 50) {
+                newStyle = { border: '1px solid blue', color: 'blue' };
+            } else if (numericValue <= 0.1) {
                 newStyle = { border: '1px solid green', color: 'green' };
             } else if (numericValue <= 0.3) {
                 newStyle = { border: '1px solid orange', color: 'orange' };
@@ -334,7 +338,9 @@ const sortParameter = (order, field) => {
             break;
 
         case 'phosphate':
-            if (numericValue <= 0.035) {
+            if (numericValue < 0 || numericValue > 50) {
+                newStyle = { border: '1px solid blue', color: 'blue' };
+            } else if (numericValue <= 0.035) {
                 newStyle = { border: '1px solid green', color: 'green' };
             } else if (numericValue <= 1) {
                 newStyle = { border: '1px solid orange', color: 'orange' };
@@ -344,7 +350,9 @@ const sortParameter = (order, field) => {
             break;
 
         case 'ammonium':
-            if (numericValue <= 0.1) {
+            if (numericValue < 0 || numericValue > 50) {
+                newStyle = { border: '1px solid blue', color: 'blue' };
+            } else if (numericValue <= 0.1) {
                 newStyle = { border: '1px solid green', color: 'green' };
             } else if (numericValue <= 1) {
                 newStyle = { border: '1px solid orange', color: 'orange' };
@@ -354,19 +362,21 @@ const sortParameter = (order, field) => {
             break;
 
         case 'hardness':
-            if (numericValue <= 21) {
+            if (numericValue < 0 || numericValue > 50) {
+                newStyle = { border: '1px solid blue', color: 'blue' };
+            } else if (numericValue <= 21) {
                 newStyle = { border: '1px solid green', color: 'green' };
             } else if (numericValue <= 50) {
                 newStyle = { border: '1px solid orange', color: 'orange' };
-            } else {
-                newStyle = { border: '1px solid red', color: 'red' };
             }
             break;
 
         case 'oxygen':
-            if (numericValue > 6.5) {
+            if (numericValue < 0 || numericValue > 50) {
+                newStyle = { border: '1px solid blue', color: 'blue' };
+            } else if (numericValue > 6.5) {
                 newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue > 6) {
+            } else if (numericValue >= 6 && numericValue <= 6.6) {
                 newStyle = { border: '1px solid orange', color: 'orange' };
             } else {
                 newStyle = { border: '1px solid red', color: 'red' };
@@ -374,7 +384,9 @@ const sortParameter = (order, field) => {
             break;
 
         case 'temperature':
-            if (numericValue >= 4 && numericValue <= 26) {
+            if (numericValue < 0 || numericValue > 100) {
+                newStyle = { border: '1px solid blue', color: 'blue' };
+            } else if (numericValue > 4 && numericValue <= 26) {
                 newStyle = { border: '1px solid green', color: 'green' };
             } else if (numericValue === 4 || numericValue === 27 || numericValue === 28) {
                 newStyle = { border: '1px solid orange', color: 'orange' };
@@ -384,7 +396,9 @@ const sortParameter = (order, field) => {
             break;
 
         case 'phValue':
-            if (numericValue >= 6.9 && numericValue <= 8) {
+            if (numericValue < 0 || numericValue > 14) {
+                newStyle = { border: '1px solid blue', color: 'blue' };
+            } else if (numericValue >= 6.9 && numericValue <= 8) {
                 newStyle = { border: '1px solid green', color: 'green' };
             } else {
                 newStyle = { border: '1px solid red', color: 'red' };
@@ -392,9 +406,11 @@ const sortParameter = (order, field) => {
             break;
 
         case 'carbonHardness':
-            if (numericValue >= 4) {
+            if (numericValue < 0 || numericValue > 50) {
+                newStyle = { border: '1px solid blue', color: 'blue' };
+            } else if (numericValue >= 4 && numericValue <= 49) {
                 newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue >= 1) {
+            } else if (numericValue >= 1 && numericValue < 4) {
                 newStyle = { border: '1px solid orange', color: 'orange' };
             } else {
                 newStyle = { border: '1px solid red', color: 'red' };
@@ -402,15 +418,21 @@ const sortParameter = (order, field) => {
             break;
 
         case 'carbonDioxide':
-            if (numericValue >= 4 && numericValue <= 35) {
+            if (numericValue < 0 || numericValue > 99999999) {
+                newStyle = { border: '1px solid blue', color: 'blue' };
+            } else if (numericValue > 4 && numericValue <= 35) {
                 newStyle = { border: '1px solid green', color: 'green' };
+            } else if ((numericValue >= 1 && numericValue < 4) || numericValue < 150) {
+                newStyle = { border: '1px solid orange', color: 'orange' };
             } else {
                 newStyle = { border: '1px solid red', color: 'red' };
             }
             break;
 
         case 'salt':
-            if (numericValue <= 0.1) {
+            if (numericValue < 0 || numericValue > 1.5) {
+                newStyle = { border: '1px solid blue', color: 'blue' };
+            } else if (numericValue <= 0.1) {
                 newStyle = { border: '1px solid green', color: 'green' };
             } else if (numericValue <= 0.6) {
                 newStyle = { border: '1px solid orange', color: 'orange' };
@@ -420,9 +442,11 @@ const sortParameter = (order, field) => {
             break;
 
         case 'totalChlorine':
-            if (numericValue <= 0.001) {
+            if (numericValue < 0 || numericValue > 5) {
+                newStyle = { border: '1px solid blue', color: 'blue' };
+            } else if (numericValue > 0 && numericValue <= 0.001) {
                 newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue <= 0.02) {
+            } else if (numericValue > 0.001 && numericValue < 0.02) {
                 newStyle = { border: '1px solid orange', color: 'orange' };
             } else {
                 newStyle = { border: '1px solid red', color: 'red' };
@@ -435,6 +459,7 @@ const sortParameter = (order, field) => {
 
     return newStyle;
 };
+
 
   const handleChange = (e, type) => {
     const value = e.target.value
@@ -504,7 +529,6 @@ const sortParameter = (order, field) => {
             }
           }
           break
-        // Add cases for other input types as needed
         case 'phosphate':
           if (numericValue < 0 || numericValue > 50) {
             newStyle = {

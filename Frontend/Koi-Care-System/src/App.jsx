@@ -68,7 +68,9 @@ import ViewUser from './pages/Shop/User/ViewUser'
 import Pricing from './components/Pricing/Pricing'
 import PaymentSuccess from './pages/Member/Recommendations/PaymentSuccess'
 import PaymentError from './pages/Member/Recommendations/PaymentError'
-
+import ShopAD from './pages/Admin/ManageUsers/ShopAD'
+import CustomerAD from './pages/Admin/ManageUsers/CustomerAD'
+import ViewUserAD from './pages/Admin/ManageUsers/ViewUserAD'
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -508,7 +510,20 @@ function App() {
     {
       path: path.pricing,
       element: <Pricing />
+    },
+    {
+      path: path.shopAD,
+      element: <ShopAD/>
+    },
+    {
+      path: path.customerAD,
+      element: <CustomerAD/>
+    },
+    {
+      path: path.viewUserAD,
+      element: <ViewUserAD/>
     }
+    
   ])
 
   const data = [
