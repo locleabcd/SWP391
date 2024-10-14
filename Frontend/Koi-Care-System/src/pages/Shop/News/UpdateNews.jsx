@@ -9,6 +9,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated'
+
+const animatedComponents = makeAnimated();
 
 function UpdateNews() {
   const { id } = useParams()
@@ -18,7 +22,7 @@ function UpdateNews() {
   const [isLoading, setIsLoading] = useState(true)
   const [blogData, setBlogData] = useState(null)
   const [tags, setTags] = useState([]) // To hold available tags
-  const [selectedTagIds, setSelectedTagIds] = useState([]) // To hold selected tag IDs
+  const [selectedTags, setSelectedTags] = useState([]) // To hold selected tag IDs
 
   const {
     register,
@@ -40,6 +44,7 @@ function UpdateNews() {
       })
       setBlogData(res.data.data)
       reset(res.data.data)
+      setSelectedTags(res.data.data.tags.map(tag => ({ value: tag.tagId, label: tag.tagName })))
     } catch (error) {
       console.error('Error fetching blog:', error)
       toast.error('Failed to fetch blog details.')
@@ -65,8 +70,10 @@ function UpdateNews() {
         }
       })
 
-      setTags(res.data.data)
-      console.log(res.data.data)
+      setTags(res.data.data.map(tag => ({
+        value: tag.tagId, 
+        label: tag.tagName 
+      })))
     } catch (error) {
       console.log('Error fetching tags:', error)
     }
@@ -87,10 +94,9 @@ function UpdateNews() {
       const formData = new FormData()
       formData.append('blogTitle', data.blogTitle)
       formData.append('blogContent', data.blogContent)
-      // formData.append('blogImage', data.blogImage)
       formData.append('blogDate', data.blogDate)
-      selectedTagIds.forEach((tagId) => {
-        formData.append('tagIds', tagId)
+      selectedTags.forEach(tag => {
+        formData.append('tagIds', tag.value)
       })
       if (data.file && data.file.length > 0) {
         formData.append('file', data.file[0])
@@ -118,34 +124,17 @@ function UpdateNews() {
     updateBlog(data)
   }
 
-  const handleTagChange = (tagId) => {
-    setSelectedTagIds((prevSelected) => {
-      if (prevSelected.includes(tagId)) {
-        // If already selected, remove it
-        return prevSelected.filter((id) => id !== tagId)
-      } else {
-        // Otherwise, add it
-        return [...prevSelected, tagId]
-      }
-    })
-  }
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
-      <div
-        className={`relative ${
-          isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'
-        } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
-      >
+      <div className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} flex-1 flex-col overflow-y-auto overflow-x-hidden`}>
         <Header />
         <div className='py-5 pb-10 px-[30px] mx-auto'>
           <TopLayout text='News' textName='Update News' links='shop/shopNews' />
           <div className='bg-white p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} className='mt-5 space-y-4'>
               <div>
-                <label htmlFor='blogTitle' className='block text-sm font-bold'>
-                  Blog Title
-                </label>
+                <label htmlFor='blogTitle' className='block text-sm font-bold mb-2'>Blog Title</label>
                 <input
                   type='text'
                   id='blogTitle'
@@ -156,9 +145,21 @@ function UpdateNews() {
               </div>
 
               <div>
-                <label htmlFor='blogContent' className='block text-sm font-bold'>
-                  Blog Content
-                </label>
+                <label className='block text-sm font-bold mb-2'>Select Tags</label>
+                <Select
+                  isMulti
+                  options={tags}
+                  value={selectedTags}
+                  onChange={setSelectedTags}
+                  className={errors.tags ? 'border-red-500' : 'border-gray-300'}
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                />
+                {selectedTags.length === 0 && <p className='text-red-500 text-xs mt-1'>At least one tag is required</p>}
+              </div>
+
+              <div>
+                <label htmlFor='blogContent' className='block text-sm font-bold mb-2'>Blog Content</label>
                 <textarea
                   id='blogContent'
                   {...register('blogContent', { required: 'Blog content is required' })}
@@ -179,51 +180,24 @@ function UpdateNews() {
                   className={`mt-1 p-2 border ${errors.blogDate ? 'border-red-500' : 'border-gray-300'} rounded w-full`}
                 />
                 {errors.blogDate && <p className='text-red-500 text-sm'>{errors.blogDate.message}</p>}
-              </div>
-
-              <div className='mb-4'>
-                <label className='block text-sm font-medium mb-2'>Select Tags</label>
-                <div>
-                  {tags.length > 0 ? (
-                    tags.map((tag) => (
-                      <div key={tag.id} className='flex items-center mb-2'>
-                        <input
-                          type='checkbox'
-                          id={`tag-${tag.tagId}`}
-                          value={tag.id}
-                          checked={selectedTagIds.includes(tag.tagId)}
-                          onChange={() => handleTagChange(tag.tagId)}
-                          className='mr-2'
-                        />
-                        <label htmlFor={`tag-${tag.tagId}`} className='text-sm'>
-                          {tag.tagName}
-                        </label>
-                      </div>
-                    ))
-                  ) : (
-                    <p>Loading tags...</p>
-                  )}
-                </div>
-                {selectedTagIds.length === 0 && (
-                  <p className='text-red-500 text-xs mt-1'>At least one tag is required</p>
-                )}
-              </div>
+              </div>           
 
               <div>
-                <label htmlFor='file' className='block text-sm font-bold'>
-                  Upload New Image
-                </label>
+                <label htmlFor='file' className='block text-sm font-bold mb-2'>Upload Blog Image File</label>
                 <input
                   type='file'
                   id='file'
+                  accept='image/*'
+                  className={`w-full p-2 border rounded-md ${errors.file ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('file')}
-                  className='mt-1 p-2 border border-gray-300 rounded w-full'
                 />
+                {errors.file && <p className='text-red-500 text-xs mt-1'>{errors.file.message}</p>}
               </div>
+
               <button
                 type='submit'
+                className={`px-4 py-2 bg-blue-600 text-white rounded-md ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
                 disabled={isSubmitting}
-                className={`mt-4 p-2 rounded ${isSubmitting ? 'bg-gray-400' : 'bg-blue-500 hover:bg-blue-600'} text-white`}
               >
                 {isSubmitting ? 'Updating...' : 'Update Blog'}
               </button>
@@ -236,3 +210,6 @@ function UpdateNews() {
 }
 
 export default UpdateNews
+
+
+

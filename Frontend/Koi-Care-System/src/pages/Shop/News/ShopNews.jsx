@@ -112,7 +112,7 @@ function ShopNews() {
     {
       field: 'tags',
       headerName: 'Tag',
-      width: 250,
+      width: 300,
       renderCell: (params) => {
         const tags = params.row.tags || []; 
         return (

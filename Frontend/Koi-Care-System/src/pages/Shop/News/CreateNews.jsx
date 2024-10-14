@@ -9,6 +9,10 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { useForm } from 'react-hook-form'
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated';
+
+const animatedComponents = makeAnimated();
 
 function CreateNews() {
   const { isDarkMode } = useDarkMode()
@@ -16,7 +20,7 @@ function CreateNews() {
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
   const [tags, setTags] = useState([])
-  const [selectedTagIds, setSelectedTagIds] = useState([])
+  const [selectedTags, setSelectedTags] = useState([])
 
   const {
     register,
@@ -38,8 +42,11 @@ function CreateNews() {
         }
       })
 
-      setTags(res.data.data)
-      console.log(res.data.data)
+      setTags(res.data.data.map(tag => ({
+        value: tag.tagId, 
+        label: tag.tagName 
+      })))
+      console.log(tags)
     } catch (error) {
       console.log('Error fetching tags:', error)
     }
@@ -65,8 +72,8 @@ function CreateNews() {
       formData.append('blogTitle', data.blogTitle)
       formData.append('blogContent', data.blogContent)
       formData.append('blogImage', data.blogImage)
-      selectedTagIds.forEach((tagId) => {
-        formData.append('tagIds', tagId)
+      selectedTags.forEach((tag) => {
+        formData.append('tagIds', tag.value) // Use tag.value for selected tag ID
       })
       formData.append('file', data.file[0])
 
@@ -88,16 +95,8 @@ function CreateNews() {
     }
   }
 
-  const handleTagChange = (tagId) => {
-    setSelectedTagIds((prevSelected) => {
-      if (prevSelected.includes(tagId)) {
-        // If already selected, remove it
-        return prevSelected.filter((id) => id !== tagId)
-      } else {
-        // Otherwise, add it
-        return [...prevSelected, tagId]
-      }
-    })
+  const handleChange = (selectedTag) => {
+    setSelectedTags(selectedTag)
   }
 
   return (
@@ -127,6 +126,22 @@ function CreateNews() {
               </div>
 
               <div className='mb-4'>
+                <label htmlFor='tagId' className='block text-sm font-medium mb-2'>Select Tags</label>
+                <Select
+                  isMulti
+                  options={tags}
+                  value={selectedTags}
+                  onChange={handleChange}
+                  className={errors.tags ? 'border-red-500' : 'border-gray-300'}
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                />
+                {selectedTags.length === 0 && (
+                  <p className='text-red-500 text-xs mt-1'>At least one tag is required</p>
+                )}
+              </div>
+
+              <div className='mb-4'>
                 <label htmlFor='blogContent' className='block text-sm font-medium mb-2'>
                   Blog Content
                 </label>
@@ -134,7 +149,7 @@ function CreateNews() {
                   id='blogContent'
                   className={`w-full p-2 border rounded-md ${errors.blogContent ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('blogContent', { required: 'Blog Content is required' })}
-                  rows={20}
+                  rows={10}
                 />
                 {errors.blogContent && <p className='text-red-500 text-xs mt-1'>{errors.blogContent.message}</p>}
               </div>
@@ -146,35 +161,7 @@ function CreateNews() {
                   className={`w-full p-2 border rounded-md ${errors.blogImage ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('blogImage', { required: false })}
                 />
-              </div>
-
-              <div className='mb-4'>
-                <label className='block text-sm font-medium mb-2'>Select Tags</label>
-                <div>
-                  {tags.length > 0 ? (
-                    tags.map((tag) => (
-                      <div key={tag.id} className='flex items-center mb-2'>
-                        <input
-                          type='checkbox'
-                          id={`tag-${tag.tagId}`}
-                          value={tag.id}
-                          checked={selectedTagIds.includes(tag.tagId)}
-                          onChange={() => handleTagChange(tag.tagId)}
-                          className='mr-2'
-                        />
-                        <label htmlFor={`tag-${tag.tagId}`} className='text-sm'>
-                          {tag.tagName}
-                        </label>
-                      </div>
-                    ))
-                  ) : (
-                    <p>Loading tags...</p>
-                  )}
-                </div>
-                {selectedTagIds.length === 0 && (
-                  <p className='text-red-500 text-xs mt-1'>At least one tag is required</p>
-                )}
-              </div>
+              </div>             
 
               <div className='mb-4'>
                 <label htmlFor='file' className='block text-sm font-medium mb-2'>
