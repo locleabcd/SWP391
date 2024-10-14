@@ -19,7 +19,7 @@ function Order() {
   const [orders, setOrders] = useState([])
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
-  // const [showButtons, setShowButtons] = useState(false)
+
   const formatDateTime = (inputDate) => {
     const date = new Date(inputDate);
     const day = String(date.getDate()).padStart(2, '0')
@@ -28,7 +28,7 @@ function Order() {
     const hours = String(date.getHours()).padStart(2, '0')
     const minutes = String(date.getMinutes()).padStart(2, '0')
     const seconds = String(date.getSeconds()).padStart(2, '0')
-    return `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
+    return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`
   }
 
   const handleShowDetails = (ord) => {

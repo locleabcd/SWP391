@@ -34,17 +34,6 @@ function Payment() {
     return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`
   }
 
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'COMPLETED':
-        return 'text-white bg-green-500 '
-      case 'CANCELLED':
-        return 'text-red-500 bg-red-200'
-      default:
-        return 'text-gray-500 bg-gray-200'
-    }
-  }
-
   const formatCurrency = (amount) => amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ"
 
   const handleCloseModal = () => {
@@ -135,6 +124,22 @@ function Payment() {
       )
     }  
   ]
+
+  const exportToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(payments.map(pay => ({
+      'Order ID': pay.orderId,
+      'invoiceCode': pay.invoiceCode,
+      'Create Date': formatDateTime(pay.createDate),
+      'Transaction Code': pay.transactionCode, 
+      'Amount': formatCurrency(pay.amount),
+      'Status': pay.status,
+    })))
+
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Payments')
+
+    XLSX.writeFile(workbook, 'payments.xlsx')
+  }
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
@@ -145,7 +150,9 @@ function Payment() {
         <div className='py-5 px-[30px] mx-auto'>
           <TopLayout text='Payment' />
           <div className='w-full flex justify-end items-center relative'>
-            
+            <button onClick={exportToExcel} className="mb-4 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md">
+                Download Excel
+              </button>     
           </div>
           <Paper sx={{ height: 670}}>
               <DataGrid
