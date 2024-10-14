@@ -76,7 +76,7 @@ import UserDetail from './pages/Shop/User/UserDetail'
 import OrderShop from './pages/Shop/Order/Order'
 import PaymentShop from './pages/Shop/Payment/Payment'
 import DashboardShop from './pages/Shop/Dashboard/Dashboard'
-
+import ProfileShop from './pages/Shop/ShopAccount/ProfileShop'
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -552,6 +552,10 @@ function App() {
     {
       path: path.dashboardShop,
       element: <DashboardShop />
+    },
+    {
+      path: path.profileShop,
+      element: <ProfileShop/>
     }
     
   ])

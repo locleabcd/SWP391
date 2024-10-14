@@ -1,13 +1,13 @@
-/* eslint-disable no-unused-vars */
 import axios from 'axios';
-import Header from '../../../../components/Member/Header';
-import LeftSideBar from '../../../../components/Member/LeftSideBar';
+import Header from '../../../components/Shop/Header';
+import LeftSideBar from '../../../components/Shop/LeftSideBar';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
-import { useDarkMode } from '../../../../hooks/DarkModeContext';
+import { useDarkMode } from '../../../hooks/DarkModeContext';
 
-function Profile() {
+
+function ProfileShop() {
   const { isDarkMode } = useDarkMode();
   const [users, setUsers] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -369,4 +369,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default ProfileShop ;

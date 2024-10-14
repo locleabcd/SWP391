@@ -70,7 +70,8 @@ const path = {
   userDetail: '/shop/viewUser/:id',
   paymentShop: '/shop/payment',
   orderShop: '/shop/order',
-  dashboardShop: '/shop/dashboard'
+  dashboardShop: '/shop/dashboard',
+  profileShop:'/shop/profileShop'
 }
 
 export default path
