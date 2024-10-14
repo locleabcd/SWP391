@@ -7,6 +7,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
+import { DataGrid } from '@mui/x-data-grid'
+import Paper from '@mui/material/Paper'
+import * as XLSX from 'xlsx'
+import { FaCrown } from "react-icons/fa";
 
 function ViewUser() {
   const { isDarkMode } = useDarkMode()
@@ -22,7 +26,7 @@ function ViewUser() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/all`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/all/member`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -37,6 +41,70 @@ function ViewUser() {
   useEffect(() => {
     getUser()
   }, [])
+
+  const columns = [
+    {
+      field: 'image',
+      headerName: 'Image',
+      width: 120,
+      renderCell: (params) => (
+        <div className='h-full flex items-center'>
+          <img
+          src={params.row.avatar }
+          alt='avatar'
+          className='w-24 h-16 object-cover rounded-md '
+          />
+        </div>     
+      )
+    },
+    { field: 'name', headerName: 'Name', width: 120 },
+    { field: 'email', headerName: 'Email', flex: 1 },
+    { field: 'phone', headerName: 'Phone', width: 120},
+    { field: 'address', headerName: 'Address', flex: 1 },
+    { field: 'createdDate', headerName: 'Create Date', width: 120},
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 120,
+      renderCell: (params) => (
+        <div className='h-full flex justify-center items-center'>
+          <div
+          className={`flex items-center justify-center py-1 px-2 rounded text-sm font-medium
+            ${params.value === 'PREMIUM' ? 'bg-yellow-200 text-yellow-700' : 'bg-gray-200 text-gray-700'}`}
+          >
+            {params.value === 'PREMIUM' ? (
+              <div className='flex gap-1'>
+                <FaCrown className='w-4 h-4'/> 
+                {params.value === 'PREMIUM' ? 'PREMIUM' : 'NORMAL'}
+              </div>           
+            ) : (
+              <div>
+                NORMAL
+              </div>
+            )}       
+          </div>
+        </div>
+        
+      )
+    },
+    {
+      field: 'action',
+      headerName: 'Action',
+      renderCell: (params) => (
+        <div className='flex h-full justify-center items-center'>
+          <Link
+            to={`/shop/viewUser/${params.row.userId}`}
+            className=' p-1 hover:bg-green-500 text-green-500 hover:text-white  rounded-full'
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
+              <path fillRule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0 1 18 9.375v9.375a3 3 0 0 0 3-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 0 0-.673-.05A3 3 0 0 0 15 1.5h-1.5a3 3 0 0 0-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6ZM13.5 3A1.5 1.5 0 0 0 12 4.5h4.5A1.5 1.5 0 0 0 15 3h-1.5Z" clipRule="evenodd" />
+              <path fillRule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375ZM6 12a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V12Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 15a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V15Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 18a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V18Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
+            </svg>
+          </Link>
+        </div>
+      )
+    } 
+  ]
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
@@ -46,72 +114,26 @@ function ViewUser() {
         <Header />
         <div className='py-5 px-[30px] mx-auto'>
           <TopLayout text='Users' />
-          <div className='w-full flex justify-end items-center relative'>
-            <input type='text' className='p-2 border rounded-md mr-4' placeholder='Search' />
-            <div className='cursor-pointer'>
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth={1.5}
-                stroke='currentColor'
-                className='w-8 h-8 text-red-500'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75'
-                />
-              </svg>
-            </div>
-          </div>
-          <div className='overflow-x-auto mt-6'>
-            <table className='min-w-full border-spacing-x-1 border-gray-200'>
-              <thead>
-                <tr className='border-b'>
-                  <th className='py-3 px-2 text-center text-xs font-bold uppercase'>No</th>
-                  <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Image</th>
-                  <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Name</th>
-                  <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Email</th>
-                  <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Phone</th>
-                  <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Address</th>
-                  <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {users.map((user, index) => (
-                  <tr key={user.id}>
-                    <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td>
-                    <td className='py-2 pl-8 border-b border-gray-200'>
-                      <img
-                        src={user.avatar || fallbackImage}
-                        alt='User'
-                        className='w-32 h-32 object-cover self-center rounded-md'
-                      />
-                    </td>                 
-                    <td className='py-2 px-2 text-center border-b border-gray-200'>{user.name}</td>
-                    <td className='py-2 px-2 text-center border-b border-gray-200'>{user.email}</td>
-                    <td className='py-2 px-2 text-center border-b border-gray-200'>{user.phone}</td>
-                    <td className='py-2 px-2 text-center border-b border-gray-200'>{user.address}</td>
-                    <td className='py-2 px-2 text-center border-b border-gray-200'>
-                      <div className='flex justify-center items-center'>
-                        <Link
-                          to={`/shop/viewUser/${user.userId}`}
-                          className=' p-1 hover:bg-green-500 text-green-500 hover:text-white  rounded-full'
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-6">
-                            <path fillRule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0 1 18 9.375v9.375a3 3 0 0 0 3-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 0 0-.673-.05A3 3 0 0 0 15 1.5h-1.5a3 3 0 0 0-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6ZM13.5 3A1.5 1.5 0 0 0 12 4.5h4.5A1.5 1.5 0 0 0 15 3h-1.5Z" clipRule="evenodd" />
-                            <path fillRule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375ZM6 12a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V12Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 15a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V15Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 18a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V18Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75Z" clipRule="evenodd" />
-                          </svg>
-
-                        </Link>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <Paper sx={{ height: 670}}>
+            <DataGrid
+              rows={users}
+              columns={columns}
+              pageSize={10}
+              pageSizeOptions={[5, 10, 20, 50, 100]}
+              rowHeight={80}
+              checkboxSelection
+              disableExtendRowFullWidth
+              getRowId={(row) => row.id}
+              sx={{
+                '& .MuiDataGrid-columnHeaders': {
+                  backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
+                },
+                '& .MuiDataGrid-row:hover': {
+                  backgroundColor: isDarkMode ? '#555' : '#e0e0e0'
+                }
+              }}
+            />
+          </Paper>         
         </div>
       </div>
     </div>

@@ -212,7 +212,7 @@ function Product() {
             </div>           
           </div>
           
-          <Paper sx={{ height: 670, width: '100%' }}>
+          <Paper sx={{ height: 670}}>
             <DataGrid
               rows={products}
               columns={columns}

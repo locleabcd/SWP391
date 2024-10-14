@@ -99,7 +99,7 @@ function ShopNews() {
         <div className='h-full flex items-center'>
           <img
             src={params.row.blogImage } 
-            alt=''
+            alt='blog'
             className='w-24 h-16 object-cover rounded-md'
           />
         </div>
@@ -236,7 +236,7 @@ function ShopNews() {
                 Download Excel
               </button>            
             </div>
-            <Paper sx={{ height: 670, width: '100%' }}>
+            <Paper sx={{ height: 670}}>
               <DataGrid
                 rows={blogs}
                 columns={columns}

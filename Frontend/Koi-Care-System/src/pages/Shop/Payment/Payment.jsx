@@ -160,7 +160,7 @@ function Payment() {
                       <p className='mb-3 flex items-center gap-2'><GrNotes className='text-2xl '/><strong>Note:</strong> {selectedOrder.note}</p>                     
                       <p className='mb-3 flex items-center gap-2'><FaUser  className='text-2xl '/><strong>RecipientName:</strong> {selectedOrder.recipientName}</p>             
                       <p className='mb-3 flex items-center gap-2'><MdPendingActions className='text-2xl text-red-500'/><strong>Status:</strong> {selectedOrder.status}</p> 
-                      <p className='mb-3 flex items-center gap-2'><FaMoneyBillWave className='text-2xl text-green-500'/> <strong>Total Amount:</strong> {selectedOrder.totalAmount} VND</p>
+                      <p className='mb-3 flex items-center gap-2'><FaMoneyBillWave className='text-2xl text-green-500'/> <strong>Total Amount:</strong> {formatCurrency(selectedOrder.totalAmount)}</p>
                     </div>   
                     
                     <div className='Order-Table overflow-auto p-4 mt-4 shadow-lg border rounded-lg'>
@@ -180,7 +180,7 @@ function Payment() {
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{item.productName}</td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{item.quantity}</td>                             
-                              <td className='py-2 px-1 text-center border-b border-gray-200'>{formatCurrency(item.price)}</td>
+                              <td className='py-2 px-1 text-center border-b border-gray-200'>{formatCurrency(item.price * item.quantity)}</td>
                             </tr>
                           ))}
                         </tbody>

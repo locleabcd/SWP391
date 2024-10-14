@@ -75,7 +75,7 @@ function Supplier() {
       renderCell: (params) => (
         <div className='flex h-full justify-center items-center'>
           <Link
-            to={`/shop/tag/${params.row.id}`}
+            to={`/shop/supplier/${params. row.id}`}
             className='p-1 hover:bg-green-500 text-green-500 hover:text-white rounded-full'
           >
             <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-5'>

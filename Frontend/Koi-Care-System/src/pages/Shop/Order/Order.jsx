@@ -165,7 +165,7 @@ function Order() {
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{item.productName}</td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>{item.quantity}</td>                             
-                              <td className='py-2 px-1 text-center border-b border-gray-200'>{formatCurrency(item.price)}</td>
+                              <td className='py-2 px-1 text-center border-b border-gray-200'>{formatCurrency(item.price * item.quantity)}</td>
                             </tr>
                           ))}
                         </tbody>
