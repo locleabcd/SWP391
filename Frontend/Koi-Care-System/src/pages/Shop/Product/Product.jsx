@@ -168,12 +168,15 @@ function Product() {
 
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(products.map(product => ({
+      'ID': product.id,
       'Product Name': product.name,
       'Brand': product.brand,
       'Price': formatPrice(product.price),
       'Inventory': product.inventory,
       'Category': product?.category?.name || 'Unknown',
       'Supplier': product?.supplier?.name || 'Unknown',
+      'Decription': product.description,
+      'Description detail': product.description_detail,
     })));
 
     const workbook = XLSX.utils.book_new()
@@ -193,9 +196,22 @@ function Product() {
         <Header />
         <div className='py-5 px-8 mx-auto'>
           <TopLayout text='Products' />
-          <button onClick={exportToExcel} className="mb-4 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded">
-            Download Excel
-          </button>
+          <div className='w-full flex justify-between items-center relative'>
+            <div className='cursor-pointer'>
+              <button
+                className='py-2 mb-4 px-3 bg-blue-500 text-white hover:bg-blue-500 rounded-md'
+                onClick={() => navigate('/shop/createProduct')}
+              >
+                New Product
+              </button>
+            </div>
+            <div className='cursor-pointer'>
+              <button onClick={exportToExcel} className="mb-4 ml-3 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md">
+                Download Excel
+              </button>
+            </div>           
+          </div>
+          
           <Paper sx={{ height: 670, width: '100%' }}>
             <DataGrid
               rows={products}

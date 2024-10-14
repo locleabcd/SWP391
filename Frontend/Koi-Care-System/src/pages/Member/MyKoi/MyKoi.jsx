@@ -313,7 +313,7 @@ function MyKoi() {
                   <motion.div
                     variants={{
                       hidden: { opacity: 0, x: 100 },
-                      visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
+                      visible: { opacity: 1, x: 0, transition: { delay: index * 0.05 } }
                     }}
                     key={koi.id}
                     className={`${
