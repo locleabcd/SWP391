@@ -141,7 +141,7 @@ function UpdateNews() {
                   {...register('blogTitle', { required: 'Blog title is required' })}
                   className={`w-full p-2 border rounded-md ${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  } ${errors.blogTitle ? 'border-red-500' : 'border-gray-300'}`}
                 />
                 {errors.blogTitle && <p className='text-red-500 text-sm'>{errors.blogTitle.message}</p>}
               </div>
@@ -153,7 +153,6 @@ function UpdateNews() {
                   options={tags}
                   value={selectedTags}
                   onChange={setSelectedTags}
-                  className={errors.tags ? 'border-red-500' : 'border-gray-300'}
                   closeMenuOnSelect={false}
                   components={animatedComponents}
                   styles={{
@@ -208,7 +207,7 @@ function UpdateNews() {
                   {...register('blogContent', { required: 'Blog content is required' })}
                   className={`w-full p-2 border rounded-md ${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  } ${errors.blogContent ? 'border-red-500' : 'border-gray-300'}`}
                   rows='5'
                 />
                 {errors.blogContent && <p className='text-red-500 text-sm'>{errors.blogContent.message}</p>}
@@ -224,7 +223,7 @@ function UpdateNews() {
                   {...register('blogDate', { required: 'Blog date is required' })}
                   className={`w-full p-2 border rounded-md ${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  } ${errors.blogDate ? 'border-red-500' : 'border-gray-300'}`}
                 />
                 {errors.blogDate && <p className='text-red-500 text-sm'>{errors.blogDate.message}</p>}
               </div>           
@@ -237,7 +236,7 @@ function UpdateNews() {
                   accept='image/*'
                   className={`w-full p-2 border rounded-md ${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  } ${errors.file ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('file')}
                 />
                 {errors.file && <p className='text-red-500 text-xs mt-1'>{errors.file.message}</p>}

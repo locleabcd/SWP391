@@ -59,13 +59,13 @@ function CreateSupplier() {
       <LeftSideBar />
       <div
         className={`relative ${
-          isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'
+          isDarkMode ? 'bg-custom-light text-gray-500' : 'bg-white text-black'
         } overflow-y-auto flex-1 flex-col  overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
         <div className='py-5 pb-0 px-[30px] mx-auto'>
           <TopLayout text='Supplier' textName='Create Supplier' links='shop/supplier' />
-          <div className='bg-white p-6 rounded-md border'>
+          <div className='p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className='mb-4'>
                 <label htmlFor='name' className='block text-sm font-medium mb-2'>
@@ -74,7 +74,9 @@ function CreateSupplier() {
                 <input
                   type='text'
                   id='name'
-                  className={`relative w-full p-2 border rounded-md ${errors.tagName ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('name', {
                     required: 'Name is required',
                     minLength: { value: 2, message: 'Name must be at least 2 characters long' },
@@ -90,7 +92,9 @@ function CreateSupplier() {
                 <input
                   type='number'
                   id='phone'
-                  className={`relative w-full p-2 border rounded-md ${errors.tagDescription ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('phone', {
                     required: 'Phone is required',
                     pattern: {
@@ -108,7 +112,9 @@ function CreateSupplier() {
                 <input
                   type='text'
                   id='address'
-                  className={`relative w-full p-2 border rounded-md ${errors.tagName ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('address', {
                     required: 'Address is required',
                     minLength: { value: 5, message: 'Address must be at least 5 characters long' },
