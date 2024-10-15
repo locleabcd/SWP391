@@ -19,6 +19,7 @@ function Dashboard() {
   const [orders, setOrders] = useState([])
   const [report, setReport] = useState([])
   const [payment, setPayment] = useState([])
+  const [selectedorder, setSelectedOrder] = useState(null)
 
   const getPayments = async () => {
     try {
@@ -102,10 +103,7 @@ function Dashboard() {
           Authorization: `Bearer ${token}`
         }
       })
-      setOrders((prevData) => ({
-        ...prevData,
-        [orderId]: res.data.data
-      }))
+      setOrders(res.data.data)
       console.log(res.data.data)
     } catch (error) {
       console.error('Error fetching water parameters:', error)
@@ -113,11 +111,7 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    if (payment.length > 0) {
-      payment.forEach((payments) => {
-        getOrders(payments.orderId)
-      })
-    }
+    getOrders()
   }, [])
 
   const getParameter = async () => {
@@ -195,7 +189,22 @@ function Dashboard() {
   }, [])
 
   const date = payment.map((payments) => payments.createDate.slice(0, 10))
-  console.log(date)
+
+  const handleChange = (e) => {
+    const orderId = e.target.value
+    const order = orders.find((p) => p.id === parseInt(orderId))
+
+    if (order) {
+      setSelectedOrder(order)
+      getOrders(orderId)
+    }
+  }
+
+  useEffect(() => {
+    if (orders.length === 1) {
+      setSelectedOrder(ponds[0])
+    }
+  }, [orders])
 
   return (
     <div>
@@ -287,7 +296,14 @@ function Dashboard() {
               <div className='flex-auto border border-gray-200 px-5 py-6'>
                 <div className='flex justify-between'>
                   <div className='text-2xl font-semibold'>Payment Details</div>
-                  <div className='text-2xl font-semibold'>Payment Details</div>
+                  <select className='text-xl' onChange={handleChange}>
+                    <option value=''>Transaction Code</option>
+                    {payment.map((payments) => (
+                      <option key={payments.orderId} value={payments.orderId}>
+                        {payments.transactionCode}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </div>
