@@ -15,7 +15,8 @@ import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
 import { toast } from 'react-toastify'
 import * as XLSX from 'xlsx'
-
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 function Promotion() {
   const { isDarkMode } = useDarkMode()
   const [promotions, setPromotions] = useState([])
@@ -24,10 +25,23 @@ function Promotion() {
   const [productDetails, setProductDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
-
-  useEffect(() => {
-    getPromotion()
-  }, [])
+  const lightTheme = createTheme({
+    palette: {
+      mode: 'light',
+    },
+  })
+  
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+      background: {
+        default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+        paper: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+      },
+    },
+  })
+  
+  
 
   const formatDateTime = (inputDate) => {
     const date = new Date(inputDate)
@@ -66,7 +80,9 @@ function Promotion() {
       console.log('Error fetching promotions:', error)
     }
   }
-
+useEffect(() => {
+    getPromotion()
+  }, [])
   const fetchProductDetails = async (promotionId) => {
     try {
       const token = localStorage.getItem('token');
@@ -223,6 +239,8 @@ function Promotion() {
               </button>
             </div>
           </div>
+          <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+          <CssBaseline />
           <Paper sx={{ height: 670 }}>
             <DataGrid
               rows={promotions}
@@ -237,12 +255,12 @@ function Promotion() {
                   backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
                 },
                 '& .MuiDataGrid-row:hover': {
-                  backgroundColor: isDarkMode ? '#555' : '#e0e0e0'
+                  backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
                 }
               }}
             />
           </Paper>
-
+        </ThemeProvider>
           {isModalOpen && selectedPromotion && (
             <div className='fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50'>
               <div className='bg-white p-4 border rounded-lg'>

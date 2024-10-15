@@ -251,7 +251,7 @@ Over 28°C is not a good temperature to feed at!`
           <Header />
           <div className='py-5 px-[30px] mx-auto'>
             <TopLayout text='Food Calculator' />
-            <div className='p-4 text-lg'>
+            <div className='p-4 text-lg min-h-screen'>
               
               <label htmlFor='ponds'>Select a Pond:</label>
               <select
@@ -284,6 +284,7 @@ Over 28°C is not a good temperature to feed at!`
               </div>
 
               {selectedPond && (
+                <div>
                 <div className='mt-4 p-4 grid grid-cols-3'>
                   <div className='col-span-1'>
                     <div className='mt-4'>
@@ -369,8 +370,10 @@ Over 28°C is not a good temperature to feed at!`
                     <h3>Notes:</h3>
                     <p>{generateNotes()}</p>
                   </div>
-                  <div className='min-w-full bottom-5 fixed pr-10'>
-                    <div className='footer w-2/4 bg-slate-600 text-white border-solid rounded-lg mx-auto py-5 text-xl text-center'>
+                  
+                </div>
+                
+                    <div className='w-min-full bottom-5 block footer w-2/4 bg-slate-600 text-white border-solid rounded-lg mx-auto py-5 text-xl text-center'>
                       {fishes.length > 0 ? (
                         calculationMode === 'percent' ? (
                           <p>
@@ -393,7 +396,7 @@ Over 28°C is not a good temperature to feed at!`
                       )}
                     </div>
                   </div>
-                </div>
+                
               )}
             </div>
             {!selectedPond && (
