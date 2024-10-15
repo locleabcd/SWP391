@@ -64,14 +64,14 @@ const path = {
   updateImage: '/shop/productImage/:id',
   viewUser: '/shop/viewUser',
   shopAD: '/admin/shop',
-  customerAD:'/admin/user',
-  viewUserAD:'/admin/user/:id',
+  customerAD: '/admin/user',
+  viewUserAD: '/admin/user/:id',
 
   userDetail: '/shop/viewUser/:id',
   paymentShop: '/shop/payment',
   orderShop: '/shop/order',
   dashboardShop: '/shop/dashboard',
-  profileShop:'/shop/profileShop'
+  profileShop: '/shop/profileShop'
 }
 
 export default path

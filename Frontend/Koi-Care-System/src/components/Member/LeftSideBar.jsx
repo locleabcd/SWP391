@@ -2,7 +2,7 @@ import { IoFishOutline } from 'react-icons/io5'
 import { GiAquarium } from 'react-icons/gi'
 import { IoIosWater } from 'react-icons/io'
 import { LuAlarmClock } from 'react-icons/lu'
-import { FaHandPointRight } from 'react-icons/fa'
+import { FaCrown, FaHandPointRight } from 'react-icons/fa'
 import { CgCalculator } from 'react-icons/cg'
 import { IoStatsChartSharp } from 'react-icons/io5'
 import { FaRegNewspaper } from 'react-icons/fa'
@@ -193,9 +193,9 @@ function LeftSideBar() {
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
 
-                const memberStyles = isMember ? 'opacity-50 line-through cursor-not-allowed bg-white' : ''
+                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed bg-white' : ''
 
-                return `${active} ${memberStyles} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
+                return `${active} ${memberStyles} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex-wrap flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 }`
               }}
@@ -206,6 +206,12 @@ function LeftSideBar() {
                 </div>
                 {!isClosed && <span className='font-semibold'>Water Parameters</span>}
               </div>
+              {isMember ? (
+                <div className='flex gap-5 w-full items-center justify-start mt-2 p-2 bg-yellow-200 text-yellow-700'>
+                  <FaCrown className='w-4 h-4' />
+                  <div>PREMIUM</div>
+                </div>
+              ) : null}
             </NavLink>
 
             <NavLink
@@ -215,9 +221,9 @@ function LeftSideBar() {
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
 
-                const memberStyles = isMember ? 'opacity-50 line-through cursor-not-allowed bg-white' : ''
+                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed bg-white' : ''
 
-                return `${active} ${memberStyles} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
+                return `${active} ${memberStyles} min-w-full p-4 mt-2 flex-wrap cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 }`
               }}
@@ -228,6 +234,12 @@ function LeftSideBar() {
                 </div>
                 {!isClosed && <span className='font-semibold'>Reminders</span>}
               </div>
+              {isMember ? (
+                <div className='flex gap-5 items-center w-full justify-start mt-2 p-2 bg-yellow-200 text-yellow-700'>
+                  <FaCrown className='w-4 h-4' />
+                  <div>PREMIUM</div>
+                </div>
+              ) : null}
             </NavLink>
 
             <NavLink
@@ -256,9 +268,9 @@ function LeftSideBar() {
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
 
-                const memberStyles = isMember ? 'opacity-50 line-through cursor-not-allowed bg-white' : ''
+                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed bg-white' : ''
 
-                return `${active} ${memberStyles} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
+                return `${active} ${memberStyles} min-w-full p-4 flex-wrap mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 }`
               }}
@@ -269,6 +281,13 @@ function LeftSideBar() {
                 </div>
                 {!isClosed && <span className='font-semibold'>Food Calculator</span>}
               </div>
+
+              {isMember ? (
+                <div className='flex gap-5 items-center w-full justify-start mt-2 p-2 bg-yellow-200 text-yellow-700'>
+                  <FaCrown className='w-4 h-4' />
+                  <div>PREMIUM</div>
+                </div>
+              ) : null}
             </NavLink>
 
             <NavLink
@@ -278,9 +297,9 @@ function LeftSideBar() {
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
 
-                const memberStyles = isMember ? 'opacity-50 line-through cursor-not-allowed bg-white' : ''
+                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed bg-white' : ''
 
-                return `${active} ${memberStyles} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
+                return `${active} ${memberStyles} min-w-full flex-wrap p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 }`
               }}
@@ -291,6 +310,13 @@ function LeftSideBar() {
                 </div>
                 {!isClosed && <span className='font-semibold'>Salt Calculator</span>}
               </div>
+
+              {isMember ? (
+                <div className='flex gap-5 items-center w-full justify-start mt-2 p-2 bg-yellow-200 text-yellow-700'>
+                  <FaCrown className='w-4 h-4' />
+                  <div>PREMIUM</div>
+                </div>
+              ) : null}
             </NavLink>
 
             <NavLink
