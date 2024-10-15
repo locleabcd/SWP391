@@ -170,6 +170,7 @@ function MyPond() {
       if (id) {
         const formData = new FormData()
         formData.append('name', data.name)
+        formData.append('createDate', data.date)
         formData.append('drainCount', data.drainCount)
         formData.append('depth', data.depth)
         formData.append('skimmer', data.skimmer)
@@ -189,6 +190,7 @@ function MyPond() {
       } else {
         const formData = new FormData()
         formData.append('name', data.name)
+        formData.append('createDate', data.date)
         formData.append('drainCount', data.drainCount)
         formData.append('depth', data.depth)
         formData.append('skimmer', data.skimmer)
@@ -204,6 +206,7 @@ function MyPond() {
           }
         })
         toast.success('Create Pond success!!')
+        console.log('date', data.date)
       }
 
       reset()
@@ -741,6 +744,26 @@ function MyPond() {
                         />
                         {errors.pumpCapacity && <p className='text-red-500 text-sm'>{errors.pumpCapacity.message}</p>}
                       </div>
+
+                      <div className='mb-4 relative col-span-1'>
+                        <label
+                          htmlFor='pumpCapacity'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
+                        >
+                          Date:
+                        </label>
+                        <input
+                          type='date'
+                          id='date'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                          {...register('date')}
+                        />
+                        {errors.date && <p className='text-red-500 text-sm'>{errors.pumpCapacity.message}</p>}
+                      </div>
                     </div>
                   </form>
                 </div>
@@ -981,6 +1004,26 @@ function MyPond() {
                           {...register('pumpCapacity')}
                         />
                         {errors.pumpCapacity && <p className='text-red-500 text-sm'>{errors.pumpCapacity.message}</p>}
+                      </div>
+
+                      <div className='mb-4 relative col-span-1'>
+                        <label
+                          htmlFor='pumpCapacity'
+                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } font-semibold`}
+                        >
+                          Date:
+                        </label>
+                        <input
+                          type='date'
+                          id='date'
+                          className={`w-full p-3 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                          {...register('date')}
+                        />
+                        {errors.date && <p className='text-red-500 text-sm'>{errors.date.message}</p>}
                       </div>
                     </div>
                   </form>

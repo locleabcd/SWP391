@@ -16,6 +16,24 @@ import { MdPendingActions } from "react-icons/md";
 import * as XLSX from 'xlsx'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+})
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: {
+      default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+      paper: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+    },
+  },
+})
 
 function Payment() {
   const { isDarkMode } = useDarkMode()
@@ -154,73 +172,76 @@ function Payment() {
                 Download Excel
             </button>     
           </div>
-          <Paper sx={{ height: 670}}>
-              <DataGrid
-                rows={payments}
-                columns={columns}
-                pageSize={10}
-                pageSizeOptions={[5, 10, 20, 50, 100]}
-                rowHeight={60}
-                checkboxSelection
-                disableExtendRowFullWidth
-                getRowId={(row) => row.orderId}
-                sx={{
-                  '& .MuiDataGrid-columnHeaders': {
-                    backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
-                  },
-                  '& .MuiDataGrid-row:hover': {
-                    backgroundColor: isDarkMode ? '#555' : '#e0e0e0'
-                  }
-                }}
-              />
-            </Paper>
-              {isModalOpen && selectedOrder && (
-                <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
-                  <div className='bg-white p-4 border rounded-lg'>
-                    <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
-                    <div className='bg-white p-4 border rounded-lg shadow-lg'>                      
-                      <p className='mb-3 flex items-center gap-2'><FaCartArrowDown className='text-2xl text-blue-500'/><strong>Order ID:</strong> {selectedOrder.id}</p>
-                      <p className='mb-3 flex items-center gap-2'><BsFillCalendarDateFill className='text-2xl text-purple-500'/><strong>Order Date:</strong> {formatDateTime(selectedOrder.orderDate)}</p>                     
-                      <p className='mb-3 flex items-center gap-2'><FaRegAddressCard className='text-2xl text-red-500'/><strong>Address:</strong> {selectedOrder.address}</p> 
-                      <p className='mb-3 flex items-center gap-2'><FaPhoneAlt className='text-2xl text-green-500'/><strong>Phone:</strong> {selectedOrder.phone}</p>
-                      <p className='mb-3 flex items-center gap-2'><GrNotes className='text-2xl '/><strong>Note:</strong> {selectedOrder.note}</p>                     
-                      <p className='mb-3 flex items-center gap-2'><FaUser  className='text-2xl '/><strong>RecipientName:</strong> {selectedOrder.recipientName}</p>             
-                      <p className='mb-3 flex items-center gap-2'><MdPendingActions className='text-2xl text-red-500'/><strong>Status:</strong> {selectedOrder.status}</p> 
-                      <p className='mb-3 flex items-center gap-2'><FaMoneyBillWave className='text-2xl text-green-500'/> <strong>Total Amount:</strong> {formatCurrency(selectedOrder.totalAmount)}</p>
-                    </div>   
-                    
-                    <div className='Order-Table overflow-auto p-4 mt-4 shadow-lg border rounded-lg'>
-                      <h2 className='text-xl font-bold mb-2'>Item Details</h2>
-                      <table className='min-w-full border-spacing-x-1 border-gray-200'>
-                        <thead>
-                          <tr className='border-b'>
-                            <th className='py-3 px-4 text-center text-xs font-bold uppercase'>No</th>
-                            <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Product Name</th>
-                            <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Quantity</th>                         
-                            <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Total Price</th>
+          <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+            <CssBaseline />
+            <Paper sx={{ height: 670}}>
+                <DataGrid
+                  rows={payments}
+                  columns={columns}
+                  pageSize={10}
+                  pageSizeOptions={[5, 10, 20, 50, 100]}
+                  rowHeight={60}
+                  checkboxSelection
+                  disableExtendRowFullWidth
+                  getRowId={(row) => row.orderId}
+                  sx={{
+                    '& .MuiDataGrid-columnHeaders': {
+                      backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
+                    },
+                    '& .MuiDataGrid-row:hover': {
+                      backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
+                    }
+                  }}
+                />
+              </Paper>
+            </ThemeProvider>
+            {isModalOpen && selectedOrder && (
+              <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
+                <div className='bg-white p-4 border rounded-lg'>
+                  <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
+                  <div className='bg-white p-4 border rounded-lg shadow-lg'>                      
+                    <p className='mb-3 flex items-center gap-2'><FaCartArrowDown className='text-2xl text-blue-500'/><strong>Order ID:</strong> {selectedOrder.id}</p>
+                    <p className='mb-3 flex items-center gap-2'><BsFillCalendarDateFill className='text-2xl text-purple-500'/><strong>Order Date:</strong> {formatDateTime(selectedOrder.orderDate)}</p>                     
+                    <p className='mb-3 flex items-center gap-2'><FaRegAddressCard className='text-2xl text-red-500'/><strong>Address:</strong> {selectedOrder.address}</p> 
+                    <p className='mb-3 flex items-center gap-2'><FaPhoneAlt className='text-2xl text-green-500'/><strong>Phone:</strong> {selectedOrder.phone}</p>
+                    <p className='mb-3 flex items-center gap-2'><GrNotes className='text-2xl '/><strong>Note:</strong> {selectedOrder.note}</p>                     
+                    <p className='mb-3 flex items-center gap-2'><FaUser  className='text-2xl '/><strong>RecipientName:</strong> {selectedOrder.recipientName}</p>             
+                    <p className='mb-3 flex items-center gap-2'><MdPendingActions className='text-2xl text-red-500'/><strong>Status:</strong> {selectedOrder.status}</p> 
+                    <p className='mb-3 flex items-center gap-2'><FaMoneyBillWave className='text-2xl text-green-500'/> <strong>Total Amount:</strong> {formatCurrency(selectedOrder.totalAmount)}</p>
+                  </div>   
+                  
+                  <div className='Order-Table overflow-auto p-4 mt-4 shadow-lg border rounded-lg'>
+                    <h2 className='text-xl font-bold mb-2'>Item Details</h2>
+                    <table className='min-w-full border-spacing-x-1 border-gray-200'>
+                      <thead>
+                        <tr className='border-b'>
+                          <th className='py-3 px-4 text-center text-xs font-bold uppercase'>No</th>
+                          <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Product Name</th>
+                          <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Quantity</th>                         
+                          <th className='py-3 px-2 text-center text-xs font-bold uppercase'>Total Price</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {selectedOrder.items.map((item, index) => (
+                          <tr key={item.id}>
+                            <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td>
+                            <td className='py-2 px-1 text-center border-b border-gray-200'>{item.productName}</td>
+                            <td className='py-2 px-1 text-center border-b border-gray-200'>{item.quantity}</td>                             
+                            <td className='py-2 px-1 text-center border-b border-gray-200'>{formatCurrency(item.price * item.quantity)}</td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {selectedOrder.items.map((item, index) => (
-                            <tr key={item.id}>
-                              <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td>
-                              <td className='py-2 px-1 text-center border-b border-gray-200'>{item.productName}</td>
-                              <td className='py-2 px-1 text-center border-b border-gray-200'>{item.quantity}</td>                             
-                              <td className='py-2 px-1 text-center border-b border-gray-200'>{formatCurrency(item.price * item.quantity)}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
-                  </div>
-                  <button
-                      className='mt-4 px-4 py-2 bg-red-500 text-white rounded'
-                      onClick={handleCloseModal}
-                    >
-                      Close
-                  </button>
-                  </div>
+                        ))}
+                      </tbody>
+                    </table>
                 </div>
-              )}
+                <button
+                    className='mt-4 px-4 py-2 bg-red-500 text-white rounded'
+                    onClick={handleCloseModal}
+                  >
+                    Close
+                </button>
+                </div>
+              </div>
+            )}
         </div>
       </div>
     </div>

@@ -56,7 +56,7 @@ function CreatePromotion() {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      })
+      })  
       toast.success('Promotion created successfully!')
       navigate('/shop/promotion')
     

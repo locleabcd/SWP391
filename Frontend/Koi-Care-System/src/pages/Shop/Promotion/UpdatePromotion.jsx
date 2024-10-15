@@ -108,11 +108,9 @@ function UpdatePromotion() {
           }
         }
       )
-
       toast.success('Promotion updated successfully!')
       navigate('/shop/promotion')
     } catch (error) {
-      console.log(data.id)
       console.log(error)
       toast.error('Failed to update Promotion.')
     } finally {

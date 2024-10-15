@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
@@ -116,7 +117,7 @@ function Promotion() {
     { field: 'startDate', headerName: 'Start Date', width: 170, renderCell: (params) => formatDateTime(params.row.startDate) },
     { field: 'endDate', headerName: 'End Date', width: 170, renderCell: (params) => formatDateTime(params.row.endDate) },
     { field: 'discountRate', headerName: 'Discount Rate', width: 120 },
-    { field: 'description', headerName: 'Description', width: 300 },
+    { field: 'description', headerName: 'Description', flex: 1 },
     {
       field: 'status',
       headerName: 'Status',
@@ -184,7 +185,7 @@ function Promotion() {
     }
   ]
 
-  const exportPromotionsToExcel = (promotions) => {
+  const exportPromotionsToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(promotions.map((promotion) => ({
       'Name': promotion.name,
       'Start Date': formatDateTime(promotion.startDate),
@@ -243,7 +244,7 @@ function Promotion() {
           </Paper>
 
           {isModalOpen && selectedPromotion && (
-            <div className='fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center'>
+            <div className='fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50'>
               <div className='bg-white p-4 border rounded-lg'>
                 <h3 className='text-xl font-bold'>PROMOTION DETAILS</h3>
                 <div>
