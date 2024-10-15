@@ -127,11 +127,11 @@ function UpdateNews() {
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
-      <div className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} flex-1 flex-col overflow-y-auto overflow-x-hidden`}>
+      <div className={`relative ${isDarkMode ? 'bg-custom-light text-gray-500' : 'bg-white text-black'} flex-1 flex-col overflow-y-auto overflow-x-hidden`}>
         <Header />
         <div className='py-5 pb-10 px-[30px] mx-auto'>
           <TopLayout text='News' textName='Update News' links='shop/shopNews' />
-          <div className='bg-white p-6 rounded-md border'>
+          <div className=' p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} className='mt-5 space-y-4'>
               <div>
                 <label htmlFor='blogTitle' className='block text-sm font-bold mb-2'>Blog Title</label>
@@ -139,7 +139,9 @@ function UpdateNews() {
                   type='text'
                   id='blogTitle'
                   {...register('blogTitle', { required: 'Blog title is required' })}
-                  className={`mt-1 p-2 border ${errors.blogTitle ? 'border-red-500' : 'border-gray-300'} rounded w-full`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                 />
                 {errors.blogTitle && <p className='text-red-500 text-sm'>{errors.blogTitle.message}</p>}
               </div>
@@ -154,6 +156,47 @@ function UpdateNews() {
                   className={errors.tags ? 'border-red-500' : 'border-gray-300'}
                   closeMenuOnSelect={false}
                   components={animatedComponents}
+                  styles={{
+                    control: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF', 
+                      color: isDarkMode ? '#FFFFFF' : '#000000',           
+                      borderColor: errors.tags ? '#EF4444' : '#D1D5DB',    
+                      '&:hover': {
+                        borderColor: errors.tags ? '#EF4444' : '#9CA3AF',  
+                      }
+                    }),
+                    menu: (provided) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF', 
+                    }),
+                    option: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: state.isFocused
+                        ? (isDarkMode ? '#374151' : '#E5E7EB') 
+                        : isDarkMode
+                        ? '#1F2937'                         
+                        : '#FFFFFF',                          
+                      color: isDarkMode ? '#FFFFFF' : '#000000', 
+                    }),
+                    multiValue: (provided) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#4B5563' : '#E5E7EB', 
+                      color: isDarkMode ? '#FFFFFF' : '#000000',           
+                    }),
+                    multiValueLabel: (provided) => ({
+                      ...provided,
+                      color: isDarkMode ? '#FFFFFF' : '#000000', 
+                    }),
+                    multiValueRemove: (provided) => ({
+                      ...provided,
+                      color: isDarkMode ? '#FFFFFF' : '#000000', 
+                      ':hover': {
+                        backgroundColor: isDarkMode ? '#374151' : '#D1D5DB', 
+                        color: isDarkMode ? '#F87171' : '#EF4444',            
+                      }
+                    })
+                  }}
                 />
                 {selectedTags.length === 0 && <p className='text-red-500 text-xs mt-1'>At least one tag is required</p>}
               </div>
@@ -163,7 +206,9 @@ function UpdateNews() {
                 <textarea
                   id='blogContent'
                   {...register('blogContent', { required: 'Blog content is required' })}
-                  className={`mt-1 p-2 border ${errors.blogContent ? 'border-red-500' : 'border-gray-300'} rounded w-full`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   rows='5'
                 />
                 {errors.blogContent && <p className='text-red-500 text-sm'>{errors.blogContent.message}</p>}
@@ -177,7 +222,9 @@ function UpdateNews() {
                   type='date'
                   id='blogDate'
                   {...register('blogDate', { required: 'Blog date is required' })}
-                  className={`mt-1 p-2 border ${errors.blogDate ? 'border-red-500' : 'border-gray-300'} rounded w-full`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                 />
                 {errors.blogDate && <p className='text-red-500 text-sm'>{errors.blogDate.message}</p>}
               </div>           
@@ -188,7 +235,9 @@ function UpdateNews() {
                   type='file'
                   id='file'
                   accept='image/*'
-                  className={`w-full p-2 border rounded-md ${errors.file ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('file')}
                 />
                 {errors.file && <p className='text-red-500 text-xs mt-1'>{errors.file.message}</p>}

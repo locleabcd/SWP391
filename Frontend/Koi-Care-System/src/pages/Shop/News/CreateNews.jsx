@@ -119,7 +119,9 @@ function CreateNews() {
                 <input
                   type='text'
                   id='blogTitle'
-                  className={`w-full p-2 border rounded-md ${errors.blogTitle ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('blogTitle', { required: 'Blog Title is required' })}
                 />
                 {errors.blogTitle && <p className='text-red-500 text-xs mt-1'>{errors.blogTitle.message}</p>}
@@ -132,9 +134,51 @@ function CreateNews() {
                   options={tags}
                   value={selectedTags}
                   onChange={handleChange}
-                  className={errors.tags ? 'border-red-500' : 'border-gray-300'}
+                  className={` ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   closeMenuOnSelect={false}
                   components={animatedComponents}
+                  styles={{
+                    control: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF', 
+                      color: isDarkMode ? '#FFFFFF' : '#000000',           
+                      borderColor: errors.tags ? '#EF4444' : '#D1D5DB',    
+                      '&:hover': {
+                        borderColor: errors.tags ? '#EF4444' : '#9CA3AF',  
+                      }
+                    }),
+                    menu: (provided) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF', 
+                    }),
+                    option: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: state.isFocused
+                        ? (isDarkMode ? '#374151' : '#E5E7EB') 
+                        : isDarkMode
+                        ? '#1F2937'                         
+                        : '#FFFFFF',                          
+                      color: isDarkMode ? '#FFFFFF' : '#000000', 
+                    }),
+                    multiValue: (provided) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#4B5563' : '#E5E7EB', 
+                      color: isDarkMode ? '#FFFFFF' : '#000000',           
+                    }),
+                    multiValueLabel: (provided) => ({
+                      ...provided,
+                      color: isDarkMode ? '#FFFFFF' : '#000000', 
+                    }),
+                    multiValueRemove: (provided) => ({
+                      ...provided,
+                      color: isDarkMode ? '#FFFFFF' : '#000000', 
+                      ':hover': {
+                        backgroundColor: isDarkMode ? '#374151' : '#D1D5DB', 
+                        color: isDarkMode ? '#F87171' : '#EF4444',            
+                      }
+                    })
+                  }}
+                  
                 />
                 {selectedTags.length === 0 && (
                   <p className='text-red-500 text-xs mt-1'>At least one tag is required</p>
@@ -147,7 +191,9 @@ function CreateNews() {
                 </label>
                 <textarea
                   id='blogContent'
-                  className={`w-full p-2 border rounded-md ${errors.blogContent ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('blogContent', { required: 'Blog Content is required' })}
                   rows={10}
                 />
@@ -158,7 +204,9 @@ function CreateNews() {
                 <input
                   type='hidden'
                   id='blogImage'
-                  className={`w-full p-2 border rounded-md ${errors.blogImage ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('blogImage', { required: false })}
                 />
               </div>             
@@ -171,7 +219,9 @@ function CreateNews() {
                   type='file'
                   id='file'
                   accept='image/*'
-                  className={`w-full p-2 border rounded-md ${errors.file ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('file', { required: 'File is required' })}
                 />
                 {errors.file && <p className='text-red-500 text-xs mt-1'>{errors.file.message}</p>}
