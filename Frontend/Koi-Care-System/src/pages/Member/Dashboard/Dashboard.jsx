@@ -9,6 +9,7 @@ import { IoFishOutline } from 'react-icons/io5'
 import { IoIosWater } from 'react-icons/io'
 import { LuAlarmClock } from 'react-icons/lu'
 import { MdOutlinePayments } from 'react-icons/md'
+import { useParams } from 'react-router-dom'
 
 function Dashboard() {
   const { isDarkMode } = useDarkMode()
@@ -16,6 +17,12 @@ function Dashboard() {
   const [koi, setKoi] = useState([])
   const [parameters, setParameters] = useState([])
   const [orders, setOrders] = useState([])
+
+  const [searchParams] = useParams()
+  const token = searchParams.get('token')
+  useEffect(() => {
+    localStorage.setItem('token', token)
+  }, [])
 
   const getOrders = async () => {
     try {
