@@ -18,6 +18,8 @@ public interface PromotionMapper {
 
     PromotionDto mapToDto(Promotion promotion);
 
+    @Mapping(target = "status", ignore = true)
+    @Mapping(target = "id", ignore = true)
     @Mapping(target = "products", ignore = true)
     void updatePromotion(@MappingTarget Promotion promotion, PromotionUpdateRequest promotionUpdateRequest);
 

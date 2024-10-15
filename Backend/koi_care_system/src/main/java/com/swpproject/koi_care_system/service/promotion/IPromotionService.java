@@ -18,7 +18,6 @@ public interface IPromotionService {
 
     List<PromotionDto> getAllPromotions();
     List<PromotionDto> getAllPromotionsRequest();
-    void addProductsToPromotion(Long promotionId, List<Long> productIds);
 
     PromotionDto verifyByAdmin(AdminConfirmPromotionRequest request);
 

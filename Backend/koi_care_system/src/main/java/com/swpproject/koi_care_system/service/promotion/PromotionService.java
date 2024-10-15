@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,20 +41,24 @@ public class PromotionService implements IPromotionService {
             throw new AlreadyExistsException("A Promotion with this name already exists");
         }
         Promotion promotion = promotionMapper.mapToPromotion(addPromotionRequest);
-        promotionRepository.save(promotion);
-
+        Promotion savedPromotion = promotionRepository.save(promotion);
+        this.addProductsToPromotion(savedPromotion.getId(),addPromotionRequest.getProductIds());
         return promotionMapper.mapToDto(promotion);
 
     }
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public PromotionDto updatePromotion(Long id, PromotionUpdateRequest promotionUpdateRequest) {
-        Promotion promotion = promotionRepository.findById(promotionUpdateRequest.getId())
+        Promotion promotion = promotionRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("No promotion found with this id"));
+        if(!promotion.getStatus().equals(PromotionStatus.PENDING))
+            throw new RuntimeException("Promotion can't to edit when the status is processing");
+        promotion.getProducts().forEach(product -> product.getPromotions().remove(promotion));
+        promotion.getProducts().clear();
         promotionMapper.updatePromotion(promotion,promotionUpdateRequest);
+        this.addProductsToPromotion(promotion.getId(),promotionUpdateRequest.getProductIds());
         return promotionMapper.mapToDto(promotionRepository.save(promotion));
     }
-
     @Override
     @PreAuthorize("hasRole('ADMIN')")
     public PromotionDto verifyByAdmin(AdminConfirmPromotionRequest request) {
@@ -103,9 +109,8 @@ public class PromotionService implements IPromotionService {
     public List<PromotionDto> getAllPromotionsRequest() {
         return promotionRepository.findPromotionByStatus(PromotionStatus.PENDING).stream().map(promotionMapper::mapToDto).toList();
     }
-    @Override
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
-    public void addProductsToPromotion(Long promotionId, List<Long> productIds) {
+
+    private void addProductsToPromotion(Long promotionId, List<Long> productIds) {
         Promotion promotion = promotionRepository.findById(promotionId)
                 .orElseThrow(() -> new ResourceNotFoundException("Promotion not found with id: " + promotionId));
         List<Product> products = productRepository.findAllById(productIds);

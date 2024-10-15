@@ -98,13 +98,5 @@ public class PromotionController {
         }
     }
 
-    @PostMapping("/{promotionId}/products")
-    public ResponseEntity<ApiResponse> addProductsToPromotion(@PathVariable Long promotionId, @RequestParam List<Long> productIds) {
-        try{
-            promotionService.addProductsToPromotion(promotionId, productIds);
-            return ResponseEntity.ok(new ApiResponse("Add products to promotion success",null));
-        }catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
-        }
-    }
+
 }

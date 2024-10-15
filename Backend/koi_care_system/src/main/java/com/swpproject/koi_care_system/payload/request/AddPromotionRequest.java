@@ -3,6 +3,7 @@ package com.swpproject.koi_care_system.payload.request;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class AddPromotionRequest {
@@ -11,4 +12,5 @@ public class AddPromotionRequest {
     private String description;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
+    private List<Long> productIds;
 }
