@@ -14,6 +14,7 @@ function CreatePromotion() {
   const { isDarkMode } = useDarkMode()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [products, setProducts] = useState([]) // List of products
+  const [selectedProductIds, setSelectedProductIds] = useState([])
   const navigate = useNavigate()
 
   const {
@@ -43,17 +44,14 @@ function CreatePromotion() {
       }
 
       // Combine selected product IDs into a comma-separated string
-      const selectedProductIds = data.productIds.map((id) => Number(id))
-
       const requestBody = {
         name: data.name,
         startDate: data.startDate,
         endDate: data.endDate,
         discountRate: data.discountRate,
         description: data.description,
-        productIds: selectedProductIds, // Comma-separated product IDs
+        productIds: selectedProductIds, // Use selectedProductIds directly
       }
-
       const res = await axios.post(`https://koicaresystemv3.azurewebsites.net/api/promotions/create`, requestBody, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -61,6 +59,7 @@ function CreatePromotion() {
       })
       toast.success('Promotion created successfully!')
       navigate('/shop/promotion')
+    
     } catch (error) {
       console.log(error)
       toast.error('Failed to create Promotion.')
@@ -91,7 +90,13 @@ function CreatePromotion() {
   useEffect(() => {
     getProduct()
   }, [])
-
+  const handleProductSelection = (id) => {
+    setSelectedProductIds((prevSelected) =>
+      prevSelected.includes(id)
+        ? prevSelected.filter((productId) => productId !== id) // Deselect if already selected
+        : [...prevSelected, id] // Select if not already selected
+    )
+  }
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
@@ -122,23 +127,20 @@ function CreatePromotion() {
 
               {/* Checkboxes for product selection */}
               <div className='mb-4'>
-                <label className='block text-sm font-medium mb-2'>
-                  Select Products
-                </label>
+                <label className='block text-sm font-medium mb-2'>Select Products</label>
                 {products.map((product) => (
-                  <div key={product.productId} className='mb-2'>
+                  <div key={product.id} className='flex items-center'>
                     <input
                       type='checkbox'
-                      id={product.productId}
-                      value={product.productId}
-                      {...register('productIds')}
+                      id={`product-${product.id}`}
+                      value={product.id}
+                      checked={selectedProductIds.includes(product.id)}
+                      onChange={() => handleProductSelection(product.id)}
+                      className='mr-2'
                     />
-                    <label htmlFor={product.productId} className='ml-2'>
-                      {product.name}
-                    </label>
+                    <label htmlFor={`product-${product.id}`} className='text-sm'>{product.name}</label>
                   </div>
                 ))}
-                {errors.productIds && <p className='text-red-500 text-xs mt-1'>{errors.productIds.message}</p>}
               </div>
 
               <div className='mb-4'>

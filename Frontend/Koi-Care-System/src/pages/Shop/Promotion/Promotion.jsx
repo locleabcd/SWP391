@@ -60,6 +60,7 @@ function Promotion() {
         headers: { Authorization: `Bearer ${token}` }
       })
       setPromotions(res.data.data)
+      
     } catch (error) {
       console.log('Error fetching promotions:', error)
     }
@@ -253,20 +254,20 @@ function Promotion() {
                   <p><GrNotes /> Description: {selectedPromotion.description}</p>
                   <p><MdPendingActions /> Status: {selectedPromotion.status}</p>
                           <div className='mt-4'>
-          <h4 className='text-lg font-bold'>Product Details</h4>
+          <h4 className='text-lg font-bold text-center'>Product Details</h4>
           {productDetails.length > 0 ? ( // Kiểm tra xem có sản phẩm không
-            <table className='min-w-full bg-white'>
+            <table className='min-w-full bg-white text-left'>
               <thead>
                 <tr>
                   <th className='py-2'>Product Name</th>
-                  <th className='py-2'>Count</th>
+                  
                 </tr>
               </thead>
               <tbody>
                 {productDetails.map((product, index) => (
-                  <tr key={index} className='text-center'>
+                  <tr key={index} className='text-left'>
                     <td className='py-2'>{product.name}</td>
-                    <td className='py-2'>{product.count}</td>
+                    
                   </tr>
                 ))}
               </tbody>
