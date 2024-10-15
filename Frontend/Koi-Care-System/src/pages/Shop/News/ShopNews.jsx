@@ -18,7 +18,7 @@ const lightTheme = createTheme({
   palette: {
     mode: 'light',
   },
-});
+})
 
 const darkTheme = createTheme({
   palette: {
@@ -27,11 +27,8 @@ const darkTheme = createTheme({
       default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
       paper: 'rgb(36 48 63 / var(--tw-bg-opacity))',
     },
-    text: {
-      primary: '#ffffff',
-    },
   },
-});
+})
 
 function ShopNews() {
   const { isDarkMode } = useDarkMode()
@@ -260,27 +257,27 @@ function ShopNews() {
               </button>            
             </div>
             <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-            <CssBaseline />
-            <Paper sx={{ height: 670}}>
-              <DataGrid
-                rows={blogs}
-                columns={columns}
-                pageSize={10}
-                pageSizeOptions={[5, 10, 20, 50, 100]}
-                rowHeight={80}
-                checkboxSelection
-                disableExtendRowFullWidth
-                getRowId={(row) => row.blogId}
-                sx={{
-                  '& .MuiDataGrid-columnHeaders': {
-                    backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
-                  },
-                  '& .MuiDataGrid-row:hover': {
-                    backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
-                  }
-                }}
-              />
-            </Paper>
+              <CssBaseline />
+              <Paper sx={{ height: 670}}>
+                <DataGrid
+                  rows={blogs}
+                  columns={columns}
+                  pageSize={10}
+                  pageSizeOptions={[5, 10, 20, 50, 100]}
+                  rowHeight={80}
+                  checkboxSelection
+                  disableExtendRowFullWidth
+                  getRowId={(row) => row.blogId}
+                  sx={{
+                    '& .MuiDataGrid-columnHeaders': {
+                      backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
+                    },
+                    '& .MuiDataGrid-row:hover': {
+                      backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
+                    }
+                  }}
+                />
+              </Paper>
             </ThemeProvider>
           </div>
         </div>

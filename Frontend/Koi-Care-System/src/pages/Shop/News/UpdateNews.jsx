@@ -12,7 +12,7 @@ import { useForm } from 'react-hook-form'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
 
-const animatedComponents = makeAnimated();
+const animatedComponents = makeAnimated()
 
 function UpdateNews() {
   const { id } = useParams()
@@ -21,8 +21,8 @@ function UpdateNews() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [blogData, setBlogData] = useState(null)
-  const [tags, setTags] = useState([]) // To hold available tags
-  const [selectedTags, setSelectedTags] = useState([]) // To hold selected tag IDs
+  const [tags, setTags] = useState([]) 
+  const [selectedTags, setSelectedTags] = useState([]) 
 
   const {
     register,
