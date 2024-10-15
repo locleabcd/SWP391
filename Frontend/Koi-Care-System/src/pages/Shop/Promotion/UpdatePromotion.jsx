@@ -17,6 +17,7 @@ function UpdatePromotion() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [promotions, setPromotions] = useState(null)
+  const [products, setProducts] = useState([]) 
 
   const {
     register,
@@ -50,6 +51,24 @@ function UpdatePromotion() {
   useEffect(() => {
     fetchPromotion()
   }, [id])
+  const getProduct = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/products/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setProducts(res.data.data)
+    } catch (error) {
+      console.log('Error fetching products:', error)
+    }
+  }
 
   useEffect(() => {
     if (promotions) {

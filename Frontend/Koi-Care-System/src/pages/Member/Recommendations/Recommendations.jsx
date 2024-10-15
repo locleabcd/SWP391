@@ -44,9 +44,15 @@ function Recommendations() {
     if (isProductInWishlist) {
       updatedWishlist = wishlist.filter((item) => item.id !== product.id)
       dispatch(RemoveFromWishlist(product))
+      toast.success('Remove to wishlist success!!', {
+        autoClose: 1000
+      })
     } else {
       updatedWishlist = [...wishlist, product]
       dispatch(AddToWishlist(product))
+      toast.success('Add to wishlist success!!', {
+        autoClose: 1000
+      })
     }
 
     setWishlist(updatedWishlist)
@@ -240,7 +246,7 @@ function Recommendations() {
                   <div className='flex flex-col border-b-gray-200 mt-2'>
                     <div
                       onClick={() => handleChange('all')}
-                      className={`py-3 mt-2 px-6 custom rounded-xl cursor-pointer ${
+                      className={`py-3 mt-2 px-6 custom rounded-lg cursor-pointer ${
                         selectCategory === 'all'
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : ' bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
@@ -253,7 +259,7 @@ function Recommendations() {
                       <div key={categories.id}>
                         <div
                           onClick={() => handleChange(categories.id)}
-                          className={`py-3 mt-2 px-6 custom rounded-xl ${
+                          className={`py-3 mt-2 px-6 custom rounded-lg ${
                             selectCategory === categories.id
                               ? `${isDarkMode ? 'bg-custom-layout-dark' : ' bg-custom-layout-light'}`
                               : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
@@ -274,7 +280,7 @@ function Recommendations() {
                         sort === 'newest'
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : ' bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                      } py-3 mt-2 px-6 custom rounded-xl cursor-pointer flex gap-2`}
+                      } py-3 mt-2 px-6 custom rounded-lg cursor-pointer flex gap-2`}
                       onClick={() => handleSort('newest')}
                     >
                       <svg
@@ -299,7 +305,7 @@ function Recommendations() {
                         sort === 'price-high-low'
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : ' bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                      } py-3 mt-2 px-6 custom rounded-xl cursor-pointer flex gap-2`}
+                      } py-3 mt-2 px-6 custom rounded-lg cursor-pointer flex gap-2`}
                       onClick={() => handleSort('price-high-low')}
                     >
                       <svg
@@ -323,7 +329,7 @@ function Recommendations() {
                     <div
                       className={`${
                         sort === 'price-low-high' ? 'bg-custom-layout-light' : 'hover:bg-custom-layout-light'
-                      } py-3 mt-2 px-6 custom rounded-xl cursor-pointer flex gap-2`}
+                      } py-3 mt-2 px-6 custom rounded-lg cursor-pointer flex gap-2`}
                       onClick={() => handleSort('price-low-high')}
                     >
                       <svg
@@ -353,7 +359,7 @@ function Recommendations() {
                       <div
                         key={range}
                         onClick={() => handlePricingChange(range)}
-                        className={`py-3 mt-2 px-6 custom rounded-xl cursor-pointer flex gap-4 ${
+                        className={`py-3 mt-2 px-6 custom rounded-lg cursor-pointer flex gap-4 ${
                           pricing === range
                             ? isDarkMode
                               ? 'bg-custom-layout-dark'
@@ -377,7 +383,7 @@ function Recommendations() {
                       <div
                         key={stars}
                         onClick={() => handleRatingChange(stars)}
-                        className={`py-3 mt-2 px-6 custom rounded-xl cursor-pointer flex gap-4 ${
+                        className={`py-3 mt-2 px-6 custom rounded-lg cursor-pointer flex gap-4 ${
                           rating === stars
                             ? isDarkMode
                               ? 'bg-custom-layout-dark'
@@ -415,7 +421,7 @@ function Recommendations() {
               <div className='flex-auto px-7 py-7'>
                 <div className='flex justify-between items-center'>
                   <div className='font-semibold text-2xl'>Products</div>
-                  <div className='flex relative justify-center items-center border border-gray-300 px-6 py-3  rounded-xl'>
+                  <div className='flex relative justify-center items-center border border-gray-300 px-6 py-3  rounded-lg'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -460,8 +466,9 @@ function Recommendations() {
                             hidden: { opacity: 0, x: 100 },
                             visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
                           }}
+                          whileHover={{ scale: 1.02 }}
                           key={products.id}
-                          className='border border-gray-200 rounded-xl hover:scale-[102%] duration-300'
+                          className='border border-gray-200 rounded-lg hover:scale-[102%] duration-300'
                         >
                           <div>
                             <div className='border-b border-gray-200 max-h-[300px]'>

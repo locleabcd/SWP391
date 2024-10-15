@@ -39,7 +39,7 @@ function WaterParameters() {
   const [saltStyle, setSaltStyle] = useState({})
   const [totalChlorineStyle, setTotalChlorineStyle] = useState({})
   const [showInfo, setShowInfo] = useState({})
-  const [sortOption, setSortOption] = useState({ order: 'asc', field: 'pondName' });
+  const [sortOption, setSortOption] = useState({ order: 'asc', field: 'pondName' })
   const getPond = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -92,66 +92,64 @@ function WaterParameters() {
       getParameter(userId)
     }
   }, [])
+
   const toggleButtons = () => {
     setShowButtons(!showButtons)
   }
 
   const createParameter = async (data) => {
-    setIsLoading(true);
-    setIsSubmitting(true);
+    setIsLoading(true)
+    setIsSubmitting(true)
 
-    console.log('Form Data:', data); // Kiểm tra dữ liệu form trước khi gửi
+    console.log('Form Data:', data) // Kiểm tra dữ liệu form trước khi gửi
 
     try {
-        const token = localStorage.getItem('token');
-        if (!token) {
-            throw new Error('No token found');
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const res = await axios.post(
+        `https://koicaresystemv3.azurewebsites.net/api/water-parameters/create`,
+        {
+          koiPondId: data.pondId,
+          createDateTime: data.createDateTime,
+          nitrite: data.nitrite,
+          nitrate: data.nitrate,
+          phosphate: data.phosphate,
+          ammonium: data.ammonium,
+          hardness: data.hardness,
+          oxygen: data.oxygen,
+          temperature: data.temperature,
+          phValue: data.phValue,
+          carbonHardness: data.carbonHardness,
+          salt: data.salt,
+          totalChlorine: data.totalChlorine,
+          temp: data.temp,
+          amountFed: data.amountFed,
+          note: data.note,
+          carbonDioxide: data.carbonDioxide
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
+      )
 
-        const res = await axios.post(
-            `https://koicaresystemv3.azurewebsites.net/api/water-parameters/create`,
-            {
-                koiPondId: data.pondId,
-                createDateTime: data.createDateTime,
-                nitrite: data.nitrite,
-                nitrate: data.nitrate,
-                phosphate: data.phosphate,
-                ammonium: data.ammonium,
-                hardness: data.hardness,
-                oxygen: data.oxygen,
-                temperature: data.temperature,
-                phValue: data.phValue,
-                carbonHardness: data.carbonHardness,
-                salt: data.salt,
-                totalChlorine: data.totalChlorine,
-                temp: data.temp,
-                amountFed: data.amountFed,
-                note: data.note,
-                carbonDioxide: data.carbonDioxide
-            },
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        );
-
-        setIsAddFormVisible(false);    // Đóng form sau khi tạo thành công
-        const userId = localStorage.getItem('id');
-        await getParameter(userId);  // Gọi lại getParameter để cập nhật dữ liệu mới
-        sortParameter(sortOption.order, sortOption.field);
-        reset(); // Reset form
-
+      setIsAddFormVisible(false) // Đóng form sau khi tạo thành công
+      const userId = localStorage.getItem('id')
+      await getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
+      sortParameter(sortOption.order, sortOption.field)
+      reset() // Reset form
     } catch (error) {
-        console.error('Error during parameter creation: ', error);
-        alert(`Error: ${error.message}`); // Hiển thị lỗi cho người dùng
+      console.error('Error during parameter creation: ', error)
+      alert(`Error: ${error.message}`) // Hiển thị lỗi cho người dùng
     } finally {
-        setIsSubmitting(false);
-        setIsLoading(false);
+      setIsSubmitting(false)
+      setIsLoading(false)
     }
-};
-
-
+  }
 
   const updateParameter = async (data, waterId) => {
     setIsLoading(true)
@@ -190,10 +188,10 @@ function WaterParameters() {
           }
         }
       )
-      setIsEditFormVisible(false);   // Đóng form sau khi cập nhật thành công
-      const userId = localStorage.getItem('id');
-      getParameter(userId);          // Gọi lại getParameter để cập nhật dữ liệu mới
-      reset();         
+      setIsEditFormVisible(false) // Đóng form sau khi cập nhật thành công
+      const userId = localStorage.getItem('id')
+      getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
+      reset()
     } catch (error) {
       console.log(error)
     } finally {
@@ -213,10 +211,10 @@ function WaterParameters() {
           Authorization: `Bearer ${token}`
         }
       })
-      setIsEditFormVisible(false);   // Đóng form sau khi cập nhật thành công
-    const userId = localStorage.getItem('id');
-    getParameter(userId);          // Gọi lại getParameter để cập nhật dữ liệu mới
-    reset();         
+      setIsEditFormVisible(false) // Đóng form sau khi cập nhật thành công
+      const userId = localStorage.getItem('id')
+      getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
+      reset()
     } catch (error) {
       console.error('Error deleting paramter:', error)
     } finally {
@@ -264,202 +262,202 @@ function WaterParameters() {
   }
   const toggleEditFormVisibility = (parameter) => {
     if (parameter) {
-        setCurrentParameter(parameter);
-        setIsEditFormVisible(true);
-        setIsAddFormVisible(false);
-        reset(parameter); // Reset form với giá trị của parameter
+      setCurrentParameter(parameter)
+      setIsEditFormVisible(true)
+      setIsAddFormVisible(false)
+      reset(parameter) // Reset form với giá trị của parameter
 
-        // Cập nhật trạng thái màu sắc của các trường khi mở form
-        setNitriteStyle(getStyleBasedOnValue(parameter.nitrite, 'nitrite'));
-        setNitrateStyle(getStyleBasedOnValue(parameter.nitrate, 'nitrate'));
-        setAmmoniumStyle(getStyleBasedOnValue(parameter.ammonium, 'ammonium'));
-        setCarbonDioxideStyle(getStyleBasedOnValue(parameter.carbonDioxide, 'carbonDioxide'));
-        setCarbonHardnessStyle(getStyleBasedOnValue(parameter.carbonHardness, 'carbonHardness'));
-        setHardnessStyle(getStyleBasedOnValue(parameter.hardness, 'hardness'));
-        setOxygenStyle(getStyleBasedOnValue(parameter.oxygen, 'oxygen'));
-        setPhValueStyle(getStyleBasedOnValue(parameter.phValue, 'phValue'));
-        setPhosphateStyle(getStyleBasedOnValue(parameter.phosphate, 'phosphate'));
-        setSaltStyle(getStyleBasedOnValue(parameter.salt, 'salt'));
-        setTemperatureStyle(getStyleBasedOnValue(parameter.temperature, 'temperature'));
-        setTotalChlorineStyle(getStyleBasedOnValue(parameter.totalChlorine, 'totalChlorine'));
+      // Cập nhật trạng thái màu sắc của các trường khi mở form
+      setNitriteStyle(getStyleBasedOnValue(parameter.nitrite, 'nitrite'))
+      setNitrateStyle(getStyleBasedOnValue(parameter.nitrate, 'nitrate'))
+      setAmmoniumStyle(getStyleBasedOnValue(parameter.ammonium, 'ammonium'))
+      setCarbonDioxideStyle(getStyleBasedOnValue(parameter.carbonDioxide, 'carbonDioxide'))
+      setCarbonHardnessStyle(getStyleBasedOnValue(parameter.carbonHardness, 'carbonHardness'))
+      setHardnessStyle(getStyleBasedOnValue(parameter.hardness, 'hardness'))
+      setOxygenStyle(getStyleBasedOnValue(parameter.oxygen, 'oxygen'))
+      setPhValueStyle(getStyleBasedOnValue(parameter.phValue, 'phValue'))
+      setPhosphateStyle(getStyleBasedOnValue(parameter.phosphate, 'phosphate'))
+      setSaltStyle(getStyleBasedOnValue(parameter.salt, 'salt'))
+      setTemperatureStyle(getStyleBasedOnValue(parameter.temperature, 'temperature'))
+      setTotalChlorineStyle(getStyleBasedOnValue(parameter.totalChlorine, 'totalChlorine'))
     }
-};
-const sortParameter = (order, field) => {
-  setSortOption({ order, field }); // Lưu trạng thái sắp xếp
-  let sortedArray = [...parameters];
+  }
+  const sortParameter = (order, field) => {
+    setSortOption({ order, field }) // Lưu trạng thái sắp xếp
+    let sortedArray = [...parameters]
 
-  if (field === 'pondName') {
+    if (field === 'pondName') {
       sortedArray.sort((a, b) =>
-          order === 'asc' ? a.koiPondName.localeCompare(b.koiPondName) : b.koiPondName.localeCompare(a.koiPondName)
-      );
-  } else if (field === 'createDateTime') {
+        order === 'asc' ? a.koiPondName.localeCompare(b.koiPondName) : b.koiPondName.localeCompare(a.koiPondName)
+      )
+    } else if (field === 'createDateTime') {
       sortedArray.sort((a, b) =>
-          order === 'asc' ? new Date(a.createDateTime) - new Date(b.createDateTime) : new Date(b.createDateTime) - new Date(a.createDateTime)
-      );
+        order === 'asc'
+          ? new Date(a.createDateTime) - new Date(b.createDateTime)
+          : new Date(b.createDateTime) - new Date(a.createDateTime)
+      )
+    }
+
+    setParameters(sortedArray)
   }
 
-  setParameters(sortedArray);
-};
-
   useEffect(() => {
-    
     reset()
     console.log('Current parameters:', parameters)
   }, [parameters])
   const getStyleBasedOnValue = (value, type) => {
-    let newStyle = { border: '1px solid black', color: 'black' }; // Giá trị mặc định
+    let newStyle = { border: '1px solid black', color: 'black' } // Giá trị mặc định
 
-    const numericValue = parseFloat(value);
+    const numericValue = parseFloat(value)
 
     // Thay đổi style dựa vào loại và giá trị
     switch (type) {
-        case 'nitrate':
-            if (numericValue < 0 || numericValue > 500) {
-                newStyle = { border: '1px solid blue', color: 'blue' };
-            } else if (numericValue <= 20) {
-                newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue <= 80) {
-                newStyle = { border: '1px solid orange', color: 'orange' };
-            } else {
-                newStyle = { border: '1px solid red', color: 'red' };
-            }
-            break;
+      case 'nitrate':
+        if (numericValue < 0 || numericValue > 500) {
+          newStyle = { border: '1px solid blue', color: 'blue' }
+        } else if (numericValue <= 20) {
+          newStyle = { border: '1px solid green', color: 'green' }
+        } else if (numericValue <= 80) {
+          newStyle = { border: '1px solid orange', color: 'orange' }
+        } else {
+          newStyle = { border: '1px solid red', color: 'red' }
+        }
+        break
 
-        case 'nitrite':
-            if (numericValue < 0 || numericValue > 50) {
-                newStyle = { border: '1px solid blue', color: 'blue' };
-            } else if (numericValue <= 0.1) {
-                newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue <= 0.3) {
-                newStyle = { border: '1px solid orange', color: 'orange' };
-            } else {
-                newStyle = { border: '1px solid red', color: 'red' };
-            }
-            break;
+      case 'nitrite':
+        if (numericValue < 0 || numericValue > 50) {
+          newStyle = { border: '1px solid blue', color: 'blue' }
+        } else if (numericValue <= 0.1) {
+          newStyle = { border: '1px solid green', color: 'green' }
+        } else if (numericValue <= 0.3) {
+          newStyle = { border: '1px solid orange', color: 'orange' }
+        } else {
+          newStyle = { border: '1px solid red', color: 'red' }
+        }
+        break
 
-        case 'phosphate':
-            if (numericValue < 0 || numericValue > 50) {
-                newStyle = { border: '1px solid blue', color: 'blue' };
-            } else if (numericValue <= 0.035) {
-                newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue <= 1) {
-                newStyle = { border: '1px solid orange', color: 'orange' };
-            } else {
-                newStyle = { border: '1px solid red', color: 'red' };
-            }
-            break;
+      case 'phosphate':
+        if (numericValue < 0 || numericValue > 50) {
+          newStyle = { border: '1px solid blue', color: 'blue' }
+        } else if (numericValue <= 0.035) {
+          newStyle = { border: '1px solid green', color: 'green' }
+        } else if (numericValue <= 1) {
+          newStyle = { border: '1px solid orange', color: 'orange' }
+        } else {
+          newStyle = { border: '1px solid red', color: 'red' }
+        }
+        break
 
-        case 'ammonium':
-            if (numericValue < 0 || numericValue > 50) {
-                newStyle = { border: '1px solid blue', color: 'blue' };
-            } else if (numericValue <= 0.1) {
-                newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue <= 1) {
-                newStyle = { border: '1px solid orange', color: 'orange' };
-            } else {
-                newStyle = { border: '1px solid red', color: 'red' };
-            }
-            break;
+      case 'ammonium':
+        if (numericValue < 0 || numericValue > 50) {
+          newStyle = { border: '1px solid blue', color: 'blue' }
+        } else if (numericValue <= 0.1) {
+          newStyle = { border: '1px solid green', color: 'green' }
+        } else if (numericValue <= 1) {
+          newStyle = { border: '1px solid orange', color: 'orange' }
+        } else {
+          newStyle = { border: '1px solid red', color: 'red' }
+        }
+        break
 
-        case 'hardness':
-            if (numericValue < 0 || numericValue > 50) {
-                newStyle = { border: '1px solid blue', color: 'blue' };
-            } else if (numericValue <= 21) {
-                newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue <= 50) {
-                newStyle = { border: '1px solid orange', color: 'orange' };
-            }
-            break;
+      case 'hardness':
+        if (numericValue < 0 || numericValue > 50) {
+          newStyle = { border: '1px solid blue', color: 'blue' }
+        } else if (numericValue <= 21) {
+          newStyle = { border: '1px solid green', color: 'green' }
+        } else if (numericValue <= 50) {
+          newStyle = { border: '1px solid orange', color: 'orange' }
+        }
+        break
 
-        case 'oxygen':
-            if (numericValue < 0 || numericValue > 50) {
-                newStyle = { border: '1px solid blue', color: 'blue' };
-            } else if (numericValue > 6.5) {
-                newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue >= 6 && numericValue <= 6.6) {
-                newStyle = { border: '1px solid orange', color: 'orange' };
-            } else {
-                newStyle = { border: '1px solid red', color: 'red' };
-            }
-            break;
+      case 'oxygen':
+        if (numericValue < 0 || numericValue > 50) {
+          newStyle = { border: '1px solid blue', color: 'blue' }
+        } else if (numericValue > 6.5) {
+          newStyle = { border: '1px solid green', color: 'green' }
+        } else if (numericValue >= 6 && numericValue <= 6.6) {
+          newStyle = { border: '1px solid orange', color: 'orange' }
+        } else {
+          newStyle = { border: '1px solid red', color: 'red' }
+        }
+        break
 
-        case 'temperature':
-            if (numericValue < 0 || numericValue > 100) {
-                newStyle = { border: '1px solid blue', color: 'blue' };
-            } else if (numericValue > 4 && numericValue <= 26) {
-                newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue === 4 || numericValue === 27 || numericValue === 28) {
-                newStyle = { border: '1px solid orange', color: 'orange' };
-            } else {
-                newStyle = { border: '1px solid red', color: 'red' };
-            }
-            break;
+      case 'temperature':
+        if (numericValue < 0 || numericValue > 100) {
+          newStyle = { border: '1px solid blue', color: 'blue' }
+        } else if (numericValue > 4 && numericValue <= 26) {
+          newStyle = { border: '1px solid green', color: 'green' }
+        } else if (numericValue === 4 || numericValue === 27 || numericValue === 28) {
+          newStyle = { border: '1px solid orange', color: 'orange' }
+        } else {
+          newStyle = { border: '1px solid red', color: 'red' }
+        }
+        break
 
-        case 'phValue':
-            if (numericValue < 0 || numericValue > 14) {
-                newStyle = { border: '1px solid blue', color: 'blue' };
-            } else if (numericValue >= 6.9 && numericValue <= 8) {
-                newStyle = { border: '1px solid green', color: 'green' };
-            } else {
-                newStyle = { border: '1px solid red', color: 'red' };
-            }
-            break;
+      case 'phValue':
+        if (numericValue < 0 || numericValue > 14) {
+          newStyle = { border: '1px solid blue', color: 'blue' }
+        } else if (numericValue >= 6.9 && numericValue <= 8) {
+          newStyle = { border: '1px solid green', color: 'green' }
+        } else {
+          newStyle = { border: '1px solid red', color: 'red' }
+        }
+        break
 
-        case 'carbonHardness':
-            if (numericValue < 0 || numericValue > 50) {
-                newStyle = { border: '1px solid blue', color: 'blue' };
-            } else if (numericValue >= 4 && numericValue <= 49) {
-                newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue >= 1 && numericValue < 4) {
-                newStyle = { border: '1px solid orange', color: 'orange' };
-            } else {
-                newStyle = { border: '1px solid red', color: 'red' };
-            }
-            break;
+      case 'carbonHardness':
+        if (numericValue < 0 || numericValue > 50) {
+          newStyle = { border: '1px solid blue', color: 'blue' }
+        } else if (numericValue >= 4 && numericValue <= 49) {
+          newStyle = { border: '1px solid green', color: 'green' }
+        } else if (numericValue >= 1 && numericValue < 4) {
+          newStyle = { border: '1px solid orange', color: 'orange' }
+        } else {
+          newStyle = { border: '1px solid red', color: 'red' }
+        }
+        break
 
-        case 'carbonDioxide':
-            if (numericValue < 0 || numericValue > 99999999) {
-                newStyle = { border: '1px solid blue', color: 'blue' };
-            } else if (numericValue > 4 && numericValue <= 35) {
-                newStyle = { border: '1px solid green', color: 'green' };
-            } else if ((numericValue >= 1 && numericValue < 4) || numericValue < 150) {
-                newStyle = { border: '1px solid orange', color: 'orange' };
-            } else {
-                newStyle = { border: '1px solid red', color: 'red' };
-            }
-            break;
+      case 'carbonDioxide':
+        if (numericValue < 0 || numericValue > 99999999) {
+          newStyle = { border: '1px solid blue', color: 'blue' }
+        } else if (numericValue > 4 && numericValue <= 35) {
+          newStyle = { border: '1px solid green', color: 'green' }
+        } else if ((numericValue >= 1 && numericValue < 4) || numericValue < 150) {
+          newStyle = { border: '1px solid orange', color: 'orange' }
+        } else {
+          newStyle = { border: '1px solid red', color: 'red' }
+        }
+        break
 
-        case 'salt':
-            if (numericValue < 0 || numericValue > 1.5) {
-                newStyle = { border: '1px solid blue', color: 'blue' };
-            } else if (numericValue <= 0.1) {
-                newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue <= 0.6) {
-                newStyle = { border: '1px solid orange', color: 'orange' };
-            } else {
-                newStyle = { border: '1px solid red', color: 'red' };
-            }
-            break;
+      case 'salt':
+        if (numericValue < 0 || numericValue > 1.5) {
+          newStyle = { border: '1px solid blue', color: 'blue' }
+        } else if (numericValue <= 0.1) {
+          newStyle = { border: '1px solid green', color: 'green' }
+        } else if (numericValue <= 0.6) {
+          newStyle = { border: '1px solid orange', color: 'orange' }
+        } else {
+          newStyle = { border: '1px solid red', color: 'red' }
+        }
+        break
 
-        case 'totalChlorine':
-            if (numericValue < 0 || numericValue > 5) {
-                newStyle = { border: '1px solid blue', color: 'blue' };
-            } else if (numericValue > 0 && numericValue <= 0.001) {
-                newStyle = { border: '1px solid green', color: 'green' };
-            } else if (numericValue > 0.001 && numericValue < 0.02) {
-                newStyle = { border: '1px solid orange', color: 'orange' };
-            } else {
-                newStyle = { border: '1px solid red', color: 'red' };
-            }
-            break;
+      case 'totalChlorine':
+        if (numericValue < 0 || numericValue > 5) {
+          newStyle = { border: '1px solid blue', color: 'blue' }
+        } else if (numericValue > 0 && numericValue <= 0.001) {
+          newStyle = { border: '1px solid green', color: 'green' }
+        } else if (numericValue > 0.001 && numericValue < 0.02) {
+          newStyle = { border: '1px solid orange', color: 'orange' }
+        } else {
+          newStyle = { border: '1px solid red', color: 'red' }
+        }
+        break
 
-        default:
-            break;
+      default:
+        break
     }
 
-    return newStyle;
-};
-
+    return newStyle
+  }
 
   const handleChange = (e, type) => {
     const value = e.target.value
@@ -802,7 +800,7 @@ const sortParameter = (order, field) => {
       [inputName]: !prevState[inputName]
     }))
   }
-  
+
   return (
     <div>
       <div className='h-screen flex'>

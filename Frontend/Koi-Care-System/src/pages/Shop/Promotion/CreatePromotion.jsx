@@ -3,17 +3,17 @@ import { useEffect, useState } from 'react'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { useForm } from 'react-hook-form'
-import { Descriptions } from 'antd'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
+
 function CreatePromotion() {
   const { isDarkMode } = useDarkMode()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+  const [products, setProducts] = useState([]) // List of products
   const navigate = useNavigate()
 
   const {
@@ -25,36 +25,33 @@ function CreatePromotion() {
 
   const onSubmit = async (data) => {
     console.log('onSubmit:', data)
-    setIsLoading(true)
     setIsSubmitting(true)
 
-    // Kiểm tra ngày bắt đầu và ngày kết thúc
     const startDate = new Date(data.startDate)
-const endDate = new Date(data.endDate)
+    const endDate = new Date(data.endDate)
 
-  if (startDate > endDate) {
-    toast.error('Start date cannot be after end date.')
-    setIsSubmitting(false)
-    setIsLoading(false)
-    return
-  }
+    if (startDate > endDate) {
+      toast.error('Start date cannot be after end date.')
+      setIsSubmitting(false)
+      return
+    }
+
     try {
       const token = localStorage.getItem('token')
       if (!token) {
         throw new Error('No token found')
       }
 
-      // Chuẩn bị body của request với điều kiện status có sẵn
+      // Combine selected product IDs into a comma-separated string
+      const selectedProductIds = data.productIds.map((id) => Number(id))
+
       const requestBody = {
         name: data.name,
         startDate: data.startDate,
         endDate: data.endDate,
         discountRate: data.discountRate,
-        description: data.description
-      }
-      // Chỉ thêm status nếu người dùng đã nhập
-      if (data.status) {
-        requestBody.status = data.status
+        description: data.description,
+        productIds: selectedProductIds, // Comma-separated product IDs
       }
 
       const res = await axios.post(`https://koicaresystemv3.azurewebsites.net/api/promotions/create`, requestBody, {
@@ -69,17 +66,37 @@ const endDate = new Date(data.endDate)
       toast.error('Failed to create Promotion.')
     } finally {
       setIsSubmitting(false)
-      setIsLoading(false)
     }
   }
+
+  const getProduct = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/products/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setProducts(res.data.data)
+    } catch (error) {
+      console.log('Error fetching products:', error)
+    }
+  }
+
+  useEffect(() => {
+    getProduct()
+  }, [])
 
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
       <div
-        className={`relative ${
-          isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'
-        } overflow-y-auto flex-1 flex-col  overflow-x-hidden duration-200 ease-linear`}
+        className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} overflow-y-auto flex-1 flex-col overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
         <div className='py-5 pb-0 px-[30px] mx-auto'>
@@ -102,6 +119,28 @@ const endDate = new Date(data.endDate)
                 />
                 {errors.name && <p className='text-red-500 text-xs mt-1'>{errors.name.message}</p>}
               </div>
+
+              {/* Checkboxes for product selection */}
+              <div className='mb-4'>
+                <label className='block text-sm font-medium mb-2'>
+                  Select Products
+                </label>
+                {products.map((product) => (
+                  <div key={product.productId} className='mb-2'>
+                    <input
+                      type='checkbox'
+                      id={product.productId}
+                      value={product.productId}
+                      {...register('productIds')}
+                    />
+                    <label htmlFor={product.productId} className='ml-2'>
+                      {product.name}
+                    </label>
+                  </div>
+                ))}
+                {errors.productIds && <p className='text-red-500 text-xs mt-1'>{errors.productIds.message}</p>}
+              </div>
+
               <div className='mb-4'>
                 <label htmlFor='startDate' className='block text-sm font-medium mb-2'>
                   Start Date
@@ -113,10 +152,11 @@ const endDate = new Date(data.endDate)
                   {...register('startDate', {
                     required: 'Start Date is required'
                   })}
-                  min={new Date().toISOString().split('T')[0]} // Không cho chọn ngày quá khứ
+                  min={new Date().toISOString().split('T')[0]} // Prevent selecting past dates
                 />
                 {errors.startDate && <p className='text-red-500 text-xs mt-1'>{errors.startDate.message}</p>}
               </div>
+
               <div className='mb-4'>
                 <label htmlFor='endDate' className='block text-sm font-medium mb-2'>
                   End Date
@@ -128,10 +168,11 @@ const endDate = new Date(data.endDate)
                   {...register('endDate', {
                     required: 'End Date is required'
                   })}
-                  min={new Date().toISOString().split('T')[0]} // Ngăn không cho chọn ngày trong quá khứ
+                  min={new Date().toISOString().split('T')[0]} // Prevent selecting past dates
                 />
                 {errors.endDate && <p className='text-red-500 text-xs mt-1'>{errors.endDate.message}</p>}
               </div>
+
               <div className='mb-4'>
                 <label htmlFor='discountRate' className='block text-sm font-medium mb-2'>
                   Discount Rate
@@ -151,6 +192,7 @@ const endDate = new Date(data.endDate)
                 </div>
                 {errors.discountRate && <p className='text-red-500 text-xs mt-1'>{errors.discountRate.message}</p>}
               </div>
+
               <div className='mb-4 '>
                 <label htmlFor='description' className='block text-sm font-medium mb-2'>
                   Description
@@ -162,6 +204,7 @@ const endDate = new Date(data.endDate)
                   {...register('description')}
                 />
               </div>
+
               <button
                 type='submit'
                 className={`px-4 py-2 bg-blue-600 text-white rounded-md ${isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'}`}
@@ -176,4 +219,5 @@ const endDate = new Date(data.endDate)
     </div>
   )
 }
+
 export default CreatePromotion

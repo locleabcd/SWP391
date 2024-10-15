@@ -6,14 +6,14 @@ import { FaHandPointRight } from 'react-icons/fa'
 import { CgCalculator } from 'react-icons/cg'
 import { IoStatsChartSharp } from 'react-icons/io5'
 import { FaRegNewspaper } from 'react-icons/fa'
-import {Link, NavLink } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import path from '../../constants/path'
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import logo from '../../assets/logo.png'
 import { useEffect, useState } from 'react'
-import axios from 'axios';
+import axios from 'axios'
 import { IoPowerOutline } from 'react-icons/io5'
-import  '../../components/Member/animation.css'
+import '../../components/Member/animation.css'
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
   const [isClosed, setClosed] = useState(() => {
@@ -363,7 +363,6 @@ function LeftSideBar() {
                 {!isClosed && <span className='font-semibold'>About</span>}
               </div>
             </NavLink>
-           
           </div>
         </div>
 
