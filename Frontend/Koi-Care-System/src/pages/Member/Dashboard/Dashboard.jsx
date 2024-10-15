@@ -103,8 +103,8 @@ function Dashboard() {
           Authorization: `Bearer ${token}`
         }
       })
-      setOrders(res.data.data)
-      console.log(res.data.data)
+      setOrders(res.data.data.items)
+      console.log(res.data.data.items)
     } catch (error) {
       console.error('Error fetching water parameters:', error)
     }
@@ -190,14 +190,16 @@ function Dashboard() {
 
   const date = payment.map((payments) => payments.createDate.slice(0, 10))
 
+  useEffect(() => {
+    if (orders.length === 1) {
+      setSelectedOrder(ponds[0])
+    }
+  }, [orders])
+
   const handleChange = (e) => {
     const orderId = e.target.value
-    const order = orders.find((p) => p.id === parseInt(orderId))
-
-    if (order) {
-      setSelectedOrder(order)
-      getOrders(orderId)
-    }
+    setSelectedOrder(orderId)
+    getOrders(orderId)
   }
 
   useEffect(() => {
@@ -267,9 +269,9 @@ function Dashboard() {
             </div>
 
             <div className='mt-10 flex gap-14'>
-              <div className='flex-none border border-gray-200 w-[550px] px-14 py-6'>
+              <div className='flex-none border border-gray-200 w-[550px] px-6 py-6'>
                 <div className='text-2xl font-semibold mb-3'>Recent Transaction</div>
-                <div className='flex flex-col '>
+                <div className='flex flex-col px-10'>
                   {payment.map((payments, index) => (
                     <div className='flex gap-7 mt-4' key={payments.orderId}>
                       <div className='flex'>{date[index]}</div>
@@ -304,6 +306,63 @@ function Dashboard() {
                       </option>
                     ))}
                   </select>
+                </div>
+
+                <div className='mt-10'>
+                  <table className='min-w-full'>
+                    <thead className=''>
+                      <tr className=''>
+                        <th
+                          scope='col'
+                          className='px-8 py-3 text-start text-gray-500 text-xl font-bold uppercase tracking-wider'
+                        >
+                          Product
+                        </th>
+
+                        <th
+                          scope='col'
+                          className='px-6 py-3 text-start text-xl font-bold text-gray-500 uppercase tracking-wider'
+                        >
+                          Quantity
+                        </th>
+                        <th
+                          scope='col'
+                          className='px-6 py-3 text-start text-xl font-bold text-gray-500 uppercase tracking-wider'
+                        >
+                          Price
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className='bg-white divide-y divide-gray-200'>
+                      {orders.map((order) => (
+                        <tr className='' key={order.productId}>
+                          <td className='px-6 py-4 text-center whitespace-nowrap flex gap-5'>
+                            <div className=''>
+                              <img
+                                src={order.imageUrl}
+                                alt=''
+                                className='mx-auto w-[120px] h-[120px] rounded-lg border border-gray-200'
+                              />
+                            </div>
+                            <div className='flex flex-col justify-start items-start'>
+                              <div className='text-start font-semibold text-xl'>{order.productName}</div>
+                              <div className='mt-2'>{order.category}</div>
+                            </div>
+                          </td>
+
+                          <td className='px-6 py-4 text-center whitespace-nowrap'>
+                            <div className='flex gap-5 items-center justify-start w-full'>
+                              <div className='text-xl'>{order.quantity}</div>
+                            </div>
+                          </td>
+
+                          <td className='px-6 py-4 text-xl text-start whitespace-nowrap'>
+                            {order.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
