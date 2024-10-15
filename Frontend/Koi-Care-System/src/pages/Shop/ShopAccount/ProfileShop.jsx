@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { useDarkMode } from '../../../hooks/DarkModeContext';
 
-
 function ProfileShop() {
   const { isDarkMode } = useDarkMode();
   const [users, setUsers] = useState([]);
@@ -18,7 +17,7 @@ function ProfileShop() {
   // State for password fields
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [confirmationPassword, setConfirmPassword] = useState('');
   const [isChangingPassword, setIsChangingPassword] = useState(false);
 
   const {
@@ -28,6 +27,7 @@ function ProfileShop() {
     formState: { errors },
   } = useForm();
 
+  // Fetch user data
   const getUser = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -35,11 +35,14 @@ function ProfileShop() {
       if (!token) {
         throw new Error('No token found');
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await axios.get(
+        `https://koicaresystemv3.azurewebsites.net/api/profile/${id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       console.log(res.data.data);
       setUsers(res.data.data);
       setAvatarPreview(res.data.data.avatar); // Set avatar preview
@@ -48,7 +51,8 @@ function ProfileShop() {
       console.error('Error fetching users:', error);
     }
   };
-  
+
+  // Update user profile
   const updateUser = async (data) => {
     setIsSubmitting(true);
     try {
@@ -92,8 +96,9 @@ function ProfileShop() {
     }
   };
 
+  // Change user password
   const changePassword = async () => {
-    if (newPassword !== confirmPassword) {
+    if (newPassword !== confirmationPassword) {
       toast.error("Passwords do not match!");
       return;
     }
@@ -107,8 +112,9 @@ function ProfileShop() {
       const res = await axios.patch(
         'https://koicaresystemv3.azurewebsites.net/api/users/changePassword',
         {
-          currentPassword,
-          newPassword
+          "currentPassword": currentPassword,
+            "newPassword": newPassword,
+          "confirmationPassword": confirmationPassword
         },
         {
           headers: {
@@ -119,10 +125,11 @@ function ProfileShop() {
 
       toast.success('Password changed successfully!');
       setCurrentPassword('');
-      setNewPassword('');
+      setNewPassword('')
       setConfirmPassword('');
       setIsChangingPassword(false);
     } catch (error) {
+      
       console.error('Error changing password:', error);
       toast.error('Failed to change password.');
     }
@@ -136,8 +143,15 @@ function ProfileShop() {
     }
   };
 
-  const onSubmit = (data) => {
-    updateUser(data);
+  // Separate submit function for profile update
+  const onSubmitProfile = (data) => {
+    updateUser(data); // Call your existing function for profile update
+  };
+
+  // Separate submit function for changing password
+  const onSubmitPassword = (e) => {
+    e.preventDefault();
+    changePassword(); // Call the changePassword function separately
   };
 
   useEffect(() => {
@@ -148,220 +162,214 @@ function ProfileShop() {
   const today = new Date().toISOString().split('T')[0];
 
   return (
-    <div>
-      {/* member page */}
-      <div className='h-screen flex'>
-        <LeftSideBar />
-        <div
-          className={`relative ${
-            isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-          } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
-        >
-          <Header />
-          <div className='gap-4 p-4 flex justify-center items-center flex-col'>
-            <h1 className='text-2xl font-bold'>Profile Information</h1>
-            <form onSubmit={handleSubmit(onSubmit)} className='mt-4 w-2/3'>
-              <div className='flex justify-center mb-4'>
+    <div className="h-screen flex">
+      <LeftSideBar />
+      <div
+        className={`relative ${
+          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+        } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
+      >
+        <Header />
+        <div className="gap-4 p-4 flex justify-center items-center flex-col">
+          <h1 className="text-2xl font-bold">Profile Information</h1>
+          {/* Profile Form */}
+          <form onSubmit={handleSubmit(onSubmitProfile)} className="mt-4 w-2/3">
+            <div className="flex justify-center mb-4">
               {!isEditing ? (
-                  avatarPreview && (
-                    <div className='relative w-48 h-48'>
+                avatarPreview && (
+                  <div className="relative w-48 h-48">
+                    <img
+                      src={avatarPreview}
+                      alt="Avatar"
+                      className="object-cover w-full h-full rounded-full border-2 border-gray-300 shadow-lg"
+                    />
+                  </div>
+                )
+              ) : (
+                <div className="flex flex-col items-center">
+                  <input
+                    type="file"
+                    onChange={handleFileChange}
+                    className="border rounded p-2 mb-2 border-blue-500"
+                  />
+                  {avatarPreview && (
+                    <div className="relative w-48 h-48">
                       <img
                         src={avatarPreview}
-                        alt='Avatar'
-                        className='object-cover w-full h-full rounded-full border-2 border-gray-300 shadow-lg'
+                        alt="Avatar Preview"
+                        className="object-cover w-full h-full rounded-full border-2 border-gray-300 shadow-lg"
                       />
                     </div>
-                  )
-                ) : (
-                  <div className='flex flex-col items-center'>
-                    <input
-                      type='file'
-                      onChange={handleFileChange}
-                      className='border rounded p-2 mb-2 border-blue-500'
-                    />
-                    {avatarPreview && (
-                      <div className='relative w-48 h-48'>
-                        <img
-                          src={avatarPreview}
-                          alt='Avatar Preview'
-                          className='object-cover w-full h-full rounded-full border-2 border-gray-300 shadow-lg'
-                        />
-                      </div>
-                    )}
-                  </div>
+                  )}
+                </div>
+              )}
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block">Name:</label>
+                <input
+                  type="text"
+                  {...register('name')}
+                  disabled
+                  className="border rounded p-2 w-full cursor-not-allowed"
+                />
+              </div>
+              <div>
+                <label className="block">Email:</label>
+                <input
+                  type="text"
+                  {...register('email')}
+                  disabled
+                  className="border rounded p-2 w-full cursor-not-allowed"
+                />
+              </div>
+              <div>
+                <label className="block">Phone:</label>
+                <input
+                  type="text"
+                  {...register('phone', {
+                    pattern: {
+                      value: /(03|07|08|09|01[2|6|8|9])+([0-9]{8})\b/,
+                      message: 'Invalid phone number format',
+                    },
+                  })}
+                  disabled={!isEditing}
+                  className={`border rounded p-2 w-full ${
+                    isEditing ? 'border' : 'bg-white'
+                  }`}
+                />
+                {errors.phone && (
+                  <span className="text-red-500">{errors.phone.message}</span>
                 )}
               </div>
-              <div className='grid grid-cols-2 gap-4'>
-                <div>
-                  <label className='block'>Name:</label>
-                  <input
-                    type='text'
-                    {...register('name')}
-                    disabled
-                    className='border rounded p-2 w-full  cursor-not-allowed'
-                  />
-                </div>
-                <div>
-                    <label className='block'>Email:</label>
-                    <input
-                    type='text'
-                    {...register('email')}
-                    disabled
-                    className='border rounded p-2 w-full  cursor-not-allowed'
-                  />
-                  </div>
-                <div>
-                  <label className='block'>Phone:</label>
-                  <input
-                    type='text'
-                    {...register('phone', {
-                      pattern: {
-                        value: /(03|07|08|09|01[2|6|8|9])+([0-9]{8})\b/,
-                        message: 'Invalid phone number format',
-                      },
-                    })}
-                    disabled={!isEditing}
-                    className={`border rounded p-2 w-full ${
-                      isEditing ? 'border' : 'bg-white'
-                    }`}
-                  />
-                  {errors.phone && (
-                    <span className='text-red-500'>{errors.phone.message}</span>
-                  )}
-                </div>
-                <div>
-                  <label className='block'>Gender:</label>
-                  <select
-                    {...register('gender')}
-                    disabled={!isEditing}
-                    className={`border rounded p-2 w-full ${
-                      isEditing ? 'border' : 'bg-white'
-                    }`}
-                  >
-                    <option value='male'>Male</option>
-                    <option value='female'>Female</option>
-                    <option value='other'>Other</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className='block'>Date of Birth:</label>
-                  <input
-                    type='date'
-                    {...register('dateOfBirth')}
-                    disabled={!isEditing}
-                    max={today}
-                    className={`border rounded p-2 w-full ${
-                      isEditing ? 'border' : 'bg-white'
-                    }`}
-                  />
-                </div>
-                <div>
-                  <label className='block'>Created Date:</label>
-                  <input
-                    type='text'
-                    value={new Date(users.createdDate).toLocaleDateString()}
-                    disabled
-                    className='border rounded p-2 w-full bg-white'
-                  />
-                </div>
-
-                <div className='col-span-2'>
-                  <label className='block'>Address:</label>
-                  <input
-                    type='text'
-                    {...register('address')}
-                    disabled={!isEditing}
-                    className={`border rounded p-2 w-full ${
-                      isEditing ? 'border' : 'bg-white'
-                    }`}
-                  />
-                </div>
-                <div className='col-span-2'>
-                  <label className='block'>Bio:</label>
-                  <textarea
-                    {...register('bio')}
-                    disabled={!isEditing}
-                    className={`border rounded p-2 w-full ${
-                      isEditing ? 'border' : 'bg-white'
-                    }`}
-                  />
-                </div>
+              <div>
+                <label className="block">Gender:</label>
+                <select
+                  {...register('gender')}
+                  disabled={!isEditing}
+                  className={`border rounded p-2 w-full ${
+                    isEditing ? 'border' : 'bg-white'
+                  }`}
+                >
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+                  <option value="other">Other</option>
+                </select>
               </div>
-              <div className='mt-4 flex justify-end'>
-                  <button
-                    type='button'
-                    onClick={() => {
-                      setIsEditing(!isEditing);
-                      if (!isEditing) reset(users); // Reset form to current user data when editing starts
-                    }}
-                    className='bg-blue-500 text-white p-2 rounded mr-2 w-20'
-                  >
-                    {isEditing ? 'Cancel' : 'Edit'}
-                  </button>
-                  {isEditing && (
-                    <button
-                      type='submit'
-                      className={`px-4 py-2 bg-green-500 text-white rounded-md ${
-                        isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
-                      }`}
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? 'Submitting...' : 'Update Profile'}
-                    </button>
-                  )}
-                </div>
-            </form>
-            {/* Change Password Form */}
-            <div className='mt-8 w-2/3'>
-              <h2 className='text-xl font-bold'>Change Password</h2>
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                changePassword();
-              }} className='mt-4'>
-                <div className='mb-4'>
-                  <label className='block'>Current Password:</label>
-                  <input
-                    type='password'
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    className='border rounded p-2 w-full'
-                    required
-                  />
-                </div>
-                <div className='mb-4'>
-                  <label className='block'>New Password:</label>
-                  <input
-                    type='password'
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className='border rounded p-2 w-full'
-                    required
-                  />
-                </div>
-                <div className='mb-4'>
-                  <label className='block'>Confirm New Password:</label>
-                  <input
-                    type='password'
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className='border rounded p-2 w-full'
-                    required
-                  />
-                </div>
-                <div className='flex justify-end'>
-                  <button
-                    type='submit'
-                    className={`px-4 py-2 bg-green-500 text-white rounded-md ${
-                      isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
-                    }`}
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? 'Submitting...' : 'Change Password'}
-                  </button>
-                </div>
-              </form>
+              <div>
+                <label className="block">Date of Birth:</label>
+                <input
+                  type="date"
+                  {...register('dateOfBirth')}
+                  disabled={!isEditing}
+                  max={today}
+                  className={`border rounded p-2 w-full ${
+                    isEditing ? 'border' : 'bg-white'
+                  }`}
+                />
+              </div>
+              <div>
+                <label className="block">Created Date:</label>
+                <input
+                  type="text"
+                  value={new Date(users.createdDate).toLocaleDateString()}
+                  disabled
+                  className="border rounded p-2 w-full bg-white"
+                />
+              </div>
+              <div className="col-span-2">
+                <label className="block">Address:</label>
+                <input
+                  type="text"
+                  {...register('address')}
+                  disabled={!isEditing}
+                  className={`border rounded p-2 w-full ${
+                    isEditing ? 'border' : 'bg-white'
+                  }`}
+                />
+              </div>
+              <div className="col-span-2">
+                <label className="block">Bio:</label>
+                <textarea
+                  {...register('bio')}
+                  disabled={!isEditing}
+                  className={`border rounded p-2 w-full ${
+                    isEditing ? 'border' : 'bg-white'
+                  }`}
+                />
+              </div>
             </div>
+            <div className="mt-4 flex justify-end">
+              <button
+                type="button"
+                onClick={() => {
+                  setIsEditing(!isEditing);
+                  if (!isEditing) reset(users); // Reset form to current user data when editing starts
+                }}
+                className="bg-blue-500 text-white p-2 rounded mr-2 w-20"
+              >
+                {isEditing ? 'Cancel' : 'Edit'}
+              </button>
+              {isEditing && (
+                <button
+                  type="submit"
+                  className={`px-4 py-2 bg-green-500 text-white rounded-md ${
+                    isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+                  }`}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Update Profile'}
+                </button>
+              )}
+            </div>
+          </form>
+
+          {/* Change Password Form */}
+          <div className="mt-8 w-2/3">
+            <h2 className="text-xl font-bold">Change Password</h2>
+            <form onSubmit={onSubmitPassword} className="mt-4">
+              <div className="mb-4">
+                <label className="block">Current Password:</label>
+                <input
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="border rounded p-2 w-full"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block">New Password:</label>
+                <input
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="border rounded p-2 w-full"
+                  required
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block">Confirm New Password:</label>
+                <input
+                  type="password"
+                  value={confirmationPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="border rounded p-2 w-full"
+                  required
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className={`px-4 py-2 bg-green-500 text-white rounded-md ${
+                    isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
+                  }`}
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Submitting...' : 'Change Password'}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -369,4 +377,4 @@ function ProfileShop() {
   );
 }
 
-export default ProfileShop ;
+export default ProfileShop;
