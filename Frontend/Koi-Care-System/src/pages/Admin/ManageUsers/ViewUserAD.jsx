@@ -1,7 +1,8 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
-import Header from '../../../components/Shop/Header'
-import LeftSideBar from '../../../components/Shop/LeftSideBar'
+import Header from '../../../components/Admin/Header'
+import LeftSideBar from '../../../components/Admin/LeftSideBar'
 import axios from 'axios'
 import { Link, useNavigate ,useParams } from 'react-router-dom'
 import { toast } from 'react-toastify'
@@ -22,7 +23,7 @@ import { FaCartArrowDown } from "react-icons/fa";
 import { FaMoneyBillWave } from "react-icons/fa";
 import { GrNotes } from "react-icons/gr";
 import { MdPendingActions } from "react-icons/md";
-function UserDetail() {
+function ViewUserAD() {
   const { isDarkMode } = useDarkMode()
   const [user, setUser] = useState(null)
   const [order, setOrder] = useState(null)
@@ -43,9 +44,8 @@ function UserDetail() {
     const hours = String(date.getHours()).padStart(2, '0')
     const minutes = String(date.getMinutes()).padStart(2, '0')
     const seconds = String(date.getSeconds()).padStart(2, '0')
-    return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`
+    return `${month}/${day}/${year} ${hours}:${minutes}:${seconds}`
   }
-
   const handleShowDetails = (ord) => {
     setSelectedOrder(ord)
     setIsModalOpen(true)
@@ -147,10 +147,9 @@ function UserDetail() {
     } catch (error) {
       console.error('Error fetching order details:', error);
     }
-  };
-
-  return (
-    <div>
+  }
+    return (
+      <div>
       <div className='h-screen flex'>
         <LeftSideBar />
         <div
@@ -158,7 +157,7 @@ function UserDetail() {
         >
           <Header />
           <div className='py-5 px-[30px] mx-auto'>
-            <TopLayout text='Users' textName='User Details' links='shop/viewUser'/>
+            <TopLayout text='Users' textName='User Details' links='admin/user'/>
             
             <div className='w-full flex justify-end items-center relative'>
               <input type='text' className='p-2 border rounded-md mr-4' placeholder='Search' />
@@ -358,4 +357,4 @@ function UserDetail() {
     </div>
   )
 }
-export default UserDetail
+export default ViewUserAD

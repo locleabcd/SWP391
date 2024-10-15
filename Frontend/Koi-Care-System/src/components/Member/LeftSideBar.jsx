@@ -11,9 +11,9 @@ import path from '../../constants/path'
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import logo from '../../assets/logo.png'
 import { useEffect, useState } from 'react'
-import { IoPowerOutline } from 'react-icons/io5'
 import axios from 'axios'
-
+import { IoPowerOutline } from 'react-icons/io5'
+import '../../components/Member/animation.css'
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
   const [isClosed, setClosed] = useState(() => {
@@ -367,20 +367,21 @@ function LeftSideBar() {
         </div>
 
         <div
-          className={`p-4 flex fixed bottom-0  justify-between items-center rounded-lg ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
+          className={`mt-auto w-full p-4 flex justify-between items-center ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
         >
-          <div className='flex items-center'>
+          {/* User avatar, name, and role */}
+
+          <div className='card-content flex items-center'>
             <img
-              src={user.avatar}
+              src={user.avatar || 'default-avatar.png'}
               alt='User Avatar'
               className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
             />
             <div className='ml-3'>
-              <p className='font-semibold text-lg text-black '>{user.name}</p>
-              <p className='text-sm text-gray-500 '>{user.role || 'User Role'}</p>
+              <p className='font-semibold text-lg text-black'>{user.name || 'User Name'}</p>
+              <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
             </div>
           </div>
-
           <Link onClick={handleLogout} to='/login'>
             <IoPowerOutline
               className='text-2xl text-gray-500 hover:text-red-500 transition-colors duration-200 cursor-pointer'

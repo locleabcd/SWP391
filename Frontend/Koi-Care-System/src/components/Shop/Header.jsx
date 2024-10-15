@@ -134,7 +134,7 @@ function Header() {
                   isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
                 }`}
               >
-                <NavLink to={path.profile} end className=' px-4 py-2 hover:bg-gray-100 flex items-center '>
+                <NavLink to={path.profileShop} end className=' px-4 py-2 hover:bg-gray-100 flex items-center '>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
