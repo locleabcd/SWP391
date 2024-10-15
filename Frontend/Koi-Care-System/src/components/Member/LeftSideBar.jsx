@@ -371,7 +371,7 @@ function LeftSideBar() {
           
       {/* User avatar, name, and role */}
      
-      <div className="card-content flex items-center">
+      <div className="card-content flex items-centers">
         
         <img src={user.avatar || 'default-avatar.png'} alt="User Avatar" className="w-12 h-12 rounded-full object-cover border-2 border-gray-300" />
         <div className="ml-3">

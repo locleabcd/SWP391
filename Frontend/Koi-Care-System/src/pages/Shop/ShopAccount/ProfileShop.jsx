@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import axios from 'axios';
 import Header from '../../../components/Shop/Header';
 import LeftSideBar from '../../../components/Shop/LeftSideBar';
@@ -129,7 +131,6 @@ function ProfileShop() {
       setConfirmPassword('');
       setIsChangingPassword(false);
     } catch (error) {
-      
       console.error('Error changing password:', error);
       toast.error('Failed to change password.');
     }
