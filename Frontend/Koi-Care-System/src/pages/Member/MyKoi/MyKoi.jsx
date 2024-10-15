@@ -303,7 +303,7 @@ function MyKoi() {
                 variants={{
                   visible: {
                     transition: {
-                      staggerChildren: 0.3
+                      staggerChildren: 0.01
                     }
                   }
                 }}

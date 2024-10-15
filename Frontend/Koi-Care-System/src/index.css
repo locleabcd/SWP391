@@ -92,3 +92,17 @@ input:checked + .slider:before {
 .favicon-spin {
   animation: spin 4s linear infinite;
 }
+
+.blinking-svg {
+  animation: blink 1.5s infinite;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
