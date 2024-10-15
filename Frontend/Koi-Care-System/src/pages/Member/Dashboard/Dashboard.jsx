@@ -9,6 +9,7 @@ import { IoFishOutline } from 'react-icons/io5'
 import { IoIosWater } from 'react-icons/io'
 import { LuAlarmClock } from 'react-icons/lu'
 import { MdOutlinePayments } from 'react-icons/md'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 
 function Dashboard() {
   const { isDarkMode } = useDarkMode()
@@ -16,6 +17,57 @@ function Dashboard() {
   const [koi, setKoi] = useState([])
   const [parameters, setParameters] = useState([])
   const [orders, setOrders] = useState([])
+  const [report, setReport] = useState([])
+
+  function getSurroundingDates() {
+    const currentDate = new Date()
+
+    const dates = []
+    for (let i = -3; i <= 3; i++) {
+      const tempDate = new Date(currentDate)
+      tempDate.setDate(currentDate.getDate() + i)
+      const formattedDate = tempDate.toISOString().slice(0, 10)
+      dates.push(formattedDate)
+    }
+
+    return dates
+  }
+
+  const getReport = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+      const surroundingDates = getSurroundingDates()
+      const allReports = []
+
+      for (const date of surroundingDates) {
+        const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/reports/FishPondWater', {
+          headers: {
+            Authorization: `Bearer ${token}`
+          },
+          params: {
+            userId: userId,
+            date: date
+          }
+        })
+
+        allReports.push({
+          date: date,
+          koiFishs: res.data.data.koiFishs?.length,
+          koiPonds: res.data.data.koiPonds?.length,
+          waterParameters: res.data.data.waterParameters?.length
+        })
+        console.log(`Report for ${date}:`, res.data.data)
+      }
+      setReport(allReports)
+    } catch (error) {
+      console.error('Error fetching water parameters:', error)
+    }
+  }
+
+  useEffect(() => {
+    getReport()
+  }, [])
 
   const getOrders = async () => {
     try {
@@ -77,7 +129,6 @@ function Dashboard() {
         }
       })
 
-      console.log(res.data.data)
       setKoi(res.data.data)
     } catch (error) {
       console.error('Error fetching koi:', error)
@@ -104,7 +155,6 @@ function Dashboard() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
       setPonds(res.data.data)
     } catch (error) {
       console.log(error)
@@ -157,6 +207,22 @@ function Dashboard() {
                 <div className='text-2xl mt-3'>Orders</div>
                 <div className='text-2xl mt-1'>{orders?.length}</div>
               </div>
+            </div>
+
+            <div className='mt-10'>
+              <h3 className='text-center text-2xl mb-6'>Report Overview</h3>
+              <ResponsiveContainer width='100%' height={400}>
+                <BarChart data={report} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray='3 3' />
+                  <XAxis dataKey='date' />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey='koiFishs' fill='#8884d8' />
+                  <Bar dataKey='koiPonds' fill='#82ca9d' />
+                  <Bar dataKey='waterParameters' fill='#ffc658' />
+                </BarChart>
+              </ResponsiveContainer>
             </div>
           </div>
         </div>
