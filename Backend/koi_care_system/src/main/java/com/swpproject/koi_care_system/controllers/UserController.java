@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.controllers;
 
+import com.swpproject.koi_care_system.payload.request.ChangePasswordRequest;
 import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
@@ -12,6 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 
 @Slf4j
 @RestController
@@ -67,6 +70,14 @@ public class UserController {
         userService.deleteUserByID(id);
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("User has been deleted")
+                .build());
+    }
+
+    @PatchMapping("/changePassword")
+    public ResponseEntity<ApiResponse> changePassword(@RequestBody @Valid ChangePasswordRequest request, Principal connectedUser) {
+        userService.changePassword(request, connectedUser);
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("Password has been changed")
                 .build());
     }
 

@@ -2,6 +2,7 @@ package com.swpproject.koi_care_system.repository;
 
 import com.swpproject.koi_care_system.models.IssueType;
 import com.swpproject.koi_care_system.models.Product;
+import com.swpproject.koi_care_system.models.Promotion;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -13,5 +13,7 @@ public interface PromotionRepository extends JpaRepository<Promotion, Long> {
 
     List<Promotion> findPromotionByStatus(PromotionStatus status);
 
+    Promotion findPromotionById(Long promotionId);
+
 
 }

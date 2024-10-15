@@ -2,7 +2,6 @@ package com.swpproject.koi_care_system.config;
 
 import com.swpproject.koi_care_system.enums.Role;
 import com.swpproject.koi_care_system.models.User;
-import com.swpproject.koi_care_system.repository.UserProfileRepository;
 import com.swpproject.koi_care_system.repository.UserRepository;
 import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
 import com.swpproject.koi_care_system.service.profile.IProfileService;
@@ -71,7 +70,7 @@ public class OAuth2LoginHandler extends SavedRequestAwareAuthenticationSuccessHa
             });
         }
         this.setAlwaysUseDefaultTargetUrl(true);
-        this.setDefaultTargetUrl("https://koi-care-system.vercel.app/member");
+        this.setDefaultTargetUrl("https://koi-care-system.vercel.app/member/dashboard");
         super.onAuthenticationSuccess(request, response, authentication);
     }
 }

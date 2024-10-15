@@ -158,6 +158,7 @@ public class ProductController {
             return ResponseEntity.ok(new ApiResponse(e.getMessage(), null));
         }
     }
+
     @GetMapping("/recommend/{issueTypeId}")
     public ResponseEntity<ApiResponse> getProductsByIssueType(@PathVariable Long issueTypeId) {
         try {

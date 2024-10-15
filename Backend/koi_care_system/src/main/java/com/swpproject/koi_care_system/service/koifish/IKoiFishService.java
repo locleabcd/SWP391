@@ -1,10 +1,12 @@
 package com.swpproject.koi_care_system.service.koifish;
 
 import com.swpproject.koi_care_system.dto.KoiFishDto;
+import com.swpproject.koi_care_system.dto.KoiPondDto;
 import com.swpproject.koi_care_system.payload.request.AddKoiFishRequest;
 import com.swpproject.koi_care_system.payload.request.KoiFishUpdateRequest;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface IKoiFishService {
@@ -20,5 +22,6 @@ public interface IKoiFishService {
 
     KoiFishDto updateKoiFish(KoiFishUpdateRequest koiFishUpdateRequest, Long koiFishId);
 
+    List<KoiFishDto> getKoiFishByUserIdWithCurrentDate(Long userId, LocalDate date);
 
 }

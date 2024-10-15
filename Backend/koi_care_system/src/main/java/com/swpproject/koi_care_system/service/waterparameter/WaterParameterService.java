@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -93,6 +94,13 @@ public class WaterParameterService implements IWaterParameters {
             waterParameters.addAll(waterParametersRepository.findByKoiPondId(koiPond.getId()));
         });
         return waterParameters.stream().map(waterParameterMapper::mapToWaterParameterDto).toList();
+    }
+
+    @Override
+    public List<WaterParameterDto> getAllWaterParametersByUserIdAndCurrentDate(Long userId, LocalDate date) {
+        return this.getAllWaterParametersByUserId(userId).stream()
+                .filter(waterParameterDto -> waterParameterDto.getCreateDateTime().contains(date.toString()))
+                .toList();
     }
 
     @Override

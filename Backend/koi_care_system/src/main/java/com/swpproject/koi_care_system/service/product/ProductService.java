@@ -38,6 +38,7 @@ public class ProductService implements IProductService {
     private final ImageMapper imageMapper;
     private final SupplierRepository supplierRepository;
     private final IPromotionService promotionService;
+    private final PromotionRepository promotionRepository;
     private final IssueTypeRepository issueTypeRepository;
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
@@ -125,9 +126,9 @@ public class ProductService implements IProductService {
         productsTmp.forEach(product->{
             updateProductRating(product);
             product.getPromotions().forEach(promotion -> {
-                product.getPromotions().removeIf(promotion1 -> {
-                    return promotion1.getStatus().equals(PromotionStatus.ENDED);
-                });
+                if(promotion.getStatus().equals(PromotionStatus.REJECTED)||promotion.getStatus().equals(PromotionStatus.ENDED))
+                    product.getPromotions().remove(promotion);
+
             });
         });
         List<Product> products = productRepository.findAll();
@@ -172,6 +173,7 @@ public class ProductService implements IProductService {
     public List<ProductDto> getConvertedProducts(List<Product> products) {
         return products.stream().map(this::convertToDto).toList();
     }
+
     @Override
     public ProductDto convertToDto(Product product) {
         ProductDto productDto = productMapper.mapToProductDto(product);

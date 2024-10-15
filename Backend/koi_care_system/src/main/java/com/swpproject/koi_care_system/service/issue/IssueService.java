@@ -30,7 +30,6 @@ public class IssueService implements IIssueService {
         }
         for (RangeParameter parameter : RangeParameter.values()) {
             double value = getParameterValue(waterParameters, parameter);
-
             if (parameter.isLow(value) || parameter.isHigh(value)) {
                 String conditionType = parameter.isLow(value) ? "LOW" : "HIGH";
                 createIssue(conditionType, parameter, waterParameters);
@@ -55,12 +54,6 @@ public class IssueService implements IIssueService {
     public List<IssueDto> getIssue(Long waterParametersId) {
         return issueRepository.findByWaterParametersId(waterParametersId).stream().map(issueMapper::mapToIssueDto).toList();
     }
-
-//    @Override
-//    public List<IssueDto> getCurrentIssueByKoiPondID(Long koiPondId) {
-//        return issueRepository.findByWaterParametersId(waterParameters.getLatestWaterParametersByKoiPondId(koiPondId).getId()).stream().map(issueMapper::mapToIssueDto).toList();
-//    }
-
 
     private double getParameterValue(WaterParameters waterParameters, RangeParameter parameter) {
         return switch (parameter) {

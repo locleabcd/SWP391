@@ -22,6 +22,7 @@ public interface KoiPondMapper {
     @Mapping(target = "logList", ignore = true)
     KoiPond mapToKoiPond(AddKoiPondRequest addKoiPondRequest);
     List<KoiPondDto> mapToKoiPondDto(List<KoiPond> list);
+    @Mapping(target = "createDate", ignore = true)
     @Mapping(target = "imageUrl", ignore = true)
     @Mapping(target = "waterParametersList", ignore = true)
     @Mapping(target = "user", ignore = true)

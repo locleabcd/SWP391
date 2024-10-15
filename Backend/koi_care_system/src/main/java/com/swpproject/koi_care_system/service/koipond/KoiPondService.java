@@ -17,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -85,5 +86,13 @@ public class KoiPondService implements IKoiPondService {
         }
         koiPondMapper.updateToKoiPond(oldKoiPond,koiPondUpdateRequest);
         return koiPondMapper.toDto(koiPondRepository.save(oldKoiPond));
+    }
+
+    @Override
+    public List<KoiPondDto> getKoiPondByUserIdWithCurrentDate(Long userId, LocalDate date){
+        return  koiPondRepository.findKoiPondsByUserId(userId)
+                .stream().map(koiPondMapper::toDto)
+                .filter(koiPondDto -> koiPondDto.getCreateDate().equals(date))
+                .toList();
     }
 }

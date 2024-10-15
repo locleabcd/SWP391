@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.service.cart;
 
+import com.swpproject.koi_care_system.enums.PromotionStatus;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.models.Cart;
 import com.swpproject.koi_care_system.models.CartItem;
@@ -47,6 +48,7 @@ public class CartItemService  implements ICartItemService{
     // Update the calculateDiscountedPrice method
     private BigDecimal calculateDiscountedPrice(Product product) {
         BigDecimal totalDiscountRate = product.getPromotions().stream()
+                .filter(promotion -> PromotionStatus.PROCESSING.equals(promotion.getStatus()))
                 .map(promotion -> BigDecimal.valueOf(promotion.getDiscountRate()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal tmp = new BigDecimal(100);

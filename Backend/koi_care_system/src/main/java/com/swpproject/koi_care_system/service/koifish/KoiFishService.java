@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -93,5 +94,16 @@ public class KoiFishService implements IKoiFishService {
         koiFishUpdateRequest.setKoiPond(koiPondRepository.findKoiPondsById(koiFishUpdateRequest.getKoiPondId()));
         koiFishMapper.updateToKoiFish(oldKoiFish,koiFishUpdateRequest);
         return koiFishMapper.toDto(koiFishRepository.save(oldKoiFish));
+    }
+
+    @Override
+    public List<KoiFishDto> getKoiFishByUserIdWithCurrentDate(Long userId, LocalDate date) {
+        List<KoiFishDto> koiFishDtos = new ArrayList<>();
+        koiPondService.getKoiPondByUserID(userId).forEach(koiPond ->
+                koiFishRepository.findByKoiPondId(koiPond.getId()).forEach(koiFish ->
+                        koiFishDtos.add(koiFishMapper.toDto(koiFish))
+                )
+        );
+        return koiFishDtos.stream().filter(koiFishDto -> koiFishDto.getPondDate().equals(date)).toList();
     }
 }

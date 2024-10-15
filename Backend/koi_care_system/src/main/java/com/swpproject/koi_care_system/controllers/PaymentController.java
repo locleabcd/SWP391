@@ -40,7 +40,7 @@ public class PaymentController {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMddHHmmss");
         PaymentDto payment = paymentService.storePayment(PaymentStoreRequest.builder()
                         .createDate(LocalDateTime.parse(request.getParameter("vnp_PayDate"),formatter))
-                        .amount(Long.parseLong(request.getParameter("vnp_Amount")))
+                        .amount(Long.parseLong(request.getParameter("vnp_Amount"))/100)
                         .status(request.getParameter("vnp_ResponseCode"))
                         .invoiceCode(request.getParameter("vnp_TxnRef"))
                         .transactionCode(request.getParameter("vnp_TransactionNo"))
