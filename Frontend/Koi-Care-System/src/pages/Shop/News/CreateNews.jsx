@@ -9,6 +9,10 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { useForm } from 'react-hook-form'
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated';
+
+const animatedComponents = makeAnimated();
 
 function CreateNews() {
   const { isDarkMode } = useDarkMode()
@@ -16,7 +20,7 @@ function CreateNews() {
   const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
   const [tags, setTags] = useState([])
-  const [selectedTagIds, setSelectedTagIds] = useState([])
+  const [selectedTags, setSelectedTags] = useState([])
 
   const {
     register,
@@ -38,8 +42,11 @@ function CreateNews() {
         }
       })
 
-      setTags(res.data.data)
-      console.log(res.data.data)
+      setTags(res.data.data.map(tag => ({
+        value: tag.tagId, 
+        label: tag.tagName 
+      })))
+      console.log(tags)
     } catch (error) {
       console.log('Error fetching tags:', error)
     }
@@ -65,8 +72,8 @@ function CreateNews() {
       formData.append('blogTitle', data.blogTitle)
       formData.append('blogContent', data.blogContent)
       formData.append('blogImage', data.blogImage)
-      selectedTagIds.forEach((tagId) => {
-        formData.append('tagIds', tagId)
+      selectedTags.forEach((tag) => {
+        formData.append('tagIds', tag.value) // Use tag.value for selected tag ID
       })
       formData.append('file', data.file[0])
 
@@ -88,16 +95,8 @@ function CreateNews() {
     }
   }
 
-  const handleTagChange = (tagId) => {
-    setSelectedTagIds((prevSelected) => {
-      if (prevSelected.includes(tagId)) {
-        // If already selected, remove it
-        return prevSelected.filter((id) => id !== tagId)
-      } else {
-        // Otherwise, add it
-        return [...prevSelected, tagId]
-      }
-    })
+  const handleChange = (selectedTag) => {
+    setSelectedTags(selectedTag)
   }
 
   return (
@@ -120,10 +119,70 @@ function CreateNews() {
                 <input
                   type='text'
                   id='blogTitle'
-                  className={`w-full p-2 border rounded-md ${errors.blogTitle ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('blogTitle', { required: 'Blog Title is required' })}
                 />
                 {errors.blogTitle && <p className='text-red-500 text-xs mt-1'>{errors.blogTitle.message}</p>}
+              </div>
+
+              <div className='mb-4'>
+                <label htmlFor='tagId' className='block text-sm font-medium mb-2'>Select Tags</label>
+                <Select
+                  isMulti
+                  options={tags}
+                  value={selectedTags}
+                  onChange={handleChange}
+                  className={` ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  styles={{
+                    control: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF', 
+                      color: isDarkMode ? '#FFFFFF' : '#000000',           
+                      borderColor: errors.tags ? '#EF4444' : '#D1D5DB',    
+                      '&:hover': {
+                        borderColor: errors.tags ? '#EF4444' : '#9CA3AF',  
+                      }
+                    }),
+                    menu: (provided) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF', 
+                    }),
+                    option: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: state.isFocused
+                        ? (isDarkMode ? '#374151' : '#E5E7EB') 
+                        : isDarkMode
+                        ? '#1F2937'                         
+                        : '#FFFFFF',                          
+                      color: isDarkMode ? '#FFFFFF' : '#000000', 
+                    }),
+                    multiValue: (provided) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#4B5563' : '#E5E7EB', 
+                      color: isDarkMode ? '#FFFFFF' : '#000000',           
+                    }),
+                    multiValueLabel: (provided) => ({
+                      ...provided,
+                      color: isDarkMode ? '#FFFFFF' : '#000000', 
+                    }),
+                    multiValueRemove: (provided) => ({
+                      ...provided,
+                      color: isDarkMode ? '#FFFFFF' : '#000000', 
+                      ':hover': {
+                        backgroundColor: isDarkMode ? '#374151' : '#D1D5DB', 
+                        color: isDarkMode ? '#F87171' : '#EF4444',            
+                      }
+                    })
+                  }}
+                  
+                />
+                {selectedTags.length === 0 && (
+                  <p className='text-red-500 text-xs mt-1'>At least one tag is required</p>
+                )}
               </div>
 
               <div className='mb-4'>
@@ -132,9 +191,11 @@ function CreateNews() {
                 </label>
                 <textarea
                   id='blogContent'
-                  className={`w-full p-2 border rounded-md ${errors.blogContent ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('blogContent', { required: 'Blog Content is required' })}
-                  rows={20}
+                  rows={10}
                 />
                 {errors.blogContent && <p className='text-red-500 text-xs mt-1'>{errors.blogContent.message}</p>}
               </div>
@@ -143,38 +204,12 @@ function CreateNews() {
                 <input
                   type='hidden'
                   id='blogImage'
-                  className={`w-full p-2 border rounded-md ${errors.blogImage ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('blogImage', { required: false })}
                 />
-              </div>
-
-              <div className='mb-4'>
-                <label className='block text-sm font-medium mb-2'>Select Tags</label>
-                <div>
-                  {tags.length > 0 ? (
-                    tags.map((tag) => (
-                      <div key={tag.id} className='flex items-center mb-2'>
-                        <input
-                          type='checkbox'
-                          id={`tag-${tag.tagId}`}
-                          value={tag.id}
-                          checked={selectedTagIds.includes(tag.tagId)}
-                          onChange={() => handleTagChange(tag.tagId)}
-                          className='mr-2'
-                        />
-                        <label htmlFor={`tag-${tag.tagId}`} className='text-sm'>
-                          {tag.tagName}
-                        </label>
-                      </div>
-                    ))
-                  ) : (
-                    <p>Loading tags...</p>
-                  )}
-                </div>
-                {selectedTagIds.length === 0 && (
-                  <p className='text-red-500 text-xs mt-1'>At least one tag is required</p>
-                )}
-              </div>
+              </div>             
 
               <div className='mb-4'>
                 <label htmlFor='file' className='block text-sm font-medium mb-2'>
@@ -184,7 +219,9 @@ function CreateNews() {
                   type='file'
                   id='file'
                   accept='image/*'
-                  className={`w-full p-2 border rounded-md ${errors.file ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('file', { required: 'File is required' })}
                 />
                 {errors.file && <p className='text-red-500 text-xs mt-1'>{errors.file.message}</p>}

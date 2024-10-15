@@ -11,6 +11,24 @@ import Paper from '@mui/material/Paper'
 import TopLayout from '../../../layouts/TopLayout'
 import { Link } from 'react-router-dom'
 import * as XLSX from 'xlsx'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+})
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: {
+      default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+      paper: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+    },
+  },
+})
 
 const formatPrice = (price) => {
   return price
@@ -199,38 +217,40 @@ function Product() {
           <div className='w-full flex justify-between items-center relative'>
             <div className='cursor-pointer'>
               <button
-                className='py-2 mb-4 px-3 bg-blue-500 text-white hover:bg-blue-500 rounded-md'
+                className='py-2 mb-4 px-3 bg-blue-500 text-white hover:bg-blue-700  rounded-md'
                 onClick={() => navigate('/shop/createProduct')}
               >
                 New Product
               </button>
             </div>
             <div className='cursor-pointer'>
-              <button onClick={exportToExcel} className="mb-4 ml-3 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md">
+              <button onClick={exportToExcel} className="py-2 mb-4 px-3 bg-blue-500 text-white hover:bg-blue-700 rounded-md">
                 Download Excel
               </button>
             </div>           
           </div>
-          
-          <Paper sx={{ height: 670}}>
-            <DataGrid
-              rows={products}
-              columns={columns}
-              pageSize={10}
-              pageSizeOptions={[5, 10, 20, 50, 100]}
-              rowHeight={80}
-              checkboxSelection
-              disableExtendRowFullWidth
-              sx={{
-                '& .MuiDataGrid-columnHeaders': {
-                  backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
-                },
-                '& .MuiDataGrid-row:hover': {
-                  backgroundColor: isDarkMode ? '#555' : '#e0e0e0'
-                }
-              }}
-            />
-          </Paper>
+          <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+            <CssBaseline />
+            <Paper sx={{ height: 670}}>
+              <DataGrid
+                rows={products}
+                columns={columns}
+                pageSize={10}
+                pageSizeOptions={[5, 10, 20, 50, 100]}
+                rowHeight={80}
+                checkboxSelection
+                disableExtendRowFullWidth
+                sx={{
+                  '& .MuiDataGrid-columnHeaders': {
+                    backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
+                  },
+                  '& .MuiDataGrid-row:hover': {
+                    backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
+                  }
+                }}
+              />
+            </Paper>
+          </ThemeProvider>  
         </div>
       </div>
     </div>

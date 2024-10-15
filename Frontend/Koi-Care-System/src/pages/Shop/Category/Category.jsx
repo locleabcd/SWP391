@@ -9,6 +9,24 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+})
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: {
+      default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+      paper: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+    },
+  },
+})
 
 function Category() {
   const { isDarkMode } = useDarkMode()
@@ -137,25 +155,28 @@ function Category() {
                 </button>
               </div>
             </div>
-            <Paper className='bg-black' sx={{ height: 420, width: '100%' }}>
-              <DataGrid
-                rows={categories}
-                columns={columns}
-                pageSize={5}
-                pageSizeOptions={[5, 10, 20, 50, 100]}
-                rowHeight={60}
-                checkboxSelection
-                disableExtendRowFullWidth 
-                sx={{
-                  '& .MuiDataGrid-columnHeaders': {
-                    backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
-                  },
-                  '& .MuiDataGrid-row:hover': {
-                    backgroundColor: isDarkMode ? '#555' : '#e0e0e0'
-                  }
-                }}
-              />
-            </Paper>          
+            <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+              <CssBaseline />
+              <Paper className='bg-black' sx={{ height: 420}}>
+                <DataGrid
+                  rows={categories}
+                  columns={columns}
+                  pageSize={5}
+                  pageSizeOptions={[5, 10, 20, 50, 100]}
+                  rowHeight={60}
+                  checkboxSelection
+                  disableExtendRowFullWidth 
+                  sx={{
+                    '& .MuiDataGrid-columnHeaders': {
+                      backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
+                    },
+                    '& .MuiDataGrid-row:hover': {
+                      backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
+                    }
+                  }}
+                />
+              </Paper>  
+            </ThemeProvider>        
           </div>
         </div>
       </div>

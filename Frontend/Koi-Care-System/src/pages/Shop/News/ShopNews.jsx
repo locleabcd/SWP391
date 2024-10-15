@@ -11,6 +11,24 @@ import TopLayout from '../../../layouts/TopLayoutShop'
 import * as XLSX from 'xlsx'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+})
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: {
+      default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+      paper: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+    },
+  },
+})
 
 function ShopNews() {
   const { isDarkMode } = useDarkMode()
@@ -112,7 +130,7 @@ function ShopNews() {
     {
       field: 'tags',
       headerName: 'Tag',
-      width: 250,
+      width: 300,
       renderCell: (params) => {
         const tags = params.row.tags || []; 
         return (
@@ -226,6 +244,7 @@ function ShopNews() {
           <Header />
           <div className='py-5 px-[30px] mx-auto '>
             <TopLayout text='News' />
+            
             <div className='w-full flex justify-between items-center relative'>
               <button
                 className='mb-4 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md'
@@ -237,26 +256,29 @@ function ShopNews() {
                 Download Excel
               </button>            
             </div>
-            <Paper sx={{ height: 670}}>
-              <DataGrid
-                rows={blogs}
-                columns={columns}
-                pageSize={10}
-                pageSizeOptions={[5, 10, 20, 50, 100]}
-                rowHeight={80}
-                checkboxSelection
-                disableExtendRowFullWidth
-                getRowId={(row) => row.blogId}
-                sx={{
-                  '& .MuiDataGrid-columnHeaders': {
-                    backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
-                  },
-                  '& .MuiDataGrid-row:hover': {
-                    backgroundColor: isDarkMode ? '#555' : '#e0e0e0'
-                  }
-                }}
-              />
-            </Paper>
+            <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+              <CssBaseline />
+              <Paper sx={{ height: 670}}>
+                <DataGrid
+                  rows={blogs}
+                  columns={columns}
+                  pageSize={10}
+                  pageSizeOptions={[5, 10, 20, 50, 100]}
+                  rowHeight={80}
+                  checkboxSelection
+                  disableExtendRowFullWidth
+                  getRowId={(row) => row.blogId}
+                  sx={{
+                    '& .MuiDataGrid-columnHeaders': {
+                      backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
+                    },
+                    '& .MuiDataGrid-row:hover': {
+                      backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
+                    }
+                  }}
+                />
+              </Paper>
+            </ThemeProvider>
           </div>
         </div>
       </div>
