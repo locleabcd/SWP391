@@ -18,6 +18,29 @@ function Dashboard() {
   const [parameters, setParameters] = useState([])
   const [orders, setOrders] = useState([])
   const [report, setReport] = useState([])
+  const [payment, setPayment] = useState([])
+
+  const getPayments = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/payment/user/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setPayment(res.data.data)
+      console.log(res.data.data)
+    } catch (error) {
+      console.error('Error fetching water parameters:', error)
+    }
+  }
+
+  useEffect(() => {
+    getPayments()
+  }, [])
 
   function getSurroundingDates() {
     const currentDate = new Date()
@@ -57,7 +80,6 @@ function Dashboard() {
           koiPonds: res.data.data.koiPonds?.length,
           waterParameters: res.data.data.waterParameters?.length
         })
-        console.log(`Report for ${date}:`, res.data.data)
       }
       setReport(allReports)
     } catch (error) {
@@ -69,26 +91,33 @@ function Dashboard() {
     getReport()
   }, [])
 
-  const getOrders = async () => {
+  const getOrders = async (orderId) => {
     try {
       const token = localStorage.getItem('token')
-      const userId = localStorage.getItem('id')
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/user/${userId}/order`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/${orderId}/order`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
-      setOrders(res.data.data)
+      setOrders((prevData) => ({
+        ...prevData,
+        [orderId]: res.data.data
+      }))
+      console.log(res.data.data)
     } catch (error) {
       console.error('Error fetching water parameters:', error)
     }
   }
 
   useEffect(() => {
-    getOrders()
+    if (payment.length > 0) {
+      payment.forEach((payments) => {
+        getOrders(payments.orderId)
+      })
+    }
   }, [])
 
   const getParameter = async () => {
@@ -165,6 +194,9 @@ function Dashboard() {
     getPond()
   }, [])
 
+  const date = payment.map((payments) => payments.createDate.slice(0, 10))
+  console.log(date)
+
   return (
     <div>
       <div className='h-screen flex'>
@@ -209,9 +241,9 @@ function Dashboard() {
               </div>
             </div>
 
-            <div className='mt-10'>
+            <div className='mt-10 py-5 px-2 border border-gray-200'>
               <h3 className='text-center text-2xl mb-6'>Report Overview</h3>
-              <ResponsiveContainer width='100%' height={400}>
+              <ResponsiveContainer width='100%' height={600}>
                 <BarChart data={report} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                   <CartesianGrid strokeDasharray='3 3' />
                   <XAxis dataKey='date' />
@@ -223,6 +255,41 @@ function Dashboard() {
                   <Bar dataKey='waterParameters' fill='#ffc658' />
                 </BarChart>
               </ResponsiveContainer>
+            </div>
+
+            <div className='mt-10 flex gap-14'>
+              <div className='flex-none border border-gray-200 w-[550px] px-14 py-6'>
+                <div className='text-2xl font-semibold mb-3'>Recent Transaction</div>
+                <div className='flex flex-col '>
+                  {payment.map((payments, index) => (
+                    <div className='flex gap-7 mt-4' key={payments.orderId}>
+                      <div className='flex'>{date[index]}</div>
+                      <div className='flex flex-col gap-3 items-center'>
+                        {index === 0 && <span className='size-6 border-4 border-blue-500 rounded-full' />}
+                        {index === 1 && <span className='size-6 border-4 border-purple-500 rounded-full' />}
+                        {index === 2 && <span className='size-6 border-4 border-red-500 rounded-full' />}
+                        {index === 3 && <span className='size-6 border-4 border-green-500 rounded-full' />}
+                        {index === 4 && <span className='size-6 border-4 border-purple-500 rounded-full' />}
+
+                        {index !== payment.length - 1 && <span className='w-0.5 h-12 bg-gray-300' />}
+                      </div>
+                      <div className='flex flex-col'>
+                        <div className=''>Transaction Code: {payments.transactionCode}</div>
+                        <div className=''>
+                          Amount:{' '}
+                          {(payments?.amount ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className='flex-auto border border-gray-200 px-5 py-6'>
+                <div className='flex justify-between'>
+                  <div className='text-2xl font-semibold'>Payment Details</div>
+                  <div className='text-2xl font-semibold'>Payment Details</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -153,7 +153,7 @@ function Checkout() {
 
             <div className='border border-gray-200 px-10 py-5 rounded-xl'>
               <ol className='items-center flex w-full px-52 pb-20 pt-14 justify-center text-center text-sm font-medium text-gray-700'>
-                <li className='flex items-center after:mx-2 after:mb-10 after:h-1 after:w-full w-full after:border-b after:border-gray-400 dark:text-primary-500'>
+                <li className='flex items-center after:mx-2 after:mb-10 after:h-1 after:w-full w-full after:border-b after:border-gray-400'>
                   <span className='flex flex-col'>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
