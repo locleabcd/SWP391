@@ -209,7 +209,7 @@ function MyPondLog() {
         >
           <Header />
 
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='My Pond' textName='My Pond Log' links='member/myPond' />
 
             <div className='grid grid-cols-2 gap-10'>

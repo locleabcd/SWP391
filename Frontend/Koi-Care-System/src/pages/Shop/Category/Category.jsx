@@ -9,13 +9,13 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
 
 const lightTheme = createTheme({
   palette: {
-    mode: 'light',
-  },
+    mode: 'light'
+  }
 })
 
 const darkTheme = createTheme({
@@ -23,9 +23,9 @@ const darkTheme = createTheme({
     mode: 'dark',
     background: {
       default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
-      paper: 'rgb(36 48 63 / var(--tw-bg-opacity))',
-    },
-  },
+      paper: 'rgb(36 48 63 / var(--tw-bg-opacity))'
+    }
+  }
 })
 
 function Category() {
@@ -84,7 +84,7 @@ function Category() {
   }
 
   const columns = [
-    {field: 'name',headerName:'Name',flex: 1},
+    { field: 'name', headerName: 'Name', flex: 1 },
     {
       field: 'action',
       headerName: 'Action',
@@ -95,26 +95,16 @@ function Category() {
             to={`/shop/category/${params.row.id}`}
             className='p-1 hover:bg-green-500 text-green-500 hover:text-white rounded-full'
           >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 24 24'
-              fill='currentColor'
-              className='size-5'
-            >
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-5'>
               <path d='M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z' />
               <path d='M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z' />
             </svg>
-          </Link>         
+          </Link>
           <button
             className='p-1 hover:bg-red-500 text-red-600 hover:text-white rounded-full'
             onClick={() => deleteCategory(params.row.id)}
           >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 24 24'
-              fill='currentColor'
-              className='size-5'
-            >
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-5'>
               <path
                 fillRule='evenodd'
                 d='M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005
@@ -130,7 +120,7 @@ function Category() {
           </button>
         </div>
       )
-    } 
+    }
   ]
 
   return (
@@ -143,7 +133,7 @@ function Category() {
           } overflow-y-auto flex-1 flex-col overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Category' />
             <div className='w-full flex justify-between items-center relative mb-4'>
               <div className='cursor-pointer'>
@@ -157,7 +147,7 @@ function Category() {
             </div>
             <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
               <CssBaseline />
-              <Paper className='bg-black' sx={{ height: 420}}>
+              <Paper className='bg-black' sx={{ height: 420 }}>
                 <DataGrid
                   rows={categories}
                   columns={columns}
@@ -165,7 +155,7 @@ function Category() {
                   pageSizeOptions={[5, 10, 20, 50, 100]}
                   rowHeight={60}
                   checkboxSelection
-                  disableExtendRowFullWidth 
+                  disableExtendRowFullWidth
                   sx={{
                     '& .MuiDataGrid-columnHeaders': {
                       backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
@@ -175,8 +165,8 @@ function Category() {
                     }
                   }}
                 />
-              </Paper>  
-            </ThemeProvider>        
+              </Paper>
+            </ThemeProvider>
           </div>
         </div>
       </div>

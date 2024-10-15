@@ -96,11 +96,11 @@ function SaltCalculator() {
         <LeftSideBar />
         <div
           className={`relative ${
-            isDarkMode ? 'bg-custom-dark text-white' : 'bg-gray-100 text-black'
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Salt Calculator' />
           </div>
 

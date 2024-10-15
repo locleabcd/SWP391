@@ -341,7 +341,7 @@ function MyPond() {
             </Link>
           </div>
 
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='My Pond' links='member/myPond' />
             <div className='w-full flex justify-end relative'>
               <div className='cursor-pointer' onClick={toggleButtons}>

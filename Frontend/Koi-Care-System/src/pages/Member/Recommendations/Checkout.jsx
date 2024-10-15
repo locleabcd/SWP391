@@ -148,7 +148,7 @@ function Checkout() {
         >
           <Header />
 
-          <div className='py-5 px-[30px] mx-auto '>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px] '>
             <TopLayout text='Recommendations' textName='Checkout' links='member/recommendations' />
 
             <div className='border border-gray-200 px-10 py-5 rounded-xl'>

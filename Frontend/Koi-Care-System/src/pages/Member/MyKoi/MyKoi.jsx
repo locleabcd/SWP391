@@ -231,7 +231,7 @@ function MyKoi() {
             </p>
           </div>
 
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='My Koi' />
             <div>
               <div className='w-full flex justify-end relative'>

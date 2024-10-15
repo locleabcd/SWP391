@@ -38,7 +38,7 @@ const WishList = () => {
         >
           <Header />
 
-          <div className='py-5 px-[30px] mx-auto '>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px] '>
             <TopLayout text='Recommendations' textName='Wish List' links='member/recommendations' />
             <div>
               {wishlist.length === 0 ? (

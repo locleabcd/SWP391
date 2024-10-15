@@ -220,7 +220,7 @@ function Dashboard() {
         >
           <Header />
 
-          <div className='py-5 px-[30px] mx-auto '>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px] '>
             <TopLayout text='Dashboard' links='member/dashboard' />
 
             <div className='grid grid-cols-5 mt-10 px-2 gap-10'>
