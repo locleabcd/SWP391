@@ -246,7 +246,7 @@ function ViewProduct() {
         >
           <Header />
 
-          <div className='py-5 px-[30px] mx-auto '>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px] '>
             <TopLayout text='Product' textName='View Product' links='shop/product' />
 
             <div className='flex border border-gray-200 px-7 py-5 min-h-[700px] rounded-xl'>

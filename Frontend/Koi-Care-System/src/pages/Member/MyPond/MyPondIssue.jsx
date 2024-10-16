@@ -78,7 +78,6 @@ function MyPondIssue() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
       setProduct(res.data.data)
     } catch (err) {
       console.log(err)
@@ -116,7 +115,7 @@ function MyPondIssue() {
         >
           <Header />
 
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='My Pond' textName='My Pond Issue' links='member/myPond' />
 
             <div className='border flex border-gray-200 mt-10'>
@@ -137,7 +136,7 @@ function MyPondIssue() {
                         }}
                         key={issues.id}
                       >
-                        {issues.description}
+                        {issues.name}
                       </div>
                     ))}
                   </div>
@@ -284,6 +283,12 @@ function MyPondIssue() {
                       <div className=''>No product found</div>
                     )}
                   </motion.div>
+                </div>
+              </div>
+              <div className='flex-auto px-7 py-7'>
+                <div className='text-start font-semibold text-2xl'>Description</div>
+                <div className='text-2xl mt-5 text-justify'>
+                  {issue.length > 0 ? issue[0]?.description : 'No description available'}
                 </div>
               </div>
             </div>

@@ -124,7 +124,7 @@ const darkTheme = createTheme({
       <LeftSideBar />
       <div className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} overflow-y-auto flex-1 flex-col overflow-x-hidden duration-200 ease-linear`}>
         <Header />
-        <div className='py-5 px-[30px] mx-auto'>
+        <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
           <TopLayout text='Users' />
           <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
             <CssBaseline />

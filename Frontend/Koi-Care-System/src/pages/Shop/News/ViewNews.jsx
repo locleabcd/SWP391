@@ -60,7 +60,7 @@ function ViewNews() {
         } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
-        <div className='py-5 px-[30px] mx-auto'>
+        <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
           <TopLayout text='News' textName='View News Detail' links='shop/shopNews' />
           <div className=' flex flex-col justify-center items-center border border-gray-200'>
             <div

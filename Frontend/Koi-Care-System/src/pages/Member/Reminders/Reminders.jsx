@@ -40,7 +40,7 @@ function Reminders() {
         >
           <Header />
 
-          <div className='py-5 px-[30px] mx-auto max-h-[800px]'>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px] max-h-[800px]'>
             <TopLayout text='Reminders' links='/member/reminders' />
 
             <ScheduleComponent

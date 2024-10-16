@@ -172,7 +172,7 @@ function ShopAD() {
           } overflow-y-auto flex-1 flex-col overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Shop' />
             <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
               <CssBaseline />

@@ -60,7 +60,7 @@ function NewsDetail() {
         } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
-        <div className='py-5 px-[30px] mx-auto'>
+        <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
           <TopLayout text='News' textName='News Detail' links='member/news' />
           <div className=' flex flex-col justify-center items-center border border-gray-200'>
             <div
@@ -71,7 +71,7 @@ function NewsDetail() {
               <img
                 src={newDetail.blogImage}
                 alt='blog'
-                className='h-[70vh] w-full object-cover rounded-lg'
+                className='lg:h-[70vh] h-[50vh] w-full object-cover rounded-lg'
                 style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
               />
             </div>
@@ -79,7 +79,7 @@ function NewsDetail() {
               {newDetail.tags?.map((tag) => (
                 <span
                   key={tag.tagId}
-                  className={`text-lg  px-2 py-1 rounded-xl ${
+                  className={`lg:text-lg text-sm  px-2 py-1 rounded-xl ${
                     isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
                   } `}
                 >
@@ -87,10 +87,12 @@ function NewsDetail() {
                 </span>
               ))}
             </div>
-            <h1 className='text-3xl font-semibold text-justify flex justify-start px-6'>{newDetail.blogTitle}</h1>
+            <h1 className='lg:text-3xl text-xl font-semibold text-justify flex justify-start px-6'>
+              {newDetail.blogTitle}
+            </h1>
             <div className='flex items-center mt-5'>
               <div>
-                <p> {newDetail.blogDate}</p>
+                <p className='lg:text-xl text-sm'> {newDetail.blogDate}</p>
               </div>
             </div>
             <div className='w-full mt-5 '>
@@ -148,8 +150,8 @@ function NewsDetail() {
                 </div>
               </div>
 
-              <p className='py-5 indent-8 text-justify px-6'>{newDetail.blogContent}</p>
-              <p className='py-5 border-b border-gray-300 indent-8 text-justify px-6'>
+              <p className='py-5 indent-8 lg:text-lg text-sm text-justify px-6'>{newDetail.blogContent}</p>
+              <p className='py-5 border-b lg:text-lg text-sm border-gray-300 indent-8 text-justify px-6'>
                 Koi fish are longer so they are less suitable for aquariums and more suitable for ponds. Goldfish with
                 their shorter size are more compatible for aquariums though they live well in ponds as well. Koi fish
                 are bred to look beautiful when being seen from the top because they are intended as pond fish. Earlier
@@ -177,7 +179,7 @@ function NewsDetail() {
                       <p>{newDetail?.user?.username}</p>
                     </div>
 
-                    <div className='flex items-center mt-5 sm:ml-auto sm:mt-0'>
+                    <div className='lg:flex items-center mt-5 sm:ml-auto sm:mt-0 hidden'>
                       Share this post:
                       <a
                         className='cursor-pointer flex items-center justify-center w-8 h-8 ml-2 border rounded-full sm:w-10 sm:h-10 dark:border-darkmode-400 text-slate-400 zoom-in'

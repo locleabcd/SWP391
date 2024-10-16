@@ -108,14 +108,14 @@ function Header() {
         isDarkMode
           ? 'bg-custom-dark text-white border-b border-gray-700'
           : 'bg-white text-black border-b border-gray-200'
-      } sticky top-0 p-3 justify-end z-20 flex w-full duration-200 ease-linear`}
+      } sticky top-0 lg:p-3 py-3 justify-end z-20 flex w-full duration-200 ease-linear`}
     >
       <div className='flex items-center justify-end ml-4'>
         <div className='mr-4 flex justify-center items-center gap-2'>
           <button
             className={`${
               isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
-            } p-[16px] rounded-full`}
+            } lg:p-[16px] p-[12px] rounded-full`}
           >
             <span className='cn8jz'>Search</span>
             <svg
@@ -136,7 +136,7 @@ function Header() {
             data-dropdown-toggle='notification-dropdown'
             className={`${
               isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
-            } p-[12px] rounded-full relative`}
+            } lg:p-[12px] p-[10px] rounded-full relative`}
           >
             <span className='sr-only'>View notifications</span>
             <svg
@@ -145,7 +145,7 @@ function Header() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='size-6'
+              className='lg:size-6 size-5'
             >
               <path
                 strokeLinecap='round'
@@ -167,7 +167,7 @@ function Header() {
             data-dropdown-toggle='notification-dropdown'
             className={`${
               isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
-            } p-[12px] rounded-full relative`}
+            } lg:p-[12px] p-[10px] rounded-full relative`}
           >
             <span className='sr-only'>WishList</span>
             <svg
@@ -176,7 +176,7 @@ function Header() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='size-6'
+              className='lg:size-6 size-5'
             >
               <path
                 strokeLinecap='round'
@@ -197,10 +197,15 @@ function Header() {
             data-dropdown-toggle='notification-dropdown'
             className={`${
               isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
-            } p-[12px] rounded-full`}
+            } lg:p-[12px] p-[10px] rounded-full`}
           >
             <span className='sr-only'>View notifications</span>
-            <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
+            <svg
+              className='lg:size-6 size-5'
+              fill='currentColor'
+              viewBox='0 0 20 20'
+              xmlns='http://www.w3.org/2000/svg'
+            >
               <path d='M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z' />
             </svg>
           </button>
@@ -215,16 +220,14 @@ function Header() {
               onChange={toggleDarkMode}
             />
             <label
-              className={`flex items-center justify-center cukve cvdqj cw5z1 c76um c5flv cue4z cmwfi rounded-full cursor-pointer py-[14px] px-[14px] ${
+              className={`flex items-center justify-center cukve cvdqj cw5z1 c76um c5flv cue4z cmwfi rounded-full cursor-pointer lg:p-[14px] p-[12px] ${
                 isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
               }   `}
               htmlFor='light-switch'
             >
               {isDarkMode ? (
                 <svg
-                  className='cp14x ch0mp cbm9w c2e1r cursor-pointer'
-                  width={20}
-                  height={20}
+                  className='cp14x ch0mp cbm9w c2e1r cursor-pointer size-4 lg:size-5'
                   viewBox='0 0 16 16'
                   xmlns='http://www.w3.org/2000/svg'
                 >
@@ -233,9 +236,7 @@ function Header() {
                 </svg>
               ) : (
                 <svg
-                  className='cp14x ch0mp cbm9w c1bco'
-                  width={20}
-                  height={20}
+                  className='cp14x ch0mp cbm9w c1bco size-4 lg:size-5'
                   viewBox='0 0 16 16'
                   xmlns='http://www.w3.org/2000/svg'
                 >
@@ -248,7 +249,7 @@ function Header() {
             </label>
           </div>
           <div className='my-account'>
-            <button onClick={toggleList} className='flex items-center p-2 rounded-md space-x-2'>
+            <button onClick={toggleList} className='lg:flex lg:items-center lg:p-2 lg:rounded-md lg:space-x-2 hidden'>
               <div className='flex flex-col'>
                 <p className='text-sm font-medium'>{user.name}</p>
                 <p className='text-xs text-gray-500'>{user.role}</p>

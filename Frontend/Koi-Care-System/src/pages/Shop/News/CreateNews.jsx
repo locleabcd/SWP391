@@ -121,7 +121,7 @@ function CreateNews() {
                   id='blogTitle'
                   className={`w-full p-2 border rounded-md ${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  } ${errors.blogTitle ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('blogTitle', { required: 'Blog Title is required' })}
                 />
                 {errors.blogTitle && <p className='text-red-500 text-xs mt-1'>{errors.blogTitle.message}</p>}
@@ -133,8 +133,7 @@ function CreateNews() {
                   isMulti
                   options={tags}
                   value={selectedTags}
-                  onChange={handleChange}
-                  className={` ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  onChange={handleChange}                
                   closeMenuOnSelect={false}
                   components={animatedComponents}
                   styles={{
@@ -193,7 +192,7 @@ function CreateNews() {
                   id='blogContent'
                   className={`w-full p-2 border rounded-md ${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  } ${errors.blogContent ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('blogContent', { required: 'Blog Content is required' })}
                   rows={10}
                 />
@@ -206,7 +205,7 @@ function CreateNews() {
                   id='blogImage'
                   className={`w-full p-2 border rounded-md ${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  } ${errors.blogImage ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('blogImage', { required: false })}
                 />
               </div>             
@@ -221,7 +220,7 @@ function CreateNews() {
                   accept='image/*'
                   className={`w-full p-2 border rounded-md ${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  } ${errors.file ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('file', { required: 'File is required' })}
                 />
                 {errors.file && <p className='text-red-500 text-xs mt-1'>{errors.file.message}</p>}

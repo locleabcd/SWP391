@@ -96,7 +96,7 @@ function UpdateTag() {
         <Header />
         <div className='py-5 pb-0 px-[30px] mx-auto'>
           <TopLayout text='Tag' textName='Update Tag' links='shop/tag' />
-          <div className='bg-white p-6 rounded-md border'>
+          <div className='p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} noValidate className='mt-5 space-y-4'>
               <div>
                 <label htmlFor='tagName' className='block text-sm font-bold'>
@@ -106,7 +106,9 @@ function UpdateTag() {
                   type='text'
                   id='tagName'
                   {...register('tagName', { required: 'Tag Name is required' })}
-                  className={`mt-1 p-2 border ${errors.tagName ? 'border-red-500' : 'border-gray-300'} rounded w-full`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tagName ? 'border-red-500' : 'border-gray-300'}`}
                 />
                 {errors.tagName && <p className='text-red-500 text-sm'>{errors.tagName.message}</p>}
               </div>
@@ -118,7 +120,9 @@ function UpdateTag() {
                   type='text'
                   id='tagDescription'
                   {...register('tagDescription', { required: 'Tag Description is required' })}
-                  className={`mt-1 p-2 border ${errors.tagDescription ? 'border-red-500' : 'border-gray-300'} rounded w-full`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tagDescription ? 'border-red-500' : 'border-gray-300'}`}
                 />
                 {errors.tagDescription && <p className='text-red-500 text-sm'>{errors.tagDescription.message}</p>}
               </div>

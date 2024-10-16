@@ -117,15 +117,16 @@ function Promotion() {
         navigate('/login') // Điều hướng đến trang đăng nhập nếu không có token
         return
       }
-  
-      if (!data.id) {  // Thay đổi từ data.promotionId sang data.id
+
+      if (!data.id) {
+        // Thay đổi từ data.promotionId sang data.id
         throw new Error('Promotion ID not found')
       }
-  
+
       const res = await axios.put(
         `https://koicaresystemv3.azurewebsites.net/api/promotions/promotion/confirm`,
         {
-          promotionId: data.id,  // Sử dụng id thay cho promotionId
+          promotionId: data.id, // Sử dụng id thay cho promotionId
           status: data.status
         },
         {
@@ -134,7 +135,7 @@ function Promotion() {
           }
         }
       )
-  
+
       toast.success('Promotion updated successfully!')
       // Cập nhật lại danh sách promotions
       getPromotion()
@@ -335,4 +336,4 @@ function Promotion() {
   )
 }
 
-export default Promotion;
+export default Promotion

@@ -95,7 +95,7 @@ function UpdateCategory() {
         <Header />
         <div className='py-5 pb-0 px-[30px] mx-auto'>
           <TopLayout text='Category' textName='Update Category' links='shop/category' />
-          <div className='bg-white p-6 rounded-md border'>
+          <div className=' p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className='mb-4'>
                 <label htmlFor='name' className='block text-sm font-medium mb-2'>
@@ -104,7 +104,9 @@ function UpdateCategory() {
                 <input
                   type='text'
                   id='name'
-                  className={`relative w-full p-2 border rounded-md ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('name', {
                     required: 'Name is required',
                     minLength: { value: 2, message: 'Name must be at least 2 characters long' },

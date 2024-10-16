@@ -236,7 +236,7 @@ function Recommendations() {
         >
           <Header />
 
-          <div className='py-5 px-[30px] mx-auto '>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Recommendations' links='member/recommendations' />
 
             <div className='mt-5 flex border-gray-200 border'>

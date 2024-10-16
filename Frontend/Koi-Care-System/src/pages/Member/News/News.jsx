@@ -112,11 +112,11 @@ function News() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='News' />
 
-            <div className='w-full flex justify-between relative items-center'>
-              <div className='flex relative justify-center items-center border border-gray-300 px-6 py-3  rounded-xl'>
+            <div className='w-full flex justify-between flex-col lg:flex-row md:flex-row relative lg:items-center'>
+              <div className='flex relative justify-center items-center border border-gray-300 lg:px-6 px-5 lg:py-3 py-2 rounded-xl'>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
                   fill='none'
@@ -146,7 +146,7 @@ function News() {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} w-8 h-8 mb-4`}
+                  className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} lg:size-8 size-6 mb-4`}
                 >
                   <path
                     strokeLinecap='round'
@@ -196,7 +196,7 @@ function News() {
                     }
                   }
                 }}
-                className='py-3 grid grid-cols-3 gap-6 mt-2'
+                className='py-3 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:mt-2'
               >
                 {searchBlog.map((blog, index) => (
                   <motion.div
@@ -205,9 +205,10 @@ function News() {
                       visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
                     }}
                     key={index}
+                    whileHover={{ scale: 1.02 }}
                     className={`${
                       isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                    } mb-4 border rounded-lg shadow-sm  hover:scale-[102%] duration-200`}
+                    } mb-4 border rounded-lg shadow-sm duration-200`}
                   >
                     <div className='hover:scale-[102%]'>
                       <Link to={`/member/news/${blog.blogId}`}>
@@ -215,7 +216,7 @@ function News() {
                           <img
                             src={blog.blogImage}
                             alt={blog.blogTitle}
-                            className='w-full h-72 object-cover relative rounded-t-lg'
+                            className='w-full lg:h-72 h-48 object-cover relative rounded-t-lg'
                             style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
                           />
                           <img
@@ -224,12 +225,12 @@ function News() {
                           />
                         </div>
                         <div className='flex justify-center items-center'>
-                          <div className='flex gap-2 justify-between items-center w-full mt-8 px-6'>
+                          <div className='flex gap-2 lg:flex-row flex-col justify-between lg:items-center w-full mt-8 px-6'>
                             <div className='flex gap-3'>
                               {blog.tags?.map((tag) => (
                                 <span
                                   key={tag.tagId}
-                                  className={`text-lg flex justify-start px-2 py-1 rounded-xl ${
+                                  className={`lg:text-lg text-sm flex justify-start px-2 py-1 rounded-xl ${
                                     isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
                                   } `}
                                 >
@@ -247,7 +248,7 @@ function News() {
                         </div>
 
                         <div className='mt-4 px-5 py-2'>
-                          <h2 className='text-xl line-clamp-2'>{blog.blogTitle}</h2>
+                          <h2 className='lg:text-xl text-lg line-clamp-2'>{blog.blogTitle}</h2>
                         </div>
                       </Link>
                     </div>

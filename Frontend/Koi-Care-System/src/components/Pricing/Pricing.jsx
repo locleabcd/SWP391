@@ -1,10 +1,37 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import Header from '../Member/Header'
 import LeftSideBar from '../Member/LeftSideBar'
+import { useState } from 'react'
+import axios from 'axios'
 
 function Pricing() {
   const { isDarkMode } = useDarkMode()
+  const navigate = useNavigate()
+
+  const createPayment = async () => {
+    const userId = localStorage.getItem('id')
+    try {
+      const token = localStorage.getItem('token')
+
+      await axios.post(
+        'https://koicaresystemv3.azurewebsites.net/api/orders/order/premium',
+        {
+          userId: userId,
+          time: '1MONTH'
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      navigate('/member/payment')
+      localStorage.setItem('totalPrice', 299999)
+    } catch (error) {
+      console.error('Error details:', error)
+    }
+  }
 
   return (
     <div>
@@ -201,12 +228,12 @@ function Pricing() {
                     </li>
                   </ul>
                 </div>
-                <Link
-                  href='#freelancer'
-                  className='rounded-lg bg-blue-400 px-5 py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
+                <div
+                  onClick={() => createPayment()}
+                  className='rounded-lg bg-blue-400 px-5 cursor-pointer py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
                 >
                   Buy Now
-                </Link>
+                </div>
               </div>
               <div className='flex flex-col rounded-lg bg-white p-6 shadow border border-gray-200  xl:p-8'>
                 <div className='flex-1'>

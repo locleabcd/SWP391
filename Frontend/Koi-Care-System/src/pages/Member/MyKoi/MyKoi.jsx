@@ -220,18 +220,18 @@ function MyKoi() {
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='fixed bottom-7 right-5 text-lg hover:bg-blue-600 text-white rounded-full shadow-lg size-12 cursor-pointer z-30'
+            className='fixed lg:bottom-7 bottom-[22px] right-5 text-lg hover:bg-blue-600 text-white rounded-full shadow-lg lg:size-12 size-8 cursor-pointer z-30'
             onClick={toggleAddFormVisibility}
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
-          <div className='fixed w-[145px] h-14 bottom-6 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
-            <p className='text-3xl font-semibold pt-2 pl-3'>
+          <div className='fixed lg:w-[145px] w-[110px] lg:h-14 h-9 bottom-5 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
+            <p className='lg:text-3xl text-xl font-semibold pt-1 pl-3'>
               {koiCounts[localStorage.getItem('id')] !== undefined ? koiCounts[localStorage.getItem('id')] : '...'} Koi
             </p>
           </div>
 
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='My Koi' />
             <div>
               <div className='w-full flex justify-end relative'>
@@ -242,7 +242,7 @@ function MyKoi() {
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
                     stroke='currentColor'
-                    className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} w-8 h-8 mb-4`}
+                    className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} size-6 lg:size-8 mb-4`}
                   >
                     <path
                       strokeLinecap='round'
@@ -258,37 +258,37 @@ function MyKoi() {
                       className={`${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} flex flex-col space-y-2 shadow-lg rounded-lg p-4`}
                     >
                       <button
-                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded lg:text-xl text-xs `}
                         onClick={() => sortByName('desc')}
                       >
                         Sorted by Name (Z-A)
                       </button>
                       <button
-                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded lg:text-xl text-xs `}
                         onClick={() => sortByName('asc')}
                       >
                         Sorted by Name (A-Z)
                       </button>
                       <button
-                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded lg:text-xl text-xs `}
                         onClick={() => sortLength('asc')}
                       >
                         Sorted by Length (asc)
                       </button>
                       <button
-                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded lg:text-xl text-xs `}
                         onClick={() => sortLength('desc')}
                       >
                         Sorted by Length (desc)
                       </button>
                       <button
-                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded lg:text-xl text-xs `}
                         onClick={() => sortAge('asc')}
                       >
                         Sorted by Age (asc)
                       </button>
                       <button
-                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded lg:text-xl text-xs `}
                         onClick={() => sortAge('desc')}
                       >
                         Sorted by Age (desc)
@@ -357,7 +357,7 @@ function MyKoi() {
       {isAddFormVisible && (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 '>
           <div
-            className='bg-white min-w-[100vh] mb-auto mt-auto p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto no-scroll-bar'
+            className='bg-white lg:min-w-[100vh] mb-auto mt-auto p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto no-scroll-bar'
             data-aos='fade-up'
           >
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
