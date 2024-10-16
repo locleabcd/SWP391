@@ -3,10 +3,17 @@ import { useDarkMode } from '../../hooks/DarkModeContext'
 import '../../App.css'
 import path from '../../constants/path'
 import { Link, NavLink } from 'react-router-dom'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import { loadCart } from '../../redux/store/cartList'
+import { IoFishOutline, IoPowerOutline, IoStatsChartSharp } from 'react-icons/io5'
+import { FaCrown, FaHandPointRight, FaRegNewspaper } from 'react-icons/fa'
+import { CgCalculator } from 'react-icons/cg'
+import { LuAlarmClock } from 'react-icons/lu'
+import { IoIosWater } from 'react-icons/io'
+import { GiAquarium } from 'react-icons/gi'
+import logo from '../../assets/logo.png'
 
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
@@ -16,6 +23,8 @@ function Header() {
   const [cartId, setCartId] = useState([])
   const [user, setUser] = useState([])
   const dispatch = useDispatch()
+  const [isSidebarOpen, setSidebarOpen] = useState(false)
+  const sidebarRef = useRef(null)
 
   const getCartId = async () => {
     try {
@@ -39,6 +48,19 @@ function Header() {
   }
 
   const carts = useSelector((state) => state.cart.count)
+
+  useEffect(() => {
+    if (!isSidebarOpen) return
+
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setSidebarOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isSidebarOpen])
 
   useEffect(() => {
     getCartId()
@@ -101,6 +123,7 @@ function Header() {
 
   const name = localStorage.getItem('name')
   const role = localStorage.getItem('role')
+  const isMember = user?.status === 'NORMAL'
 
   return (
     <div
@@ -108,8 +131,21 @@ function Header() {
         isDarkMode
           ? 'bg-custom-dark text-white border-b border-gray-700'
           : 'bg-white text-black border-b border-gray-200'
-      } sticky top-0 lg:p-3 py-3 justify-end z-20 flex w-full duration-200 ease-linear`}
+      } sticky top-0 lg:p-3 py-3 lg:justify-end justify-between z-20 flex w-full duration-200 ease-linear`}
     >
+      <button className='ml-2 lg:hidden inline-block cursor-pointer'>
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          fill='none'
+          viewBox='0 0 24 24'
+          strokeWidth={1.5}
+          stroke='currentColor'
+          className='size-7 '
+          onClick={() => setSidebarOpen(true)}
+        >
+          <path strokeLinecap='round' strokeLinejoin='round' d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5' />
+        </svg>
+      </button>
       <div className='flex items-center justify-end ml-4'>
         <div className='mr-4 flex justify-center items-center gap-2'>
           <button
@@ -328,6 +364,303 @@ function Header() {
                 </Link>
               </div>
             )}
+          </div>
+        </div>
+      </div>
+
+      <div
+        ref={sidebarRef}
+        className={`fixed top-0 left-0 h-full md:w-1/3 w-2/3 lg:w-0 bg-white border-r border-gray-200 transform ${
+          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        } transition-transform duration-300 z-50 overflow-y-auto no-scroll-bar`}
+      >
+        <div className='flex justify-center items-center'>
+          <button className='mt-4 rounded-md'>
+            <img className='w-14 animate-slow-spin' src={logo} alt='Logo' />
+          </button>
+          <a href='#' className='mt-3 text-xl font-bold'>
+            Koi Care System
+          </a>
+        </div>
+
+        <div className='flex flex-col justify-center items-center mt-6 duration-200'>
+          <div className=''>
+            <NavLink
+              to={path.dashboard}
+              end
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  className='w-7 mr-3'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z'
+                  />
+                </svg>
+
+                <span className='font-semibold'>Dashboard</span>
+              </div>
+            </NavLink>
+
+            <NavLink
+              to={path.myKoi}
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                return `${active} min-w-full mt-2 p-4  cursor-pointer rounded-lg flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <div className='w-7 h-7 mr-3'>
+                  <IoFishOutline className='w-full h-full' />
+                </div>
+                <span className='font-semibold'>My Koi</span>
+              </div>
+            </NavLink>
+
+            <NavLink
+              to={path.myPond}
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <div className='w-7 h-7 mr-3'>
+                  <GiAquarium className='w-full h-full' />
+                </div>
+                <span className='font-semibold'>My Pond</span>
+              </div>
+            </NavLink>
+
+            <NavLink
+              to={isMember ? path.pricing : path.waterParameters}
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+
+                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed bg-white' : ''
+
+                return `${active} ${memberStyles} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex-wrap flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <div className='w-7 h-7 mr-3'>
+                  <IoIosWater className='w-full h-full' />
+                </div>
+                <span className='font-semibold'>Water Parameters</span>
+              </div>
+              {isMember ? (
+                <div className='flex gap-5 w-full items-center justify-start mt-2 p-2 bg-yellow-200 text-yellow-700'>
+                  <FaCrown className='w-4 h-4' />
+                  <div>PREMIUM</div>
+                </div>
+              ) : null}
+            </NavLink>
+
+            <NavLink
+              to={isMember ? path.pricing : path.reminders}
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+
+                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed bg-white' : ''
+
+                return `${active} ${memberStyles} min-w-full p-4 mt-2 flex-wrap cursor-pointer rounded-lg flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <div className='w-7 h-7 mr-3'>
+                  <LuAlarmClock className='w-full h-full' />
+                </div>
+                <span className='font-semibold'>Reminders</span>
+              </div>
+              {isMember ? (
+                <div className='flex gap-5 items-center w-full justify-start mt-2 p-2 bg-yellow-200 text-yellow-700'>
+                  <FaCrown className='w-4 h-4' />
+                  <div>PREMIUM</div>
+                </div>
+              ) : null}
+            </NavLink>
+
+            <NavLink
+              to={path.recommendations}
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <div className='w-7 h-7 mr-3'>
+                  <FaHandPointRight className='w-full h-full' />
+                </div>
+                <span className='font-semibold'>Recommendations</span>
+              </div>
+            </NavLink>
+
+            <NavLink
+              to={isMember ? path.pricing : path.foodCalculator}
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+
+                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed bg-white' : ''
+
+                return `${active} ${memberStyles} min-w-full p-4 flex-wrap mt-2 cursor-pointer rounded-lg flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <div className='w-7 h-7 mr-3'>
+                  <CgCalculator className='w-full h-full' />
+                </div>
+                <span className='font-semibold'>Food Calculator</span>
+              </div>
+
+              {isMember ? (
+                <div className='flex gap-5 items-center w-full justify-start mt-2 p-2 bg-yellow-200 text-yellow-700'>
+                  <FaCrown className='w-4 h-4' />
+                  <div>PREMIUM</div>
+                </div>
+              ) : null}
+            </NavLink>
+
+            <NavLink
+              to={isMember ? path.pricing : path.saltCalculator}
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+
+                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed bg-white' : ''
+
+                return `${active} ${memberStyles} min-w-full flex-wrap p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <div className='w-7 h-7 mr-3'>
+                  <CgCalculator className='w-full h-full' />
+                </div>
+                <span className='font-semibold'>Salt Calculator</span>
+              </div>
+
+              {isMember ? (
+                <div className='flex gap-5 items-center w-full justify-start mt-2 p-2 bg-yellow-200 text-yellow-700'>
+                  <FaCrown className='w-4 h-4' />
+                  <div>PREMIUM</div>
+                </div>
+              ) : null}
+            </NavLink>
+
+            <NavLink
+              to={path.statistics}
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <div className='w-7 h-7 mr-3'>
+                  <IoStatsChartSharp className='w-full h-full' />
+                </div>
+                <span className='font-semibold'>Statistics</span>
+              </div>
+            </NavLink>
+
+            {/* sidebar items  */}
+            <NavLink
+              to={path.news}
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <div className='w-7 h-7 mr-3'>
+                  <FaRegNewspaper className='w-full h-full' />
+                </div>
+                <span className='font-semibold'>News and Blogs</span>
+              </div>
+            </NavLink>
+
+            <NavLink
+              to={path.aboutMember}
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <div className='w-7 h-7 mr-3'>
+                  <svg
+                    xmlns='http://www.w3.org/2000/svg'
+                    fill='none'
+                    viewBox='0 0 24 24'
+                    strokeWidth={1.5}
+                    stroke='currentColor'
+                    className='w-full h-full'
+                  >
+                    <path
+                      strokeLinecap='round'
+                      strokeLinejoin='round'
+                      d='M21.75 9v.906a2.25 2.25 0 0 1-1.183 1.981l-6.478 3.488M2.25 9v.906a2.25 2.25 0 0 0 1.183 1.981l6.478 3.488m8.839 2.51-4.66-2.51m0 0-1.023-.55a2.25 2.25 0 0 0-2.134 0l-1.022.55m0 0-4.661 2.51m16.5 1.615a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V8.844a2.25 2.25 0 0 1 1.183-1.981l7.5-4.039a2.25 2.25 0 0 1 2.134 0l7.5 4.039a2.25 2.25 0 0 1 1.183 1.98V19.5Z'
+                    />
+                  </svg>
+                </div>
+                <span className='font-semibold'>About</span>
+              </div>
+            </NavLink>
+          </div>
+        </div>
+
+        <div
+          className={`mt-auto w-full p-2 flex justify-between items-center 
+            ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
+        >
+          <div className='bg-white flex p-4 rounded-lg items-center justify-between w-full'>
+            <div className='card-content flex items-center '>
+              <img
+                src={user.avatar || 'default-avatar.png'}
+                alt='User Avatar'
+                className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
+              />
+              <div className='ml-3'>
+                <p className='font-semibold text-lg text-black'>{user.name || 'User Name'}</p>
+                <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
+              </div>
+            </div>
+            <Link onClick={handleLogout} to='/login'>
+              <IoPowerOutline
+                className='text-2xl text-gray-500 hover:text-red-500 transition-colors duration-200 cursor-pointer'
+                title='Logout'
+              />
+            </Link>
           </div>
         </div>
       </div>
