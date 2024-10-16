@@ -819,7 +819,7 @@ function WaterParameters() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='fixed bottom-5 right-5 text-lg text-red-500 rounded-full shadow-lg size-12 cursor-pointer z-10'
+              className='fixed bottom-5 right-5 text-full rounded-full text-white bg-custom-left-bar shadow-lg size-8 lg:size-14 cursor-pointer z-10'
               onClick={() => {
                 toggleAddFormVisibility()
                 reset()
@@ -842,7 +842,7 @@ function WaterParameters() {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} w-8 h-8`}
+                  className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} lg:size-8 size-6`}
                 >
                   <path
                     strokeLinecap='round'
@@ -863,7 +863,7 @@ function WaterParameters() {
                     <button
                       className={`${
                         isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
-                      } btn py-2 px-4 rounded text-left `}
+                      } btn py-2 px-4 rounded text-left lg:text-xl text-xs `}
                       onClick={() => sortParameter('asc', 'pondName')}
                     >
                       Sorted by Pond Name (asc)
@@ -871,7 +871,7 @@ function WaterParameters() {
                     <button
                       className={`${
                         isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
-                      } btn py-2 px-4 rounded text-left `}
+                      } btn py-2 px-4 rounded text-left lg:text-xl text-xs `}
                       onClick={() => sortParameter('desc', 'pondName')}
                     >
                       Sorted by Pond Name (desc)
@@ -879,7 +879,7 @@ function WaterParameters() {
                     <button
                       className={`${
                         isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
-                      } btn py-2 px-4 rounded text-left`}
+                      } btn py-2 px-4 rounded text-left lg:text-xl text-xs`}
                       onClick={() => sortParameter('asc', 'createDateTime')}
                     >
                       Sorted by Date (Oldest)
@@ -887,7 +887,7 @@ function WaterParameters() {
                     <button
                       className={`${
                         isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
-                      } btn py-2 px-4 rounded text-left`}
+                      } btn py-2 px-4 rounded text-left lg:text-xl text-xs`}
                       onClick={() => sortParameter('desc', 'createDateTime')}
                     >
                       Sorted by Date (Newest)
@@ -947,12 +947,14 @@ function WaterParameters() {
                     >
                       <div className='text-lg'>
                         <div className='grid grid-cols-4 w-full'>
-                          <h3 className='text-base col-span-2'> {parameter.koiPondName}</h3>
-                          <h3 className='text-base col-span-2'>{parameter.createDateTime.replace('T', ' ')}</h3>
+                          <h3 className='lg:text-base text-xs col-span-2'> {parameter.koiPondName}</h3>
+                          <h3 className='lg:text-base text-xs col-span-2'>
+                            {parameter.createDateTime.replace('T', ' ')}
+                          </h3>
                         </div>
                         <div className='grid grid-cols-4 w-full'>
                           <h3
-                            className='text-base col-span-2'
+                            className='lg:text-base text-xs col-span-2'
                             style={{
                               color: parameter.nitrite <= 0.1 ? 'green' : parameter.nitrite <= 0.3 ? 'orange' : 'red'
                             }}
@@ -960,7 +962,7 @@ function WaterParameters() {
                             Nitrite(NO₂): {parameter.nitrite} mg/l
                           </h3>
                           <h3
-                            className='text-base col-span-2'
+                            className='lg:text-base text-xs col-span-2'
                             style={{
                               color: parameter.nitrate <= 20 ? 'green' : parameter.nitrate <= 80 ? 'orange' : 'red'
                             }}
@@ -970,7 +972,7 @@ function WaterParameters() {
                         </div>
                         <div className='grid grid-cols-4 w-full'>
                           <h3
-                            className='text-base col-span-2'
+                            className='lg:text-base text-xs col-span-2'
                             style={{
                               color:
                                 parameter.phosphate <= 0.035 ? 'green' : parameter.phosphate <= 1 ? 'orange' : 'red'
@@ -979,7 +981,7 @@ function WaterParameters() {
                             Phosphate(PO₄): {parameter.phosphate} mg/l
                           </h3>
                           <h3
-                            className='text-base col-span-2'
+                            className='lg:text-base text-xs col-span-2'
                             style={{
                               color: parameter.ammonium <= 0.1 ? 'green' : parameter.ammonium <= 1 ? 'orange' : 'red'
                             }}
@@ -989,7 +991,7 @@ function WaterParameters() {
                         </div>
                         <div className='grid grid-cols-4 w-full'>
                           <h3
-                            className='text-base col-span-2'
+                            className='lg:text-base text-xs col-span-2'
                             style={{
                               color: parameter.hardness <= 21 ? 'green' : parameter.hardness <= 50 ? 'orange' : 'red'
                             }}
@@ -997,7 +999,7 @@ function WaterParameters() {
                             Hardness(GH): {parameter.hardness} °dH
                           </h3>
                           <h3
-                            className='text-base col-span-2'
+                            className='lg:text-base text-xs col-span-2'
                             style={{
                               color: parameter.oxygen > 6.5 ? 'green' : parameter.oxygen > 6 ? 'orange' : 'red'
                             }}
@@ -1007,7 +1009,7 @@ function WaterParameters() {
                         </div>
                         <div className='grid grid-cols-4 w-full'>
                           <h3
-                            className='text-base col-span-2'
+                            className='lg:text-base text-xs col-span-2'
                             style={{
                               color: parameter.temperature >= 4 && parameter.temperature <= 26 ? 'green' : 'red'
                             }}
@@ -1015,7 +1017,7 @@ function WaterParameters() {
                             Temperature: {parameter.temperature} °C
                           </h3>
                           <h3
-                            className='text-base col-span-2'
+                            className='lg:text-base text-xs col-span-2'
                             style={{
                               color: parameter.phValue >= 6.9 && parameter.phValue <= 8 ? 'green' : 'red'
                             }}
@@ -1025,7 +1027,7 @@ function WaterParameters() {
                         </div>
                         <div className='grid grid-cols-4 w-full'>
                           <h3
-                            className='text-base col-span-2'
+                            className='lg:text-base text-xs col-span-2'
                             style={{
                               color:
                                 parameter.carbonHardness >= 4
@@ -1038,7 +1040,7 @@ function WaterParameters() {
                             KH: {parameter.carbonHardness} mg/l
                           </h3>
                           <h3
-                            className='text-base col-span-2'
+                            className='lg:text-base text-xs col-span-2'
                             style={{
                               color: parameter.carbonDioxide >= 4 && parameter.carbonDioxide <= 35 ? 'green' : 'red'
                             }}
@@ -1048,7 +1050,7 @@ function WaterParameters() {
                         </div>
                         <div className='grid grid-cols-4 w-full'>
                           <h3
-                            className='text-base col-span-2'
+                            className='lg:text-base text-xs col-span-2'
                             style={{
                               color: parameter.salt <= 0.1 ? 'green' : parameter.salt <= 0.6 ? 'orange' : 'red'
                             }}
@@ -1056,7 +1058,7 @@ function WaterParameters() {
                             Salt: {parameter.salt}%
                           </h3>
                           <h3
-                            className='text-base col-span-2'
+                            className='lg:text-base text-xs col-span-2'
                             style={{
                               color:
                                 parameter.totalChlorine <= 0.001
@@ -1070,11 +1072,11 @@ function WaterParameters() {
                           </h3>
                         </div>
                         <div className='grid grid-cols-4 w-full'>
-                          <h3 className='text-base col-span-2'>Outdoor temp.: {parameter.temp} °C</h3>
-                          <h3 className='text-base col-span-2'>Amount fed: {parameter.amountFed} g</h3>
+                          <h3 className='lg:text-base text-xs col-span-2'>Outdoor temp.: {parameter.temp} °C</h3>
+                          <h3 className='lg:text-base text-xs col-span-2'>Amount fed: {parameter.amountFed} g</h3>
                         </div>
                         <div className='flex'>
-                          <h3 className='text-base text-gray-500 font-semibold'>{parameter.note}</h3>
+                          <h3 className='lg:text-base text-xs text-gray-500 font-semibold'>{parameter.note}</h3>
                         </div>
                       </div>
                     </motion.div>
@@ -1086,7 +1088,7 @@ function WaterParameters() {
 
           {isAddFormVisible && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 '>
-              <div className='bg-white min-w-[70vh] mb-auto mt-auto p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto no-scroll-bar'>
+              <div className='bg-white lg:min-w-[70vh] mb-auto mt-auto p-6 rounded-lg shadow-lg lg:max-h-[75vh] max-h-[70vh] overflow-y-auto no-scroll-bar'>
                 <form onSubmit={handleSubmit(createParameter)} noValidate>
                   <div className='flex justify-between mb-5'>
                     <svg
@@ -1123,9 +1125,9 @@ function WaterParameters() {
                     </button>
                   </div>
 
-                  <h3 className='mb-5 text-2xl font-bold'>Add Parameter</h3>
+                  <h3 className='mb-5 lg:text-2xl text-xl font-bold'>Add Parameter</h3>
                   <div className='text-black grid grid-cols-2 grid-rows-4 gap-4'>
-                    <div className='relative col-span-1 mb-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='pondId'
@@ -1148,7 +1150,7 @@ function WaterParameters() {
                         <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.pondId.message}</p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 '>
+                    <div className='relative col-span-1 '>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='createDateTime'
@@ -1170,7 +1172,7 @@ function WaterParameters() {
                     </div>
 
                     {/* Input Nitrate */}
-                    <div className='relative col-span-1 mb-4'>
+                    <div className='relative col-span-1'>
                       <label
                         htmlFor='nitrate'
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
@@ -1220,7 +1222,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-4'>
+                    <div className='relative col-span-1'>
                       <label
                         htmlFor='nitrite'
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
@@ -1274,7 +1276,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='phosphate'
@@ -1328,7 +1330,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='ammonium'
@@ -1381,7 +1383,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='hardness'
@@ -1432,7 +1434,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='oxygen'
@@ -1481,7 +1483,7 @@ function WaterParameters() {
                         <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.oxygen.message}</p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='temperature'
@@ -1536,7 +1538,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='phValue'
@@ -1586,7 +1588,7 @@ function WaterParameters() {
                         <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.phValue.message}</p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='carbonHardness'
@@ -1640,7 +1642,7 @@ function WaterParameters() {
                         </p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1 mt-2'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='carbonDioxide'
@@ -1695,7 +1697,7 @@ function WaterParameters() {
                         </p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1 mt-2'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='salt'
@@ -1748,7 +1750,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1 mt-2'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='totalChlorine'
@@ -1801,7 +1803,7 @@ function WaterParameters() {
                         </p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1 mt-2'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='temp'
@@ -1855,7 +1857,7 @@ function WaterParameters() {
                         <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.temp.message}</p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1 mt-2'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='amountFed'
@@ -1910,7 +1912,7 @@ function WaterParameters() {
                         </p>
                       )}
                     </div>
-                    <div className='relative col-span-2 mb-2 mt-2  '>
+                    <div className='relative col-span-2 mt-2  '>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white '
                         htmlFor='note'
@@ -1931,7 +1933,7 @@ function WaterParameters() {
           )}
           {isEditFormVisible && currentParameter && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 '>
-              <div className='bg-white min-w-[70vh] mb-auto mt-auto p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto no-scroll-bar'>
+              <div className='bg-white lg:min-w-[70vh] mb-auto mt-auto p-6 rounded-lg shadow-lg lg:max-h-[75vh] max-h-[70vh] overflow-y-auto no-scroll-bar'>
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                   <div className='flex justify-between mb-5'>
                     <svg
@@ -1970,7 +1972,7 @@ function WaterParameters() {
 
                   <h3 className='mb-5 text-2xl font-bold'>Edit Parameter</h3>
                   <div className='text-black grid grid-cols-2 grid-rows-4 gap-4'>
-                    <div className='relative col-span-1 mb-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='pondId'
@@ -1995,7 +1997,7 @@ function WaterParameters() {
                         <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.pondId.message}</p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 '>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='createDateTime'
@@ -2016,7 +2018,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-4'>
+                    <div className='relative col-span-1'>
                       <label
                         htmlFor='nitrate'
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
@@ -2065,7 +2067,7 @@ function WaterParameters() {
                         <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.nitrate.message}</p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-4'>
+                    <div className='relative col-span-1'>
                       <label
                         htmlFor='nitrite'
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
@@ -2119,7 +2121,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='phosphate'
@@ -2173,7 +2175,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='ammonium'
@@ -2225,7 +2227,7 @@ function WaterParameters() {
                         <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.ammonium.message}</p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='hardness'
@@ -2276,7 +2278,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='oxygen'
@@ -2326,7 +2328,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='temperature'
@@ -2381,7 +2383,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='phValue'
@@ -2431,7 +2433,7 @@ function WaterParameters() {
                         <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.phValue.message}</p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='carbonHardness'
@@ -2485,7 +2487,7 @@ function WaterParameters() {
                         </p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='carbonDioxide'
@@ -2540,7 +2542,7 @@ function WaterParameters() {
                         </p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='salt'
@@ -2593,7 +2595,7 @@ function WaterParameters() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='totalChlorine'
@@ -2646,7 +2648,7 @@ function WaterParameters() {
                         </p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='temp'
@@ -2700,7 +2702,7 @@ function WaterParameters() {
                         <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.temp.message}</p>
                       )}
                     </div>
-                    <div className='relative col-span-1 mb-2 mt-2'>
+                    <div className='relative col-span-1'>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
                         htmlFor='amountFed'
@@ -2755,7 +2757,7 @@ function WaterParameters() {
                         </p>
                       )}
                     </div>
-                    <div className='relative col-span-2 mb-2 mt-2  '>
+                    <div className='relative col-span-2  '>
                       <label
                         className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white '
                         htmlFor='note'

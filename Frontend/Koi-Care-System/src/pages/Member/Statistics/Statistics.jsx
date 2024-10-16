@@ -334,7 +334,7 @@ function Statistics() {
 
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Statistics' links='member/statistics' />
-            <div className='pb-6 text-lg flex justify-between items-center'>
+            <div className='pb-6 lg:text-lg text-sm flex justify-between items-center'>
               <select
                 id='ponds'
                 className={`${isDarkMode ? 'bg-custom-dark' : ''} border rounded-lg p-2 outline-none`}
@@ -372,7 +372,7 @@ function Statistics() {
                   }
                 }
               }}
-              className='grid grid-cols-3 gap-7'
+              className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-7'
             >
               <motion.div
                 variants={{
@@ -381,44 +381,48 @@ function Statistics() {
                 }}
                 className='border py-5 rounded-lg w-full border-gray-200 shadow-lg'
               >
-                <div className='text-xl mb-4 text-center'>Nitrite - Phosphate - Ammonium (mg/l)</div>
-                <LineChart
-                  className='w-full mx-auto'
-                  width={500}
-                  height={300}
-                  data={sortedWaterData}
-                  margin={{
-                    top: 5,
-                    right: 60
-                  }}
-                >
-                  <CartesianGrid strokeDasharray='3 3' />
-                  <XAxis dataKey='name' />
-                  <YAxis />
-                  <Tooltip formatter={(value) => formatTooltipValue(value)} />
-                  <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
-                  <Line
-                    type='monotone'
-                    dataKey='nitrite'
-                    strokeOpacity={opacity.nitrite}
-                    stroke='#8884d8'
-                    activeDot={{ r: 6, fill: '#8884d8', stroke: 'white', strokeWidth: 2 }}
-                  />
-                  <Line
-                    type='monotone'
-                    dataKey='phosphate'
-                    strokeOpacity={opacity.phosphate}
-                    stroke='#ff7300'
-                    activeDot={{ r: 6, fill: '#ff7300', stroke: 'white', strokeWidth: 2 }}
-                  />
-                  <Line
-                    type='monotone'
-                    dataKey='totalChlorine'
-                    strokeOpacity={opacity.totalChlorine}
-                    stroke='#387908'
-                    activeDot={{ r: 6, fill: '#387908', stroke: 'white', strokeWidth: 2 }}
-                  />
-                </LineChart>
+                <div className='lg:text-xl md:text-lg text-sm mb-4 text-center'>
+                  Nitrite - Phosphate - Ammonium (mg/l)
+                </div>
+                <ResponsiveContainer width='100%' height={300}>
+                  <LineChart
+                    className='w-full mx-auto'
+                    data={sortedWaterData}
+                    margin={{
+                      top: 10,
+                      right: 50,
+                      left: 0,
+                      bottom: 0
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='name' />
+                    <YAxis />
+                    <Tooltip formatter={(value) => formatTooltipValue(value)} />
+                    <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+                    <Line
+                      type='monotone'
+                      dataKey='nitrite'
+                      strokeOpacity={opacity.nitrite}
+                      stroke='#8884d8'
+                      activeDot={{ r: 6, fill: '#8884d8', stroke: 'white', strokeWidth: 2 }}
+                    />
+                    <Line
+                      type='monotone'
+                      dataKey='phosphate'
+                      strokeOpacity={opacity.phosphate}
+                      stroke='#ff7300'
+                      activeDot={{ r: 6, fill: '#ff7300', stroke: 'white', strokeWidth: 2 }}
+                    />
+                    <Line
+                      type='monotone'
+                      dataKey='totalChlorine'
+                      strokeOpacity={opacity.totalChlorine}
+                      stroke='#387908'
+                      activeDot={{ r: 6, fill: '#387908', stroke: 'white', strokeWidth: 2 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </motion.div>
               <motion.div
                 variants={{
@@ -427,44 +431,46 @@ function Statistics() {
                 }}
                 className='py-5 rounded-lg border border-gray-200 shadow-lg'
               >
-                <div className='text-xl mb-4 text-center'>Carbon - PH - Hardness (dH)</div>
-                <LineChart
-                  width={500}
-                  height={300}
-                  data={sortedWaterData}
-                  className='w-full mx-auto'
-                  margin={{
-                    top: 5,
-                    right: 60
-                  }}
-                >
-                  <CartesianGrid strokeDasharray='3 3' />
-                  <XAxis dataKey='name' />
-                  <YAxis />
-                  <Tooltip formatter={(value) => formatTooltipValue(value)} />
-                  <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
-                  <Line
-                    type='monotone'
-                    dataKey='carbonHardness'
-                    strokeOpacity={opacity.carbonHardness}
-                    stroke='#8884d8'
-                    activeDot={{ r: 6, fill: '#8884d8', stroke: 'white', strokeWidth: 2 }}
-                  />
-                  <Line
-                    type='monotone'
-                    dataKey='phValue'
-                    strokeOpacity={opacity.phValue}
-                    stroke='#82ca9d'
-                    activeDot={{ r: 6, fill: '#82ca9d', stroke: 'white', strokeWidth: 2 }}
-                  />
-                  <Line
-                    type='monotone'
-                    dataKey='hardness'
-                    strokeOpacity={opacity.hardness}
-                    stroke='#ff7300'
-                    activeDot={{ r: 6, fill: '#ff7300', stroke: 'white', strokeWidth: 2 }}
-                  />
-                </LineChart>
+                <div className='lg:text-xl md:text-lg text-sm mb-4 text-center'>Carbon - PH - Hardness (dH)</div>
+                <ResponsiveContainer width='100%' height={300}>
+                  <LineChart
+                    width={500}
+                    height={300}
+                    data={sortedWaterData}
+                    className='w-full mx-auto'
+                    margin={{
+                      top: 5,
+                      right: 60
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='name' />
+                    <YAxis />
+                    <Tooltip formatter={(value) => formatTooltipValue(value)} />
+                    <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+                    <Line
+                      type='monotone'
+                      dataKey='carbonHardness'
+                      strokeOpacity={opacity.carbonHardness}
+                      stroke='#8884d8'
+                      activeDot={{ r: 6, fill: '#8884d8', stroke: 'white', strokeWidth: 2 }}
+                    />
+                    <Line
+                      type='monotone'
+                      dataKey='phValue'
+                      strokeOpacity={opacity.phValue}
+                      stroke='#82ca9d'
+                      activeDot={{ r: 6, fill: '#82ca9d', stroke: 'white', strokeWidth: 2 }}
+                    />
+                    <LineChart
+                      type='monotone'
+                      dataKey='hardness'
+                      strokeOpacity={opacity.hardness}
+                      stroke='#ff7300'
+                      activeDot={{ r: 6, fill: '#ff7300', stroke: 'white', strokeWidth: 2 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </motion.div>
               <motion.div
                 variants={{
@@ -474,36 +480,38 @@ function Statistics() {
                 className='py-5 rounded-lg border border-gray-200 shadow-lg'
               >
                 <div className='text-xl mb-4 text-center'>Temperature - Temp (C)</div>
-                <LineChart
-                  width={500}
-                  height={300}
-                  data={sortedWaterData}
-                  className='w-full mx-auto'
-                  margin={{
-                    top: 5,
-                    right: 60
-                  }}
-                >
-                  <CartesianGrid strokeDasharray='3 3' />
-                  <XAxis dataKey='name' />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
-                  <Line
-                    type='monotone'
-                    dataKey='temperature'
-                    strokeOpacity={opacity.temperature}
-                    stroke='#8884d8'
-                    activeDot={{ r: 6, fill: '#8884d8', stroke: 'white', strokeWidth: 2 }}
-                  />
-                  <Line
-                    type='monotone'
-                    dataKey='temp'
-                    strokeOpacity={opacity.temp}
-                    stroke='#82ca9d'
-                    activeDot={{ r: 6, fill: '#82ca9d', stroke: 'white', strokeWidth: 2 }}
-                  />
-                </LineChart>
+                <ResponsiveContainer width='100%' height={300}>
+                  <LineChart
+                    width={500}
+                    height={300}
+                    data={sortedWaterData}
+                    className='w-full mx-auto'
+                    margin={{
+                      top: 5,
+                      right: 60
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='name' />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />
+                    <Line
+                      type='monotone'
+                      dataKey='temperature'
+                      strokeOpacity={opacity.temperature}
+                      stroke='#8884d8'
+                      activeDot={{ r: 6, fill: '#8884d8', stroke: 'white', strokeWidth: 2 }}
+                    />
+                    <Line
+                      type='monotone'
+                      dataKey='temp'
+                      strokeOpacity={opacity.temp}
+                      stroke='#82ca9d'
+                      activeDot={{ r: 6, fill: '#82ca9d', stroke: 'white', strokeWidth: 2 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </motion.div>
             </motion.div>
 
@@ -517,7 +525,7 @@ function Statistics() {
                   }
                 }
               }}
-              className='grid grid-cols-2 gap-7 mt-10'
+              className='grid lg:grid-cols-2 grid-cols-1 gap-7 mt-10'
             >
               <motion.div
                 variants={{
@@ -598,7 +606,7 @@ function Statistics() {
                   }
                 }
               }}
-              className='grid grid-cols-2 gap-7'
+              className='grid lg:grid-cols-2 grid-cols-1 gap-7'
             >
               <motion.div
                 variants={{

@@ -8,6 +8,9 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import 'aos/dist/aos.css'
+import AOS from 'aos'
 
 function MyPondLog() {
   const { isDarkMode } = useDarkMode()
@@ -219,7 +222,7 @@ function MyPondLog() {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed bottom-5 right-5 text-lg text-black outline-none rounded-full bg-custom-left-bar shadow-lg size-12 lg:size-16 p-2 cursor-pointer'
+                className='fixed bottom-5 right-5 text-lg text-white outline-none rounded-full bg-custom-left-bar shadow-lg size-12 lg:size-14 cursor-pointer'
                 onClick={() => {
                   toggleAddFormVisibility()
                 }}
@@ -237,7 +240,7 @@ function MyPondLog() {
                   onClick={() => openEditForm(logs)}
                   className='border border-gray-50 shadow-lg rounded-xl px-10 py-5'
                 >
-                  <div className='flex flex-col gap-1 lg:justify-between'>
+                  <div className='flex flex-col gap-1 lg:flex-row lg:justify-between'>
                     <div className='text-2xl font-semibold'>{logs.logTitle}</div>
                     <div className='py-1 px-2 bg-blue-400 text-white rounded-lg'>{logs.category}</div>
                   </div>
@@ -252,11 +255,16 @@ function MyPondLog() {
               ))}
 
               {isAddFormVisible && (
-                <div className='fixed inset-0 bg-black h-screen flex bg-opacity-50 z-40'>
-                  <div
+                <div className='fixed inset-0 bg-black h-screen flex justify-center items-end bg-opacity-50 z-40'>
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, y: -100 },
+                      visible: { opacity: 1, y: 100, transition: { delay: 2000 } }
+                    }}
                     className={` ${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                    }  lg:min-w-[80vh] my-auto p-6 lg:rounded-lg shadow-lg`}
+                    }  lg:min-w-[80vh] m-auto p-6 lg:rounded-lg`}
+                    data-aos='fade-up'
                   >
                     <div className='flex justify-between mb-5'>
                       <svg
@@ -397,12 +405,12 @@ function MyPondLog() {
                         onChange={(e) => setNote(e.target.value)}
                         id='drainCount'
                         placeholder='Note'
-                        className={`w-full h-32 p-3 ${
+                        className={`w-full lg:h-32 h-24 p-3 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                       />
                     </div>
-                  </div>
+                  </motion.div>
                 </div>
               )}
 
@@ -412,6 +420,7 @@ function MyPondLog() {
                     className={`${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
                     }  lg:min-w-[80vh] my-auto p-6 rounded-lg shadow-lg`}
+                    data-aos='fade-up'
                   >
                     <div className='flex justify-between mb-5'>
                       <svg
@@ -449,9 +458,9 @@ function MyPondLog() {
                         </svg>
                       </button>
                     </div>
-                    <h3 className='mb-5 text-2xl font-bold'>Update a Log</h3>
+                    <h3 className='mb-5 lg:text-2xl text-xl font-bold'>Update a Log</h3>
                     <div className='grid grid-cols-2 lg:grid-rows-2 gap-4'>
-                      <div className='mb-4 relative col-span-1'>
+                      <div className='lg:mb-4 relative col-span-1'>
                         <label
                           htmlFor='name'
                           className={`absolute block -top-[12px] ${
@@ -465,13 +474,13 @@ function MyPondLog() {
                           value={title}
                           onChange={(e) => setTitle(e.target.value)}
                           placeholder='Enter title'
-                          className={`w-full p-3 ${
+                          className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                         />
                       </div>
 
-                      <div className='mb-4 relative col-span-1'>
+                      <div className='lg:mb-4 relative col-span-1'>
                         <label
                           htmlFor='volume'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
@@ -485,7 +494,7 @@ function MyPondLog() {
                           value={dateTime}
                           onChange={(e) => setDateTime(e.target.value)}
                           placeholder='Enter Date Time'
-                          className={`w-full p-3 ${
+                          className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                         />
@@ -504,7 +513,7 @@ function MyPondLog() {
                           id='pondId'
                           value={category}
                           onChange={(e) => setCategory(e.target.value)}
-                          className='block w-full p-3 border border-black rounded-md shadow-sm'
+                          className='block w-full lg:text-lg text-sm lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
                         >
                           <option value='OTHER'>Other</option>
                           <option value='WATER_CHANGE'>Water Change</option>
@@ -529,7 +538,7 @@ function MyPondLog() {
                           id='pondId'
                           value={pond}
                           onChange={(e) => setPond(e.target.value)}
-                          className='block w-full p-3 border border-black rounded-md shadow-sm'
+                          className='block w-full lg:p-3 px-2 lg:text-lg text-sm py-1 border border-black rounded-md shadow-sm'
                         >
                           <option value=''>Select a pond</option>
                           {ponds.map((pond) => (
@@ -540,7 +549,7 @@ function MyPondLog() {
                         </select>
                       </div>
                     </div>
-                    <div className='mt-4 relative w-full'>
+                    <div className='lg:mt-4 relative w-full'>
                       <label
                         htmlFor='drainCount'
                         className={`absolute -top-[12px] left-3 text-red-500 ${
@@ -554,7 +563,7 @@ function MyPondLog() {
                         value={note}
                         onChange={(e) => setNote(e.target.value)}
                         placeholder='Note'
-                        className={`w-full h-32 p-3 ${
+                        className={`w-full lg:h-32 h-24 p-3 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                       />
@@ -568,7 +577,7 @@ function MyPondLog() {
                           viewBox='0 0 24 24'
                           strokeWidth={1.5}
                           stroke='currentColor'
-                          className='size-12 mx-auto p-2 rounded-full bg-red-500 text-white cursor-pointer mt-5'
+                          className='lg:size-12 size-8 mx-auto lg:p-2 p-1 rounded-full bg-red-500 text-white cursor-pointer mt-5'
                         >
                           <path
                             strokeLinecap='round'
