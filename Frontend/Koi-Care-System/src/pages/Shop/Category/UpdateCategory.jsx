@@ -89,7 +89,7 @@ function UpdateCategory() {
       <LeftSideBar />
       <div
         className={`relative ${
-          isDarkMode ? 'bg-custom-light text-gray-500' : 'bg-white text-black'
+          isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'
         } overflow-y-auto flex-1 flex-col overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />

@@ -14,7 +14,26 @@ import { FaCartArrowDown } from "react-icons/fa";
 import { FaProductHunt } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
 import { FaNewspaper } from "react-icons/fa6";
+import { DataGrid } from '@mui/x-data-grid'
+import Paper from '@mui/material/Paper'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 
+const lightTheme = createTheme({
+  palette: {
+    mode: 'light',
+  },
+})
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    background: {
+      default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+      paper: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+    },
+  },
+})
 
 function Dashboard() {
   const { isDarkMode } = useDarkMode()
@@ -24,6 +43,7 @@ function Dashboard() {
   const [blogs, setBlogs] = useState([])
   const [payments, setPayments] = useState([])
   const [orders, setOrders] = useState([])
+  const [suppliers, setSuppliers] = useState([])
   const formatCurrency = (amount) => amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ"
 
   const getUser = async () => {
@@ -143,6 +163,26 @@ function Dashboard() {
     }
   }
 
+  const getSupplier = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/suppliers/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setSuppliers(res.data.data)
+      console.log(res.data.data)
+    } catch (error) {
+      console.log('Error fetching tags:', error)
+    }
+  }
+
   useEffect(() => {
     getUser()
     getOrder()
@@ -150,14 +190,29 @@ function Dashboard() {
     getProduct()
     getPayment()
     getBlog()
+    getSupplier()
   }, [])
 
-  const totalPaymentsAmount = payments.reduce((acc, payment) => acc + payment.amount, 0)
-  const totalOrdersAmount = orders.reduce((acc, order) => acc + order.totalAmount, 0)
   const topProducts = products.slice(0, 5);
-
-
-
+  const columnsProduct = [
+    {
+      field: 'image',
+      headerName: 'Image',
+      width: 100,
+      renderCell: (params) => (
+        <div className='h-full flex items-center'>
+          <img
+          src={params.row.imageUrl}
+          alt='Product'
+          className='w-20 h-16 object-cover rounded-md '
+          />
+        </div>     
+      )
+    },
+    { field: 'productName', headerName: 'Product Name', flex: 1 },
+    { field: 'percent', headerName: 'Percent', width:100  },
+    { field: 'totalPrice', headerName: 'Total Price', width: 100, renderCell: (params) => params.row.price}
+  ]
 
   return (
     <div className='h-screen flex'>
@@ -183,20 +238,20 @@ function Dashboard() {
                 <FaCartArrowDown className='w-16 h-12 text-green-600' />
                 <h2 className='text-xl font-semibold pt-4 text-green-600'>Total Orders</h2>
                 <p className='text-2xl text-green-600'>{orders.length}</p>
-                {/* <p className='text-sm'>Total Amount: {formatCurrency(totalOrdersAmount)}</p> */}
+                {/* <p className='text-sm'>Total Amount: {formatCurrency(orders.length)}</p> */}
               </div>
 
               <div className='border flex flex-col justify-center items-center p-6 shadow rounded-lg bg-yellow-100'>
                 <FaMoneyCheckAlt className='w-16 h-12 text-yellow-500' />
                 <h2 className='text-xl font-semibold pt-4 text-yellow-500'>Total Payments</h2>
                 <p className='text-2xl text-yellow-500'>{payments.length}</p>
-                {/* <p className='text-sm'>Total Amount: {formatCurrency(totalPaymentsAmount)}</p> */}
+                {/* <p className='text-sm'>Total Amount: {formatCurrency(payments.length)}</p> */}
               </div>
 
               <div className='border flex flex-col justify-center items-center p-6 shadow rounded-lg bg-purple-100'>
                 <MdCategory className='w-16 h-12 text-purple-600' />
-                <h2 className='text-xl font-semibold pt-4 text-purple-600'>Total Categories</h2>
-                <p className='text-2xl text-purple-600'>{categories.length}</p>
+                <h2 className='text-xl font-semibold pt-4 text-purple-600'>Total Supplier</h2>
+                <p className='text-2xl text-purple-600'>{suppliers.length}</p>
               </div>
 
               <div className='border flex flex-col justify-center items-center p-6 shadow rounded-lg bg-red-100'>
@@ -213,10 +268,34 @@ function Dashboard() {
             </div>
             {/* Top 5 product  */}
             <div className='p-6 shadow border rounded-lg mt-6'>
-              <h2 className='text-xl font-semibold mb-4'>Top 5 Products</h2>
-              <table className='min-w-full rounded-lg border overflow-hidden border-separate border-spacing-0'>
+              <h2 className='text-2xl font-semibold mb-4'>Top Products</h2>
+              <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+                <CssBaseline />
+                <Paper sx={{ height: 400}}>
+                  <DataGrid
+                    rows={products}
+                    columns={columnsProduct}
+                    pageSize={100}
+                    pageSizeOptions={[5, 10, 20, 50, 100]}
+                    rowHeight={80}
+                    checkboxSelection
+                    disableExtendRowFullWidth
+                    getRowId={(row) => row.id}
+                    sx={{
+                      '& .MuiDataGrid-columnHeaders': {
+                        backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
+                      },
+                      '& .MuiDataGrid-row:hover': {
+                        backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
+                      }
+                    }}
+                  />
+                </Paper>
+              </ThemeProvider>
+              {/* <table className='min-w-full rounded-lg border overflow-hidden border-separate border-spacing-0'>
                 <thead>
                   <tr className=''>
+                    <th className='px-4 py-3 border-b'>Image</th>
                     <th className='px-4 py-3 text-start border-b'>Product Name</th>             
                     <th className='px-4 py-3 border-b'>Percent</th>
                     <th className='px-4 py-3 border-b'>Total</th>
@@ -225,6 +304,12 @@ function Dashboard() {
                 <tbody>
                   {topProducts.map((product, index) => (
                     <tr key={index} className=''>
+                      <td className='px-4 py-3 border-b'>
+                        <img
+                          src={product.imageUrl}
+                          alt='Product'
+                          className='w-12 h-12 object-cover rounded-md '
+                          /></td>
                       <td className='px-4 py-3 border-b'>{product.productName}</td>            
                       <td className='px-4 py-3 border-b'>
                         <div className='relative w-full '>
@@ -236,7 +321,7 @@ function Dashboard() {
                     </tr>
                   ))}
                 </tbody>
-              </table>      
+              </table>       */}
             </div>
           </div>
           

@@ -127,7 +127,7 @@ function UpdateNews() {
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
-      <div className={`relative ${isDarkMode ? 'bg-custom-light text-gray-500' : 'bg-white text-black'} flex-1 flex-col overflow-y-auto overflow-x-hidden`}>
+      <div className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} flex-1 flex-col overflow-y-auto overflow-x-hidden`}>
         <Header />
         <div className='py-5 pb-10 px-[30px] mx-auto'>
           <TopLayout text='News' textName='Update News' links='shop/shopNews' />

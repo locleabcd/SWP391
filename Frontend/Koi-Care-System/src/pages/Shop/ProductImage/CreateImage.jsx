@@ -96,7 +96,9 @@ function CreateImage() {
                 </label>
                 <select
                   id='productId'
-                  className={`relative w-full p-2 border rounded-md ${errors.supplierName ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.productId ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('productId', { required: 'Product is required' })}
                 >
                   <option value=''>Select Product</option>

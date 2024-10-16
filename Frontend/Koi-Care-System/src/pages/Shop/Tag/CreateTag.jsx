@@ -65,7 +65,7 @@ function CreateTag() {
         <Header />
         <div className='py-5 pb-0 px-[30px] mx-auto'>
           <TopLayout text='Tag' textName='Create Tag' links='shop/tag' />
-          <div className='bg-white p-6 rounded-md border'>
+          <div className='p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className='mb-4'>
                 <label htmlFor='tagName' className='block text-sm font-medium mb-2'>
@@ -74,7 +74,9 @@ function CreateTag() {
                 <input
                   type='text'
                   id='tagName'
-                  className={`relative w-full p-2 border rounded-md ${errors.tagName ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tagName ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('tagName', { required: 'Tag Name is required' })}
                 />
                 {errors.tagName && <p className='text-red-500 text-xs mt-1'>{errors.tagName.message}</p>}
@@ -86,7 +88,9 @@ function CreateTag() {
                 <input
                   type='text'
                   id='tagDescription'
-                  className={`relative w-full p-2 border rounded-md ${errors.tagDescription ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.tagDescription ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('tagDescription', { required: 'Tag Description is required' })}
                 />
                 {errors.tagDescription && <p className='text-red-500 text-xs mt-1'>{errors.tagDescription.message}</p>}

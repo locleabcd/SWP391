@@ -151,7 +151,9 @@ function CreateProduct() {
                 <input
                   type='text'
                   id='name'
-                  className={`relative w-full p-2 border rounded-md ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('name', { required: 'Name is required', minLength: 2, maxLength: 50 })}
                 />
                 {errors.name && <p className='text-red-500 text-xs mt-1'>{errors.name.message}</p>}
@@ -163,7 +165,9 @@ function CreateProduct() {
                 <input
                   type='text'
                   id='brand'
-                  className={`relative w-full p-2 border rounded-md ${errors.brand ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.brand ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('brand', { required: 'Brand is required' })}
                 />
                 {errors.brand && <p className='text-red-500 text-xs mt-1'>{errors.brand.message}</p>}
@@ -175,7 +179,9 @@ function CreateProduct() {
                 <input
                   type='number'
                   id='price'
-                  className={`relative w-full p-2 border rounded-md ${errors.price ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.price ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('price', { required: 'Price is required' })}
                 />
                 {errors.price && <p className='text-red-500 text-xs mt-1'>{errors.price.message}</p>}
@@ -187,7 +193,9 @@ function CreateProduct() {
                 <input
                   type='number'
                   id='inventory'
-                  className={`relative w-full p-2 border rounded-md ${errors.inventory ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.inventory ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('inventory', { required: 'Inventory is required' })}
                 />
                 {errors.inventory && <p className='text-red-500 text-xs mt-1'>{errors.inventory.message}</p>}
@@ -198,7 +206,9 @@ function CreateProduct() {
                 </label>
                 <textarea
                   id='description'
-                  className={`relative w-full p-2 border rounded-md ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('description', { required: 'Description is required' })}
                 />
                 {errors.description && <p className='text-red-500 text-xs mt-1'>{errors.description.message}</p>}
@@ -209,7 +219,9 @@ function CreateProduct() {
                 </label>
                 <textarea
                   id='description_detail'
-                  className={`relative w-full p-2 border rounded-md ${errors.description_detail ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.description_detail ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('description_detail', { required: 'Detailed description is required' })}
                 />
                 {errors.description_detail && (
@@ -223,7 +235,9 @@ function CreateProduct() {
                 </label>
                 <select
                   id='category'
-                  className={`relative w-full p-2 border rounded-md ${errors.category ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.category ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('category', { required: 'Category is required' })}
                 >
                   <option value=''>Select Category</option>
@@ -242,7 +256,9 @@ function CreateProduct() {
                 </label>
                 <select
                   id='supplierName'
-                  className={`relative w-full p-2 border rounded-md ${errors.supplierName ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.supplierName ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('supplierName', { required: 'Supplier is required' })}
                 >
                   <option value=''>Select Supplier</option>
@@ -262,7 +278,9 @@ function CreateProduct() {
                 <input
                   type='text'
                   id='issueTypeId'
-                  className={`relative w-full p-2 border rounded-md ${errors.issueTypeId ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.issueTypeId ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('issueTypeId', { required: false })}
                 />
                 
@@ -276,7 +294,9 @@ function CreateProduct() {
                   type='file'
                   id='files'
                   multiple
-                  className={`relative w-full p-2 border rounded-md ${errors.files ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.files ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('files')}
                 />
                 {errors.files && <p className='text-red-500 text-xs mt-1'>{errors.files.message}</p>}
