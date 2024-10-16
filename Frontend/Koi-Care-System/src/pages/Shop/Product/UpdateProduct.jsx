@@ -158,7 +158,7 @@ function UpdateProduct() {
         <Header />
         <div className='py-5 pb-0 px-[30px] mx-auto'>
           <TopLayout text='Product' textName='Update Product' links='shop/product' />
-          <div className='bg-white p-6 rounded-md border'>
+          <div className='p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className='mb-4'>
                 <label htmlFor='name' className='block text-sm font-medium mb-2'>
@@ -167,7 +167,9 @@ function UpdateProduct() {
                 <input
                   type='text'
                   id='name'
-                  className={`relative w-full p-2 border rounded-md ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('name', { required: 'Name is required', minLength: 2, maxLength: 50 })}
                 />
                 {errors.name && <p className='text-red-500 text-xs mt-1'>{errors.name.message}</p>}
@@ -179,7 +181,9 @@ function UpdateProduct() {
                 <input
                   type='text'
                   id='brand'
-                  className={`relative w-full p-2 border rounded-md ${errors.brand ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.brand ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('brand', { required: 'Brand is required' })}
                 />
                 {errors.brand && <p className='text-red-500 text-xs mt-1'>{errors.brand.message}</p>}
@@ -191,7 +195,9 @@ function UpdateProduct() {
                 <input
                   type='number'
                   id='price'
-                  className={`relative w-full p-2 border rounded-md ${errors.price ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.price ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('price', { required: 'Price is required' })}
                 />
                 {errors.price && <p className='text-red-500 text-xs mt-1'>{errors.price.message}</p>}
@@ -203,7 +209,9 @@ function UpdateProduct() {
                 <input
                   type='number'
                   id='inventory'
-                  className={`relative w-full p-2 border rounded-md ${errors.inventory ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.inventory ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('inventory', { required: 'Inventory is required' })}
                 />
                 {errors.inventory && <p className='text-red-500 text-xs mt-1'>{errors.inventory.message}</p>}
@@ -214,7 +222,9 @@ function UpdateProduct() {
                 </label>
                 <textarea
                   id='description'
-                  className={`relative w-full p-2 border rounded-md ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('description', { required: 'Description is required' })}
                 />
                 {errors.description && <p className='text-red-500 text-xs mt-1'>{errors.description.message}</p>}
@@ -225,7 +235,9 @@ function UpdateProduct() {
                 </label>
                 <textarea
                   id='description_detail'
-                  className={`relative w-full p-2 border rounded-md ${errors.description_detail ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.description_detail ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('description_detail', { required: 'Detailed description is required' })}
                 />
                 {errors.description_detail && (
@@ -239,8 +251,9 @@ function UpdateProduct() {
                 </label>
                 <select
                   id='category'
-                  className={`relative w-full p-2 border rounded-md ${errors.category ? 'border-red-500' : 'border-gray-300'}`}
-                  {...register('category')}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.category ? 'border-red-500' : 'border-gray-300'}`}
                   defaultValue={products.category ? products.category.id : 'null'}
                   onChange={(e) => {
                     const selectedCategory = categories.find((category) => category.id == e.target.value)
@@ -263,7 +276,9 @@ function UpdateProduct() {
                 </label>
                 <select
                   id='supplierName'
-                  className={`relative w-full p-2 border rounded-md ${errors.supplierName ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.supplierName ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('supplierName')}
                 >
                   <option value={products.supplier ? products.supplier.name : ''}>
@@ -285,7 +300,9 @@ function UpdateProduct() {
                 <input
                   type='text'
                   id='issueTypeId'
-                  className={`relative w-full p-2 border rounded-md ${errors.issueTypeId ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.issueTypeId ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('issueTypeId', { required: false })}
                 />
                 

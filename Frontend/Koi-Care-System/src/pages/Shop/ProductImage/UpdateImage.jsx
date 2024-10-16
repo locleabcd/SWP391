@@ -75,7 +75,9 @@ function UpdateImage() {
                 <input
                   type='file'
                   id='file'
-                  className={`relative w-full p-2 border rounded-md ${errors.files ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  } ${errors.file ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('file')}
                 />
                 {errors.file && <p className='text-red-500 text-xs mt-1'>{errors.file.message}</p>}
