@@ -9,8 +9,11 @@ import TopLayout from '../../../layouts/TopLayoutShop'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
-
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated'
 function UpdatePromotion() {
+
+  const animatedComponents = makeAnimated()
   const { id } = useParams()
   const { isDarkMode } = useDarkMode()
   const navigate = useNavigate()
@@ -18,14 +21,35 @@ function UpdatePromotion() {
   const [isLoading, setIsLoading] = useState(true)
   const [promotions, setPromotions] = useState(null)
   const [products, setProducts] = useState([]) 
-
+  const [selectedProducts, setSelectedProducts] = useState([])
+  const [selectedProductIds, setSelectedProductIds] = useState([]);
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset
   } = useForm()
+  const fetchProductDetails = async (id) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('No token found');
 
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/promotions/${id}/products/view`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      console.log('Product details response:', res.data.data);
+      if (res.data && res.data.data) {
+
+        setSelectedProductIds(res.data.data.map(product => product.id)); // Set selected product IDs
+      } else {
+        setSelectedProductIds([]); 
+      }
+    } catch (error) {
+      console.log('Error fetching product details:', error);
+      setSelectedProductIds([]); 
+    }
+  };
+  
   const fetchPromotion = async () => {
     setIsLoading(true)
     try {
@@ -40,6 +64,7 @@ function UpdatePromotion() {
       })
       console.log(res.data.data)
       setPromotions(res.data.data)
+      // setSelectedProducts(res.data.data.products.map(product => ({ value: product.productId, label: product.productName })))
     } catch (error) {
       console.error('Error fetching Promotion:', error)
       toast.error('Failed to fetch Promotion details.')
@@ -47,10 +72,13 @@ function UpdatePromotion() {
       setIsLoading(false)
     }
   }
-
+  
   useEffect(() => {
-    fetchPromotion()
-  }, [id])
+    if (id) {
+      fetchProductDetails(id);
+      fetchPromotion();
+    }
+  }, [id]);
   const getProduct = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -71,6 +99,10 @@ function UpdatePromotion() {
   }
 
   useEffect(() => {
+    getProduct()
+  }, [])
+
+  useEffect(() => {
     if (promotions) {
       reset({
         name: promotions.name,
@@ -78,19 +110,22 @@ function UpdatePromotion() {
         endDate: promotions.endDate,
         discountRate: promotions.discountRate,
         description: promotions.description,
-        status: promotions.status
-      })
+        status: promotions.status,
+        productIds: selectedProductIds, 
+      });
     }
-  }, [promotions, reset])
+  }, [promotions, reset, selectedProductIds]);
 
   const updatePromotions = async (data) => {
-    setIsLoading(true)
-    setIsSubmitting(true)
+    setIsLoading(true);
+    setIsSubmitting(true);
     try {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('No token found')
+        throw new Error('No token found');
       }
+  
+      // Send selectedProductIds to the backend
       const res = await axios.put(
         `https://koicaresystemv3.azurewebsites.net/api/promotions/promotion/${id}/update`,
         {
@@ -100,29 +135,38 @@ function UpdatePromotion() {
           endDate: data.endDate,
           discountRate: data.discountRate,
           description: data.description,
-          status: data.status
+          status: data.status,
+          productIds: selectedProductIds, // Use selectedProductIds instead of selectedProducts
         },
         {
           headers: {
-            Authorization: `Bearer ${token}`
-          }
+            Authorization: `Bearer ${token}`,
+          },
         }
-      )
-      toast.success('Promotion updated successfully!')
-      navigate('/shop/promotion')
+      );
+  
+      toast.success('Promotion updated successfully!');
+      navigate('/shop/promotion');
     } catch (error) {
-      console.log(error)
-      toast.error('Failed to update Promotion.')
+      console.log(error);
+      toast.error('Failed to update Promotion.');
     } finally {
-      setIsSubmitting(false)
-      setIsLoading(false)
+      setIsSubmitting(false);
+      setIsLoading(false);
     }
-  }
+  };
 
   const onSubmit = (data) => {
     updatePromotions(data)
   }
-
+  const handleProductSelect = (selectedOptions) => {
+    if (selectedOptions) {
+      setSelectedProductIds(selectedOptions.map(option => option.value));
+    } else {
+      setSelectedProductIds([]); // If nothing is selected, clear the selection
+    }
+  };
+  
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
@@ -144,6 +188,8 @@ function UpdatePromotion() {
                   type='text'
                   id='name'
                   className={`relative w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}
+                    ${
                     errors.tagName ? 'border-red-500' : 'border-gray-300'
                   }`}
                   {...register('name', {
@@ -154,6 +200,49 @@ function UpdatePromotion() {
                 />
                 {errors.name && <p className='text-red-500 text-xs mt-1'>{errors.name.message}</p>}
               </div>
+              <div>
+      <label className="block text-sm font-bold mb-2">Select Products</label>
+      <Select
+        isMulti
+        options={products.map(product => ({ value: product.id, label: product.name }))} // Map products to select options
+        value={products.filter(product => selectedProductIds.includes(product.id)).map(product => ({ value: product.id, label: product.name }))} // Set the selected products
+        onChange={handleProductSelect} // Correct onChange handler
+        className={`border ${selectedProductIds.length === 0 ? 'border-red-500' : 'border-gray-300'}`}
+        closeMenuOnSelect={false}
+        components={animatedComponents}
+        styles={{
+          control: (provided) => ({
+            ...provided,
+            backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF', 
+            color: isDarkMode ? '#FFFFFF' : '#000000',           
+            borderColor: errors.tags ? '#EF4444' : '#D1D5DB',    
+            '&:hover': {
+              borderColor: errors.tags ? '#EF4444' : '#9CA3AF',} 
+          }),
+          menu: (provided) => ({
+            ...provided,
+            backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF',
+          }),
+          option: (provided, state) => ({
+            ...provided,
+            backgroundColor: state.isFocused
+            ? (isDarkMode ? '#374151' : '#E5E7EB') 
+            : isDarkMode
+            ? '#1F2937'                         
+            : '#FFFFFF',                          
+          color: isDarkMode ? '#FFFFFF' : '#000000', 
+          }),
+          multiValue: (provided) => ({
+            ...provided,
+            backgroundColor: isDarkMode ? '#4B5563' : '#E5E7EB', 
+            color: isDarkMode ? '#FFFFFF' : '#000000', 
+          }),
+        }}
+      />
+      {selectedProductIds.length === 0 && (
+        <p className="text-red-500 text-xs mt-1">At least one product is required</p>
+      )}
+    </div>
               <div className='mb-4'>
                 <label htmlFor='startDate' className='block text-sm font-medium mb-2'>
                   Start Date
@@ -162,6 +251,8 @@ function UpdatePromotion() {
                   type='datetime-local'
                   id='startDate'
                   className={`relative w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}
+                    ${
                     errors.startDate ? 'border-red-500' : 'border-gray-300'
                   }`}
                   {...register('startDate', {
@@ -179,6 +270,8 @@ function UpdatePromotion() {
                   type='datetime-local'
                   id='endDate'
                   className={`relative w-full p-2 border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}
+                    ${
                     errors.endDate ? 'border-red-500' : 'border-gray-300'
                   }`}
                   {...register('endDate', {
@@ -197,6 +290,8 @@ function UpdatePromotion() {
                     type='number'
                     id='discountRate'
                     className={`relative w-full p-2 border rounded-md pr-10 ${
+                      isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}
+                      ${
                       errors.discountRate ? 'border-red-500' : 'border-gray-300'
                     }`}
                     {...register('discountRate', {
@@ -217,6 +312,8 @@ function UpdatePromotion() {
                   rows='6'
                   id='description'
                   className={`relative w-full  border rounded-md ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}
+                    ${
                     errors.tagName ? 'border-red-500' : 'border-gray-300'
                   }`}
                   {...register('description')}

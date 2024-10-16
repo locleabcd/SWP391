@@ -9,6 +9,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { useForm } from 'react-hook-form'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated';
 
 function CreatePromotion() {
   const { isDarkMode } = useDarkMode()
@@ -90,13 +92,11 @@ function CreatePromotion() {
   useEffect(() => {
     getProduct()
   }, [])
-  const handleProductSelection = (id) => {
-    setSelectedProductIds((prevSelected) =>
-      prevSelected.includes(id)
-        ? prevSelected.filter((productId) => productId !== id) // Deselect if already selected
-        : [...prevSelected, id] // Select if not already selected
-    )
+
+  const handleProductSelection = (selectedOptions) => {
+    setSelectedProductIds(selectedOptions.map(option => option.value));
   }
+
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
@@ -106,7 +106,7 @@ function CreatePromotion() {
         <Header />
         <div className='py-5 pb-0 px-[30px] mx-auto'>
           <TopLayout text='Promotion' textName='Create Promotion' links='shop/promotion' />
-          <div className='bg-white p-6 rounded-md border'>
+          <div className={`bg-white p-6 rounded-md border ${isDarkMode ? 'bg-gray-800 text-white' : 'bg-white text-black'}`}>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className='mb-4'>
                 <label htmlFor='name' className='block text-sm font-medium mb-2'>
@@ -115,7 +115,7 @@ function CreatePromotion() {
                 <input
                   type='text'
                   id='name'
-                  className={`relative w-full p-2 border rounded-md ${errors.tagName ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`relative w-full p-2 border rounded-md ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('name', {
                     required: 'Name is required',
                     minLength: { value: 2, message: 'Name must be at least 2 characters long' },
@@ -125,22 +125,62 @@ function CreatePromotion() {
                 {errors.name && <p className='text-red-500 text-xs mt-1'>{errors.name.message}</p>}
               </div>
 
-              {/* Checkboxes for product selection */}
+              {/* Select for product selection */}
               <div className='mb-4'>
-                <label className='block text-sm font-medium mb-2'>Select Products</label>
-                {products.map((product) => (
-                  <div key={product.id} className='flex items-center'>
-                    <input
-                      type='checkbox'
-                      id={`product-${product.id}`}
-                      value={product.id}
-                      checked={selectedProductIds.includes(product.id)}
-                      onChange={() => handleProductSelection(product.id)}
-                      className='mr-2'
-                    />
-                    <label htmlFor={`product-${product.id}`} className='text-sm'>{product.name}</label>
-                  </div>
-                ))}
+                <label htmlFor='productId' className='block text-sm font-medium mb-2'>Select Products</label>
+                <Select
+                  isMulti
+                  options={products.map(product => ({ value: product.id, label: product.name }))}
+                  value={products.filter(product => selectedProductIds.includes(product.id)).map(product => ({ value: product.id, label: product.name }))}
+                  onChange={handleProductSelection}
+                  className={` ${errors.products ? 'border-red-500' : 'border-gray-300'}`}
+                  closeMenuOnSelect={false}
+                  components={makeAnimated()}
+                  styles={{
+                    control: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF',
+                      color: isDarkMode ? '#FFFFFF' : '#000000',
+                      borderColor: errors.products ? '#EF4444' : '#D1D5DB',
+                      '&:hover': {
+                        borderColor: errors.products ? '#EF4444' : '#9CA3AF',
+                      }
+                    }),
+                    menu: (provided) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF',
+                    }),
+                    option: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: state.isFocused
+                        ? (isDarkMode ? '#374151' : '#E5E7EB')
+                        : isDarkMode
+                        ? '#1F2937'
+                        : '#FFFFFF',
+                      color: isDarkMode ? '#FFFFFF' : '#000000',
+                    }),
+                    multiValue: (provided) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#4B5563' : '#E5E7EB',
+                      color: isDarkMode ? '#FFFFFF' : '#000000',
+                    }),
+                    multiValueLabel: (provided) => ({
+                      ...provided,
+                      color: isDarkMode ? '#FFFFFF' : '#000000',
+                    }),
+                    multiValueRemove: (provided) => ({
+                      ...provided,
+                      color: isDarkMode ? '#FFFFFF' : '#000000',
+                      ':hover': {
+                        backgroundColor: isDarkMode ? '#374151' : '#D1D5DB',
+                        color: isDarkMode ? '#F87171' : '#EF4444',
+                      }
+                    })
+                  }}
+                />
+                {selectedProductIds.length === 0 && (
+                  <p className='text-red-500 text-xs mt-1'>At least one product is required</p>
+                )}
               </div>
 
               <div className='mb-4'>
@@ -202,7 +242,7 @@ function CreatePromotion() {
                 <textarea
                   rows='6'
                   id='description'
-                  className={`relative w-full  border rounded-md ${errors.tagName ? 'border-red-500' : 'border-gray-300'}`}
+                  className={`relative w-full  border rounded-md ${errors.description ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('description')}
                 />
               </div>

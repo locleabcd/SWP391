@@ -129,7 +129,7 @@ useEffect(() => {
   }
 
   const columns = [
-    { field: 'name', headerName: 'Name', width: 200 },
+    { field: 'name', headerName: 'Name', width: 150 },
     { field: 'startDate', headerName: 'Start Date', width: 170, renderCell: (params) => formatDateTime(params.row.startDate) },
     { field: 'endDate', headerName: 'End Date', width: 170, renderCell: (params) => formatDateTime(params.row.endDate) },
     { field: 'discountRate', headerName: 'Discount Rate', width: 120 },
@@ -137,7 +137,7 @@ useEffect(() => {
     {
       field: 'status',
       headerName: 'Status',
-      width: 200,
+      width: 150,
       renderCell: (params) => {
         const status = params.value
         let statusClasses = 'border-2 text-sm font-medium py-1 px-2 rounded text-center'
@@ -163,34 +163,10 @@ useEffect(() => {
           </div>
         )
       }
-    },
-    {
-      field: 'action',
-      headerName: 'Action',
-      width: 150,
-      renderCell: (params) => (
-        <div className='flex h-full justify-start items-center'>
-          {/* Nút Details */}
-          <button className='p-1 text-green-500 hover:bg-green-500 hover:text-white rounded-full' onClick={() => handleShowDetails(params.row)}>
-            <FaInfoCircle className='size-5' />
-          </button>
-
-          {/* Nút Update */}
-          <Link to={`/shop/promotion/${params.row.id}`} className='p-1 text-blue-500 hover:bg-blue-500 hover:text-white rounded-full mx-2'>
-            <FaEdit className='size-5' />
-          </Link>
-
-          {/* Nút Delete */}
-          <button className='p-1 text-red-500 hover:bg-red-500 hover:text-white rounded-full' onClick={() => deletePromotion(params.row.id)}>
-            <FaTrash className='size-5' />
-          </button>
-        </div>
-      )
-    },
-    {
+    }, {
       field: 'products',
       headerName: 'Products',
-      width: 150,
+      width: 100,
       renderCell: (params) => (
         <div className='flex h-full justify-start items-center'>
           <button className='p-1 text-blue-500 hover:bg-blue-500 hover:text-white rounded-full' onClick={() => handleShowDetails(params.row)}>
@@ -198,7 +174,40 @@ useEffect(() => {
           </button>
         </div>
       )
+    },
+    {
+      field: 'action',
+      headerName: 'Action',
+      width: 130,
+      renderCell: (params) => (
+        <div className='flex h-full justify-start items-center'>
+          {/* Nút Details */}
+          <button className='p-1 text-green-500 hover:bg-green-500 hover:text-white rounded-full' onClick={() => handleShowDetails(params.row)}>
+            <FaInfoCircle className='size-5' />
+          </button>
+    
+          {/* Nút Update - luôn hiển thị nhưng kiểm tra trạng thái trước khi cho phép chỉnh sửa */}
+          <button
+            className='p-1 text-blue-500 hover:bg-blue-500 hover:text-white rounded-full mx-2'
+            onClick={() => {
+              if (params.row.status === 'PENDING') {
+                navigate(`/shop/promotion/${params.row.id}`);
+              } else {
+                toast.warning('You can only edit promotions in PENDING status');
+              }
+            }}
+          >
+            <FaEdit className='size-5' />
+          </button>
+    
+          {/* Nút Delete */}
+          <button className='p-1 text-red-500 hover:bg-red-500 hover:text-white rounded-full' onClick={() => deletePromotion(params.row.id)}>
+            <FaTrash className='size-5' />
+          </button>
+        </div>
+      )
     }
+   
   ]
 
   const exportPromotionsToExcel = () => {
@@ -262,39 +271,42 @@ useEffect(() => {
           </Paper>
         </ThemeProvider>
           {isModalOpen && selectedPromotion && (
-            <div className='fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center z-50'>
+            <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
               <div className='bg-white p-4 border rounded-lg'>
-                <h3 className='text-xl font-bold'>PROMOTION DETAILS</h3>
+                <h3 className='text-xl text-center font-bold mb-4'>PROMOTION DETAILS</h3>
                 <div>
-                  <p><FaUser /> Name: {selectedPromotion.name}</p>
-                  <p><BsFillCalendarDateFill /> Start Date: {formatDateTime(selectedPromotion.startDate)}</p>
-                  <p><BsFillCalendarDateFill /> End Date: {formatDateTime(selectedPromotion.endDate)}</p>
-                  <p><FaMoneyBillWave /> Discount Rate: {selectedPromotion.discountRate}%</p>
-                  <p><GrNotes /> Description: {selectedPromotion.description}</p>
-                  <p><MdPendingActions /> Status: {selectedPromotion.status}</p>
-                          <div className='mt-4'>
-          <h4 className='text-lg font-bold text-center'>Product Details</h4>
-          {productDetails.length > 0 ? ( // Kiểm tra xem có sản phẩm không
-            <table className='min-w-full bg-white text-left'>
-              <thead>
-                <tr>
-                  <th className='py-2'>Product Name</th>
-                  
-                </tr>
-              </thead>
-              <tbody>
-                {productDetails.map((product, index) => (
-                  <tr key={index} className='text-left'>
-                    <td className='py-2'>{product.name}</td>
-                    
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          ) : (
-            <p>No products available for this promotion.</p> // Thông báo nếu không có sản phẩm
-          )}
-        </div>
+                <div className='bg-white p-4 border rounded-lg shadow-lg'>
+                  <p className='mb-3 flex items-center gap-2' ><FaUser /> Name: {selectedPromotion.name}</p>
+                  <p className='mb-3 flex items-center gap-2'><BsFillCalendarDateFill /> Start Date: {formatDateTime(selectedPromotion.startDate)}</p>
+                  <p className='mb-3 flex items-center gap-2'><BsFillCalendarDateFill /> End Date: {formatDateTime(selectedPromotion.endDate)}</p>
+                  <p className='mb-3 flex items-center gap-2'><FaMoneyBillWave /> Discount Rate: {selectedPromotion.discountRate}%</p>
+                  <p className='mb-3 flex items-center gap-2'><GrNotes /> Description: {selectedPromotion.description}</p>
+                  <p className='mb-3 flex items-center gap-2'><MdPendingActions /> Status: {selectedPromotion.status}</p>
+                  </div>
+                 
+                    <div className='Order-Table overflow-auto p-4 mt-4 shadow-lg border rounded-lg' style={{ maxHeight: '300px' }}>
+                     <h4 className='text-lg font-bold text-left '>Product Details</h4>
+                    {productDetails.length > 0 ? (
+                      <table className='min-w-full border-spacing-x-1 border-gray-200'>
+                        <thead>
+                          <tr className='border-b'>
+                            <th className='py-3 px-4 text-center text-xs font-bold uppercase'>No</th> {/* Thêm cột index */}
+                            <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Product Name</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {productDetails.map((product, index) => (
+                            <tr key={index} >
+                              <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td> {/* Hiển thị chỉ số (index) bắt đầu từ 1 */}
+                              <td className='py-2 px-1 text-center border-b border-gray-200'>{product.name}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <p>No products available for this promotion.</p>
+                    )}
+                  </div>
 
                 </div>
                 <button onClick={handleCloseModal} className='bg-red-500 text-white rounded p-2 mt-4'>Close</button>

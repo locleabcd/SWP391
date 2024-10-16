@@ -160,8 +160,9 @@ function Profile() {
           <Header />
           <div className='gap-4 p-4 flex justify-center items-center flex-col'>
             <h1 className='text-2xl font-bold'>Profile Information</h1>
-            <form onSubmit={handleSubmit(onSubmit)} className='mt-4 w-2/3'>
-              <div className='flex justify-center mb-4'>
+            <form onSubmit={handleSubmit(onSubmit)} className='mt-4 w-2/3 '>
+              <div className='grid grid-cols-2' >
+              <div className='block justify-center mb-4'>
               {!isEditing ? (
                   avatarPreview && (
                     <div className='relative w-48 h-48'>
@@ -287,6 +288,7 @@ function Profile() {
                     }`}
                   />
                 </div>
+              </div>
               </div>
               <div className='mt-4 flex justify-end'>
                   <button
