@@ -112,7 +112,7 @@ function News() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='News' />
 
             <div className='w-full flex justify-between relative items-center'>
