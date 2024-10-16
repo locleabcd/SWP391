@@ -212,14 +212,14 @@ function MyPondLog() {
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='My Pond' textName='My Pond Log' links='member/myPond' />
 
-            <div className='grid grid-cols-2 gap-10'>
+            <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed bottom-5 right-5 text-lg text-black outline-none rounded-full bg-custom-layout-light shadow-lg size-16 p-2 cursor-pointer'
+                className='fixed bottom-5 right-5 text-lg text-black outline-none rounded-full bg-custom-left-bar shadow-lg size-12 lg:size-16 p-2 cursor-pointer'
                 onClick={() => {
                   toggleAddFormVisibility()
                 }}
@@ -237,26 +237,26 @@ function MyPondLog() {
                   onClick={() => openEditForm(logs)}
                   className='border border-gray-50 shadow-lg rounded-xl px-10 py-5'
                 >
-                  <div className='flex justify-between'>
+                  <div className='flex flex-col gap-1 lg:justify-between'>
                     <div className='text-2xl font-semibold'>{logs.logTitle}</div>
-                    <div className='py-1 px-2 bg-blue-400 text-white rounded-xl'>{logs.category}</div>
+                    <div className='py-1 px-2 bg-blue-400 text-white rounded-lg'>{logs.category}</div>
                   </div>
                   <div className='flex justify-between'>
                     <div className='flex-none w-[500px]'>
-                      <div className='mt-5 text-lg'>{logs.koiPondName}</div>
-                      <div className='mt-3 text-red-500'>{formatDate(logs.logDate)}</div>
-                      <div className='mt-3'>{logs.note}</div>
+                      <div className='lg:mt-5 mt-2 text-lg'>{logs.koiPondName}</div>
+                      <div className='lg:mt-3 mt-1 text-red-500'>{formatDate(logs.logDate)}</div>
+                      <div className='lg:mt-3 mt-1'>{logs.note}</div>
                     </div>
                   </div>
                 </div>
               ))}
 
               {isAddFormVisible && (
-                <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
+                <div className='fixed inset-0 bg-black h-screen flex bg-opacity-50 z-40'>
                   <div
                     className={` ${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                    }  min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
+                    }  lg:min-w-[80vh] my-auto p-6 lg:rounded-lg shadow-lg`}
                   >
                     <div className='flex justify-between mb-5'>
                       <svg
@@ -294,14 +294,14 @@ function MyPondLog() {
                         </svg>
                       </button>
                     </div>
-                    <h3 className='mb-5 text-2xl font-bold'>Add a Log</h3>
-                    <div className='grid grid-cols-2 grid-rows-2 gap-4'>
+                    <h3 className='mb-5 lg:text-2xl text-lg font-bold'>Add a Log</h3>
+                    <div className='grid grid-cols-2 lg:grid-rows-2 gap-4'>
                       <div className='relative col-span-1'>
                         <label
                           htmlFor='name'
                           className={`absolute block -top-[12px] ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } left-3 text-red-500 font-semibold`}
+                          } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                         >
                           Title:
                         </label>
@@ -310,9 +310,9 @@ function MyPondLog() {
                           id='name'
                           placeholder='Enter title'
                           onChange={(e) => setTitle(e.target.value)}
-                          className={`w-full p-3 ${
+                          className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
+                          } border border-black lg:text-lg text-sm rounded-lg focus:outline-none transition-colors duration-200`}
                         />
                       </div>
 
@@ -321,7 +321,7 @@ function MyPondLog() {
                           htmlFor='volume'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } font-semibold`}
+                          } font-semibold lg:text-lg text-sm`}
                         >
                           Date & time:
                         </label>
@@ -330,25 +330,25 @@ function MyPondLog() {
                           id='volume'
                           placeholder='Enter volume'
                           onChange={(e) => setDateTime(e.target.value)}
-                          className={`w-full p-3 ${
+                          className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                          } border border-black rounded-lg lg:text-lg text-sm focus:outline-none transition-colors duration-200`}
                         />
                       </div>
 
-                      <div className='mb-4 relative col-span-1'>
+                      <div className='lg:mb-4 relative col-span-1'>
                         <label
                           htmlFor='depth'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } font-semibold`}
+                          } font-semibold lg:text-lg text-sm`}
                         >
                           Category:
                         </label>
                         <select
                           id='pondId'
                           onChange={(e) => setCategory(e.target.value)}
-                          className='block w-full p-3 border border-black rounded-md shadow-sm'
+                          className='block w-full lg:text-lg text-sm lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
                         >
                           <option value='OTHER'>Other</option>
                           <option value='WATER_CHANGE'>Water Change</option>
@@ -365,14 +365,14 @@ function MyPondLog() {
                           htmlFor='drainCount'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } font-semibold`}
+                          } font-semibold lg:text-lg text-sm`}
                         >
                           Pond:
                         </label>
                         <select
                           id='pondId'
                           onChange={(e) => setPond(e.target.value)}
-                          className='block w-full p-3 border border-black rounded-md shadow-sm'
+                          className='block w-full lg:text-lg text-sm lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
                         >
                           <option value=''>Select a pond</option>
                           {ponds.map((pond) => (
@@ -383,12 +383,12 @@ function MyPondLog() {
                         </select>
                       </div>
                     </div>
-                    <div className='mb-4 mt-4 relative w-full'>
+                    <div className='relative w-full'>
                       <label
                         htmlFor='drainCount'
                         className={`absolute -top-[12px] left-3 text-red-500 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                        } font-semibold`}
+                        } font-semibold lg:text-lg text-sm`}
                       >
                         Note:
                       </label>
@@ -407,11 +407,11 @@ function MyPondLog() {
               )}
 
               {isEditFormVisible && (
-                <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
+                <div className='fixed inset-0 bg-black bg-opacity-50 h-screen flex z-40'>
                   <div
                     className={`${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                    }  min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
+                    }  lg:min-w-[80vh] my-auto p-6 rounded-lg shadow-lg`}
                   >
                     <div className='flex justify-between mb-5'>
                       <svg
@@ -450,13 +450,13 @@ function MyPondLog() {
                       </button>
                     </div>
                     <h3 className='mb-5 text-2xl font-bold'>Update a Log</h3>
-                    <div className='grid grid-cols-2 grid-rows-2 gap-4'>
+                    <div className='grid grid-cols-2 lg:grid-rows-2 gap-4'>
                       <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='name'
                           className={`absolute block -top-[12px] ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } left-3 text-red-500 font-semibold`}
+                          } left-3 text-red-500 font-semibold lg:text-lg text-sm`}
                         >
                           Title:
                         </label>
@@ -476,7 +476,7 @@ function MyPondLog() {
                           htmlFor='volume'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } font-semibold`}
+                          } font-semibold lg:text-lg text-sm`}
                         >
                           Date & time:
                         </label>
@@ -496,7 +496,7 @@ function MyPondLog() {
                           htmlFor='depth'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } font-semibold`}
+                          } font-semibold lg:text-lg text-sm`}
                         >
                           Category:
                         </label>
@@ -521,7 +521,7 @@ function MyPondLog() {
                           htmlFor='drainCount'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } font-semibold`}
+                          } font-semibold lg:text-lg text-sm`}
                         >
                           Pond:
                         </label>
@@ -545,7 +545,7 @@ function MyPondLog() {
                         htmlFor='drainCount'
                         className={`absolute -top-[12px] left-3 text-red-500 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                        } font-semibold`}
+                        } font-semibold lg:text-lg text-sm`}
                       >
                         Note:
                       </label>

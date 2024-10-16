@@ -312,7 +312,7 @@ function MyPond() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='fixed z-50 bottom-2 right-5 text-lg text-black outline-none rounded-r-xl bg-custom-left-bar shadow-lg size-16 p-2 cursor-pointer'
+              className='fixed z-50 bottom-2 right-5 text-lg text-black outline-none rounded-r-sm lg:rounded-r-xl bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
               onClick={() => {
                 toggleAddFormVisibility()
               }}
@@ -330,7 +330,7 @@ function MyPond() {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed z-50 bottom-2 right-[84px] text-lg shadow-lg text-black rounded-l-xl bg-custom-left-bar size-16 p-2 cursor-pointer'
+                className='fixed z-50 bottom-2 right-[51px] lg:right-[84px] text-lg shadow-lg text-black rounded-l-sm lg:rounded-l-xl bg-custom-left-bar size-8 lg:size-16 lg:p-2 cursor-pointer'
               >
                 <path
                   strokeLinecap='round'
@@ -351,7 +351,7 @@ function MyPond() {
                   viewBox='0 0 24 24'
                   strokeWidth={1.5}
                   stroke='currentColor'
-                  className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} w-8 h-8 mb-4`}
+                  className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} lg:size-8 size-6 mb-4`}
                 >
                   <path
                     strokeLinecap='round'
@@ -373,7 +373,7 @@ function MyPond() {
                     <button
                       className={`${
                         isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
-                      } btn py-2 px-4 rounded `}
+                      } btn py-2 px-4 rounded lg:text-xl text-xs `}
                       onClick={() => sortByKoiCount('desc')}
                     >
                       Sorted by Number of Fish (desc)
@@ -381,7 +381,7 @@ function MyPond() {
                     <button
                       className={`${
                         isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
-                      } btn py-2 px-4 rounded `}
+                      } btn py-2 px-4 rounded lg:text-xl text-xs `}
                       onClick={() => sortByKoiCount('asc')}
                     >
                       Sorted by Number of Fish (asc)
@@ -389,7 +389,7 @@ function MyPond() {
                     <button
                       className={`${
                         isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
-                      } btn py-2 px-4 rounded `}
+                      } btn py-2 px-4 rounded lg:text-xl text-xs `}
                       onClick={() => sortByName('desc')}
                     >
                       Sorted by Name (Z-A)
@@ -397,7 +397,7 @@ function MyPond() {
                     <button
                       className={`${
                         isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
-                      } btn py-2 px-4 rounded `}
+                      } btn py-2 px-4 rounded lg:text-xl text-xs `}
                       onClick={() => sortByName('asc')}
                     >
                       Sorted by Name (A-Z)
@@ -405,7 +405,7 @@ function MyPond() {
                     <button
                       className={`${
                         isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
-                      } btn py-2 px-4 rounded `}
+                      } btn py-2 px-4 rounded lg:text-xl text-xs `}
                       onClick={() => sortVolume('asc')}
                     >
                       Sorted by Volume (asc)
@@ -413,7 +413,7 @@ function MyPond() {
                     <button
                       className={`${
                         isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'
-                      } btn py-2 px-4 rounded `}
+                      } btn py-2 px-4 rounded lg:text-xl text-xs `}
                       onClick={() => sortVolume('desc')}
                     >
                       Sorted by Volume (desc)
@@ -454,39 +454,39 @@ function MyPond() {
                     }}
                     src={pond.imageUrl}
                     alt={pond.name}
-                    className='w-full cursor-pointer h-60 object-cover rounded-t-xl overflow-hidden'
+                    className='w-full cursor-pointer lg:h-60 h-48 object-cover rounded-t-xl overflow-hidden'
                     style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
                   />
                   <div className='p-4'>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-56'>Pond:</h3>
-                      <h3 className='text-base font-semibold'>{pond.name}</h3>
+                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Pond:</h3>
+                      <h3 className='text-sm lg:text-base font-semibold'>{pond.name}</h3>
                     </div>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-56'>Number of fish:</h3>
-                      <h3 className='text-base font-semibold'>
+                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Number of fish:</h3>
+                      <h3 className='text-sm lg:text-base font-semibold'>
                         {koiCounts[pond.id] !== undefined ? koiCounts[pond.id] : 'Loading...'}
                       </h3>{' '}
                     </div>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-56'>Volume:</h3>
-                      <h3 className='text-base font-semibold'>{pond.volume} l</h3>
+                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Volume:</h3>
+                      <h3 className='text-sm lg:text-base font-semibold'>{pond.volume} l</h3>
                     </div>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-56'>Drain Count:</h3>
-                      <h3 className='text-base font-semibold'>{pond.drainCount}</h3>
+                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Drain Count:</h3>
+                      <h3 className='text-sm lg:text-base font-semibold'>{pond.drainCount}</h3>
                     </div>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-56'>Depth:</h3>
-                      <h3 className='text-base font-semibold'>{pond.depth} m</h3>
+                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Depth:</h3>
+                      <h3 className='text-sm lg:text-base font-semibold'>{pond.depth} m</h3>
                     </div>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-56'>Skimmer Count:</h3>
-                      <h3 className='text-base font-semibold'>{pond.skimmer}</h3>
+                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Skimmer Count:</h3>
+                      <h3 className='text-sm lg:text-base font-semibold'>{pond.skimmer}</h3>
                     </div>
                     <div className='flex w-full pl-3'>
-                      <h3 className='text-base w-56'>Pump Capacity:</h3>
-                      <h3 className='text-base font-semibold'>{pond.pumpCapacity} L/min</h3>
+                      <h3 className='text-sm lg:text-base w-48 lg:w-56'>Pump Capacity:</h3>
+                      <h3 className='text-sm lg:text-base font-semibold'>{pond.pumpCapacity} L/min</h3>
                     </div>
                   </div>
                   {issue[pond.id] && issue[pond.id].length > 0 && (
@@ -497,7 +497,7 @@ function MyPond() {
                         height='800px'
                         viewBox='-8 0 19 19'
                         xmlns='http://www.w3.org/2000/svg'
-                        className='blinking-svg absolute top-0 text-lg shadow-lg text-white rounded-tl-xl bg-red-500 size-14 p-2 cursor-pointer'
+                        className='blinking-svg absolute top-0 text-lg shadow-lg text-white rounded-tl-xl bg-red-500 size-10 lg:size-14 p-2 cursor-pointer'
                       >
                         <path d='M2.828 15.984A1.328 1.328 0 1 1 1.5 14.657a1.328 1.328 0 0 1 1.328 1.327zM1.5 13.244a1.03 1.03 0 0 1-1.03-1.03V2.668a1.03 1.03 0 0 1 2.06 0v9.548a1.03 1.03 0 0 1-1.03 1.029z' />
                       </svg>

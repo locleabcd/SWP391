@@ -220,13 +220,13 @@ function MyKoi() {
             viewBox='0 0 24 24'
             strokeWidth={1.5}
             stroke='currentColor'
-            className='fixed bottom-7 right-5 text-lg hover:bg-blue-600 text-white rounded-full shadow-lg size-12 cursor-pointer z-30'
+            className='fixed lg:bottom-7 bottom-6 right-5 text-lg hover:bg-blue-600 text-white rounded-full shadow-lg lg:size-12 size-8 cursor-pointer z-30'
             onClick={toggleAddFormVisibility}
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
-          <div className='fixed w-[145px] h-14 bottom-6 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
-            <p className='text-3xl font-semibold pt-2 pl-3'>
+          <div className='fixed lg:w-[145px] w-[110px] lg:h-14 h-8 bottom-6 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
+            <p className='lg:text-3xl text-xl font-semibold pt-2 pl-3'>
               {koiCounts[localStorage.getItem('id')] !== undefined ? koiCounts[localStorage.getItem('id')] : '...'} Koi
             </p>
           </div>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
@@ -281,6 +282,7 @@ function Dashboard() {
                         {index === 2 && <span className='size-6 border-4 border-red-500 rounded-full' />}
                         {index === 3 && <span className='size-6 border-4 border-green-500 rounded-full' />}
                         {index === 4 && <span className='size-6 border-4 border-purple-500 rounded-full' />}
+                        {index === 5 && <span className='size-6 border-4 border-pink-500 rounded-full' />}
 
                         {index !== payment.length - 1 && <span className='w-0.5 h-12 bg-gray-300' />}
                       </div>

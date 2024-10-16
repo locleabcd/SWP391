@@ -108,7 +108,7 @@ function Header() {
         isDarkMode
           ? 'bg-custom-dark text-white border-b border-gray-700'
           : 'bg-white text-black border-b border-gray-200'
-      } sticky top-0 p-3 justify-end z-20 flex w-full duration-200 ease-linear`}
+      } sticky top-0 lg:p-3 py-3 justify-end z-20 flex w-full duration-200 ease-linear`}
     >
       <div className='flex items-center justify-end ml-4'>
         <div className='mr-4 flex justify-center items-center gap-2'>
@@ -248,7 +248,7 @@ function Header() {
             </label>
           </div>
           <div className='my-account'>
-            <button onClick={toggleList} className='flex items-center p-2 rounded-md space-x-2'>
+            <button onClick={toggleList} className='lg:flex lg:items-center lg:p-2 lg:rounded-md lg:space-x-2 hidden'>
               <div className='flex flex-col'>
                 <p className='text-sm font-medium'>{user.name}</p>
                 <p className='text-xs text-gray-500'>{user.role}</p>
