@@ -158,13 +158,16 @@ function Profile() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
-          <div className='gap-4 p-4 flex justify-center items-center flex-col'>
+          <div>
+          <div className='gap-8 p-4 flex justify-center items-center flex-col  '>
+         
             <h1 className='text-2xl font-bold'>Profile Information</h1>
-            <form onSubmit={handleSubmit(onSubmit)} className='mt-4 w-2/3'>
-              <div className='flex justify-center mb-4'>
+            <form onSubmit={handleSubmit(onSubmit)} className='mt-4 w-2/3 '>
+              <div className='grid grid-cols-3' >
+              <div className='flex items-center justify-center h-full pr-20 '>
               {!isEditing ? (
                   avatarPreview && (
-                    <div className='relative w-48 h-48'>
+                    <div className='relative w-60 h-60'>
                       <img
                         src={avatarPreview}
                         alt='Avatar'
@@ -173,14 +176,14 @@ function Profile() {
                     </div>
                   )
                 ) : (
-                  <div className='flex flex-col items-center'>
+                  <div className='flex flex-col items-center col-span-1'>
                     <input
                       type='file'
                       onChange={handleFileChange}
                       className='border rounded p-2 mb-2 border-blue-500'
                     />
                     {avatarPreview && (
-                      <div className='relative w-48 h-48'>
+                      <div className='relative w-60 h-60'>
                         <img
                           src={avatarPreview}
                           alt='Avatar Preview'
@@ -191,7 +194,7 @@ function Profile() {
                   </div>
                 )}
               </div>
-              <div className='grid grid-cols-2 gap-4'>
+              <div className='grid grid-cols-2 gap-4 col-span-2'>
                 <div>
                   <label className='block'>Name:</label>
                   <input
@@ -288,68 +291,20 @@ function Profile() {
                   />
                 </div>
               </div>
+              </div>
+
               <div className='mt-4 flex justify-end'>
-                  <button
-                    type='button'
-                    onClick={() => {
-                      setIsEditing(!isEditing);
-                      if (!isEditing) reset(users); // Reset form to current user data when editing starts
-                    }}
-                    className='bg-blue-500 text-white p-2 rounded mr-2 w-20'
-                  >
-                    {isEditing ? 'Cancel' : 'Edit'}
-                  </button>
-                  {isEditing && (
-                    <button
-                      type='submit'
-                      className={`px-4 py-2 bg-green-500 text-white rounded-md ${
-                        isSubmitting ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700'
-                      }`}
-                      disabled={isSubmitting}
-                    >
-                      {isSubmitting ? 'Submitting...' : 'Update Profile'}
-                    </button>
-                  )}
-                </div>
-            </form>
-            {/* Change Password Form */}
-            <div className='mt-8 w-2/3'>
-              <h2 className='text-xl font-bold'>Change Password</h2>
-              <form onSubmit={(e) => {
-                e.preventDefault();
-                changePassword();
-              }} className='mt-4'>
-                <div className='mb-4'>
-                  <label className='block'>Current Password:</label>
-                  <input
-                    type='password'
-                    value={currentPassword}
-                    onChange={(e) => setCurrentPassword(e.target.value)}
-                    className='border rounded p-2 w-full'
-                    required
-                  />
-                </div>
-                <div className='mb-4'>
-                  <label className='block'>New Password:</label>
-                  <input
-                    type='password'
-                    value={newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    className='border rounded p-2 w-full'
-                    required
-                  />
-                </div>
-                <div className='mb-4'>
-                  <label className='block'>Confirm New Password:</label>
-                  <input
-                    type='password'
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className='border rounded p-2 w-full'
-                    required
-                  />
-                </div>
-                <div className='flex justify-end'>
+                <button
+                  type='button'
+                  onClick={() => {
+                    setIsEditing(!isEditing);
+                    if (!isEditing) reset(users); // Reset form to current user data when editing starts
+                  }}
+                  className='bg-blue-500 text-white p-2 rounded mr-2 w-20'
+                >
+                  {isEditing ? 'Cancel' : 'Edit'}
+                </button>
+                {isEditing && (
                   <button
                     type='submit'
                     className={`px-4 py-2 bg-green-500 text-white rounded-md ${
@@ -357,11 +312,60 @@ function Profile() {
                     }`}
                     disabled={isSubmitting}
                   >
-                    {isSubmitting ? 'Submitting...' : 'Change Password'}
+                    {isSubmitting ? 'Submitting...' : 'Update Profile'}
                   </button>
+                )}
+                <button
+                  type='button'
+                  onClick={() => setIsChangingPassword(!isChangingPassword)}
+                  className='bg-yellow-500 text-white p-2 rounded ml-2 w-70'
+                >
+                  {isChangingPassword ? 'Hide Password Form' : 'Change Password'}
+                </button>
+              </div>
+            </form></div>
+                <div className='gap-4 p-4 flex justify-center items-center flex-col'>
+            {isChangingPassword && (
+              <div className='w-2/3 mt-4 border rounded p-4 shadow-lg'>
+                <h2 className='text-xl font-bold'>Change Password</h2>
+                <div className=' gap-4 mt-4'>
+                  <div>
+                    <label className='block'>Current Password:</label>
+                    <input
+                      type='password'
+                      value={currentPassword}
+                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      className='border rounded p-2 w-full'
+                    />
+                  </div>
+                  <div>
+                    <label className='block'>New Password:</label>
+                    <input
+                      type='password'
+                      value={newPassword}
+                      onChange={(e) => setNewPassword(e.target.value)}
+                      className='border rounded p-2 w-full'
+                    />
+                  </div>
+                  <div>
+                    <label className='block'>Confirm New Password:</label>
+                    <input
+                      type='password'
+                      value={confirmPassword}
+                      onChange={(e) => setConfirmPassword(e.target.value)}
+                      className='border rounded p-2 w-full'
+                    />
+                  </div>
                 </div>
-              </form>
-            </div>
+                <button
+                  type='button'
+                  onClick={changePassword}
+                  className='mt-4 px-4 py-2 bg-green-500 text-white rounded-md'
+                >
+                  Change Password
+                </button>
+              </div>
+            )}</div>
           </div>
         </div>
       </div>

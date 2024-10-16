@@ -1,226 +1,322 @@
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
-import { useDarkMode } from '../../../hooks/DarkModeContext'
-
+import { Link, useNavigate } from 'react-router-dom'
+import { FaUser, FaMoneyBillWave, FaEdit, FaTrash, FaInfoCircle, FaEye } from "react-icons/fa"
+import { BsFillCalendarDateFill } from "react-icons/bs"
+import { GrNotes } from "react-icons/gr"
+import { MdPendingActions } from "react-icons/md"
+import { DataGrid } from '@mui/x-data-grid'
+import Paper from '@mui/material/Paper'
+import { toast } from 'react-toastify'
+import * as XLSX from 'xlsx'
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 function Promotion() {
   const { isDarkMode } = useDarkMode()
-  const [promotions, setPromotion] = useState([])
-  const [products, setProducts] = useState([])
-  // const [showButtons, setShowButtons] = useState(false)
+  const [promotions, setPromotions] = useState([])
+  const [selectedPromotion, setSelectedPromotion] = useState(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [productDetails, setProductDetails] = useState([]);
   const [isLoading, setIsLoading] = useState(true)
-  const [sortConfig, setSortConfig] = useState({ key: '', direction: '' })
   const navigate = useNavigate()
+  const lightTheme = createTheme({
+    palette: {
+      mode: 'light',
+    },
+  })
+  
+  const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+      background: {
+        default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+        paper: 'rgb(36 48 63 / var(--tw-bg-opacity))',
+      },
+    },
+  })
+  
+  
+
+  const formatDateTime = (inputDate) => {
+    const date = new Date(inputDate)
+    const day = String(date.getDate()).padStart(2, '0')
+    const month = String(date.getMonth() + 1).padStart(2, '0')
+    const year = date.getFullYear()
+    const hours = String(date.getHours()).padStart(2, '0')
+    const minutes = String(date.getMinutes()).padStart(2, '0')
+    const seconds = String(date.getSeconds()).padStart(2, '0')
+    return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`
+  }
+
+  const handleShowDetails = (promotion) => {
+    setSelectedPromotion(promotion)
+    setIsModalOpen(true)
+    fetchProductDetails(promotion.id); 
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setSelectedPromotion(null)
+    setProductDetails([])
+  }
 
   const getPromotion = async () => {
     try {
       const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
+      if (!token) throw new Error('No token found')
 
       const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/promotions/all`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       })
-
-      setPromotion(res.data.data)
-      console.log(res.data.data)
+      setPromotions(res.data.data)
+      
     } catch (error) {
-      console.log('Error fetching tags:', error)
+      console.log('Error fetching promotions:', error)
     }
   }
-
-  useEffect(() => {
+useEffect(() => {
     getPromotion()
   }, [])
-  const getProduct = async () => {
+  const fetchProductDetails = async (promotionId) => {
     try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
-
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/products/all`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-
-      setProducts(res.data.data)
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('No token found');
+  
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/promotions/${promotionId}/products/view`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
       console.log(res.data.data)
+      console.log('Product details response:', res.data); // Kiểm tra phản hồi từ API
+      if (res.data && res.data.data) {
+        setProductDetails(res.data.data); // Cập nhật danh sách sản phẩm
+      } else {
+        setProductDetails([]); // Nếu không có sản phẩm, đặt thành mảng rỗng
+      }
     } catch (error) {
-      console.log('Error fetching tags:', error)
+      console.log('Error fetching product details:', error);
+      setProductDetails([]); // Đặt thành mảng rỗng nếu có lỗi
     }
-  }
-  useEffect(() => {
-    getProduct()
-  }, [])
+  };
+
   const deletePromotion = async (id) => {
-    const isConfirmed = window.confirm('Are you sure to delete promotion')
-    if (!isConfirmed) {
-      return
-    }
+    const isConfirmed = window.confirm('Are you sure to delete promotion?')
+    if (!isConfirmed) return
+
     setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
+      if (!token) throw new Error('No token found')
+
       await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/promotions/promotion/${id}/delete`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       })
-      toast.success('Tag deleted successfully')
+
+      toast.success('Promotion deleted successfully')
       getPromotion()
     } catch (error) {
-      console.error('Error deleting Supplier:', error)
+      toast.error('Error deleting promotion')
+      console.error('Error deleting promotion:', error)
     } finally {
       setIsLoading(false)
-    }
-  }
-  const getStatusColor = (status) => {
-    switch (status) {
-      case 'PENDING':
-        return 'text-white bg-gray-500 '
-      case 'ACCEPTED':
-        return 'text-green-500 bg-green-200'
-      case 'PROCESSING':
-        return 'text-blue-500 bg-blue-200'
-      case 'ENDED':
-        return 'text-red-500 bg-red-200'
-      default:
-        return 'text-gray-500 bg-gray-200'
+
     }
   }
 
+  const columns = [
+    { field: 'name', headerName: 'Name', width: 150 },
+    { field: 'startDate', headerName: 'Start Date', width: 170, renderCell: (params) => formatDateTime(params.row.startDate) },
+    { field: 'endDate', headerName: 'End Date', width: 170, renderCell: (params) => formatDateTime(params.row.endDate) },
+    { field: 'discountRate', headerName: 'Discount Rate', width: 120 },
+    { field: 'description', headerName: 'Description', flex: 1 },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 150,
+      renderCell: (params) => {
+        const status = params.value
+        let statusClasses = 'border-2 text-sm font-medium py-1 px-2 rounded text-center'
+        switch (status) {
+          case 'PENDING':
+            statusClasses += ' border-yellow-500 text-yellow-500'
+            break
+          case 'PROCESSING':
+            statusClasses += ' border-blue-500 text-blue-500'
+            break
+          case 'ACCEPTED':
+            statusClasses += ' border-green-500 text-green-500'
+            break
+          case 'REJECTED':
+            statusClasses += ' border-red-500 text-red-500'
+            break
+          default:
+            statusClasses += ' border-gray-500 text-gray-500'
+        }
+        return (
+          <div className='h-full flex justify-start items-center'>
+            <div className={statusClasses}>{status}</div>
+          </div>
+        )
+      }
+    }, {
+      field: 'products',
+      headerName: 'Products',
+      width: 100,
+      renderCell: (params) => (
+        <div className='flex h-full justify-start items-center'>
+          <button className='p-1 text-blue-500 hover:bg-blue-500 hover:text-white rounded-full' onClick={() => handleShowDetails(params.row)}>
+            <FaEye className='size-5' />
+          </button>
+        </div>
+      )
+    },
+    {
+      field: 'action',
+      headerName: 'Action',
+      width: 130,
+      renderCell: (params) => (
+        <div className='flex h-full justify-start items-center'>
+          {/* Nút Details */}
+          <button className='p-1 text-green-500 hover:bg-green-500 hover:text-white rounded-full' onClick={() => handleShowDetails(params.row)}>
+            <FaInfoCircle className='size-5' />
+          </button>
+    
+          {/* Nút Update - luôn hiển thị nhưng kiểm tra trạng thái trước khi cho phép chỉnh sửa */}
+          <button
+            className='p-1 text-blue-500 hover:bg-blue-500 hover:text-white rounded-full mx-2'
+            onClick={() => {
+              if (params.row.status === 'PENDING') {
+                navigate(`/shop/promotion/${params.row.id}`);
+              } else {
+                toast.warning('You can only edit promotions in PENDING status');
+              }
+            }}
+          >
+            <FaEdit className='size-5' />
+          </button>
+    
+          {/* Nút Delete */}
+          <button className='p-1 text-red-500 hover:bg-red-500 hover:text-white rounded-full' onClick={() => deletePromotion(params.row.id)}>
+            <FaTrash className='size-5' />
+          </button>
+        </div>
+      )
+    }
+   
+  ]
+
+  const exportPromotionsToExcel = () => {
+    const worksheet = XLSX.utils.json_to_sheet(promotions.map((promotion) => ({
+      'Name': promotion.name,
+      'Start Date': formatDateTime(promotion.startDate),
+      'End Date': formatDateTime(promotion.endDate),
+      'Discount Rate': promotion.discountRate,
+      'Status': promotion.status,
+      'Description': promotion.description,
+    })))
+
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Promotions')
+
+    XLSX.writeFile(workbook, 'Promotions.xlsx')
+  }
+
   return (
-    <div>
-      <div className='h-screen flex'>
-        <LeftSideBar />
-        <div
-          className={`relative ${
-            isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'
-          } overflow-y-auto flex-1 flex-col  overflow-x-hidden duration-200 ease-linear`}
-        >
-          <Header />
-          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-            <TopLayout text='Promotion' />
-            <div className='w-full flex justify-between items-center relative'>
-              <div className='cursor-pointer'>
-                <button
-                  className='py-2 px-3 bg-custom-left-bar text-white hover:bg-blue-600 rounded-md'
-                  onClick={() => navigate('/shop/createPromotion')}
-                >
-                  New Promotion
-                </button>
-              </div>
-              <div className='flex items-center'>
-                <input type='text' className='p-1 border rounded-md mr-4' placeholder='Search' />
-                <div className='cursor-pointer'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth={1.5}
-                    stroke='currentColor'
-                    className='w-8 h-8  text-red-500'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75'
-                    />
-                  </svg>
-                </div>
-              </div>
+    <div className='h-screen flex'>
+      <LeftSideBar />
+      <div className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} flex-1 overflow-y-auto`}>
+        <Header />
+        <div className='py-5 px-[30px] mx-auto'>
+          <TopLayout text='Promotions' />
+          <div className='w-full flex justify-between items-center relative mb-4'>
+            <div className='cursor-pointer'>
+              <button
+                className='py-2 px-3 bg-custom-left-bar text-white hover:bg-blue-600 rounded-md'
+                onClick={() => navigate('/shop/createPromotion')}
+              >
+                New Promotion
+              </button>
             </div>
-            <div className='overflow-x-auto mt-6'>
-              <table className='min-w-full border-spacing-x-1 border-gray-200'>
-                <thead className='border-gray-200'>
-                  <tr className='border-b'>
-                    <th className='py-3  text-center text-xs font-bold uppercase'>No</th>
-                    <th className='py-3  text-center text-xs font-bold uppercase'>Name</th>
-                    <th className='py-3  text-center text-xs font-bold uppercase'>Start Date</th>
-                    <th className='py-3  text-center text-xs font-bold uppercase'>End Date</th>
-                    <th className='py-3  text-center text-xs font-bold uppercase'>Discount Rate</th>
-                    <th className='py-3  text-center text-xs font-bold uppercase'>Description</th>
-                    <th className='py-3  text-center text-xs font-bold uppercase'>Status</th>
-                    <th className='py-3  text-center text-xs font-bold uppercase'>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {promotions.map((promotion, index) => (
-                    <tr key={promotion.id}>
-                      <td className='py-2 px-1 text-center border-b  border-gray-200'>{index + 1}</td>
-                      <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.name}</td>
-                      <td className='py-2 px-1 text-center border-b  border-gray-200'>
-                        {promotion.startDate.replace('T', ' ')}
-                      </td>
-                      <td className='py-2 px-1 text-center border-b  border-gray-200'>
-                        {promotion.endDate.replace('T', ' ')}
-                      </td>
-                      <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.discountRate}%</td>
-                      <td className='py-2 px-1 text-center border-b  border-gray-200'>{promotion.description}</td>
-                      <td className='py-2 px-1 text-center border-b  border-gray-200'>
-                        <span
-                          className={`inline-block px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(promotion.status)}`}
-                        >
-                          {promotion.status}
-                        </span>
-                      </td>
-                      <td className='py-2 px-1 text-center border-b  border-gray-200'>
-                        <div className='flex justify-center items-center'>
-                          <Link
-                            to={`/shop/promotion/${promotion.id}`}
-                            className='p-1 hover:bg-green-500 text-green-500 hover:text-white rounded-full'
-                          >
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              viewBox='0 0 24 24'
-                              fill='currentColor'
-                              className='size-5'
-                            >
-                              <path d='M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z' />
-                              <path d='M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z' />
-                            </svg>
-                          </Link>
-                          <button
-                            className='p-1 hover:bg-red-500 text-red-600 hover:text-white rounded-full'
-                            onClick={() => deletePromotion(promotion.id)}
-                          >
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              viewBox='0 0 24 24'
-                              fill='currentColor'
-                              className='size-5'
-                            >
-                              <path
-                                fillRule='evenodd'
-                                d='M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z'
-                                clipRule='evenodd'
-                              />
-                            </svg>
-                          </button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+            <div className='cursor-pointer'>
+              <button onClick={exportPromotionsToExcel} className="mb-4 ml-3 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md">
+                Download Excel
+              </button>
             </div>
           </div>
+          <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+          <CssBaseline />
+          <Paper sx={{ height: 670 }}>
+            <DataGrid
+              rows={promotions}
+              columns={columns}
+              checkboxSelection
+              disableExtendRowFullWidth
+              pageSizeOptions={[5, 10, 20, 50, 100]}
+              pageSize={10}
+              rowHeight={80}
+              sx={{
+                '& .MuiDataGrid-columnHeaders': {
+                  backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
+                },
+                '& .MuiDataGrid-row:hover': {
+                  backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
+                }
+              }}
+            />
+          </Paper>
+        </ThemeProvider>
+          {isModalOpen && selectedPromotion && (
+            <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
+              <div className='bg-white p-4 border rounded-lg'>
+                <h3 className='text-xl text-center font-bold mb-4'>PROMOTION DETAILS</h3>
+                <div>
+                <div className='bg-white p-4 border rounded-lg shadow-lg'>
+                  <p className='mb-3 flex items-center gap-2' ><FaUser /> Name: {selectedPromotion.name}</p>
+                  <p className='mb-3 flex items-center gap-2'><BsFillCalendarDateFill /> Start Date: {formatDateTime(selectedPromotion.startDate)}</p>
+                  <p className='mb-3 flex items-center gap-2'><BsFillCalendarDateFill /> End Date: {formatDateTime(selectedPromotion.endDate)}</p>
+                  <p className='mb-3 flex items-center gap-2'><FaMoneyBillWave /> Discount Rate: {selectedPromotion.discountRate}%</p>
+                  <p className='mb-3 flex items-center gap-2'><GrNotes /> Description: {selectedPromotion.description}</p>
+                  <p className='mb-3 flex items-center gap-2'><MdPendingActions /> Status: {selectedPromotion.status}</p>
+                  </div>
+                 
+                    <div className='Order-Table overflow-auto p-4 mt-4 shadow-lg border rounded-lg' style={{ maxHeight: '300px' }}>
+                     <h4 className='text-lg font-bold text-left '>Product Details</h4>
+                    {productDetails.length > 0 ? (
+                      <table className='min-w-full border-spacing-x-1 border-gray-200'>
+                        <thead>
+                          <tr className='border-b'>
+                            <th className='py-3 px-4 text-center text-xs font-bold uppercase'>No</th> {/* Thêm cột index */}
+                            <th className='py-3 px-4 text-center text-xs font-bold uppercase'>Product Name</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {productDetails.map((product, index) => (
+                            <tr key={index} >
+                              <td className='py-2 px-1 text-center border-b border-gray-200'>{index + 1}</td> {/* Hiển thị chỉ số (index) bắt đầu từ 1 */}
+                              <td className='py-2 px-1 text-center border-b border-gray-200'>{product.name}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    ) : (
+                      <p>No products available for this promotion.</p>
+                    )}
+                  </div>
+
+                </div>
+                <button onClick={handleCloseModal} className='bg-red-500 text-white rounded p-2 mt-4'>Close</button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
   )
 }
+
 export default Promotion
