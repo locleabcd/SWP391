@@ -14,7 +14,7 @@ function TopLayout({ text, textName, links }) {
       animate='visible'
       className={`${
         isDarkMode ? 'bg-custom-layout-dark text-white' : 'bg-custom-layout-light '
-      }  flex w-full rounded-xl py-[30px] px-[25px] mb-[30px] relative`}
+      }  flex w-full rounded-xl lg:py-[30px] py-[15px] px-[25px] mb-[30px] relative`}
     >
       <div>
         {textName ? (
@@ -41,7 +41,7 @@ function TopLayout({ text, textName, links }) {
           >
             <path d='M6 9l6 6l6 -6' />
           </svg>
-          <Link to={`/${links}`} className={textName ? 'text-gray-400 lg:text-lg text-sm' : ''}>
+          <Link to={`/${links}`} className={textName ? 'text-gray-400 lg:text-lg text-sm' : 'lg:text-lg text-sm'}>
             {text}
           </Link>
           {textName && (

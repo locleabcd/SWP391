@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayout'
 import { motion } from 'framer-motion'
-import { FadeLeft, FadeRight } from '../../../utils/animation'
+import 'aos/dist/aos.css'
 import '../../../index.css'
 
 function MyPond() {
@@ -312,7 +312,7 @@ function MyPond() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='fixed z-50 bottom-2 right-5 text-lg text-black outline-none rounded-r-sm lg:rounded-r-xl bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
+              className='fixed z-50 bottom-2 right-5 text-lg text-white outline-none rounded-r-sm lg:rounded-r-xl bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
               onClick={() => {
                 toggleAddFormVisibility()
               }}
@@ -330,7 +330,7 @@ function MyPond() {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed z-50 bottom-2 right-[51px] lg:right-[84px] text-lg shadow-lg text-black rounded-l-sm lg:rounded-l-xl bg-custom-left-bar size-8 lg:size-16 lg:p-2 cursor-pointer'
+                className='fixed z-50 bottom-2 right-[51px] lg:right-[84px] text-lg shadow-lg text-white rounded-l-sm lg:rounded-l-xl bg-custom-left-bar size-8 lg:size-16 lg:p-2 cursor-pointer'
               >
                 <path
                   strokeLinecap='round'
@@ -513,6 +513,7 @@ function MyPond() {
                   className={` ${
                     isDarkMode ? 'bg-custom-dark' : 'bg-white'
                   }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
+                  data-aos='fade-up'
                 >
                   <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className='flex justify-between mb-5'>
@@ -774,6 +775,7 @@ function MyPond() {
                   className={`${
                     isDarkMode ? 'bg-custom-dark' : 'bg-white'
                   } lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
+                  data-aos='fade-up'
                 >
                   <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className='flex justify-between mb-5'>

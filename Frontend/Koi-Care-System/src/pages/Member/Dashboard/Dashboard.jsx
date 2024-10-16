@@ -224,7 +224,7 @@ function Dashboard() {
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] '>
             <TopLayout text='Dashboard' links='member/dashboard' />
 
-            <div className='grid grid-cols-5 mt-10 px-2 gap-10'>
+            <div className='grid lg:grid-cols-5 md:grid-cols-3 grid-cols-1 mt-10 px-2 gap-10'>
               <div className='flex flex-col rounded-lg items-center py-8 justify-center bg-yellow-100'>
                 <GiAquarium className='size-20 p-5 rounded-full text-white bg-yellow-500' />
                 <div className='text-2xl mt-3'>Ponds</div>
@@ -269,10 +269,10 @@ function Dashboard() {
               </ResponsiveContainer>
             </div>
 
-            <div className='mt-10 flex gap-14'>
-              <div className='flex-none border border-gray-200 w-[550px] px-6 py-6'>
-                <div className='text-2xl font-semibold mb-3'>Recent Transaction</div>
-                <div className='flex flex-col px-10'>
+            <div className='mt-10 grid lg:grid-cols-7 grid-cols-1 gap-14'>
+              <div className='lg:col-span-3 border border-gray-200 px-6 py-6'>
+                <div className='lg:text-2xl text-xl font-semibold mb-3'>Recent Transaction</div>
+                <div className='flex justify-center flex-col px-10'>
                   {payment.map((payments, index) => (
                     <div className='flex gap-7 mt-4' key={payments.orderId}>
                       <div className='flex'>{date[index]}</div>
@@ -297,10 +297,10 @@ function Dashboard() {
                   ))}
                 </div>
               </div>
-              <div className='flex-auto border border-gray-200 px-5 py-6'>
-                <div className='flex justify-between'>
-                  <div className='text-2xl font-semibold'>Payment Details</div>
-                  <select className='text-xl' onChange={handleChange}>
+              <div className='lg:col-span-4 border border-gray-200 px-5 py-6'>
+                <div className='flex flex-col items gap-4 lg:flex-row justify-between'>
+                  <div className='lg:text-2xl text-xl font-semibold'>Payment Details</div>
+                  <select className='text-xl border border-gray-200 py-1 rounded-lg' onChange={handleChange}>
                     <option value=''>Transaction Code</option>
                     {payment.map((payments) => (
                       <option key={payments.orderId} value={payments.orderId}>
@@ -323,13 +323,13 @@ function Dashboard() {
 
                         <th
                           scope='col'
-                          className='px-6 py-3 text-start text-xl font-bold text-gray-500 uppercase tracking-wider'
+                          className='lg:inline-block hidden px-6 py-3 text-start text-xl font-bold text-gray-500 uppercase tracking-wider'
                         >
                           Quantity
                         </th>
                         <th
                           scope='col'
-                          className='px-6 py-3 text-start text-xl font-bold text-gray-500 uppercase tracking-wider'
+                          className='lg:inline-block hidden px-6 py-3 text-start text-xl font-bold text-gray-500 uppercase tracking-wider'
                         >
                           Price
                         </th>
@@ -343,22 +343,22 @@ function Dashboard() {
                               <img
                                 src={order.imageUrl}
                                 alt=''
-                                className='mx-auto w-[120px] h-[120px] rounded-lg border border-gray-200'
+                                className='mx-auto lg:w-[120px] lg:h-[120px] w-[90px] h-[90px] rounded-lg border border-gray-200'
                               />
                             </div>
                             <div className='flex flex-col justify-start items-start'>
-                              <div className='text-start font-semibold text-xl'>{order.productName}</div>
+                              <div className='text-start font-semibold lg:text-xl text-lg'>{order.productName}</div>
                               <div className='mt-2'>{order.category}</div>
                             </div>
                           </td>
 
                           <td className='px-6 py-4 text-center whitespace-nowrap'>
-                            <div className='flex gap-5 items-center justify-start w-full'>
+                            <div className='lg:flex hidden gap-5 items-center justify-start w-full'>
                               <div className='text-xl'>{order.quantity}</div>
                             </div>
                           </td>
 
-                          <td className='px-6 py-4 text-xl text-start whitespace-nowrap'>
+                          <td className='px-6 py-4 lg:flex hidden text-xl text-start whitespace-nowrap'>
                             {order.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                           </td>
                         </tr>

@@ -13,10 +13,9 @@ import { RiCoupon2Fill } from 'react-icons/ri'
 import { FaBox } from 'react-icons/fa'
 import { BiSolidCategory } from 'react-icons/bi'
 import { FaImage } from 'react-icons/fa'
-import { FaCartShopping } from "react-icons/fa6"
-import { TbReportSearch } from "react-icons/tb";
-import { FaMoneyBill } from "react-icons/fa";
-
+import { FaCartShopping } from 'react-icons/fa6'
+import { TbReportSearch } from 'react-icons/tb'
+import { FaMoneyBill } from 'react-icons/fa'
 
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
@@ -452,7 +451,7 @@ function LeftSideBar() {
                   >
                     <div className='flex items-center'>
                       <div className='w-7 h-7 mr-3'>
-                        <FaMoneyBill  className='w-full h-full' />
+                        <FaMoneyBill className='w-full h-full' />
                       </div>
                       {!isClosed && <span className='font-semibold'>Manage Payment</span>}
                     </div>

@@ -9,6 +9,8 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
+import 'aos/dist/aos.css'
+import AOS from 'aos'
 
 function MyPondLog() {
   const { isDarkMode } = useDarkMode()
@@ -220,7 +222,7 @@ function MyPondLog() {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed bottom-5 right-5 text-lg text-black outline-none rounded-full bg-custom-left-bar shadow-lg size-12 lg:size-16 p-2 cursor-pointer'
+                className='fixed bottom-5 right-5 text-lg text-white outline-none rounded-full bg-custom-left-bar shadow-lg size-12 lg:size-14 cursor-pointer'
                 onClick={() => {
                   toggleAddFormVisibility()
                 }}
@@ -238,7 +240,7 @@ function MyPondLog() {
                   onClick={() => openEditForm(logs)}
                   className='border border-gray-50 shadow-lg rounded-xl px-10 py-5'
                 >
-                  <div className='flex flex-col gap-1 lg:flex lg:justify-between'>
+                  <div className='flex flex-col gap-1 lg:flex-row lg:justify-between'>
                     <div className='text-2xl font-semibold'>{logs.logTitle}</div>
                     <div className='py-1 px-2 bg-blue-400 text-white rounded-lg'>{logs.category}</div>
                   </div>
@@ -262,6 +264,7 @@ function MyPondLog() {
                     className={` ${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
                     }  lg:min-w-[80vh] m-auto p-6 lg:rounded-lg`}
+                    data-aos='fade-up'
                   >
                     <div className='flex justify-between mb-5'>
                       <svg
@@ -417,6 +420,7 @@ function MyPondLog() {
                     className={`${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
                     }  lg:min-w-[80vh] my-auto p-6 rounded-lg shadow-lg`}
+                    data-aos='fade-up'
                   >
                     <div className='flex justify-between mb-5'>
                       <svg
