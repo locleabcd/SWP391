@@ -77,6 +77,7 @@ import OrderShop from './pages/Shop/Order/Order'
 import PaymentShop from './pages/Shop/Payment/Payment'
 import DashboardShop from './pages/Shop/Dashboard/Dashboard'
 import ProfileShop from './pages/Shop/ShopAccount/ProfileShop'
+import UpdateUserAD from './pages/Admin/ManageUsers/UpdateUserAD'
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -556,6 +557,10 @@ function App() {
     {
       path: path.profileShop,
       element: <ProfileShop/>
+    },
+    {
+      path: path.updateUserAD,
+      element: <UpdateUserAD/>
     }
     
   ])
