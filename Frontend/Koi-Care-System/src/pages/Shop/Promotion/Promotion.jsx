@@ -151,7 +151,7 @@ useEffect(() => {
           case 'ACCEPTED':
             statusClasses += ' border-green-500 text-green-500'
             break
-          case 'ENDED':
+          case 'REJECTED':
             statusClasses += ' border-red-500 text-red-500'
             break
           default:
