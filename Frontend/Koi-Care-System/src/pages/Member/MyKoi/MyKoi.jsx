@@ -242,7 +242,7 @@ function MyKoi() {
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
                     stroke='currentColor'
-                    className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} w-8 h-8 mb-4`}
+                    className={`${isDarkMode ? ' text-custom-layout-light' : 'text-custom-layout-dark'} size-6 lg:size-8 mb-4`}
                   >
                     <path
                       strokeLinecap='round'
@@ -258,37 +258,37 @@ function MyKoi() {
                       className={`${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} flex flex-col space-y-2 shadow-lg rounded-lg p-4`}
                     >
                       <button
-                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded lg:text-xl text-xs `}
                         onClick={() => sortByName('desc')}
                       >
                         Sorted by Name (Z-A)
                       </button>
                       <button
-                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded lg:text-xl text-xs `}
                         onClick={() => sortByName('asc')}
                       >
                         Sorted by Name (A-Z)
                       </button>
                       <button
-                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded lg:text-xl text-xs `}
                         onClick={() => sortLength('asc')}
                       >
                         Sorted by Length (asc)
                       </button>
                       <button
-                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded lg:text-xl text-xs `}
                         onClick={() => sortLength('desc')}
                       >
                         Sorted by Length (desc)
                       </button>
                       <button
-                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded lg:text-xl text-xs `}
                         onClick={() => sortAge('asc')}
                       >
                         Sorted by Age (asc)
                       </button>
                       <button
-                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded `}
+                        className={`${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'} btn py-2 px-4 rounded lg:text-xl text-xs `}
                         onClick={() => sortAge('desc')}
                       >
                         Sorted by Age (desc)
@@ -357,7 +357,7 @@ function MyKoi() {
       {isAddFormVisible && (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 '>
           <div
-            className='bg-white min-w-[100vh] mb-auto mt-auto p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto no-scroll-bar'
+            className='bg-white lg:min-w-[100vh] mb-auto mt-auto p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto no-scroll-bar'
             data-aos='fade-up'
           >
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
