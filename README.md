@@ -57,7 +57,7 @@ The **Koi Care System** is a web-based platform designed to manage and care for 
 
 ## Usage
 
-- Visit the application at `http://localhost:8080/api`.
+- Visit the application at [`http://localhost:8080/api`](https://koi-care-system.vercel.app/).
 - Register as a new user or log in with Google/GitHub.
 - Explore features based on your role (Guest, Member, Shop, Admin).
 
