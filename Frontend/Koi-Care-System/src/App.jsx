@@ -86,6 +86,8 @@ import SupplierAD from './pages/Admin/Supplier/SupplierAD'
 import ViewProductAD from './pages/Admin/Product/ViewProductAD'
 import UpdateProductAD from './pages/Admin/Product/UpdateProductAD'
 import CreateProductAD from './pages/Admin/Product/CreateProductAD' 
+import CreateSupplierAD from './pages/Admin/Supplier/CreateSupplierAD'
+import UpdateSupplierAD from './pages/Admin/Supplier/UpdateSupplierAD'
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -603,8 +605,15 @@ function App() {
     {
       path: path.createProductAD,
       element: <CreateProductAD/>
+    },
+    {
+      path: path.createSupplierAD,
+      element: <CreateSupplierAD/>
+    },
+    {
+      path: path.updateSupplierAD,
+      element: <UpdateSupplierAD/>
     }
-    
   ])
 
   const data = [

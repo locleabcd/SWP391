@@ -1,3 +1,5 @@
+
+
 const path = {
   home: '/',
   login: '/login',
@@ -81,6 +83,9 @@ const path = {
   viewProductAD: '/admin/product/view/:id',
   updateProductAD:'/admin/product/:id',
   createProductAD:'/admin/product/create',
+  createSupplierAD:'/admin/supplier/create',
+  updateSupplierAD:'/admin/supplier/:id',
+
   
 }
 
