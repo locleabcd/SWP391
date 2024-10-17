@@ -4,8 +4,6 @@ import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
 import axios from 'axios'
-import AOS from 'aos'
-import 'aos/dist/aos.css'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
 import { FaSpinner } from 'react-icons/fa'
@@ -36,15 +34,13 @@ function MyKoi() {
     setShowButtons(!showButtons)
   }
 
-  // Watch for length and physique changes
+
   const length = watch('length')
   const physique = watch('physique')
-
-  // // Calculate weight when length or physique changes
   useEffect(() => {
     if (length && physique) {
       let calculatedWeight = 0
-      const lengthCubed = Math.pow(length, 3) // length^3
+      const lengthCubed = Math.pow(length, 3) 
 
       if (physique === 'Slim') {
         calculatedWeight = (1.5 * lengthCubed) / 100
@@ -57,10 +53,6 @@ function MyKoi() {
       setValue('weight', calculatedWeight.toFixed(2))
     }
   }, [length, physique, setValue])
-
-  useEffect(() => {
-    AOS.init({ duration: 500, offset: 500 })
-  }, [])
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]

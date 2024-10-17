@@ -74,7 +74,7 @@ function Supplier() {
           Authorization: `Bearer ${token}`
         }
       })
-      toast.success('Tag deleted successfully')
+      toast.success('Supplier deleted successfully')
       getSupplier()
     } catch (error) {
       console.error('Error deleting Supplier:', error)
@@ -103,7 +103,7 @@ function Supplier() {
           </Link>
           <button
             className='p-1 hover:bg-red-500 text-red-600 hover:text-white rounded-full'
-            onClick={() => deleteTag(params.row.id)}
+            onClick={() => deleteSupplier(params.row.id)}
           >
             <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-5'>
               <path
@@ -149,6 +149,7 @@ function Supplier() {
                   rowHeight={80}
                   checkboxSelection
                   disableExtendRowFullWidth
+                  getRowId={(row) => row.id}
                   sx={{
                     '& .MuiDataGrid-columnHeaders': {
                       backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
