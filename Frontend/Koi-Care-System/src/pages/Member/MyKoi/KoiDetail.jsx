@@ -587,7 +587,7 @@ function KoiDetails() {
                     <div className='flex justify-between gap-4 bg-gray-400 rounded-2xl p-3'>
                       <div className='text-center lg:text-lg text-xs'>
                         <h1 className='text-red-500 font-semibold lg:text-lg text-xs'>Age</h1>
-                        <p className='text-sm'>{koi.age} years"</p>
+                        <p className='text-sm'>{koi.age ? `${koi.age} years` : 'N/A'}</p>
                       </div>
                       <div className='text-center lg:text-lg text-xs'>
                         <h1 className='text-red-500 font-semibold'>Length</h1>
@@ -868,7 +868,7 @@ function KoiDetails() {
                     <div className='relative col-span-1'>
                       <label
                         htmlFor='age'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute  font-medium lg:text-md text-xs lg:-top-[8px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         Age
                       </label>
@@ -895,7 +895,7 @@ function KoiDetails() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[6px] left-3 text-red-500 bg-white'
                         htmlFor='gender'
                       >
                         Gender
@@ -915,7 +915,7 @@ function KoiDetails() {
                     <div className='relative col-span-1'>
                       <label
                         htmlFor='variety'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         Variety
                       </label>
@@ -929,7 +929,7 @@ function KoiDetails() {
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='pondDate'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         In pond since
                       </label>
@@ -945,7 +945,7 @@ function KoiDetails() {
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='breeder'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         Breeder
                       </label>
@@ -960,7 +960,7 @@ function KoiDetails() {
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='price'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         Price
                       </label>
@@ -975,7 +975,7 @@ function KoiDetails() {
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='status'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         Status
                       </label>
@@ -991,7 +991,7 @@ function KoiDetails() {
                     </div>
                     <div className='relative col-span-1 mt-[1.5px]'>
                       <label
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[6px] left-3 text-red-500 bg-white'
                         htmlFor='pondId'
                       >
                         Pond
@@ -1143,7 +1143,7 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='growthDate'
-                        className='absolute lg:text-md text-lg font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Date
                       </label>
@@ -1159,7 +1159,7 @@ function KoiDetails() {
                     {/* Physique input */}
                     <div className='relative'>
                       <label
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                         htmlFor='physique'
                       >
                         Physique
@@ -1180,7 +1180,7 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='length'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Length (cm)
                       </label>
@@ -1196,7 +1196,7 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='weight'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Weight (g)
                       </label>
@@ -1208,7 +1208,6 @@ function KoiDetails() {
                       />
                     </div>
 
-                    {/* Hidden koiFishId input */}
                     <div className='relative'>
                       <input
                         type='hidden'
@@ -1331,7 +1330,7 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='growthDate'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Date
                       </label>
@@ -1347,7 +1346,7 @@ function KoiDetails() {
                     {/* Physique input */}
                     <div className='relative'>
                       <label
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                         htmlFor='physique'
                       >
                         Physique
@@ -1368,7 +1367,7 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='length'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Length (cm)
                       </label>
@@ -1384,7 +1383,7 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='weight'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Weight (g)
                       </label>
@@ -1466,7 +1465,7 @@ function KoiDetails() {
                     <div className='relative col-span-2'>
                       <label
                         htmlFor='title'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Title
                       </label>
@@ -1482,7 +1481,7 @@ function KoiDetails() {
                     <div className='relative col-span-2'>
                       <label
                         htmlFor='note'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Note
                       </label>
@@ -1498,7 +1497,7 @@ function KoiDetails() {
                     <div className='relative col-span-2'>
                       <label
                         htmlFor='createDate'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Date
                       </label>
@@ -1566,7 +1565,7 @@ function KoiDetails() {
                     <div className='relative col-span-2'>
                       <label
                         htmlFor='title'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Title
                       </label>
@@ -1582,7 +1581,7 @@ function KoiDetails() {
                     <div className='relative col-span-2'>
                       <label
                         htmlFor='note'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Note
                       </label>
@@ -1598,7 +1597,7 @@ function KoiDetails() {
                     <div className='relative col-span-2'>
                       <label
                         htmlFor='createDate'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Date
                       </label>

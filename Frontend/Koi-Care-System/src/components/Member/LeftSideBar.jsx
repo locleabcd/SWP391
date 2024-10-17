@@ -10,7 +10,7 @@ import { Link, NavLink } from 'react-router-dom'
 import path from '../../constants/path'
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import logo from '../../assets/logo.png'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import axios from 'axios'
 import { IoPowerOutline } from 'react-icons/io5'
 import '../../components/Member/animation.css'
@@ -57,10 +57,10 @@ function LeftSideBar() {
 
   return (
     <div className=''>
-      <div className='relative '>
+      <div className='relative'>
         {isClosed ? (
           <button
-            className={`absolute duration-200 ease-linear left-1 lg:left-20 top-5 p-1 z-30 ${
+            className={`absolute duration-200 ease-linear lg:inline-block hidden lg:left-20 top-5 p-1 z-30 ${
               isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
             } `}
             onClick={() => setClosed(false)}
@@ -78,7 +78,7 @@ function LeftSideBar() {
           </button>
         ) : (
           <button
-            className={`lg:absolute lg:left-[260px] lg:top-6 lg:p-1 lg:z-30 ${
+            className={`lg:absolute lg:left-[260px] lg:inline-block hidden lg:top-6 lg:p-1 lg:z-30 ${
               isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
             } `}
             onClick={() => setClosed(true)}
