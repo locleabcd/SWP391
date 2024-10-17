@@ -10,12 +10,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@EnableAsync
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,14 +28,10 @@ public class ReminderService implements IReminderService {
     ReminderMapper reminderMapper;
     SimpMessagingTemplate messagingTemplate;
 
-
     @Override
     public ReminderDto createReminder(ReminderRequest request) {
         Reminder reminder = reminderMapper.mapToReminders(request);
-        ReminderDto savedReminder = reminderMapper.mapToReminderDto(reminderRepository.save(reminder));
-        // Schedule WebSocket notification
-        sendReminderNotification(savedReminder);
-        return savedReminder;
+        return reminderMapper.mapToReminderDto(reminderRepository.save(reminder));
     }
 
     @Override
@@ -54,30 +53,52 @@ public class ReminderService implements IReminderService {
         return reminders.stream().map(reminderMapper::mapToReminderDto).toList();
     }
 
-
-    @Override
-    public List<ReminderDto> getRemindersForNext5Minutes() {
+    @Async
+    @Scheduled(fixedRate = 60000) // Check every minute
+    public void checkReminders() {
+        List<Reminder> reminders = reminderRepository.findAll();
         LocalDateTime now = LocalDateTime.now();
-        LocalDateTime fiveMinutesLater = now.plusMinutes(1);
-        List<Reminder> reminders = reminderRepository.findAllByDateTimeBetween(now, fiveMinutesLater); // Check reminders within the next 5 minutes
-        return reminders.stream().map(reminderMapper::mapToReminderDto).toList();
+        log.info("Checking reminders at {}", now);
+
+        reminders.forEach(reminder -> processReminder(reminder, now));
     }
 
-    @Scheduled(fixedRate = 10000) // Check reminders every 1 second
-    public void checkAndSendReminders() {
-        LocalDateTime now = LocalDateTime.now();
-        List<Reminder> matchingReminders = reminderRepository.findAllByDateTime(now);
-        log.info("Found {} reminders to send", matchingReminders.size());
-
-        for (ReminderDto reminder : matchingReminders.stream().map(reminderMapper::mapToReminderDto).toList()) {
-            log.info("Sending reminder notification for: {}", reminder.getTitle());
-            sendReminderNotification(reminder);
+    private void processReminder(Reminder reminder, LocalDateTime now) {
+        switch (reminder.getRepeatInterval()) {
+            case ONE_TIME:
+                if (isReminderDue(reminder, now)) {
+                    sendReminderNotification(reminder);
+                    reminderRepository.delete(reminder);
+                }
+                break;
+            case DAILY:
+                if (isTimeMatching(reminder.getDateTime(), now)) {
+                    sendReminderNotification(reminder);
+                }
+                break;
+            case WEEKLY:
+                if (reminder.getDateTime().getDayOfWeek() == now.getDayOfWeek() && isTimeMatching(reminder.getDateTime(), now)) {
+                    sendReminderNotification(reminder);
+                }
+                break;
         }
     }
 
-    private void sendReminderNotification(ReminderDto reminder) {
-        String message = "Reminder: " + reminder.getTitle() + " is due soon!";
-        messagingTemplate.convertAndSend("/topic/notifications", message); // Send message via WebSocket
+    private boolean isReminderDue(Reminder reminder, LocalDateTime now) {
+        return reminder.getDateTime().getHour() == now.getHour() &&
+                reminder.getDateTime().getMinute() == now.getMinute();
     }
 
+    private boolean isTimeMatching(LocalDateTime reminderTime, LocalDateTime now) {
+        return reminderTime.getHour() == now.getHour() &&
+                reminderTime.getMinute() == now.getMinute();
+    }
+
+    @Async
+    private void sendReminderNotification(Reminder reminder) {
+        String message = "Reminder: " + reminder.getTitle() + " is due at " + reminder.getDateTime() + "!";
+        messagingTemplate.convertAndSend("/topic/notifications", message);
+        log.info("Notification sent for reminder '{}'.", reminder.getTitle());
+    }
 }
+

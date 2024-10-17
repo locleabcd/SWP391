@@ -1,9 +1,7 @@
 package com.swpproject.koi_care_system.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.swpproject.koi_care_system.enums.ReminderRepeat;
+import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -22,6 +20,7 @@ public class Reminder {
     long id;
     String title;
     LocalDateTime dateTime;
-    String repeatInterval;
+    @Enumerated(EnumType.STRING)
+    ReminderRepeat repeatInterval;
 
 }

@@ -9,9 +9,7 @@ import java.util.List;
 
 @Repository
 public interface ReminderRepository extends JpaRepository<Reminder, Long> {
-    List<Reminder> findAllByDateTimeAfter(LocalDateTime now);
 
     List<Reminder> findAllByDateTimeBetween(LocalDateTime localDateTime, LocalDateTime localDateTime1);
 
-    List<Reminder> findAllByDateTime(LocalDateTime now);
 }

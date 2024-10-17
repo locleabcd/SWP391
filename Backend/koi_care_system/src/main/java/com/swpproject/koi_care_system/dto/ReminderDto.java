@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.dto;
 
+import com.swpproject.koi_care_system.enums.ReminderRepeat;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -14,5 +15,5 @@ public class ReminderDto {
     long id;
     String title;
     LocalDateTime dateTime;
-    String repeatInterval;
+    ReminderRepeat repeatInterval;
 }

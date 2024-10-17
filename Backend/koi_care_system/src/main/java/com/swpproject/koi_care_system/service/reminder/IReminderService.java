@@ -13,6 +13,4 @@ public interface IReminderService {
     void deleteReminder(Long id);
 
     List<ReminderDto> getListReminder();
-
-    List<ReminderDto> getRemindersForNext5Minutes();
 }
