@@ -251,32 +251,34 @@ Over 28°C is not a good temperature to feed at!`
           <Header />
           <div className='py-5 px-[30px] mx-auto'>
             <TopLayout text='Food Calculator' />
-            <div className='p-4 text-lg min-h-screen'>
-              <label htmlFor='ponds'>Select a Pond:</label>
-              <select
-                id='ponds'
-                className='border rounded p-2 text-black'
-                value={selectedPond ? selectedPond.id : 'all'} // 'all' là giá trị mặc định nếu chưa có pond nào được chọn
-                onChange={handlePondChange}
-              >
-                <option value='all' disabled>
-                  All Ponds
-                </option>
-                {ponds.map((pond) => (
-                  <option key={pond.id} value={pond.id}>
-                    {pond.name}
+            <div className='p-2 text-lg min-h-screen'>
+              <div className='lg:text-lg text-sm flex lg:items-center lg:flex-row flex-col lg:gap-5 gap-3'>
+                <label htmlFor='ponds'>Select a Pond:</label>
+                <select
+                  id='ponds'
+                  className='border rounded p-2 text-black'
+                  value={selectedPond ? selectedPond.id : 'all'} // 'all' là giá trị mặc định nếu chưa có pond nào được chọn
+                  onChange={handlePondChange}
+                >
+                  <option value='all' disabled>
+                    All Ponds
                   </option>
-                ))}
-              </select>
+                  {ponds.map((pond) => (
+                    <option key={pond.id} value={pond.id}>
+                      {pond.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
               <div className='mt-4'>
                 {fishes.length > 0 ? (
                   <div>
-                    <p>
+                    <p className='lg:text-lg text-sm'>
                       Total Fish Weight: <strong>{totalWeight.toFixed(2)}g</strong>
                     </p>
                   </div>
                 ) : (
-                  <p>
+                  <p className='lg:text-lg text-sm'>
                     Total Fish Weight: <strong>0g</strong>
                   </p>
                 )}
@@ -284,12 +286,12 @@ Over 28°C is not a good temperature to feed at!`
 
               {selectedPond && (
                 <div>
-                  <div className='mt-4 p-4 grid grid-cols-3'>
+                  <div className='mt-4 lg:p-4 grid lg:grid-cols-3 grid-cols-1'>
                     <div className='col-span-1'>
                       <div className='mt-4'>
                         <button
                           onClick={() => setCalculationMode(calculationMode === 'percent' ? 'size' : 'percent')}
-                          className='bg-blue-500 text-white px-4 py-2 rounded'
+                          className='bg-blue-500 text-white px-4 py-2 rounded lg:text-lg text-sm'
                         >
                           Switch to {calculationMode === 'percent' ? 'Size and Temperature Mode' : 'Percent Mode'}
                         </button>
@@ -297,7 +299,7 @@ Over 28°C is not a good temperature to feed at!`
 
                       {calculationMode === 'percent' ? (
                         <div className='p-4  w-4/5 '>
-                          <label>
+                          <label className='lg:text-lg text-sm'>
                             Current percent (%):
                             <input
                               type='range'
@@ -313,7 +315,7 @@ Over 28°C is not a good temperature to feed at!`
                           </label>
                         </div>
                       ) : (
-                        <div className='mt-4'>
+                        <div className='mt-4 lg:text-lg text-sm'>
                           <label>Select Fish Size:</label>
                           <div className='flex space-x-2'>
                             <button
@@ -346,12 +348,12 @@ Over 28°C is not a good temperature to feed at!`
 
                           <div className='mt-4'>
                             <label>Select Temperature (°C):</label>
-                            <div className='flex space-x-2'>
+                            <div className='grid lg:grid-cols-5 md:grid-cols-4 grid-cols-3 gap-2'>
                               {temperatureOptions.map((temp) => (
                                 <button
                                   key={temp}
                                   onClick={() => setSelectedTemperature(temp)}
-                                  className={`px-4 py-2 rounded ${
+                                  className={`px-4 py-2 rounded lg:text-lg text-sm  ${
                                     selectedTemperature === temp
                                       ? 'bg-blue-500 text-white'
                                       : 'bg-gray-200 text-blue-500  '
@@ -365,13 +367,13 @@ Over 28°C is not a good temperature to feed at!`
                         </div>
                       )}
                     </div>
-                    <div className='notes p-4 border justify-center text-black bg-white py-20 rounded shadow col-span-2 '>
+                    <div className='lg:text-lg text-base text-justify notes p-4 border justify-center text-black bg-white lg:py-20 mt-5 rounded shadow col-span-2 '>
                       <h3>Notes:</h3>
                       <p>{generateNotes()}</p>
                     </div>
                   </div>
 
-                  <div className='w-min-full bottom-5 block footer w-2/4 bg-slate-600 text-white border-solid rounded-lg mx-auto py-5 text-xl text-center'>
+                  <div className='w-min-full bottom-5 lg:text-xl mt-5 text-sm block footer lg:w-2/4 bg-slate-600 text-white border-solid rounded-lg mx-auto py-5 text-center'>
                     {fishes.length > 0 ? (
                       calculationMode === 'percent' ? (
                         <p>

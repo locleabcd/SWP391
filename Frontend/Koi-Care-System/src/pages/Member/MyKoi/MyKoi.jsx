@@ -36,7 +36,7 @@ function MyKoi() {
   }
   const length = watch('length')
   const physique = watch('physique')
-  
+
   useEffect(() => {
     if (length && physique) {
       let calculatedWeight = 0
@@ -218,7 +218,7 @@ function MyKoi() {
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
-          <div className='fixed lg:w-[145px] w-[110px] lg:h-14 h-9 bottom-5 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
+          <div className='fixed lg:w-[140px] w-[100px] lg:h-12 h-9 lg:bottom-7 bottom-5 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
             <p className='lg:text-3xl text-xl font-semibold pt-1 pl-3'>
               {koiCounts[localStorage.getItem('id')] !== undefined ? koiCounts[localStorage.getItem('id')] : '...'} Koi
             </p>
@@ -300,7 +300,7 @@ function MyKoi() {
                     }
                   }
                 }}
-                className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 py-3'
+                className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-3 py-3'
               >
                 {kois.map((koi, index) => (
                   <motion.div
@@ -459,7 +459,7 @@ function MyKoi() {
                 <div className='relative col-span-1 '>
                   <label
                     htmlFor='name'
-                    className='absolute lg:text-md text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                   >
                     Name
                   </label>
@@ -480,7 +480,7 @@ function MyKoi() {
                 <div className='relative col-span-1'>
                   <label
                     htmlFor='physique'
-                    className='absolute lg:text-md text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                   >
                     Physique
                   </label>
@@ -498,7 +498,7 @@ function MyKoi() {
                 <div className='relative col-span-1'>
                   <label
                     htmlFor='age'
-                    className='absolute lg:text-md text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                   >
                     Age
                   </label>
@@ -527,7 +527,7 @@ function MyKoi() {
 
                 <div className='relative col-span-1'>
                   <label
-                    className='absolute lg:text-md text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='length'
                   >
                     Length
@@ -549,7 +549,7 @@ function MyKoi() {
 
                 <div className='relative col-span-1'>
                   <label
-                    className='absolute lg:text-md text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='weight'
                   >
                     Weight
@@ -568,7 +568,7 @@ function MyKoi() {
 
                 <div className='relative col-span-1'>
                   <label
-                    className='absolute lg:text-md text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='gender'
                   >
                     Gender
@@ -587,7 +587,7 @@ function MyKoi() {
 
                 <div className='relative col-span-1'>
                   <label
-                    className='absolute lg:text-md text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='variety'
                   >
                     Variety
@@ -602,7 +602,7 @@ function MyKoi() {
 
                 <div className='relative col-span-1'>
                   <label
-                    className='absolute lg:text-md text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='pondDate'
                   >
                     In Pond Date
@@ -618,7 +618,7 @@ function MyKoi() {
 
                 <div className='relative col-span-1'>
                   <label
-                    className='absolute lg:text-md text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='breeder'
                   >
                     Breeder
@@ -633,7 +633,7 @@ function MyKoi() {
 
                 <div className='relative col-span-1'>
                   <label
-                    className='absolute lg:text-md text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='price'
                   >
                     Price
@@ -655,7 +655,7 @@ function MyKoi() {
                 )}
                 <div className='relative col-span-1'>
                   <label
-                    className='absolute lg:text-md text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='pondId'
                   >
                     Pond
@@ -678,7 +678,7 @@ function MyKoi() {
 
                 <div className='relative col-span-1'>
                   <label
-                    className='absolute lg:text-md text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='price'
                   >
                     Status

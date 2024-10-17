@@ -83,8 +83,8 @@ function Payment() {
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] '>
             <TopLayout text='Recommendations' textName='Payment' links='member/recommendations' />
 
-            <div className='border border-gray-200 px-10 py-5 rounded-xl'>
-              <ol className='items-center flex w-full px-52 pb-20 pt-14 justify-center text-center text-sm font-medium text-gray-700'>
+            <div className='lg:border lg:border-gray-200 lg:px-10 lg:py-5 rounded-xl'>
+              <ol className='items-center lg:flex hidden w-full px-52 pb-20 pt-14 justify-center text-center text-sm font-medium text-gray-700'>
                 <li className='flex items-center after:mx-2 after:mb-10 after:h-1 after:w-full w-full after:border-b after:border-gray-400 dark:text-primary-500'>
                   <span className='flex flex-col'>
                     <svg
@@ -134,10 +134,10 @@ function Payment() {
                 </li>
               </ol>
 
-              <div className='flex flex-col justify-center items-center border border-gray-200 px-10 py-5'>
-                <div className='text-3xl font-semibold text-start w-full'>Payment option</div>
-                <div className='flex justify-between gap-3 mt-16 w-full'>
-                  <div className='flex-none w-[1000px] col-span-2 space-y-3'>
+              <div className='flex flex-col justify-center items-center lg:border lg:border-gray-200 lg:px-10 lg:py-5'>
+                <div className='lg:text-3xl text-xl font-semibold text-start w-full'>Payment option</div>
+                <div className='flex justify-between gap-3 lg:mt-16 mt-5 w-full'>
+                  <div className='lg:flex-none lg:w-[1000px] col-span-2 space-y-3'>
                     <div className='border p-6 rounded-lg'>
                       <div className='flex items-center justify-between gap-5'>
                         <div className='flex items-center gap-5'>
@@ -271,7 +271,7 @@ function Payment() {
                     </div>
                   </div>
 
-                  <div className='flex items-center justify-center'>
+                  <div className='lg:flex hidden items-center justify-center'>
                     <img
                       src='https://modernize-nextjs-dark.vercel.app/_next/static/media/payment.85b5b5db.svg'
                       alt='payment'
@@ -281,26 +281,26 @@ function Payment() {
                 </div>
               </div>
 
-              <div className='border border-gray-200 px-10 py-5 mt-10 rounded-xl'>
-                <div className='text-2xl font-semibold'>Order Summary</div>
-                <div className='flex mt-7 text-xl justify-between'>
+              <div className='lg:border lg:border-gray-200 lg:px-10 lg:py-5 mt-10 rounded-xl'>
+                <div className='lg:text-2xl text-xl font-semibold'>Order Summary</div>
+                <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className=''>Sub Total</div>
                   <div className=''>
                     {(cart?.totalAmount ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                   </div>
                 </div>
 
-                <div className='flex mt-7 text-xl justify-between'>
+                <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className=''>Discount</div>
                   <div className=''> {(0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
                 </div>
 
-                <div className='flex mt-7 text-xl justify-between'>
+                <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className=''>Shipping</div>
                   <div className=''>Free</div>
                 </div>
 
-                <div className='flex mt-7 text-xl justify-between'>
+                <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className='font-medium'>Total</div>
                   <div className=''>
                     {(cart?.totalAmount ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
@@ -308,16 +308,13 @@ function Payment() {
                 </div>
               </div>
 
-              <div className='flex justify-between mt-8'>
-                <Link
-                  to='/member/checkout'
-                  className='px-6 py-3 bg-gray-300 hover:bg-gray-400 text-white rounded-lg cursor-pointer'
-                >
+              <div className='flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between mt-8'>
+                <button className='w-full lg:w-auto px-6 py-3 bg-gray-300 hover:bg-gray-400 text-white rounded-lg cursor-pointer'>
                   Back
-                </Link>
+                </button>
                 <Link
                   to={payment.paymentUrl}
-                  className='px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg cursor-pointer'
+                  className='w-full lg:w-auto px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg text-center cursor-pointer'
                 >
                   Complete an order
                 </Link>
