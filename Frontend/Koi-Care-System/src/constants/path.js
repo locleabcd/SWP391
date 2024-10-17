@@ -78,6 +78,10 @@ const path = {
   supplierAD: '/admin/supplier',
   dashboardAD: '/admin/dashboard',
   productAD: '/admin/product',
+  viewProductAD: '/admin/product/view/:id',
+  updateProductAD:'/admin/product/:id',
+  createProductAD:'/admin/product/create',
+  
 }
 
 export default path

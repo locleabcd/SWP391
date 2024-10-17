@@ -83,7 +83,9 @@ import ManageOrder from './pages/Admin/ManageReport/ManageOrder'
 import ManagePayment from './pages/Admin/ManageReport/ManagePayment'
 import ProductAD from './pages/Admin/Product/ProductAD'
 import SupplierAD from './pages/Admin/Supplier/SupplierAD'
-
+import ViewProductAD from './pages/Admin/Product/ViewProductAD'
+import UpdateProductAD from './pages/Admin/Product/UpdateProductAD'
+import CreateProductAD from './pages/Admin/Product/CreateProductAD' 
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -589,6 +591,18 @@ function App() {
     {
       path: path.dashBoardAD,
       element: <DashBoardAD/>
+    },
+    {
+      path: path.viewProductAD,
+      element: <ViewProductAD/>
+    },
+    {
+      path: path.updateProductAD,
+      element: <UpdateProductAD/>
+    },
+    {
+      path: path.createProductAD,
+      element: <CreateProductAD/>
     }
     
   ])
