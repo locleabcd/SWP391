@@ -38,6 +38,15 @@ function KoiDetails() {
   const [currentRemark, setCurrentRemark] = useState(null)
   const [isAddRemarkFormVisible, setIsAddRemarkFormVisible] = useState(false)
   const [isEditRemarkFormVisible, setIsEditRemarkFormVisible] = useState(false)
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+
+  const handleImageClick = () => {
+    setIsImagePopupOpen(true);
+  }
+
+  const closePopup = () => {
+    setIsImagePopupOpen(false);
+  }
 
   const {
     register,
@@ -46,7 +55,11 @@ function KoiDetails() {
     reset,
     watch,
     setValue
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      length: 0,
+    }
+  });
 
   const length = watch('length')
   const physique = watch('physique')
@@ -93,12 +106,12 @@ function KoiDetails() {
   }
 
   const toggleCloseGrowthForm = () => {
-    setIsEditGrowthFormVisible(!isEditGrowthFormVisible)
-    setIsAddGrowthFormVisible(false)
-    setCurrentGrowth(null)
-    setBaseImage(null)
-    reset(growth)
-  }
+    setIsEditGrowthFormVisible(!isEditGrowthFormVisible);
+    setIsAddGrowthFormVisible(false);
+    setCurrentGrowth(null);
+    setBaseImage(null);
+    reset({}); 
+  };
 
   const toggleEditGrowthFormVisibility = (growth) => {
     if (growth) {
@@ -554,9 +567,10 @@ function KoiDetails() {
                   {/* Image section */}
                   <div className='lg:h-64 h-48 lg:w-[50%] w-[40%] rounded-l-xl overflow-hidden'>
                     <img
-                      className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105'
+                      className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105 cursor-pointer'
                       src={koi.imageUrl}
                       alt={koi.name}
+                      onClick={handleImageClick}
                     />
                   </div>
 
@@ -598,6 +612,26 @@ function KoiDetails() {
                         <p className='text-sm'>{koi.weight ? `${koi.weight} g` : 'N/A'}</p>
                       </div>
                     </div>
+                  </div>
+                </div>
+              )}
+
+              {isImagePopupOpen && (
+                <div
+                  className='fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50'
+                  onClick={closePopup}
+                >
+                  <div className='relative'>
+                    <img
+                      src={koi.imageUrl}
+                      alt={koi.name}
+                      className=' w-[90vh] object-contain'
+                    />
+                    <button
+                      className='absolute top-4 right-4 text-white text-3xl font-bold'
+                      onClick={closePopup}
+                    >
+                    </button>
                   </div>
                 </div>
               )}
@@ -651,37 +685,57 @@ function KoiDetails() {
                 </div>
 
                 {growth.length > 0 ? (
-                  growth.map((g, index) => (
-                    <div
-                      key={index}
-                      className={`flex items-center rounded-lg mb-4 max-h-28 overflow-hidden cursor-pointer ${
-                        isDarkMode ? 'text-white bg-slate-700' : 'text-black bg-white'
-                      }`}
-                      onClick={() => {
-                        toggleEditGrowthFormVisibility(g)
-                        reset(g)
-                      }}
-                    >
-                      <div className='w-2/5 rounded-l-lg overflow-hidden'>
-                        <img
-                          src={g.imageUrl}
-                          alt={`Growth ${index + 1}`}
-                          className='w-full h-full object-cover min-w-[200px]'
-                        />
+                  growth.map((g, index) => {
+                    const prevGrowth = index > 0 ? growth[index - 1] : null;
+                    const lengthChange = prevGrowth
+                      ? ((g.length - prevGrowth.length) / prevGrowth.length) * 100
+                      : null;
+                    const weightChange = prevGrowth
+                      ? ((g.weight - prevGrowth.weight) / prevGrowth.weight) * 100
+                      : null;
+
+                    return (
+                      <div
+                        key={index}
+                        className={`flex items-center rounded-lg mb-4 max-h-28 overflow-hidden cursor-pointer ${
+                          isDarkMode ? 'text-white bg-slate-700' : 'text-black bg-white'
+                        }`}
+                        onClick={() => {
+                          toggleEditGrowthFormVisibility(g);
+                          reset(g);
+                        }}
+                      >
+                        <div className='w-2/5 rounded-l-lg overflow-hidden'>
+                          <img
+                            src={g.imageUrl}
+                            alt={`Growth ${index + 1}`}
+                            className='w-full h-full object-cover min-w-[200px]'
+                          />
+                        </div>
+                        <div className='w-3/5 pl-4'>
+                          <p className='mb-2'>
+                            <strong>Date:</strong> {formatDate(g.createDate)}
+                          </p>
+                          <p className='mb-2'>
+                            <strong>Length:</strong> {g.length} cm
+                            {prevGrowth && (
+                              <span className={`ml-2 ${lengthChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                                ({lengthChange >= 0 ? '+' : ''}{lengthChange.toFixed(2)}%)
+                              </span>
+                            )}
+                          </p>
+                          <p className='mb-2'>
+                            <strong>Weight:</strong> {g.weight} g
+                            {prevGrowth && (
+                              <span className={`ml-2 ${weightChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                                ({weightChange >= 0 ? '+' : ''}{weightChange.toFixed(2)}%)
+                              </span>
+                            )}
+                          </p>
+                        </div>
                       </div>
-                      <div className='w-3/5 pl-4'>
-                        <p className='mb-2'>
-                          <strong>Date:</strong> {formatDate(g.createDate)}
-                        </p>
-                        <p className='mb-2'>
-                          <strong>Length:</strong> {g.length} cm
-                        </p>
-                        <p className='mb-2'>
-                          <strong>Weight:</strong> {g.weight} g
-                        </p>
-                      </div>
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <p className='text-center text-sm text-gray-500'>No growth history available</p>
                 )}

@@ -34,16 +34,13 @@ function MyKoi() {
   const toggleButtons = () => {
     setShowButtons(!showButtons)
   }
-
-  // Watch for length and physique changes
   const length = watch('length')
   const physique = watch('physique')
-
-  // // Calculate weight when length or physique changes
+  
   useEffect(() => {
     if (length && physique) {
       let calculatedWeight = 0
-      const lengthCubed = Math.pow(length, 3) // length^3
+      const lengthCubed = Math.pow(length, 3)
 
       if (physique === 'Slim') {
         calculatedWeight = (1.5 * lengthCubed) / 100
@@ -90,7 +87,6 @@ function MyKoi() {
 
       const formData = new FormData()
 
-      // Append all fields to formData
       formData.append('name', data.name)
       formData.append('physique', data.physique)
       formData.append('age', data.age)
@@ -102,13 +98,11 @@ function MyKoi() {
       formData.append('breeder', data.breeder)
       formData.append('price', data.price)
       formData.append('koiPondId', data.pondId)
-      // Append the selected file (image)
       if (selectedFile) {
         formData.append('file', selectedFile)
       }
 
       console.log(data)
-      // eslint-disable-next-line no-unused-vars
       const res = await axios.post(`https://koicaresystemv3.azurewebsites.net/api/koifishs/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
