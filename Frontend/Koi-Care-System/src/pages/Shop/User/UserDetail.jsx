@@ -367,7 +367,7 @@ function UserDetail() {
 
               {isModalOpen && selectedOrder && (
                 <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
-                  <div className='bg-white p-4 border rounded-lg'>
+                  <div className='bg-white p-4 border rounded-lg max-h-[90vh] max-w-[80vw] overflow-auto'>
                     <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
                     <div className='bg-white p-4 border rounded-lg shadow-lg'>
                       <p className='mb-3 flex items-center gap-2'>

@@ -132,7 +132,7 @@ function ViewUser() {
       >
         <Header />
         <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-          <TopLayout text='Users' />
+          <TopLayout text='Users' links='shop/viewUser'/>
           <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
             <CssBaseline />
             <Paper sx={{ height: 670 }}>

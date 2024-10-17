@@ -184,7 +184,7 @@ function Payment() {
       >
         <Header />
         <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-          <TopLayout text='Payment' />
+          <TopLayout text='Payment' links='shop/payment'/>
           <div className='w-full flex justify-end items-center relative'>
             <button onClick={exportToExcel} className='mb-4 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md'>
               Download Excel
@@ -215,7 +215,7 @@ function Payment() {
           </ThemeProvider>
           {isModalOpen && selectedOrder && (
             <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
-              <div className='bg-white p-4 border rounded-lg'>
+              <div className='bg-white p-4 border rounded-lg max-h-[90vh] max-w-[80vw] overflow-auto'>
                 <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
                 <div className='bg-white p-4 border rounded-lg shadow-lg'>
                   <p className='mb-3 flex items-center gap-2'>
