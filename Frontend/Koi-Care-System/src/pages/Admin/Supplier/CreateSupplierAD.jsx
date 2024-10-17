@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Admin/Header'
