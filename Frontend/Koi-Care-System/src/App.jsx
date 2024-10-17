@@ -78,6 +78,12 @@ import PaymentShop from './pages/Shop/Payment/Payment'
 import DashboardShop from './pages/Shop/Dashboard/Dashboard'
 import ProfileShop from './pages/Shop/ShopAccount/ProfileShop'
 import UpdateUserAD from './pages/Admin/ManageUsers/UpdateUserAD'
+import DashBoardAD from './pages/Admin/DashBoard/DashBoard'
+import ManageOrder from './pages/Admin/ManageReport/ManageOrder'
+import ManagePayment from './pages/Admin/ManageReport/ManagePayment'
+import ProductAD from './pages/Admin/Product/ProductAD'
+import SupplierAD from './pages/Admin/Supplier/SupplierAD'
+
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -561,6 +567,28 @@ function App() {
     {
       path: path.updateUserAD,
       element: <UpdateUserAD/>
+    },
+    {
+      path: path.manageOrder,
+      element: <ManageOrder/>
+      
+    },
+    {
+      path: path.managePayment,
+      element: <ManagePayment/>
+    
+    },
+    {
+      path: path.productAD,
+      element:<ProductAD/>
+    },
+    {
+      path: path.supplierAD,
+      element: <SupplierAD/>
+    },
+    {
+      path: path.dashBoardAD,
+      element: <DashBoardAD/>
     }
     
   ])

@@ -72,7 +72,12 @@ const path = {
   orderShop: '/shop/order',
   dashboardShop: '/shop/dashboard',
   profileShop: '/shop/profileShop',
-  updateUserAD: '/admin/updateShop/:id'
+  updateUserAD: '/admin/updateShop/:id',
+  managePayemt: '/admin/payment',
+  manageOrder: '/admin/order',
+  supplierAD: '/admin/supplier',
+  dashboardAD: '/admin/dashboard',
+  productAD: '/admin/product',
 }
 
 export default path
