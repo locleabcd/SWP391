@@ -10,4 +10,6 @@ public class OrderItemDto {
     private String productName;
     private Long quantity;
     private BigDecimal price;
+    private String imageUrl;
+    private String category;
 }

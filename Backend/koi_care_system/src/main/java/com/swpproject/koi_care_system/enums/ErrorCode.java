@@ -28,8 +28,6 @@ public enum ErrorCode {
     WRONG_PASSWORD(1017, "Wrong Password", HttpStatus.BAD_REQUEST),
     PASSWORD_NOT_MATCH(1018, "Password are not the same", HttpStatus.BAD_REQUEST),
     ;
-
-
     private int code;
     private String message;
     private HttpStatus status;

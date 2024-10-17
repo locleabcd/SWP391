@@ -33,6 +33,8 @@ public class ProductReportService {
                 .collect(Collectors.toMap(
                         Product::getName,
                         product -> ProductReportDto.builder()
+                                .id(product.getId())
+                                .imageUrl((!product.getImages().isEmpty())?product.getImages().get(0).getDownloadUrl():"")
                                 .productName(product.getName())
                                 .categoryName(product.getCategory().getName())
                                 .quantity(0L)

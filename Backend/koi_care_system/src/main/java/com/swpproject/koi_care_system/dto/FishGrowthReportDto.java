@@ -3,19 +3,17 @@ package com.swpproject.koi_care_system.dto;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductReportDto {
+public class FishGrowthReportDto {
     Long id;
-    String imageUrl;
-    String productName;
-    String categoryName;
-    long quantity;
-    Double percent;
-    BigDecimal totalPrice;
+    LocalDateTime createDate;
+    String physique;
+    Double length;
+    Double weight;
 }

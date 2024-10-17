@@ -1,5 +1,7 @@
 package com.swpproject.koi_care_system.service.order;
 
+import com.azure.core.exception.ResourceExistsException;
+import com.azure.core.http.HttpResponse;
 import com.swpproject.koi_care_system.dto.OrderDto;
 import com.swpproject.koi_care_system.dto.UserProfileDto;
 import com.swpproject.koi_care_system.enums.OrderStatus;
@@ -16,6 +18,7 @@ import com.swpproject.koi_care_system.service.cart.CartItemService;
 import com.swpproject.koi_care_system.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,7 +60,8 @@ public class OrderService implements IOrderService {
 
     @Override
     public OrderDto placePremiumPlanOrder(PlacePremiumOrderRequest request) {
-        Cart virtualCart = new Cart();
+        Cart virtualCart = cartService.getCartByUserId(request.getUserId());
+        cartService.clearCart(virtualCart.getId());
         List<Product> products = productRepository.findByBrand("KoiCareSystem")
                 .stream()
                 .sorted(Comparator.comparing(Product::getName))
@@ -75,7 +79,8 @@ public class OrderService implements IOrderService {
         order.setRecipientName(userProfile.getName());
         order.setOrderItems(new HashSet<>(orderItemList));
         order.setTotalAmount(calculateTotalAmount(orderItemList));
-        return orderMapper.toDto(order);
+        cartService.clearCart(virtualCart.getId());
+        return orderMapper.toDto(orderRepository.save(order));
     }
 
     private Order createOrder(Cart cart) {
@@ -89,15 +94,22 @@ public class OrderService implements IOrderService {
     private List<OrderItem> createOrderItems(Order order, Cart cart) {
         return  cart.getItems().stream().map(cartItem -> {
             Product product = cartItem.getProduct();
+            if((product.getInventory()-cartItem.getQuantity()) < 0){
+                throw new RuntimeException("The quantity in inventory is not enough for your order");
+            }
             product.setInventory((product.getInventory() - cartItem.getQuantity()));
             if(product.getInventory()==0)
                 product.setStatus(false);
             productRepository.save(product);
+            String imageUrl = (!product.getImages().isEmpty() ? product.getImages().get(0).getDownloadUrl() :"");
             return  new OrderItem(
                     order,
                     product,
                     cartItem.getQuantity(),
-                    cartItem.getUnitPrice());
+                    cartItem.getUnitPrice(),
+                    imageUrl,
+                    product.getCategory().getName()
+            );
         }).toList();
     }
 
@@ -141,6 +153,22 @@ public class OrderService implements IOrderService {
         Order order = orderRepository.findByOrderId(orderId);
         order.setOrderStatus(OrderStatus.DELIVERED);
         orderRepository.save(order);
+    }
+    @Override
+    public void returnQuantityIntoInventory(Long orderId) {
+        Order order = orderRepository.findByOrderId(orderId);
+        order.getOrderItems().forEach(orderItem ->
+                productRepository.findById(orderItem.getProduct().getId()).ifPresent(product -> {
+                    product.setInventory(product.getInventory() + orderItem.getQuantity());
+                    productRepository.save(product);
+                })
+        );
+    }
+
+    @Override
+    public boolean isPremiumOrder(Long orderId) {
+        Order order = orderRepository.findByOrderId(orderId);
+        return (order.getOrderItems().size() == 1 && order.getOrderItems().stream().allMatch(orderItem -> orderItem.getProduct().getCategory().getName().equals("Premium Plan")));
     }
 
 }

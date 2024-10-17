@@ -19,6 +19,7 @@ public interface IKoiFishService {
     List<KoiFishDto> getAllFishByUserId(Long userId);
 
     void deleteKoiFish(Long id);
+    KoiFishDto getKoiFishByName(String name);
 
     KoiFishDto updateKoiFish(KoiFishUpdateRequest koiFishUpdateRequest, Long koiFishId);
 

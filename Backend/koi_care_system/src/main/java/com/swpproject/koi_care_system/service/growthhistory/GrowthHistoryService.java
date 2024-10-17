@@ -17,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -104,7 +105,7 @@ public class GrowthHistoryService implements IGrowthHistoryService {
     @Override
     public List<GrowthHistoryDto> getListGrowthHistory(long koiFishId) {
         List<GrowthHistory> growHistories = growthHistoryRepository.findAllByKoiFishId(koiFishId);
-        return growHistories.stream().map(growthHistoryMapper::mapToGrowthHistoryDto).toList();
+        return growHistories.stream().map(growthHistoryMapper::mapToGrowthHistoryDto).sorted(Comparator.comparing(GrowthHistoryDto::getCreateDate)).toList();
     }
 
     private void updateKoiFish(GrowthHistory growthHistory, String imageUrl) {

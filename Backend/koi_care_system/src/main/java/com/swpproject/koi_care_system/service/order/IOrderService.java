@@ -19,4 +19,8 @@ public interface IOrderService {
     List<OrderDto> getOrdersInOneMonth();
 
     void updateDeliveredStatus(Long orderId);
+
+    void returnQuantityIntoInventory(Long orderId);
+
+    boolean isPremiumOrder(Long orderId);
 }

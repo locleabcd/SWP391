@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -62,8 +63,10 @@ public class KoiFishService implements IKoiFishService {
     public List<KoiFishDto> getAllFishByUserId(Long userId) {
         List<KoiFishDto> koiFishDtos = new ArrayList<>();
         koiPondService.getKoiPondByUserID(userId).forEach(koiPond ->
-                koiFishRepository.findByKoiPondId(koiPond.getId()).forEach(koiFish ->
-                        koiFishDtos.add(koiFishMapper.toDto(koiFish))
+                koiFishRepository.findByKoiPondId(koiPond.getId()).forEach(koiFish ->{
+                            koiFish.setAge(koiFish.getAge()+ Period.between(koiFish.getPondDate(),LocalDate.now()).getYears());
+                            koiFishDtos.add(koiFishMapper.toDto(koiFish));
+                        }
                 )
         );
         return koiFishDtos;
@@ -75,6 +78,11 @@ public class KoiFishService implements IKoiFishService {
             .ifPresentOrElse(koiFishRepository::delete,()-> {
                 throw new ResourceNotFoundException("Koi Fish not found!");
             });
+    }
+
+    @Override
+    public KoiFishDto getKoiFishByName(String name) {
+        return koiFishMapper.toDto(koiFishRepository.findKoiFishByName(name));
     }
 
     @Override

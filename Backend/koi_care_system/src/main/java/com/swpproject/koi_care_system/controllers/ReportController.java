@@ -1,16 +1,14 @@
 package com.swpproject.koi_care_system.controllers;
 
-import com.swpproject.koi_care_system.payload.request.GetFishPondWaterReportRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
+import com.swpproject.koi_care_system.service.report.FishGrowthReportService;
 import com.swpproject.koi_care_system.service.report.FishPondWaterTimeReportService;
 import com.swpproject.koi_care_system.service.report.ProductReportService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @RestController
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ReportController {
     private final ProductReportService productReportService;
     private final FishPondWaterTimeReportService fishPondWaterTimeReportService;
+    private final FishGrowthReportService fishGrowthReportService;
     @GetMapping("/product")
     public ResponseEntity<ApiResponse> getProductReport(){
         return ResponseEntity.ok(ApiResponse.builder()
@@ -34,10 +33,18 @@ public class ReportController {
                 .build());
     }
     @GetMapping("/FishPondWater")
-    public ResponseEntity<ApiResponse> getFishPondWaterTimeReport(@RequestBody @Valid GetFishPondWaterReportRequest request){
+    public ResponseEntity<ApiResponse> getFishPondWaterTimeReport(@RequestParam Long userId, @RequestParam LocalDate date){
         return ResponseEntity.ok(ApiResponse.builder()
                         .message("Get report success")
-                        .data(fishPondWaterTimeReportService.getFishPondWaterTimeReport(request.getUserId(),request.getDate()))
+                        .data(fishPondWaterTimeReportService.getFishPondWaterTimeReport(userId,date))
+                .build());
+    }
+
+    @GetMapping("/GrowthFish")
+    public ResponseEntity<ApiResponse> getGrowthFishReport(@RequestParam Long koiFishId){
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("Get report success")
+                .data(fishGrowthReportService.getFishGrowthReport(koiFishId))
                 .build());
     }
 }

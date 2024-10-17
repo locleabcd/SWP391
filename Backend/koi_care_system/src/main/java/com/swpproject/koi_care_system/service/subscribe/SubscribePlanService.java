@@ -71,11 +71,24 @@ public class SubscribePlanService implements ISubscribePlanService{
         Long userProfileId = userProfileRepository.findUserProfileByUserId(order.getUser().getId()).getId();
         order.getOrderItems().forEach(orderItem -> {
             switch (orderItem.getProduct().getName()){
-                case "Premium 1 Months" -> upgradePremium(UpgradePremiumRequest.builder().userProfileId(userProfileId).time("1MONTH").build());
-                case "Premium 3 Months" -> upgradePremium(UpgradePremiumRequest.builder().userProfileId(userProfileId).time("6MONTHS").build());
-                case "Premium 1 Year" -> upgradePremium(UpgradePremiumRequest.builder().userProfileId(userProfileId).time("12MONTHS").build());
+                case "Premium 1 Months" -> upgradePremiumWithQuantity(userProfileId,"1MONTH", (long) orderItem.getQuantity());
+                case "Premium 6 Months" -> upgradePremiumWithQuantity(userProfileId,"6MONTHS", (long) orderItem.getQuantity());
+                case "Premium 1 Year" -> upgradePremiumWithQuantity(userProfileId,"12MONTHS", (long) orderItem.getQuantity());
             }
         });
+    }
+
+    private void upgradePremiumWithQuantity(Long userProfileId, String time, Long quantity){
+        SubscribePlan subscribePlan= subscribePlanRepository.findSubscribePlanByUserProfileId(userProfileId);
+        if(subscribePlan.getSubscribe().equals(ProfileStatus.NORMAL)){
+            subscribePlan.setStartDate(LocalDate.now());
+            subscribePlan.setSubscribe(ProfileStatus.PREMIUM);
+        }
+        switch (time) {
+            case "1MONTH" -> subscribePlan.setExpiredDate(subscribePlan.getStartDate().plusMonths(quantity));
+            case "6MONTHS" -> subscribePlan.setExpiredDate(subscribePlan.getStartDate().plusMonths(6*quantity));
+            case "12MONTHS" -> subscribePlan.setExpiredDate(subscribePlan.getStartDate().plusMonths(12*quantity));
+        }
     }
 
     public void resetDefault(Long userProfileId){

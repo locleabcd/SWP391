@@ -70,7 +70,11 @@ public class PromotionService implements IPromotionService {
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deletePromotion(Long id) {
-        promotionRepository.findById(id).ifPresentOrElse(promotionRepository::delete,()->{
+        promotionRepository.findById(id).ifPresentOrElse(promotion -> {
+            promotion.getProducts().forEach(product -> product.getPromotions().remove(promotion));
+            promotion.getProducts().clear();
+            promotionRepository.delete(promotion);
+        },()->{
             throw new ResourceNotFoundException("No promotion found with this id");
         });
     }

@@ -30,13 +30,18 @@ public class CartItemService  implements ICartItemService{
                 .stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst().orElse(new CartItem());
+
         if (cartItem.getId() == null) {
+            if(quantity > product.getInventory())
+                throw new RuntimeException("The quantity in inventory is not enough for your order");
             cartItem.setCart(cart);
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
             cartItem.setUnitPrice(calculateDiscountedPrice(product));
         }
         else {
+            if(cartItem.getQuantity()+quantity > product.getInventory())
+                throw new RuntimeException("The quantity in inventory is not enough for your order");
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
         }
         cartItem.setTotalPrice();
@@ -73,6 +78,8 @@ public class CartItemService  implements ICartItemService{
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst()
                 .ifPresent(item -> {
+                    if(quantity > item.getProduct().getInventory())
+                        throw new RuntimeException("The quantity in inventory is not enough for your order");
                     item.setQuantity(quantity);
                     item.setUnitPrice(calculateDiscountedPrice(item.getProduct()));
                     item.setTotalPrice();
