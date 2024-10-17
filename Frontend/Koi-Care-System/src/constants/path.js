@@ -76,7 +76,6 @@ const path = {
   profileShop: '/shop/profileShop',
   updateUserAD: '/admin/updateShop/:id',
   managePayemt: '/admin/payment',
-  manageOrder: '/admin/order',
   supplierAD: '/admin/supplier',
   dashboardAD: '/admin/dashboard',
   productAD: '/admin/product',
@@ -85,7 +84,7 @@ const path = {
   createProductAD:'/admin/product/create',
   createSupplierAD:'/admin/supplier/create',
   updateSupplierAD:'/admin/supplier/:id',
-
+  managePay: '/admin/payment',
   
 }
 

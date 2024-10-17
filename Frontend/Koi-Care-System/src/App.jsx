@@ -80,7 +80,6 @@ import ProfileShop from './pages/Shop/ShopAccount/ProfileShop'
 import UpdateUserAD from './pages/Admin/ManageUsers/UpdateUserAD'
 import DashBoardAD from './pages/Admin/DashBoard/DashBoard'
 import ManageOrder from './pages/Admin/ManageReport/ManageOrder'
-import ManagePayment from './pages/Admin/ManageReport/ManagePayment'
 import ProductAD from './pages/Admin/Product/ProductAD'
 import SupplierAD from './pages/Admin/Supplier/SupplierAD'
 import ViewProductAD from './pages/Admin/Product/ViewProductAD'
@@ -88,6 +87,7 @@ import UpdateProductAD from './pages/Admin/Product/UpdateProductAD'
 import CreateProductAD from './pages/Admin/Product/CreateProductAD' 
 import CreateSupplierAD from './pages/Admin/Supplier/CreateSupplierAD'
 import UpdateSupplierAD from './pages/Admin/Supplier/UpdateSupplierAD'
+import ManagePay from './pages/Admin/ManageReport/ManagePay'
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -575,12 +575,6 @@ function App() {
     {
       path: path.manageOrder,
       element: <ManageOrder/>
-      
-    },
-    {
-      path: path.managePayment,
-      element: <ManagePayment/>
-    
     },
     {
       path: path.productAD,
@@ -613,6 +607,10 @@ function App() {
     {
       path: path.updateSupplierAD,
       element: <UpdateSupplierAD/>
+    },
+    {
+      path: path.managePay,
+      element: <ManagePay/>
     }
   ])
 
