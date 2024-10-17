@@ -505,7 +505,7 @@ function Recommendations() {
                           className='border border-gray-200 rounded-lg hover:scale-[102%] duration-300'
                         >
                           <div>
-                            <div className='border-b border-gray-200 lg:max-h-[300px] md:max-h-[300px] max-h-[250px]'>
+                            <div className='border-b border-gray-200 lg:max-h-[300px] md:max-h-[300px] max-h-[230px]'>
                               <Link
                                 to={`/member/recommendations/${products.id}`}
                                 key={products?.images[0]?.id}
@@ -514,7 +514,7 @@ function Recommendations() {
                                 <img
                                   src={products?.images[0]?.downloadUrl}
                                   alt=''
-                                  className='w-full lg:h-[290px] rounded-t-lg'
+                                  className='w-full lg:h-[290px] md:h-[295px] h-[230px] rounded-t-lg'
                                 />
                               </Link>
                               <button aria-label='wishlist' onClick={() => handleAddToWishlist(products)}>
@@ -666,7 +666,7 @@ function Recommendations() {
 
             <div
               ref={sidebarRef}
-              className={`fixed top-0 left-0 h-full md:w-1/3 w-2/3 bg-white border-r border-gray-200 transform ${
+              className={`fixed top-0 left-0 h-full md:w-1/3 w-2/3 overflow-y-auto no-scroll-bar bg-white border-r border-gray-200 transform ${
                 isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
               } transition-transform duration-300 z-50`}
             >

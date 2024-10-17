@@ -370,8 +370,8 @@ function Header() {
 
       <div
         ref={sidebarRef}
-        className={`fixed top-0 left-0 h-full md:w-1/3 w-2/3 lg:w-0 bg-white border-r border-gray-200 transform ${
-          isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        className={`fixed top-0 left-0 h-full md:w-1/3 w-2/3 lg:w-0 transform  ${
+          isSidebarOpen ? `translate-x-0 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}` : '-translate-x-full'
         } transition-transform duration-300 z-50 overflow-y-auto no-scroll-bar`}
       >
         <div className='flex justify-center items-center'>
@@ -383,7 +383,7 @@ function Header() {
           </a>
         </div>
 
-        <div className='flex flex-col justify-center items-center mt-6 duration-200'>
+        <div className='flex flex-col justify-center items-center lg:mt-6 mt-3 duration-200'>
           <div className=''>
             <NavLink
               to={path.dashboard}

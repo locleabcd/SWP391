@@ -22,7 +22,7 @@ function TopLayout({ text, textName, links }) {
         ) : (
           <div className='lg:text-3xl text-xl mb-2'>{text}</div>
         )}
-        <div className='flex gap-3 items-center justify-center'>
+        <div className='flex lg:gap-3 gap-1 items-center justify-center'>
           <Link to='/member/dashboard' className='text-gray-400 lg:text-lg text-sm'>
             Home
           </Link>

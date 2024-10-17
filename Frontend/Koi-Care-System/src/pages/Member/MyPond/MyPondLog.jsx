@@ -222,7 +222,7 @@ function MyPondLog() {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed bottom-5 right-5 text-lg text-white outline-none rounded-full bg-custom-left-bar shadow-lg size-12 lg:size-14 cursor-pointer'
+                className='fixed bottom-5 right-5 text-lg text-white outline-none rounded-full bg-custom-left-bar shadow-lg size-8 lg:size-14 cursor-pointer'
                 onClick={() => {
                   toggleAddFormVisibility()
                 }}

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Link, useNavigate } from 'react-router-dom'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
@@ -151,8 +152,8 @@ function Checkout() {
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] '>
             <TopLayout text='Recommendations' textName='Checkout' links='member/recommendations' />
 
-            <div className='border border-gray-200 px-10 py-5 rounded-xl'>
-              <ol className='items-center flex w-full px-52 pb-20 pt-14 justify-center text-center text-sm font-medium text-gray-700'>
+            <div className='lg:border lg:border-gray-200 lg:px-10 lg:py-5 rounded-xl'>
+              <ol className='items-center lg:flex hidden w-full px-52 pb-20 pt-14 justify-center text-center text-sm font-medium text-gray-700'>
                 <li className='flex items-center after:mx-2 after:mb-10 after:h-1 after:w-full w-full after:border-b after:border-gray-400'>
                   <span className='flex flex-col'>
                     <svg
@@ -191,15 +192,15 @@ function Checkout() {
                 </li>
               </ol>
 
-              <div className='border border-gray-200 px-10 py-5 mt-10 rounded-xl'>
-                <div className='text-2xl font-semibold'>Address</div>
-                <div className='flex mt-7 text-xl gap-24 justify-between items-center w-full'>
+              <div className='lg:border lg:border-gray-200 lg:px-10 lg:py-5 lg:mt-10 rounded-xl'>
+                <div className='lg:text-2xl text-xl font-semibold'>Address</div>
+                <div className='flex flex-col lg:flex-row lg:mt-7 mt-3 text-xl lg:gap-24 justify-between items-center w-full'>
                   <div className='flex flex-col w-full'>
                     <input
                       type='text'
                       onChange={(e) => setName(e.target.value)}
                       placeholder='Name'
-                      className='border px-4 mt-3 rounded-lg py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
+                      className='border lg:px-4 px-3 lg:mt-3 lg:text-lg text-base mt-5 rounded-lg lg:py-3 py-1 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
                     ></input>
                     {errorMessage && <div className='error-message text-2xl'>{errorMessage}</div>}
                   </div>
@@ -208,13 +209,13 @@ function Checkout() {
                       type='text'
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder='Phone'
-                      className='border px-4 mt-3 rounded-lg py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
+                      className='border lg:px-4 px-3 lg:mt-3 lg:text-lg text-base mt-5 rounded-lg lg:py-3 py-1 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
                     ></input>
                   </div>
                 </div>
-                <div className='flex gap-7 mt-7'>
+                <div className='flex flex-col lg:flex-row lg:gap-7 gap-2 lg:mt-7 mt-5'>
                   <select
-                    className='border border-gray-200 py-3 px-4 rounded-lg'
+                    className='border border-gray-200 lg:py-3 lg:px-4 px-3 py-1 rounded-lg'
                     id='tinh'
                     name='tinh'
                     value={selectedTinh}
@@ -230,7 +231,7 @@ function Checkout() {
                   </select>
 
                   <select
-                    className='border border-gray-200 py-3 px-4 rounded-lg'
+                    className='border border-gray-200 lg:py-3 lg:px-4 px-3 py-1 lg:mt-0 mt-3 rounded-lg'
                     id='quan'
                     name='quan'
                     value={selectedQuan}
@@ -247,7 +248,7 @@ function Checkout() {
                   </select>
 
                   <select
-                    className='border border-gray-200 py-3 px-4 rounded-lg'
+                    className='border border-gray-200 lg:py-3 lg:px-4 px-3 py-1 lg:mt-0 mt-3 rounded-lg'
                     id='phuong'
                     name='phuong'
                     value={selectedPhuong}
@@ -263,44 +264,44 @@ function Checkout() {
                     ))}
                   </select>
                 </div>
-                <div className='flex flex-col w-full mt-7 text-xl'>
+                <div className='flex flex-col w-full lg:mt-7 mt-5 text-xl'>
                   <input
                     type='text'
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder='Address'
-                    className='border px-4 mt-3 rounded-lg py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
+                    className='border lg:px-4 px-4 py-1 lg:mt-3 rounded-lg lg:text-lg text-base lg:py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
                   ></input>
                 </div>
-                <div className='flex flex-col w-full mt-7 text-xl'>
+                <div className='flex flex-col w-full lg:mt-7 mt-5 text-xl'>
                   <textarea
                     type='text'
                     onChange={(e) => setNote(e.target.value)}
                     placeholder='Note'
-                    className='border px-4 mt-3 rounded-lg py-6 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
+                    className='border lg:px-4 px-4 py-1 lg:mt-3 rounded-lg lg:text-lg text-base lg:py-6 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
                   ></textarea>
                 </div>
               </div>
 
-              <div className='border border-gray-200 px-10 py-5 mt-10 rounded-xl'>
-                <div className='text-2xl font-semibold'>Order Summary</div>
-                <div className='flex mt-7 text-xl justify-between'>
+              <div className='lg:border lg:border-gray-200 lg:px-10 lg:py-5 mt-10 rounded-xl'>
+                <div className='lg:text-2xl text-xl font-semibold'>Order Summary</div>
+                <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className=''>Sub Total</div>
                   <div className=''>
                     {(cart?.totalAmount ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                   </div>
                 </div>
 
-                <div className='flex mt-7 text-xl justify-between'>
+                <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className=''>Discount</div>
                   <div className=''> {(0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
                 </div>
 
-                <div className='flex mt-7 text-xl justify-between'>
+                <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className=''>Shipping</div>
                   <div className=''>Free</div>
                 </div>
 
-                <div className='flex mt-7 text-xl justify-between'>
+                <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className='font-medium'>Total</div>
                   <div className=''>
                     {(cart?.totalAmount ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
@@ -308,20 +309,16 @@ function Checkout() {
                 </div>
               </div>
 
-              <div className='flex justify-between mt-8'>
-                <Link
-                  to='/member/cartList'
-                  className='px-6 py-3 bg-gray-300 hover:bg-gray-400 text-white rounded-lg cursor-pointer'
-                >
+              <div className='flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between mt-8'>
+                <button className='w-full lg:w-auto px-6 py-3 bg-gray-300 hover:bg-gray-400 text-white rounded-lg cursor-pointer'>
                   Back
-                </Link>
-                <button
-                  type='submit'
-                  onClick={() => addAddress()}
-                  className='px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg cursor-pointer'
+                </button>
+                <Link
+                  to='/member/payment'
+                  className='w-full lg:w-auto px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg text-center cursor-pointer'
                 >
                   Payment
-                </button>
+                </Link>
               </div>
             </div>
           </div>
