@@ -54,7 +54,8 @@ public class ReminderService implements IReminderService {
     }
 
     @Async
-    @Scheduled(fixedRate = 60000) // Check every minute
+    @Scheduled(fixedRate = 60000)
+    @Override// Check every minute
     public void checkReminders() {
         List<Reminder> reminders = reminderRepository.findAll();
         LocalDateTime now = LocalDateTime.now();
@@ -100,5 +101,7 @@ public class ReminderService implements IReminderService {
         messagingTemplate.convertAndSend("/topic/notifications", message);
         log.info("Notification sent for reminder '{}'.", reminder.getTitle());
     }
+
+    //TODO: store in database info that I missed the reminder
 }
 
