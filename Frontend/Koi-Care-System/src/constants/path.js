@@ -1,3 +1,5 @@
+
+
 const path = {
   home: '/',
   login: '/login',
@@ -70,7 +72,19 @@ const path = {
   paymentShop: '/shop/payment',
   orderShop: '/shop/order',
   dashboardShop: '/shop/dashboard',
-  profileShop: '/shop/profileShop'
+  profileShop: '/shop/profileShop',
+  updateUserAD: '/admin/updateShop/:id',
+  managePayemt: '/admin/payment',
+  supplierAD: '/admin/supplier',
+  dashboardAD: '/admin/dashboard',
+  productAD: '/admin/product',
+  viewProductAD: '/admin/product/view/:id',
+  updateProductAD:'/admin/product/:id',
+  createProductAD:'/admin/product/create',
+  createSupplierAD:'/admin/supplier/create',
+  updateSupplierAD:'/admin/supplier/:id',
+  managePay: '/admin/payment',
+  
 }
 
 export default path

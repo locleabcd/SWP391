@@ -15,9 +15,11 @@ import { FaImage } from 'react-icons/fa'
 import { FaCartShopping } from 'react-icons/fa6'
 import { TbReportSearch } from 'react-icons/tb'
 import { FaMoneyBill } from 'react-icons/fa'
-
+import { IoPowerOutline } from 'react-icons/io5'
+import axios from 'axios'
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
+  const [user, setUser] = useState([])
   const [isClosed, setClosed] = useState(() => {
     const savedState = localStorage.getItem('isSidebarClosed')
     return savedState ? JSON.parse(savedState) : false
@@ -41,6 +43,29 @@ function LeftSideBar() {
   useEffect(() => {
     localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
   }, [isClosed])
+  const getUser = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const id = localStorage.getItem('id')
+      if (!token) {
+        throw new Error('No token found')
+      }
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setUser(res.data.data)
+      console.log(res.data.data)
+    } catch (error) {
+      console.error('Error fetching users:', error)
+    }
+  }
+
+  useEffect(() => {
+    getUser()
+  }, [])
+
   const handleLogout = () => {
     localStorage.clear()
   }
@@ -458,27 +483,31 @@ function LeftSideBar() {
                 </div>
               )}
             </div>
-            <Link
-              onClick={handleLogout}
-              to={path.login}
-              className='px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center border-t absolute inset-x-0 bottom-0 w-full'
-            >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
-                stroke='currentColor'
-                className='size-8 mr-2'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15'
+           
+          </div>
+          <div
+            className={`mt-auto w-full p-2 flex justify-between items-center 
+            ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
+          >
+            <div className='bg-white flex p-4 rounded-lg items-center justify-between w-full'>
+              <div className='card-content flex items-center '>
+                <img
+                  src={user.avatar || 'default-avatar.png'}
+                  alt='User Avatar'
+                  className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
                 />
-              </svg>
-              <span>Logout</span>
-            </Link>
+                <div className='ml-3'>
+                  <p className='font-semibold text-lg text-black'>{user.name || 'User Name'}</p>
+                  <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
+                </div>
+              </div>
+              <Link onClick={handleLogout} to='/login'>
+                <IoPowerOutline
+                  className='text-2xl text-gray-500 hover:text-red-500 transition-colors duration-200 cursor-pointer'
+                  title='Logout'
+                />
+              </Link>
+            </div>
           </div>
         </div>
       </div>
