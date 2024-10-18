@@ -16,13 +16,15 @@ import { FaImage } from 'react-icons/fa'
 import { FaCartShopping } from 'react-icons/fa6'
 import { TbReportSearch } from 'react-icons/tb'
 import { FaMoneyBill } from 'react-icons/fa'
+import shopPathInfor from '../../constants/shopPathInfor'
 
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
-
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [isSidebarOpen, setSidebarOpen] = useState(false)
   const sidebarRef = useRef(null)
+  const [searchTerm, setSearchTerm] = useState('')
 
   const [isNewsOpen, setIsNewsOpen] = useState(() => {
     const savedState = localStorage.getItem('isNewsOpen')
@@ -69,9 +71,17 @@ function Header() {
     setIsOpen(!isOpen)
   }
 
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen)
+  }
+
   const handleLogout = () => {
     localStorage.clear()
   }
+
+  const filteredPaths = shopPathInfor.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const name = localStorage.getItem('name')
   const role = localStorage.getItem('role')
@@ -111,6 +121,7 @@ function Header() {
               height={16}
               viewBox='0 0 16 16'
               xmlns='http://www.w3.org/2000/svg'
+              onClick={toggleSearch}
             >
               <path d='M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7ZM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5Z' />
               <path d='m13.314 11.9 2.393 2.393a.999.999 0 1 1-1.414 1.414L11.9 13.314a8.019 8.019 0 0 0 1.414-1.414Z' />
@@ -585,6 +596,40 @@ function Header() {
           </div>
         </div>
       </div>
+
+      {isSearchOpen && (
+        <div className={`absolute top-16 left-[8vh] md:top-[2vh] md:left-[134vh] z-50 mt-2 ${
+          isDarkMode ? ' text-gray-200' : ' text-gray-800'
+        }`}>
+          <input
+            type='text'
+            placeholder='Search Here'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={`p-2 rounded-lg border ${
+              isDarkMode ? ' bg-gray-800 text-gray-200' : ' bg-white text-gray-800'
+            }`}
+          />
+          {filteredPaths.length > 0 && (
+            <ul className={`absolute z-50 border border-gray-300 rounded mt-1 w-full max-h-40 overflow-x-auto no-scroll-bar ${
+              isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
+            }`}>
+              {filteredPaths.map(item => (
+                <li key={item.id}>
+                  <NavLink
+                    to={item.link}
+                    className={`block px-4 py-2 rounded ${
+                      isDarkMode ? 'text-gray-200 hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-200'
+                    }`}
+                  >
+                    {item.name}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
     </div>
   )
 }
