@@ -6,6 +6,7 @@ import com.swpproject.koi_care_system.payload.request.ResetPasswordRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
 import com.swpproject.koi_care_system.service.user.IUserService;
+import com.swpproject.koi_care_system.utils.JwtUtils;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ import java.text.ParseException;
 public class AuthenticationController {
     IAuthenticationService authService;
     IUserService userService;
+    JwtUtils jwtUtils;
 
     @PostMapping("/loginKoiCare")
     ResponseEntity<ApiResponse> authenticate(@RequestBody @Valid AuthenticationRequest request) {
@@ -35,8 +37,7 @@ public class AuthenticationController {
 
     @GetMapping("/verifyEmail")
     ResponseEntity<ApiResponse> verifyUserEmail(@RequestParam String email, @RequestParam String token) throws ParseException, JOSEException {
-        var result = authService.verificationToken(token);
-        if (result) {
+        if (jwtUtils.verificationToken(token)) {
             userService.verifyUser(email, token);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.builder()

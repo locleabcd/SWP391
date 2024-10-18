@@ -11,9 +11,9 @@ import com.swpproject.koi_care_system.payload.request.ChangePasswordRequest;
 import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.repository.UserRepository;
-import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
 import com.swpproject.koi_care_system.service.email.IEmailService;
 import com.swpproject.koi_care_system.service.profile.ProfileService;
+import com.swpproject.koi_care_system.utils.JwtUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -35,8 +35,9 @@ public class UserService implements IUserService {
     ProfileService profileService;
     PasswordEncoder passwordEncoder;
     IEmailService emailService;
-    IAuthenticationService authenticationService;
+    JwtUtils jwtUtils;
 
+    @Override
     public UserDTO createUser(CreateUserRequest request) {
         if (userRepo.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
@@ -46,36 +47,40 @@ public class UserService implements IUserService {
         User user = userMapper.maptoUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        var token = authenticationService.generateToken(user);
+        var token = jwtUtils.generateToken(user);
         emailService.send(user.getUsername(), user.getEmail(), "Welcome New User, Your Verify Email", token);
 
         return userMapper.maptoUserDTO(userRepo.save(user));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @Override
     public List<UserDTO> getListUser() {
         return userRepo.findAll().stream()
                 .map(userMapper::maptoUserDTO).toList();
     }
 
     @PostAuthorize("returnObject.username == authentication.name")
+    @Override
     public UserDTO findUserByID(Long userID) {
-        return userMapper.maptoUserDTO(userRepo.findById(userID).orElseThrow(() -> new RuntimeException("User Not Found")));
+        return userMapper.maptoUserDTO(userRepo.findById(userID).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @Override
     public UserDTO updateUserByID(Long id, UpdateUserRequest request) {
         User user = userRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         userMapper.updateUser(user, request);
         return userMapper.maptoUserDTO(userRepo.save(user));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @Override
     public void deleteUserByID(Long id) {
         userRepo.findById(id).ifPresentOrElse(userRepo::delete, () -> {
-            throw new RuntimeException("User not found");
+            throw new AppException(ErrorCode.USER_NOT_EXISTED);
         });
     }
 

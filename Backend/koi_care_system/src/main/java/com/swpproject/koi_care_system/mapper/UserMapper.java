@@ -30,6 +30,18 @@ public interface UserMapper {
     LoginResponse maptoLoginResponse(User user, String token);
 
     @Mapping(target = "userProfile", ignore = true)
+    @Mapping(target = "status", constant = "true")
+    @Mapping(target = "role", constant = "MEMBER")
+    @Mapping(target = "provider", constant = "GOOGLE")
+    @Mapping(target = "password", ignore = true)
+    @Mapping(target = "orders", ignore = true)
+    @Mapping(target = "koiPondList", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "cart", ignore = true)
+    @Mapping(target = "blogs", ignore = true)
+    User maptoUserGoogle(String email, String username);
+
+    @Mapping(target = "userProfile", ignore = true)
     @Mapping(target = "orders", ignore = true)
     @Mapping(target = "koiPondList", ignore = true)
     @Mapping(target = "blogs", ignore = true)

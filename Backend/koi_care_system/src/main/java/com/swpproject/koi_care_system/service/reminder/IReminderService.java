@@ -13,4 +13,6 @@ public interface IReminderService {
     void deleteReminder(Long id);
 
     List<ReminderDto> getListReminder();
+
+    void checkReminders();
 }

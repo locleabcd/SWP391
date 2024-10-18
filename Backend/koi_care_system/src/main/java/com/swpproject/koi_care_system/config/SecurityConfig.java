@@ -58,6 +58,7 @@ public class SecurityConfig {
                                 "/v3/api-docs",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
+                                "/oauth2/**",
                                 "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()
                 );
@@ -66,9 +67,9 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .permitAll())
                 .oauth2Login(oauth -> oauth
-                        .loginPage("/login")
+                        .loginPage("http://localhost:5173/login")
                         .successHandler(oAuth2LoginHandler)
-                        .failureUrl("/login?error=true")
+                        .failureUrl("http://localhost:5173/login?error=true")
                 );
 
 
@@ -85,9 +86,9 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
-        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
