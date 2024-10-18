@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { FaSpinner } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
@@ -14,6 +14,28 @@ function Login() {
   const [loading, setLoading] = useState(false)
   const [captcha, setCaptcha] = useState(null)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const storeTokenFromURL = async () => {
+      const urlParams = new URLSearchParams(window.location.search)
+      const token = urlParams.get('token')
+      const role = urlParams.get('role')
+      const id = urlParams.get('id')
+      const name = urlParams.get('username')
+      console.log(token)
+      console.log(id)
+      console.log(name)
+      if (token) {
+        localStorage.setItem('token', token)
+        localStorage.setItem('role', role)
+        localStorage.setItem('id', id)
+        localStorage.setItem('name', name)
+        navigate('/member/dashboard')
+      }
+    }
+
+    storeTokenFromURL()
+  }, [navigate])
 
   const {
     register,
