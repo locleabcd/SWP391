@@ -81,7 +81,7 @@ function Header() {
 
   const filteredPaths = shopPathInfor.filter(item =>
     item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  )
 
   const name = localStorage.getItem('name')
   const role = localStorage.getItem('role')
