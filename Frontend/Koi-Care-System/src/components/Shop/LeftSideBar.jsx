@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { PiNewspaperClipping } from 'react-icons/pi'
 import { FaTags } from 'react-icons/fa'
 import { FaRegNewspaper } from 'react-icons/fa'

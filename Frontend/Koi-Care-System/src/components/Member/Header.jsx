@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import '../../App.css'
 import path from '../../constants/path'
