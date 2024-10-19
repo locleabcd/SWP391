@@ -938,7 +938,7 @@ function WaterParameters() {
                         visible: { opacity: 1, x: 0, transition: { delay: index * 0.2 } }
                       }}
                       key={parameter.id}
-                      className='border p-4 rounded-lg shadow bg-white'
+                      className={`border p-4 rounded-lg shadow ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       style={{ border: `2px solid ${borderColor}` }} // Cập nhật màu `border`
                       onClick={() => {
                         toggleEditFormVisibility(parameter)
