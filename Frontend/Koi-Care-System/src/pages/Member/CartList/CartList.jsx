@@ -172,7 +172,7 @@ const CartList = () => {
               </ol>
 
               <div className='relative overflow-x-auto'>
-                <table className='min-w-full '>
+                <table className='min-w-full'>
                   <thead className=''>
                     <tr className=''>
                       <th
@@ -195,7 +195,7 @@ const CartList = () => {
                       </th>
                     </tr>
                   </thead>
-                  <tbody className='bg-white divide-y divide-gray-200'>
+                  <tbody className={`${isDarkMode ? 'bg-custom-dark' : 'bg-white'} divide-y divide-gray-200`}>
                     {cart.map((item) => (
                       <tr key={item.itemId}>
                         <td className='px-6 py-4 text-center whitespace-nowrap flex gap-5'>

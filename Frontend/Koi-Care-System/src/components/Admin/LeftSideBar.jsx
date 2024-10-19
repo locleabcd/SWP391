@@ -35,6 +35,18 @@ const [isShopOpen, setIsShopOpen] = useState(() => {
   useEffect(() => {
     localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
   }, [isClosed])
+  useEffect(() => {
+    localStorage.setItem('isUsersOpen', JSON.stringify(isUsersOpen))
+  }, [isUsersOpen])
+
+  useEffect(() => {
+    localStorage.setItem('isReportOpen', JSON.stringify(isReportOpen))
+  }, [isReportOpen])
+
+  useEffect(() => {
+    localStorage.setItem('isShopOpen', JSON.stringify(isShopOpen))
+  }, [isShopOpen])
+
   return (
     <div>
       {/* open close button  */}
@@ -78,8 +90,7 @@ const [isShopOpen, setIsShopOpen] = useState(() => {
         )}
       </div>
       {/* sidebar */}
-      <div
-        className={`absolute top-0 left-0 z-999 flex h-screen flex-col no-scroll-bar overflow-y-auto border-r ${
+      <div className={`absolute top-0 left-0 z-999 flex h-screen flex-col no-scroll-bar overflow-y-auto border-r ${
           isDarkMode ? 'bg-custom-dark text-white border-gray-700' : 'bg-white text-black border-gray-200'
         } shadow-sm duration-200 ease-linear lg:static lg:translate-x-0 ${isClosed ? 'w-[80px]' : 'w-[240px]'}`}
       >
@@ -95,6 +106,37 @@ const [isShopOpen, setIsShopOpen] = useState(() => {
         </div>
         <div className='flex flex-col justify-center items-center mt-6 duration-200'>
           <div className=''>
+          <NavLink
+              to={path.dashboardAD}
+              end
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                  isClosed ? 'flex-col' : ''
+                }`
+              }}
+            >
+              <div className='flex items-center'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  className='w-7 mr-3'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z'
+                  />
+                </svg>
+
+                {!isClosed && <span className='font-semibold'>Dashboard</span>}
+              </div>
+            </NavLink>
           <div>
               <button
                 className={`min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
@@ -234,27 +276,29 @@ const [isShopOpen, setIsShopOpen] = useState(() => {
                 </div>
               </button>
               {isUsersOpen && (
-                <div className=''>
-                  <NavLink
-                    to={path.shopAD}
-                    className={({ isActive }) => {
-                      const active = isActive
-                        ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
-                        : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
-                        isClosed ? 'flex-col' : ''
-                      }`
-                    }}
-                  >
-                    <div className='flex items-center'>
+                <div>
+                  <div className=''>
+                    <NavLink
+                      to={path.shopAD}
+                      className={({ isActive }) => {
+                        const active = isActive
+                          ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                          : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                          isClosed ? 'flex-col' : ''
+                        }`
+                      }}
+                    >
+                     <div className='flex items-center'>
                       <div className='w-7 h-7 mr-3'>
                         <PiNewspaperClipping className='w-full h-full' />
                       </div>
                       {!isClosed && <span className='font-semibold'>Shop</span>}
                     </div>
                   </NavLink>
-
-                  <NavLink
+                  </div>
+                  <div className=''>
+                    <NavLink
                     to={path.customerAD}
                     className={({ isActive }) => {
                       const active = isActive
@@ -273,9 +317,9 @@ const [isShopOpen, setIsShopOpen] = useState(() => {
                     </div>
                   </NavLink>
                 </div>
-                
+                </div>
               )}
-              <div> 
+              <div>   
               <button
                 className={`min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
@@ -307,28 +351,33 @@ const [isShopOpen, setIsShopOpen] = useState(() => {
               </button>
 
               {isReportOpen && (
-                <div className=''>
-                  <NavLink
-                    to={path.manageOrder}
-                    className={({ isActive }) => {
-                      const active = isActive
-                        ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
-                        : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
-                        isClosed ? 'flex-col' : ''
-                      }`
-                    }}
-                  >
-                    <div className='flex items-center'>
-                      <div className='w-7 h-7 mr-3'>
-                        <FaCartShopping className='w-full h-full' />
-                      </div>
-                      {!isClosed && <span className='font-semibold'>Manage Order</span>}
+                <div>
+                {/* Manage Order */}
+                <div className='mb-2'>
+                <NavLink
+                  to={path.manageOrder}
+                  className={({ isActive }) => {
+                    const active = isActive
+                      ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                      : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                    return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                      isClosed ? 'flex-col' : ''
+                    }`
+                  }}
+                >
+                  <div className='flex items-center'>
+                    <div className='w-7 h-7 mr-3'>
+                      <FaCartShopping className='w-full h-full' />
                     </div>
-                  </NavLink>
-
+                    {!isClosed && <span className='font-semibold'>Manage Order</span>}
+                  </div>
+                </NavLink>
+              </div>
+                {/* Manage Payment */}
+                <div className='mb-2'>
                   <NavLink
-                    to={path.managePayemt}
+                    to={path.managePay}
+                    end
                     className={({ isActive }) => {
                       const active = isActive
                         ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
@@ -346,6 +395,8 @@ const [isShopOpen, setIsShopOpen] = useState(() => {
                     </div>
                   </NavLink>
                 </div>
+              </div>
+
               )}
             </div>
            

@@ -258,7 +258,7 @@ function Recommendations() {
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Recommendations' links='member/recommendations' />
 
-            <div className='mt-5 flex border-gray-200 border'>
+            <div className='mt-5 flex lg:border-gray-200 lg:border'>
               <div className='lg:flex flex-col hidden flex-none w-[250px] border-r border-gray-200'>
                 <div className='px-4 py-5 border-b border-gray-200'>
                   <div className='font-semibold text-xl'>Filter by Category</div>
@@ -437,7 +437,7 @@ function Recommendations() {
                 </div>
               </div>
 
-              <div className='flex-auto px-7 py-7'>
+              <div className='flex-auto lg:px-7 lg:py-7'>
                 <div className='flex justify-between items-center'>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'

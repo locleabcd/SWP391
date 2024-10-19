@@ -78,7 +78,7 @@ import PaymentShop from './pages/Shop/Payment/Payment'
 import DashboardShop from './pages/Shop/Dashboard/Dashboard'
 import ProfileShop from './pages/Shop/ShopAccount/ProfileShop'
 import UpdateUserAD from './pages/Admin/ManageUsers/UpdateUserAD'
-import DashBoardAD from './pages/Admin/DashBoard/DashBoard'
+import DashboardAD from './pages/Admin/DashBoard/DashboardAD'
 import ManageOrder from './pages/Admin/ManageReport/ManageOrder'
 import ProductAD from './pages/Admin/Product/ProductAD'
 import SupplierAD from './pages/Admin/Supplier/SupplierAD'
@@ -585,8 +585,8 @@ function App() {
       element: <SupplierAD/>
     },
     {
-      path: path.dashBoardAD,
-      element: <DashBoardAD/>
+      path: path.dashboardAD,
+      element: <DashboardAD/>
     },
     {
       path: path.viewProductAD,
