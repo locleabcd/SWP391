@@ -572,10 +572,13 @@ function Header() {
                 </div>
               )}
             </div>
-            <Link
+            
+          </div>
+          <Link
               onClick={handleLogout}
               to={path.login}
-              className='px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center border-t absolute inset-x-0 bottom-0 w-full'
+              className={`mt-auto sticky bottom-0 z-50 w-full p-2 flex justify-center
+                ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
             >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -593,7 +596,6 @@ function Header() {
               </svg>
               <span>Logout</span>
             </Link>
-          </div>
         </div>
       </div>
 

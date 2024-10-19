@@ -486,10 +486,10 @@ function LeftSideBar() {
            
           </div>
           <div
-            className={`mt-auto w-full p-2 flex justify-between items-center 
+            className={`mt-auto sticky bottom-0 z-50 w-full p-2 flex justify-between items-center 
             ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
           >
-            <div className='bg-white flex p-4 rounded-lg items-center justify-between w-full'>
+            <div className={`flex p-4 rounded-lg items-center justify-between w-full ${isDarkMode ? 'bg-custom-layout-dark' : 'bg-white'}`}>
               <div className='card-content flex items-center '>
                 <img
                   src={user.avatar || 'default-avatar.png'}

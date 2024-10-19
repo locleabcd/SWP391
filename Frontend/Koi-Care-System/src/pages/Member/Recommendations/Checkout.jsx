@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Link, useNavigate } from 'react-router-dom'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
@@ -314,7 +313,7 @@ function Checkout() {
                   Back
                 </button>
                 <Link
-                  to='/member/payment'
+                  onClick={() => addAddress()}
                   className='w-full lg:w-auto px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg text-center cursor-pointer'
                 >
                   Payment
