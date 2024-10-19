@@ -40,15 +40,22 @@ function Profile() {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log(res.data.data);
-      setUsers(res.data.data);
-      setAvatarPreview(res.data.data.avatar); // Set avatar preview
-      reset(res.data.data); // Reset form with user data
+  
+      const userData = res.data.data;
+      // Replace null values with an empty string
+      Object.keys(userData).forEach((key) => {
+        if (userData[key] === null) {
+          userData[key] = ''; 
+        }
+      });
+  
+      setUsers(userData);
+      setAvatarPreview(userData.avatar); // Set avatar preview
+      reset(userData); // Reset form with user data
     } catch (error) {
       console.error('Error fetching users:', error);
     }
   };
-  
   const updateUser = async (data) => {
     setIsSubmitting(true);
     try {

@@ -1,5 +1,3 @@
-
-
 const path = {
   home: '/',
   login: '/login',
@@ -75,7 +73,7 @@ const path = {
   dashboardShop: '/shop/dashboard',
   profileShop: '/shop/profileShop',
   updateUserAD: '/admin/updateShop/:id',
-  managePayemt: '/admin/payment',
+  manageOrder: '/admin/order',
   supplierAD: '/admin/supplier',
   dashboardAD: '/admin/dashboard',
   productAD: '/admin/product',
@@ -85,6 +83,7 @@ const path = {
   createSupplierAD:'/admin/supplier/create',
   updateSupplierAD:'/admin/supplier/:id',
   managePay: '/admin/payment',
+
   
 }
 

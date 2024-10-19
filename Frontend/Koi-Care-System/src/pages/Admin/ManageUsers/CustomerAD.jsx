@@ -45,6 +45,7 @@ const darkTheme = createTheme({
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(res.data.data)
       setUsers(res.data.data);
     } catch (error) {
       console.log('Error fetching users:', error);
