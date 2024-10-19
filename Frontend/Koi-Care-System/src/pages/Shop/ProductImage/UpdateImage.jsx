@@ -19,8 +19,7 @@ function UpdateImage() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    reset
+    formState: { errors }
   } = useForm()
 
   const updateImage = async (data) => {

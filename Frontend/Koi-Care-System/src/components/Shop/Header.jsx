@@ -2,7 +2,7 @@ import { useDarkMode } from '../../hooks/DarkModeContext'
 import '../../App.css'
 import path from '../../constants/path'
 import { Link, NavLink } from 'react-router-dom'
-import { useState,useRef,useEffect } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import logo from '../../assets/logo.png'
 import { PiNewspaperClipping } from 'react-icons/pi'
 import { FaTags } from 'react-icons/fa'
@@ -53,7 +53,6 @@ function Header() {
     localStorage.setItem('isShopOpen', JSON.stringify(isShopOpen))
   }, [isShopOpen])
 
-
   useEffect(() => {
     if (!isSidebarOpen) return
 
@@ -79,20 +78,18 @@ function Header() {
     localStorage.clear()
   }
 
-  const filteredPaths = shopPathInfor.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredPaths = shopPathInfor.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   const name = localStorage.getItem('name')
   const role = localStorage.getItem('role')
 
   return (
     <div
-    className={`${
-      isDarkMode
-        ? 'bg-custom-dark text-white border-b border-gray-700'
-        : 'bg-white text-black border-b border-gray-200'
-    } sticky top-0 lg:p-3 py-3 lg:justify-end justify-between z-20 flex w-full duration-200 ease-linear`}
+      className={`${
+        isDarkMode
+          ? 'bg-custom-dark text-white border-b border-gray-700'
+          : 'bg-white text-black border-b border-gray-200'
+      } sticky top-0 lg:p-3 py-3 lg:justify-end justify-between z-20 flex w-full duration-200 ease-linear`}
     >
       <button className='ml-2 lg:hidden inline-block cursor-pointer'>
         <svg
@@ -201,7 +198,11 @@ function Header() {
                   isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
                 }`}
               >
-                <NavLink to={path.profileShop} end className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}>
+                <NavLink
+                  to={path.profileShop}
+                  end
+                  className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
+                >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -218,8 +219,11 @@ function Header() {
                   </svg>
                   <span>My Profile</span>
                 </NavLink>
-                <Link onClick={handleLogout} to={path.login} 
-                  className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}>
+                <Link
+                  onClick={handleLogout}
+                  to={path.login}
+                  className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
+                >
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -244,7 +248,7 @@ function Header() {
 
       <div
         ref={sidebarRef}
-        className={`fixed top-0 left-0 h-full md:w-1/3 w-3/5 lg:w-0 transform  ${
+        className={`fixed top-0 left-0 h-full md:w-1/3 w-7/12 lg:w-0 transform  ${
           isSidebarOpen ? `translate-x-0 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}` : '-translate-x-full'
         } transition-transform duration-300 z-50 overflow-y-auto no-scroll-bar`}
       >
@@ -252,11 +256,10 @@ function Header() {
           <button className='mt-4 rounded-md'>
             <img className='w-14 animate-slow-spin' src={logo} alt='Logo' />
           </button>
-          
-            <a href='#' className='mt-3 text-xl font-bold'>
-              Koi Care System
-            </a>
-          
+
+          <a href='#' className='mt-3 text-xl font-bold'>
+            Koi Care System
+          </a>
         </div>
 
         <div className='flex flex-col justify-center items-center lg:mt-6 mt-3 duration-200'>
@@ -320,21 +323,21 @@ function Header() {
                   <div className='w-7 h-7 mr-3'>
                     <FaRegNewspaper className='w-full h-full' />
                   </div>
-                    <span className='flex items-center'>
-                      <p className='font-semibold'>Manage News</p>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        viewBox='0 0 24 24'
-                        fill='currentColor'
-                        className='size-5 ml-2 mt-1'
-                      >
-                        <path
-                          fillRule='evenodd'
-                          d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
-                          clipRule='evenodd'
-                        />
-                      </svg>
-                    </span>
+                  <span className='flex items-center'>
+                    <p className='font-semibold'>Manage News</p>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 24 24'
+                      fill='currentColor'
+                      className='size-5 ml-2 mt-1'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                  </span>
                 </div>
               </button>
 
@@ -386,23 +389,22 @@ function Header() {
                   <div className='w-7 h-7 mr-3'>
                     <AiFillShop className='w-full h-full' />
                   </div>
-                  
-                    <span className='flex items-center'>
-                      <p className='font-semibold'>Manage Shop</p>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        viewBox='0 0 24 24'
-                        fill='currentColor'
-                        className='size-5 ml-2 mt-1'
-                      >
-                        <path
-                          fillRule='evenodd'
-                          d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
-                          clipRule='evenodd'
-                        />
-                      </svg>
-                    </span>
-                  
+
+                  <span className='flex items-center'>
+                    <p className='font-semibold'>Manage Shop</p>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 24 24'
+                      fill='currentColor'
+                      className='size-5 ml-2 mt-1'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                  </span>
                 </div>
               </button>
 
@@ -441,7 +443,7 @@ function Header() {
                         <div className='w-6 h-6 mr-3'>
                           <RiCoupon2Fill className='w-full h-full' />
                         </div>
-                         <span className='font-semibold'>Promotion</span>
+                        <span className='font-semibold'>Promotion</span>
                       </div>
                     </NavLink>
                   </div>
@@ -514,23 +516,22 @@ function Header() {
                   <div className='w-7 h-7 mr-3'>
                     <TbReportSearch className='w-full h-full' />
                   </div>
-                  
-                    <span className='flex items-center'>
-                      <p className='font-semibold'>Manage Report</p>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        viewBox='0 0 24 24'
-                        fill='currentColor'
-                        className='size-5 ml-2 mt-1'
-                      >
-                        <path
-                          fillRule='evenodd'
-                          d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
-                          clipRule='evenodd'
-                        />
-                      </svg>
-                    </span>
-                  
+
+                  <span className='flex items-center'>
+                    <p className='font-semibold'>Manage Report</p>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      viewBox='0 0 24 24'
+                      fill='currentColor'
+                      className='size-5 ml-2 mt-1'
+                    >
+                      <path
+                        fillRule='evenodd'
+                        d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                  </span>
                 </div>
               </button>
 
@@ -572,51 +573,52 @@ function Header() {
                 </div>
               )}
             </div>
-            
           </div>
           <Link
-              onClick={handleLogout}
-              to={path.login}
-              className={`mt-auto sticky bottom-0 z-50 w-full p-2 flex justify-center
+            onClick={handleLogout}
+            to={path.login}
+            className={`mt-auto sticky bottom-0 z-50 w-full p-2 flex justify-center
                 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
+          >
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth='1.5'
+              stroke='currentColor'
+              className='size-8 mr-2'
             >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
-                stroke='currentColor'
-                className='size-8 mr-2'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15'
-                />
-              </svg>
-              <span>Logout</span>
-            </Link>
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15'
+              />
+            </svg>
+            <span>Logout</span>
+          </Link>
         </div>
       </div>
 
       {isSearchOpen && (
-        <div className={`absolute top-16 left-[8vh] md:top-[2vh] md:left-[134vh] z-50 mt-2 ${
-          isDarkMode ? ' text-gray-200' : ' text-gray-800'
-        }`}>
+        <div
+          className={`absolute top-16 left-[8vh] md:top-[2vh] md:left-[134vh] z-50 mt-2 ${
+            isDarkMode ? ' text-gray-200' : ' text-gray-800'
+          }`}
+        >
           <input
             type='text'
             placeholder='Search Here'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className={`p-2 rounded-lg border ${
-              isDarkMode ? ' bg-gray-800 text-gray-200' : ' bg-white text-gray-800'
-            }`}
+            className={`p-2 rounded-lg border ${isDarkMode ? ' bg-gray-800 text-gray-200' : ' bg-white text-gray-800'}`}
           />
           {filteredPaths.length > 0 && (
-            <ul className={`absolute z-50 border border-gray-300 rounded mt-1 w-full max-h-40 overflow-x-auto no-scroll-bar ${
-              isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
-            }`}>
-              {filteredPaths.map(item => (
+            <ul
+              className={`absolute z-50 border border-gray-300 rounded mt-1 w-full max-h-40 overflow-x-auto no-scroll-bar ${
+                isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
+              }`}
+            >
+              {filteredPaths.map((item) => (
                 <li key={item.id}>
                   <NavLink
                     to={item.link}

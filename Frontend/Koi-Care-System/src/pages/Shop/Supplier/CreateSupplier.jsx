@@ -76,7 +76,7 @@ function CreateSupplier() {
                   id='name'
                   className={`w-full p-2 border rounded-md ${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  } ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('name', {
                     required: 'Name is required',
                     minLength: { value: 2, message: 'Name must be at least 2 characters long' },
@@ -94,7 +94,7 @@ function CreateSupplier() {
                   id='phone'
                   className={`w-full p-2 border rounded-md ${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  } ${errors.phone ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('phone', {
                     required: 'Phone is required',
                     pattern: {
@@ -114,7 +114,7 @@ function CreateSupplier() {
                   id='address'
                   className={`w-full p-2 border rounded-md ${
                     isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.tags ? 'border-red-500' : 'border-gray-300'}`}
+                  } ${errors.address ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('address', {
                     required: 'Address is required',
                     minLength: { value: 5, message: 'Address must be at least 5 characters long' },

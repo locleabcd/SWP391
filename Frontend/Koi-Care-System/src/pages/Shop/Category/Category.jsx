@@ -134,7 +134,7 @@ function Category() {
         >
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-            <TopLayout text='Category' links='shop/category'/>
+            <TopLayout text='Category' links='shop/category' />
             <div className='w-full flex justify-between items-center relative mb-4'>
               <div className='cursor-pointer'>
                 <button

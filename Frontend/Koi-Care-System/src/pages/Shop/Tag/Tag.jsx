@@ -7,7 +7,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
-import * as XLSX from 'xlsx'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
@@ -138,7 +137,7 @@ function Tag() {
         >
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-            <TopLayout text='Tag' links='shop/tag'/>
+            <TopLayout text='Tag' links='shop/tag' />
             <div className='w-full flex justify-between items-center relative'>
               <button
                 className='cursor-pointer mb-4 py-2 px-3 bg-custom-left-bar text-white hover:bg-blue-600 rounded-md'

@@ -77,13 +77,11 @@ const path = {
   dashboardAD: '/admin/dashboard',
   productAD: '/admin/product',
   viewProductAD: '/admin/product/view/:id',
-  updateProductAD:'/admin/product/:id',
-  createProductAD:'/admin/product/create',
-  createSupplierAD:'/admin/supplier/create',
-  updateSupplierAD:'/admin/supplier/:id',
-  managePay: '/admin/payment',
-
-  
+  updateProductAD: '/admin/product/:id',
+  createProductAD: '/admin/product/create',
+  createSupplierAD: '/admin/supplier/create',
+  updateSupplierAD: '/admin/supplier/:id',
+  managePay: '/admin/payment'
 }
 
 export default path

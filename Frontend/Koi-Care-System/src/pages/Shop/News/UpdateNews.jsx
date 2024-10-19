@@ -21,8 +21,8 @@ function UpdateNews() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [blogData, setBlogData] = useState(null)
-  const [tags, setTags] = useState([]) 
-  const [selectedTags, setSelectedTags] = useState([]) 
+  const [tags, setTags] = useState([])
+  const [selectedTags, setSelectedTags] = useState([])
 
   const {
     register,
@@ -44,7 +44,7 @@ function UpdateNews() {
       })
       setBlogData(res.data.data)
       reset(res.data.data)
-      setSelectedTags(res.data.data.tags.map(tag => ({ value: tag.tagId, label: tag.tagName })))
+      setSelectedTags(res.data.data.tags.map((tag) => ({ value: tag.tagId, label: tag.tagName })))
     } catch (error) {
       console.error('Error fetching blog:', error)
       toast.error('Failed to fetch blog details.')
@@ -70,10 +70,12 @@ function UpdateNews() {
         }
       })
 
-      setTags(res.data.data.map(tag => ({
-        value: tag.tagId, 
-        label: tag.tagName 
-      })))
+      setTags(
+        res.data.data.map((tag) => ({
+          value: tag.tagId,
+          label: tag.tagName
+        }))
+      )
     } catch (error) {
       console.log('Error fetching tags:', error)
     }
@@ -95,7 +97,7 @@ function UpdateNews() {
       formData.append('blogTitle', data.blogTitle)
       formData.append('blogContent', data.blogContent)
       formData.append('blogDate', data.blogDate)
-      selectedTags.forEach(tag => {
+      selectedTags.forEach((tag) => {
         formData.append('tagIds', tag.value)
       })
       if (data.file && data.file.length > 0) {
@@ -127,14 +129,18 @@ function UpdateNews() {
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
-      <div className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} flex-1 flex-col overflow-y-auto overflow-x-hidden`}>
+      <div
+        className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} flex-1 flex-col overflow-y-auto overflow-x-hidden`}
+      >
         <Header />
         <div className='py-5 pb-10 px-[30px] mx-auto'>
           <TopLayout text='News' textName='Update News' links='shop/shopNews' />
           <div className=' p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} className='mt-5 space-y-4'>
               <div>
-                <label htmlFor='blogTitle' className='block text-sm font-bold mb-2'>Blog Title</label>
+                <label htmlFor='blogTitle' className='block text-sm font-bold mb-2'>
+                  Blog Title
+                </label>
                 <input
                   type='text'
                   id='blogTitle'
@@ -158,41 +164,43 @@ function UpdateNews() {
                   styles={{
                     control: (provided, state) => ({
                       ...provided,
-                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF', 
-                      color: isDarkMode ? '#FFFFFF' : '#000000',           
-                      borderColor: errors.tags ? '#EF4444' : '#D1D5DB',    
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF',
+                      color: isDarkMode ? '#FFFFFF' : '#000000',
+                      borderColor: errors.tags ? '#EF4444' : '#D1D5DB',
                       '&:hover': {
-                        borderColor: errors.tags ? '#EF4444' : '#9CA3AF',  
+                        borderColor: errors.tags ? '#EF4444' : '#9CA3AF'
                       }
                     }),
                     menu: (provided) => ({
                       ...provided,
-                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF', 
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF'
                     }),
                     option: (provided, state) => ({
                       ...provided,
                       backgroundColor: state.isFocused
-                        ? (isDarkMode ? '#374151' : '#E5E7EB') 
+                        ? isDarkMode
+                          ? '#374151'
+                          : '#E5E7EB'
                         : isDarkMode
-                        ? '#1F2937'                         
-                        : '#FFFFFF',                          
-                      color: isDarkMode ? '#FFFFFF' : '#000000', 
+                          ? '#1F2937'
+                          : '#FFFFFF',
+                      color: isDarkMode ? '#FFFFFF' : '#000000'
                     }),
                     multiValue: (provided) => ({
                       ...provided,
-                      backgroundColor: isDarkMode ? '#4B5563' : '#E5E7EB', 
-                      color: isDarkMode ? '#FFFFFF' : '#000000',           
+                      backgroundColor: isDarkMode ? '#4B5563' : '#E5E7EB',
+                      color: isDarkMode ? '#FFFFFF' : '#000000'
                     }),
                     multiValueLabel: (provided) => ({
                       ...provided,
-                      color: isDarkMode ? '#FFFFFF' : '#000000', 
+                      color: isDarkMode ? '#FFFFFF' : '#000000'
                     }),
                     multiValueRemove: (provided) => ({
                       ...provided,
-                      color: isDarkMode ? '#FFFFFF' : '#000000', 
+                      color: isDarkMode ? '#FFFFFF' : '#000000',
                       ':hover': {
-                        backgroundColor: isDarkMode ? '#374151' : '#D1D5DB', 
-                        color: isDarkMode ? '#F87171' : '#EF4444',            
+                        backgroundColor: isDarkMode ? '#374151' : '#D1D5DB',
+                        color: isDarkMode ? '#F87171' : '#EF4444'
                       }
                     })
                   }}
@@ -201,7 +209,9 @@ function UpdateNews() {
               </div>
 
               <div>
-                <label htmlFor='blogContent' className='block text-sm font-bold mb-2'>Blog Content</label>
+                <label htmlFor='blogContent' className='block text-sm font-bold mb-2'>
+                  Blog Content
+                </label>
                 <textarea
                   id='blogContent'
                   {...register('blogContent', { required: 'Blog content is required' })}
@@ -226,10 +236,12 @@ function UpdateNews() {
                   } ${errors.blogDate ? 'border-red-500' : 'border-gray-300'}`}
                 />
                 {errors.blogDate && <p className='text-red-500 text-sm'>{errors.blogDate.message}</p>}
-              </div>           
+              </div>
 
               <div>
-                <label htmlFor='file' className='block text-sm font-bold mb-2'>Upload Blog Image File</label>
+                <label htmlFor='file' className='block text-sm font-bold mb-2'>
+                  Upload Blog Image File
+                </label>
                 <input
                   type='file'
                   id='file'
@@ -258,6 +270,3 @@ function UpdateNews() {
 }
 
 export default UpdateNews
-
-
-
