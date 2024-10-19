@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
@@ -35,16 +34,13 @@ function MyKoi() {
   const toggleButtons = () => {
     setShowButtons(!showButtons)
   }
-
-  // Watch for length and physique changes
   const length = watch('length')
   const physique = watch('physique')
 
-  // // Calculate weight when length or physique changes
   useEffect(() => {
     if (length && physique) {
       let calculatedWeight = 0
-      const lengthCubed = Math.pow(length, 3) // length^3
+      const lengthCubed = Math.pow(length, 3)
 
       if (physique === 'Slim') {
         calculatedWeight = (1.5 * lengthCubed) / 100
@@ -91,7 +87,6 @@ function MyKoi() {
 
       const formData = new FormData()
 
-      // Append all fields to formData
       formData.append('name', data.name)
       formData.append('physique', data.physique)
       formData.append('age', data.age)
@@ -103,13 +98,11 @@ function MyKoi() {
       formData.append('breeder', data.breeder)
       formData.append('price', data.price)
       formData.append('koiPondId', data.pondId)
-      // Append the selected file (image)
       if (selectedFile) {
         formData.append('file', selectedFile)
       }
 
       console.log(data)
-      // eslint-disable-next-line no-unused-vars
       const res = await axios.post(`https://koicaresystemv3.azurewebsites.net/api/koifishs/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -225,14 +218,14 @@ function MyKoi() {
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
-          <div className='fixed lg:w-[145px] w-[110px] lg:h-14 h-9 bottom-5 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
+          <div className='fixed lg:w-[140px] w-[100px] lg:h-12 h-9 lg:bottom-7 bottom-5 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
             <p className='lg:text-3xl text-xl font-semibold pt-1 pl-3'>
               {koiCounts[localStorage.getItem('id')] !== undefined ? koiCounts[localStorage.getItem('id')] : '...'} Koi
             </p>
           </div>
 
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-            <TopLayout text='My Koi' />
+            <TopLayout text='My Koi' links='member/myKoi'/>
             <div>
               <div className='w-full flex justify-end relative'>
                 <div className='cursor-pointer' onClick={toggleButtons}>
@@ -307,7 +300,7 @@ function MyKoi() {
                     }
                   }
                 }}
-                className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 py-3'
+                className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-3 py-3'
               >
                 {kois.map((koi, index) => (
                   <motion.div
@@ -400,9 +393,9 @@ function MyKoi() {
                 </button>
               </div>
 
-              <h3 className='mb-5 text-2xl font-bold'>Add a Koi</h3>
+              <h3 className='mb-5 lg:text-2xl text-xl font-bold'>Add a Koi</h3>
               <div className='grid grid-cols-2 grid-rows-4 gap-4'>
-                <div id='file' className='mb-6 col-span-1 row-span-2 h-full flex justify-center border border-black'>
+                <div id='file' className='lg:mb-6 col-span-1 row-span-2 h-full flex justify-center border border-black'>
                   {baseImage ? (
                     <div className='pre-upload max-w-[40vw] relative max-h-[154px] w-full h-full'>
                       <img src={baseImage} alt='Preview' className='absolute w-full h-full object-cover' />
@@ -466,14 +459,14 @@ function MyKoi() {
                 <div className='relative col-span-1 '>
                   <label
                     htmlFor='name'
-                    className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                   >
                     Name
                   </label>
                   <input
                     type='text'
                     id='name'
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
                     {...register('name', {
                       required: 'Name is required',
                       maxLength: { value: 20, message: 'Name must be at most 50 characters long' }
@@ -484,16 +477,16 @@ function MyKoi() {
                   )}
                 </div>
 
-                <div className='relative col-span-1 mb-4'>
+                <div className='relative col-span-1'>
                   <label
                     htmlFor='physique'
-                    className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                   >
                     Physique
                   </label>
                   <select
                     id='physique'
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
                     {...register('physique')}
                   >
                     <option value='Normal'>Normal</option>
@@ -502,14 +495,17 @@ function MyKoi() {
                   </select>
                 </div>
 
-                <div className='relative col-span-1 mb-2 mt-2'>
-                  <label htmlFor='age' className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'>
+                <div className='relative col-span-1'>
+                  <label
+                    htmlFor='age'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                  >
                     Age
                   </label>
                   <div></div>
                   <select
                     id='age'
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
                     {...register('age')}
                   >
                     <option value={0}>Select Age</option>
@@ -529,9 +525,9 @@ function MyKoi() {
                   </select>
                 </div>
 
-                <div className='relative col-span-1 mb-2 mt-2'>
+                <div className='relative col-span-1'>
                   <label
-                    className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='length'
                   >
                     Length
@@ -540,7 +536,7 @@ function MyKoi() {
                     type='number'
                     id='length'
                     placeholder='cm'
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
                     {...register('length', {
                       required: 'Length is required',
                       max: { value: 200, message: 'Length must not exceed 200 cm' }
@@ -551,9 +547,9 @@ function MyKoi() {
                   )}
                 </div>
 
-                <div className='relative col-span-1 mb-2 mt-2'>
+                <div className='relative col-span-1'>
                   <label
-                    className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='weight'
                   >
                     Weight
@@ -562,7 +558,7 @@ function MyKoi() {
                     type='number'
                     id='weight'
                     placeholder='g'
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
                     {...register('weight', { required: 'Weight is required' })}
                   />
                   {errors.weight && (
@@ -570,16 +566,16 @@ function MyKoi() {
                   )}
                 </div>
 
-                <div className='relative col-span-1 mb-2 mt-2'>
+                <div className='relative col-span-1'>
                   <label
-                    className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='gender'
                   >
                     Gender
                   </label>
                   <select
                     id='gender'
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
                     {...register('gender', { required: false })}
                   >
                     <option value='Undefined'>Select Gender</option>
@@ -589,9 +585,9 @@ function MyKoi() {
                   </select>
                 </div>
 
-                <div className='relative col-span-1 mb-2 mt-2'>
+                <div className='relative col-span-1'>
                   <label
-                    className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='variety'
                   >
                     Variety
@@ -599,14 +595,14 @@ function MyKoi() {
                   <input
                     type='text'
                     id='variety'
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
                     {...register('variety', { required: false })}
                   />
                 </div>
 
-                <div className='relative col-span-1 mb-2 mt-2'>
+                <div className='relative col-span-1'>
                   <label
-                    className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='pondDate'
                   >
                     In Pond Date
@@ -615,14 +611,14 @@ function MyKoi() {
                     type='date'
                     id='pondDate'
                     defaultValue={new Date().toISOString().split('T')[0]}
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
                     {...register('pondDate')}
                   />
                 </div>
 
-                <div className='relative col-span-1 mb-2 mt-2'>
+                <div className='relative col-span-1'>
                   <label
-                    className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='breeder'
                   >
                     Breeder
@@ -630,14 +626,14 @@ function MyKoi() {
                   <input
                     type='text'
                     id='breeder'
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
                     {...register('breeder', { required: false })}
                   />
                 </div>
 
-                <div className='relative col-span-1 mb-2 mt-2'>
+                <div className='relative col-span-1'>
                   <label
-                    className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='price'
                   >
                     Price
@@ -646,7 +642,7 @@ function MyKoi() {
                     type='number'
                     id='price'
                     placeholder='$'
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
                     {...register('price', {
                       required: false,
                       maxLength: { value: 10, message: 'Price must be at most 10 characters long' },
@@ -657,16 +653,16 @@ function MyKoi() {
                 {errors.price && (
                   <p className='absolute -bottom-1 left-3 text-red-500 text-sm'>{errors.price.message}</p>
                 )}
-                <div className='relative col-span-1 mb-2 mt-2'>
+                <div className='relative col-span-1'>
                   <label
-                    className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='pondId'
                   >
                     Pond
                   </label>
                   <select
                     id='pondId'
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
                     {...register('pondId', { required: 'Please select a pond' })}
                   >
                     {ponds.map((pond) => (
@@ -680,9 +676,9 @@ function MyKoi() {
                   )}
                 </div>
 
-                <div className='relative col-span-1 mb-2 mt-2'>
+                <div className='relative col-span-1'>
                   <label
-                    className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
                     htmlFor='price'
                   >
                     Status
@@ -691,7 +687,7 @@ function MyKoi() {
                     type='text'
                     id='status'
                     value='Alive'
-                    className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
                     readOnly
                   />
                 </div>

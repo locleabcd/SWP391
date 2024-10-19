@@ -341,7 +341,7 @@ function Dashboard() {
       >
         <Header />
         <div className='py-5 px-[30px] mx-auto'>
-          <TopLayout text='Dashboard' />         
+          <TopLayout text='Dashboard' links='shop/dashboard'/>         
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
             {/*Summary */}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6'>
@@ -464,11 +464,11 @@ function Dashboard() {
                       nameKey="categoryName"
                       cx="50%"
                       cy="50%"
-                      outerRadius={150}   // Larger outer radius for a bigger pie
-                      innerRadius={80}     // Add inner radius for a donut chart effect
+                      outerRadius={150}   
+                      innerRadius={80}     
                       fill="#8884d8"
                       label={renderCustomizedLabel}
-                      labelLine={false}    // Remove label lines
+                      labelLine={false}    
                     >
                       {categories.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={ColorsCategory[index % ColorsCategory.length]} />

@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { PiNewspaperClipping } from 'react-icons/pi'
 import { FaTags } from 'react-icons/fa'
 import { FaRegNewspaper } from 'react-icons/fa'
@@ -89,7 +88,7 @@ function LeftSideBar() {
       <div className='relative '>
         {isClosed ? (
           <button
-            className={`absolute duration-200 ease-linear left-20 top-8 p-1 z-30 ${
+            className={`absolute duration-200 ease-linear lg:inline-block hidden lg:left-20 top-5 p-1 z-30 ${
               isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
             } `}
             onClick={() => setClosed(false)}
@@ -107,7 +106,7 @@ function LeftSideBar() {
           </button>
         ) : (
           <button
-            className={`absolute left-[260px] top-6 p-1 z-30 ${
+            className={`lg:absolute lg:left-[260px] lg:inline-block hidden lg:top-6 lg:p-1 lg:z-30 ${
               isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
             } `}
             onClick={() => setClosed(true)}
@@ -127,9 +126,9 @@ function LeftSideBar() {
       </div>
       {/* sidebar */}
       <div
-        className={`absolute top-0 left-0 z-999 flex h-screen flex-col no-scroll-bar overflow-y-auto border-r ${
+        className={`absolute top-0 left-0 z-50 flex h-screen flex-col no-scroll-bar overflow-y-auto border-r ${
           isDarkMode ? 'bg-custom-dark text-white border-gray-700' : 'bg-white text-black border-gray-200'
-        } shadow-sm duration-200 ease-linear lg:static lg:translate-x-0 ${isClosed ? 'w-[80px]' : 'w-[240px]'}`}
+        } shadow-sm duration-200 ease-linear lg:static lg:translate-x-0 ${isClosed ? 'lg:w-[80px] w-0' : 'lg:w-[240px] w-[0px]'}`}
       >
         <div className='flex justify-center items-center'>
           <button className='mt-4 rounded-md'>
@@ -183,7 +182,7 @@ function LeftSideBar() {
                 const active = isActive
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 }`
               }}
@@ -199,7 +198,7 @@ function LeftSideBar() {
             {/* News and Blogs */}
             <div>
               <button
-                className={`min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                className={`min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 } ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
                 onClick={() => setIsNewsOpen(!isNewsOpen)}
@@ -236,7 +235,7 @@ function LeftSideBar() {
                       const active = isActive
                         ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                         : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                      return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                         isClosed ? 'flex-col' : ''
                       }`
                     }}
@@ -255,7 +254,7 @@ function LeftSideBar() {
                       const active = isActive
                         ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                         : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                      return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                         isClosed ? 'flex-col' : ''
                       }`
                     }}
@@ -273,7 +272,7 @@ function LeftSideBar() {
             {/* Manage Shop  */}
             <div>
               <button
-                className={`min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                className={`min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 } ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
                 onClick={() => setIsShopOpen(!isShopOpen)}
@@ -311,7 +310,7 @@ function LeftSideBar() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                           isClosed ? 'flex-col' : ''
                         }`
                       }}
@@ -332,7 +331,7 @@ function LeftSideBar() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                           isClosed ? 'flex-col' : ''
                         }`
                       }}
@@ -353,7 +352,7 @@ function LeftSideBar() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                           isClosed ? 'flex-col' : ''
                         }`
                       }}
@@ -374,7 +373,7 @@ function LeftSideBar() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                           isClosed ? 'flex-col' : ''
                         }`
                       }}
@@ -395,7 +394,7 @@ function LeftSideBar() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                           isClosed ? 'flex-col' : ''
                         }`
                       }}
@@ -413,7 +412,7 @@ function LeftSideBar() {
             </div>
             <div>
               <button
-                className={`min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                className={`min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 } ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
                 onClick={() => setIsReportOpen(!isReportOpen)}
@@ -450,7 +449,7 @@ function LeftSideBar() {
                       const active = isActive
                         ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                         : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                      return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
                         isClosed ? 'flex-col' : ''
                       }`
                     }}
@@ -469,7 +468,7 @@ function LeftSideBar() {
                       const active = isActive
                         ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                         : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                      return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                         isClosed ? 'flex-col' : ''
                       }`
                     }}

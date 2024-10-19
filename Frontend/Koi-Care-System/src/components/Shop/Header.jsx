@@ -2,38 +2,117 @@ import { useDarkMode } from '../../hooks/DarkModeContext'
 import '../../App.css'
 import path from '../../constants/path'
 import { Link, NavLink } from 'react-router-dom'
-import { useState } from 'react'
+import { useState,useRef,useEffect } from 'react'
+import logo from '../../assets/logo.png'
+import { PiNewspaperClipping } from 'react-icons/pi'
+import { FaTags } from 'react-icons/fa'
+import { FaRegNewspaper } from 'react-icons/fa'
+import { AiFillShop } from 'react-icons/ai'
+import { FaBoxArchive } from 'react-icons/fa6'
+import { RiCoupon2Fill } from 'react-icons/ri'
+import { FaBox } from 'react-icons/fa'
+import { BiSolidCategory } from 'react-icons/bi'
+import { FaImage } from 'react-icons/fa'
+import { FaCartShopping } from 'react-icons/fa6'
+import { TbReportSearch } from 'react-icons/tb'
+import { FaMoneyBill } from 'react-icons/fa'
+import shopPathInfor from '../../constants/shopPathInfor'
 
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
-
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const [isSidebarOpen, setSidebarOpen] = useState(false)
+  const sidebarRef = useRef(null)
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const [isNewsOpen, setIsNewsOpen] = useState(() => {
+    const savedState = localStorage.getItem('isNewsOpen')
+    return savedState ? JSON.parse(savedState) : false
+  })
+
+  const [isShopOpen, setIsShopOpen] = useState(() => {
+    const savedState = localStorage.getItem('isShopOpen')
+    return savedState ? JSON.parse(savedState) : false
+  })
+
+  const [isReportOpen, setIsReportOpen] = useState(() => {
+    const savedState = localStorage.getItem('isReportOpen')
+    return savedState ? JSON.parse(savedState) : false
+  })
+
+  useEffect(() => {
+    localStorage.setItem('isNewsOpen', JSON.stringify(isNewsOpen))
+  }, [isNewsOpen])
+
+  useEffect(() => {
+    localStorage.setItem('isReportOpen', JSON.stringify(isReportOpen))
+  }, [isReportOpen])
+
+  useEffect(() => {
+    localStorage.setItem('isShopOpen', JSON.stringify(isShopOpen))
+  }, [isShopOpen])
+
+
+  useEffect(() => {
+    if (!isSidebarOpen) return
+
+    const handleClickOutside = (event) => {
+      if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
+        setSidebarOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isSidebarOpen])
 
   const toggleList = () => {
     setIsOpen(!isOpen)
+  }
+
+  const toggleSearch = () => {
+    setIsSearchOpen(!isSearchOpen)
   }
 
   const handleLogout = () => {
     localStorage.clear()
   }
 
+  const filteredPaths = shopPathInfor.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
   const name = localStorage.getItem('name')
   const role = localStorage.getItem('role')
 
   return (
     <div
-      className={`${
-        isDarkMode
-          ? 'bg-custom-dark text-white border-b border-gray-700'
-          : 'bg-white text-black border-b border-gray-200'
-      } sticky top-0 p-3 justify-end z-20 flex w-full duration-200 ease-linear`}
+    className={`${
+      isDarkMode
+        ? 'bg-custom-dark text-white border-b border-gray-700'
+        : 'bg-white text-black border-b border-gray-200'
+    } sticky top-0 lg:p-3 py-3 lg:justify-end justify-between z-20 flex w-full duration-200 ease-linear`}
     >
+      <button className='ml-2 lg:hidden inline-block cursor-pointer'>
+        <svg
+          xmlns='http://www.w3.org/2000/svg'
+          fill='none'
+          viewBox='0 0 24 24'
+          strokeWidth={1.5}
+          stroke='currentColor'
+          className='size-7 '
+          onClick={() => setSidebarOpen(true)}
+        >
+          <path strokeLinecap='round' strokeLinejoin='round' d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5' />
+        </svg>
+      </button>
       <div className='flex items-center justify-end ml-4'>
         <div className='mr-4 flex justify-center items-center gap-2'>
           <button
             className={`${
               isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
-            } p-[16px] rounded-full`}
+            } lg:p-[16px] p-[12px] rounded-full`}
           >
             <span className='cn8jz'>Search</span>
             <svg
@@ -42,22 +121,10 @@ function Header() {
               height={16}
               viewBox='0 0 16 16'
               xmlns='http://www.w3.org/2000/svg'
+              onClick={toggleSearch}
             >
               <path d='M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7ZM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5Z' />
               <path d='m13.314 11.9 2.393 2.393a.999.999 0 1 1-1.414 1.414L11.9 13.314a8.019 8.019 0 0 0 1.414-1.414Z' />
-            </svg>
-          </button>
-
-          <button
-            type='button'
-            data-dropdown-toggle='notification-dropdown'
-            className={`${
-              isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
-            } p-[12px] rounded-full`}
-          >
-            <span className='sr-only'>View notifications</span>
-            <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'>
-              <path d='M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z' />
             </svg>
           </button>
 
@@ -130,11 +197,11 @@ function Header() {
             </button>
             {isOpen && (
               <div
-                className={`absolute right-10 z-10 w-44 border border-gray-300 shadow-lg ${
+                className={`absolute right-10 z-10 w-40 border border-gray-300 shadow-lg ${
                   isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
                 }`}
               >
-                <NavLink to={path.profileShop} end className=' px-4 py-2 hover:bg-gray-100 flex items-center '>
+                <NavLink to={path.profileShop} end className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -151,24 +218,8 @@ function Header() {
                   </svg>
                   <span>My Profile</span>
                 </NavLink>
-                <NavLink to={path.shopCart} className=' px-4 py-2 hover:bg-gray-100 flex items-center'>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth='1.5'
-                    stroke='currentColor'
-                    className='size-8 mr-2'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
-                    />
-                  </svg>
-                  <span>Shop Cart</span>
-                </NavLink>
-                <Link onClick={handleLogout} to={path.login} className='px-4 py-2 hover:bg-gray-100 flex items-center'>
+                <Link onClick={handleLogout} to={path.login} 
+                  className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
@@ -190,6 +241,395 @@ function Header() {
           </div>
         </div>
       </div>
+
+      <div
+        ref={sidebarRef}
+        className={`fixed top-0 left-0 h-full md:w-1/3 w-3/5 lg:w-0 transform  ${
+          isSidebarOpen ? `translate-x-0 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}` : '-translate-x-full'
+        } transition-transform duration-300 z-50 overflow-y-auto no-scroll-bar`}
+      >
+        <div className='flex justify-center items-center'>
+          <button className='mt-4 rounded-md'>
+            <img className='w-14 animate-slow-spin' src={logo} alt='Logo' />
+          </button>
+          
+            <a href='#' className='mt-3 text-xl font-bold'>
+              Koi Care System
+            </a>
+          
+        </div>
+
+        <div className='flex flex-col justify-center items-center lg:mt-6 mt-3 duration-200'>
+          <div className=''>
+            <NavLink
+              to={path.dashboardShop}
+              end
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <svg
+                  xmlns='http://www.w3.org/2000/svg'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  strokeWidth='1.5'
+                  stroke='currentColor'
+                  className='w-7 mr-3'
+                >
+                  <path
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    d='M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z'
+                  />
+                </svg>
+
+                <span className='font-semibold'>Dashboard</span>
+              </div>
+            </NavLink>
+
+            <NavLink
+              to={path.viewUser}
+              end
+              className={({ isActive }) => {
+                const active = isActive
+                  ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                  : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
+              }}
+            >
+              <div className='flex items-center'>
+                <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='w-7 mr-3'>
+                  <path d='M4.5 6.375a4.125 4.125 0 1 1 8.25 0 4.125 4.125 0 0 1-8.25 0ZM14.25 8.625a3.375 3.375 0 1 1 6.75 0 3.375 3.375 0 0 1-6.75 0ZM1.5 19.125a7.125 7.125 0 0 1 14.25 0v.003l-.001.119a.75.75 0 0 1-.363.63 13.067 13.067 0 0 1-6.761 1.873c-2.472 0-4.786-.684-6.76-1.873a.75.75 0 0 1-.364-.63l-.001-.122ZM17.25 19.128l-.001.144a2.25 2.25 0 0 1-.233.96 10.088 10.088 0 0 0 5.06-1.01.75.75 0 0 0 .42-.643 4.875 4.875 0 0 0-6.957-4.611 8.586 8.586 0 0 1 1.71 5.157v.003Z' />
+                </svg>
+                <span className='font-semibold'>Manage User</span>
+              </div>
+            </NavLink>
+            {/* sidebar items  */}
+            {/* News and Blogs */}
+            <div>
+              <button
+                className={`min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center
+                 ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
+                onClick={() => setIsNewsOpen(!isNewsOpen)}
+              >
+                <div className='flex items-center'>
+                  <div className='w-7 h-7 mr-3'>
+                    <FaRegNewspaper className='w-full h-full' />
+                  </div>
+                    <span className='flex items-center'>
+                      <p className='font-semibold'>Manage News</p>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 24 24'
+                        fill='currentColor'
+                        className='size-5 ml-2 mt-1'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
+                    </span>
+                </div>
+              </button>
+
+              {isNewsOpen && (
+                <div className=''>
+                  <NavLink
+                    to={path.shopNews}
+                    className={({ isActive }) => {
+                      const active = isActive
+                        ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                        : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                      return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                    }}
+                  >
+                    <div className='flex items-center'>
+                      <div className='w-7 h-7 mr-3'>
+                        <PiNewspaperClipping className='w-full h-full' />
+                      </div>
+                      <span className='font-semibold'>News</span>
+                    </div>
+                  </NavLink>
+
+                  <NavLink
+                    to={path.tag}
+                    className={({ isActive }) => {
+                      const active = isActive
+                        ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                        : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                      return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                    }}
+                  >
+                    <div className='flex items-center'>
+                      <div className='w-7 h-7 mr-3'>
+                        <FaTags className='w-full h-full' />
+                      </div>
+                      <span className='font-semibold'>Tag</span>
+                    </div>
+                  </NavLink>
+                </div>
+              )}
+            </div>
+            {/* Manage Shop  */}
+            <div>
+              <button
+                className={`min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center  ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
+                onClick={() => setIsShopOpen(!isShopOpen)}
+              >
+                <div className='flex items-center'>
+                  <div className='w-7 h-7 mr-3'>
+                    <AiFillShop className='w-full h-full' />
+                  </div>
+                  
+                    <span className='flex items-center'>
+                      <p className='font-semibold'>Manage Shop</p>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 24 24'
+                        fill='currentColor'
+                        className='size-5 ml-2 mt-1'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
+                    </span>
+                  
+                </div>
+              </button>
+
+              {isShopOpen && (
+                <div>
+                  <div className=''>
+                    <NavLink
+                      to={path.supplier}
+                      className={({ isActive }) => {
+                        const active = isActive
+                          ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                          : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                      }}
+                    >
+                      <div className='flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
+                          <FaBoxArchive className='w-full h-full' />
+                        </div>
+                        <span className='font-semibold'>Supplier</span>
+                      </div>
+                    </NavLink>
+                  </div>
+
+                  <div className=''>
+                    <NavLink
+                      to={path.promotion}
+                      className={({ isActive }) => {
+                        const active = isActive
+                          ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                          : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center `
+                      }}
+                    >
+                      <div className='flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
+                          <RiCoupon2Fill className='w-full h-full' />
+                        </div>
+                         <span className='font-semibold'>Promotion</span>
+                      </div>
+                    </NavLink>
+                  </div>
+
+                  <div className=''>
+                    <NavLink
+                      to={path.category}
+                      className={({ isActive }) => {
+                        const active = isActive
+                          ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                          : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center `
+                      }}
+                    >
+                      <div className='flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
+                          <BiSolidCategory className='w-full h-full' />
+                        </div>
+                        <span className='font-semibold'>Category</span>
+                      </div>
+                    </NavLink>
+                  </div>
+
+                  <div className=''>
+                    <NavLink
+                      to={path.productImage}
+                      className={({ isActive }) => {
+                        const active = isActive
+                          ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                          : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                      }}
+                    >
+                      <div className='flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
+                          <FaImage className='w-full h-full' />
+                        </div>
+                        <span className='font-semibold'>Images</span>
+                      </div>
+                    </NavLink>
+                  </div>
+
+                  <div className=''>
+                    <NavLink
+                      to={path.product}
+                      className={({ isActive }) => {
+                        const active = isActive
+                          ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                          : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                      }}
+                    >
+                      <div className='flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
+                          <FaBox className='w-full h-full' />
+                        </div>
+                        <span className='font-semibold'>Product</span>
+                      </div>
+                    </NavLink>
+                  </div>
+                </div>
+              )}
+            </div>
+            <div>
+              <button
+                className={`min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center  ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
+                onClick={() => setIsReportOpen(!isReportOpen)}
+              >
+                <div className='flex items-center'>
+                  <div className='w-7 h-7 mr-3'>
+                    <TbReportSearch className='w-full h-full' />
+                  </div>
+                  
+                    <span className='flex items-center'>
+                      <p className='font-semibold'>Manage Report</p>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        viewBox='0 0 24 24'
+                        fill='currentColor'
+                        className='size-5 ml-2 mt-1'
+                      >
+                        <path
+                          fillRule='evenodd'
+                          d='M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
+                    </span>
+                  
+                </div>
+              </button>
+
+              {isReportOpen && (
+                <div className=''>
+                  <NavLink
+                    to={path.orderShop}
+                    className={({ isActive }) => {
+                      const active = isActive
+                        ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                        : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                      return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center `
+                    }}
+                  >
+                    <div className='flex items-center'>
+                      <div className='w-7 h-7 mr-3'>
+                        <FaCartShopping className='w-full h-full' />
+                      </div>
+                      <span className='font-semibold'>Manage Order</span>
+                    </div>
+                  </NavLink>
+
+                  <NavLink
+                    to={path.paymentShop}
+                    className={({ isActive }) => {
+                      const active = isActive
+                        ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                        : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                      return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                    }}
+                  >
+                    <div className='flex items-center'>
+                      <div className='w-7 h-7 mr-3'>
+                        <FaMoneyBill className='w-full h-full' />
+                      </div>
+                      <span className='font-semibold'>Manage Payment</span>
+                    </div>
+                  </NavLink>
+                </div>
+              )}
+            </div>
+            <Link
+              onClick={handleLogout}
+              to={path.login}
+              className='px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center border-t absolute inset-x-0 bottom-0 w-full'
+            >
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth='1.5'
+                stroke='currentColor'
+                className='size-8 mr-2'
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15'
+                />
+              </svg>
+              <span>Logout</span>
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {isSearchOpen && (
+        <div className={`absolute top-16 left-[8vh] md:top-[2vh] md:left-[134vh] z-50 mt-2 ${
+          isDarkMode ? ' text-gray-200' : ' text-gray-800'
+        }`}>
+          <input
+            type='text'
+            placeholder='Search Here'
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className={`p-2 rounded-lg border ${
+              isDarkMode ? ' bg-gray-800 text-gray-200' : ' bg-white text-gray-800'
+            }`}
+          />
+          {filteredPaths.length > 0 && (
+            <ul className={`absolute z-50 border border-gray-300 rounded mt-1 w-full max-h-40 overflow-x-auto no-scroll-bar ${
+              isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
+            }`}>
+              {filteredPaths.map(item => (
+                <li key={item.id}>
+                  <NavLink
+                    to={item.link}
+                    className={`block px-4 py-2 rounded ${
+                      isDarkMode ? 'text-gray-200 hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-200'
+                    }`}
+                  >
+                    {item.name}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      )}
     </div>
   )
 }

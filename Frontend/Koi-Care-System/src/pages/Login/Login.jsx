@@ -50,7 +50,7 @@ function Login() {
             navigate('/admin')
             break
           case 'SHOP':
-            navigate('/shop')
+            navigate('/shop/dashboard')
             break
           case 'MEMBER':
             navigate('/member/dashboard')

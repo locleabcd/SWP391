@@ -33,10 +33,11 @@ function Dashboard() {
         }
       })
 
-      setPayment(res.data.data)
-      console.log(res.data.data)
+      const topPayments = res.data.data.slice(0, 5)
+      setPayment(topPayments)
+      console.log(topPayments)
     } catch (error) {
-      console.error('Error fetching water parameters:', error)
+      console.error('Error fetching payments:', error)
     }
   }
 
@@ -226,30 +227,32 @@ function Dashboard() {
 
             <div className='grid lg:grid-cols-5 md:grid-cols-3 grid-cols-1 mt-10 px-2 gap-10'>
               <div className='flex flex-col rounded-lg items-center py-8 justify-center bg-yellow-100'>
-                <GiAquarium className='size-20 p-5 rounded-full text-white bg-yellow-500' />
-                <div className='text-2xl mt-3'>Ponds</div>
-                <div className='text-2xl mt-1'>{ponds.length}</div>
+                <GiAquarium
+                  className={`size-20 p-5 rounded-full ${isDarkMode ? 'text-black' : 'text-white'} bg-yellow-500`}
+                />
+                <div className={`${isDarkMode ? 'text-black' : ''} text-2xl mt-3`}>Ponds</div>
+                <div className={`text-2xl mt-1 ${isDarkMode ? 'text-black' : ''}`}>{ponds.length}</div>
               </div>
               <div className='flex flex-col rounded-lg items-center py-8 justify-center bg-gray-100'>
                 <IoFishOutline className='size-20 p-5 rounded-full bg-blue-400 text-white' />
-                <div className='text-2xl mt-3'>Koi</div>
-                <div className='text-2xl mt-1'>{koi?.length}</div>
+                <div className={`${isDarkMode ? 'text-black' : ''} text-2xl mt-3`}>Koi</div>
+                <div className={`text-2xl mt-1 ${isDarkMode ? 'text-black' : ''}`}>{koi?.length}</div>
               </div>
               <div className='flex flex-col rounded-lg items-center py-8 justify-center bg-pink-100'>
                 <IoIosWater className='size-20 p-5 rounded-full bg-pink-500 text-white' />
-                <div className='text-2xl mt-3'>Parameters</div>
-                <div className='text-2xl mt-1'>{parameters?.length}</div>
+                <div className={`${isDarkMode ? 'text-black' : ''} text-2xl mt-3`}>Parameters</div>
+                <div className={`text-2xl mt-1 ${isDarkMode ? 'text-black' : ''}`}>{parameters?.length}</div>
               </div>
               <div className='flex flex-col rounded-lg items-center py-8 justify-center bg-orange-100'>
                 <LuAlarmClock className='size-20 p-5 rounded-full text-white bg-orange-500' />
-                <div className='text-2xl mt-3'>Reminders</div>
-                <div className='text-2xl mt-1'>0</div>
+                <div className={`${isDarkMode ? 'text-black' : ''} text-2xl mt-3`}>Reminders</div>
+                <div className={`text-2xl mt-1 ${isDarkMode ? 'text-black' : ''}`}>0</div>
               </div>
 
               <div className='flex flex-col rounded-lg border border-gray-200 bg-green-100 items-center py-8 justify-center'>
                 <MdOutlinePayments className='size-20 rounded-full text-white bg-green-500 p-5' />
-                <div className='text-2xl mt-3'>Orders</div>
-                <div className='text-2xl mt-1'>{orders?.length}</div>
+                <div className={`${isDarkMode ? 'text-black' : ''} text-2xl mt-3`}>Orders</div>
+                <div className={`text-2xl mt-1 ${isDarkMode ? 'text-black' : ''}`}>{orders?.length}</div>
               </div>
             </div>
 
@@ -271,26 +274,27 @@ function Dashboard() {
 
             <div className='mt-10 grid lg:grid-cols-7 grid-cols-1 gap-14'>
               <div className='lg:col-span-3 border border-gray-200 px-6 py-6'>
-                <div className='lg:text-2xl text-xl font-semibold mb-3'>Recent Transaction</div>
-                <div className='flex justify-center flex-col px-10'>
+                <div className='lg:text-2xl text-lg font-semibold mb-3'>Recent Transaction</div>
+                <div className='flex justify-center flex-col lg:px-10 px-5'>
                   {payment.map((payments, index) => (
-                    <div className='flex gap-7 mt-4' key={payments.orderId}>
-                      <div className='flex'>{date[index]}</div>
+                    <div className='flex lg:gap-7 gap-3 mt-4' key={payments.orderId}>
+                      <div className='flex lg:text-lg text-sm'>{date[index]}</div>
                       <div className='flex flex-col gap-3 items-center'>
                         {index === 0 && <span className='size-6 border-4 border-blue-500 rounded-full' />}
                         {index === 1 && <span className='size-6 border-4 border-purple-500 rounded-full' />}
                         {index === 2 && <span className='size-6 border-4 border-red-500 rounded-full' />}
                         {index === 3 && <span className='size-6 border-4 border-green-500 rounded-full' />}
                         {index === 4 && <span className='size-6 border-4 border-purple-500 rounded-full' />}
-                        {index === 5 && <span className='size-6 border-4 border-pink-500 rounded-full' />}
-
-                        {index !== payment.length - 1 && <span className='w-0.5 h-12 bg-gray-300' />}
+                        {index !== payment.slice(0, 5).length - 1 && <span className='w-0.5 h-12 bg-gray-300' />}
                       </div>
                       <div className='flex flex-col'>
-                        <div className=''>Transaction Code: {payments.transactionCode}</div>
-                        <div className=''>
+                        <div className='lg:text-lg text-xs'>Transaction Code: {payments.transactionCode}</div>
+                        <div className='lg:text-lg text-xs'>
                           Amount:{' '}
-                          {(payments?.amount ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                          {(payments?.amount ?? 0).toLocaleString('vi-VN', {
+                            style: 'currency',
+                            currency: 'VND'
+                          })}
                         </div>
                       </div>
                     </div>
@@ -300,7 +304,10 @@ function Dashboard() {
               <div className='lg:col-span-4 border border-gray-200 px-5 py-6'>
                 <div className='flex flex-col items gap-4 lg:flex-row justify-between'>
                   <div className='lg:text-2xl text-xl font-semibold'>Payment Details</div>
-                  <select className='text-xl border border-gray-200 py-1 rounded-lg' onChange={handleChange}>
+                  <select
+                    className={`${isDarkMode ? 'bg-custom-dark' : 'bg-white'} lg:text-xl text-base border lg:p-3 px-3 py-2 border-gray-200 rounded-lg`}
+                    onChange={handleChange}
+                  >
                     <option value=''>Transaction Code</option>
                     {payment.map((payments) => (
                       <option key={payments.orderId} value={payments.orderId}>
@@ -316,7 +323,7 @@ function Dashboard() {
                       <tr className=''>
                         <th
                           scope='col'
-                          className='px-8 py-3 text-start text-gray-500 text-xl font-bold uppercase tracking-wider'
+                          className='px-8 py-3 text-start text-gray-500 lg:text-xl text-basefont-bold uppercase tracking-wider'
                         >
                           Product
                         </th>
@@ -346,9 +353,11 @@ function Dashboard() {
                                 className='mx-auto lg:w-[120px] lg:h-[120px] w-[90px] h-[90px] rounded-lg border border-gray-200'
                               />
                             </div>
-                            <div className='flex flex-col justify-start items-start'>
-                              <div className='text-start font-semibold lg:text-xl text-lg'>{order.productName}</div>
-                              <div className='mt-2'>{order.category}</div>
+                            <div className='flex flex-col lg:m-0 justify-start items-start'>
+                              <div className='text-start sm:text-wrap font-semibold lg:text-xl text-base sm:w-40 lg:border-none border-r border-gray-200'>
+                                {order.productName}
+                              </div>
+                              <div className='mt-2 lg:text-xl text-xs'>{order.category}</div>
                             </div>
                           </td>
 

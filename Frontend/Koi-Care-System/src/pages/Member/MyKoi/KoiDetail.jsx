@@ -38,6 +38,15 @@ function KoiDetails() {
   const [currentRemark, setCurrentRemark] = useState(null)
   const [isAddRemarkFormVisible, setIsAddRemarkFormVisible] = useState(false)
   const [isEditRemarkFormVisible, setIsEditRemarkFormVisible] = useState(false)
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+
+  const handleImageClick = () => {
+    setIsImagePopupOpen(true);
+  }
+
+  const closePopup = () => {
+    setIsImagePopupOpen(false);
+  }
 
   const {
     register,
@@ -46,7 +55,11 @@ function KoiDetails() {
     reset,
     watch,
     setValue
-  } = useForm()
+  } = useForm({
+    defaultValues: {
+      length: 0,
+    }
+  });
 
   const length = watch('length')
   const physique = watch('physique')
@@ -93,12 +106,12 @@ function KoiDetails() {
   }
 
   const toggleCloseGrowthForm = () => {
-    setIsEditGrowthFormVisible(!isEditGrowthFormVisible)
-    setIsAddGrowthFormVisible(false)
-    setCurrentGrowth(null)
-    setBaseImage(null)
-    reset(growth)
-  }
+    setIsEditGrowthFormVisible(!isEditGrowthFormVisible);
+    setIsAddGrowthFormVisible(false);
+    setCurrentGrowth(null);
+    setBaseImage(null);
+    reset({}); 
+  };
 
   const toggleEditGrowthFormVisibility = (growth) => {
     if (growth) {
@@ -552,11 +565,12 @@ function KoiDetails() {
                   } flex rounded-xl shadow-lg lg:w-[50%] `}
                 >
                   {/* Image section */}
-                  <div className='lg:h-64 h-48 lg:w-[50%] w-[40%] rounded-l-xl overflow-hidden'>
+                  <div className='lg:h-full h-48 lg:w-[50%] w-[40%] rounded-l-xl overflow-hidden'>
                     <img
-                      className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105'
+                      className='w-full h-full object-cover transition-transform duration-300 transform hover:scale-105 cursor-pointer'
                       src={koi.imageUrl}
                       alt={koi.name}
+                      onClick={handleImageClick}
                     />
                   </div>
 
@@ -586,7 +600,7 @@ function KoiDetails() {
                     </div>
                     <div className='flex justify-between gap-4 bg-gray-400 rounded-2xl p-3'>
                       <div className='text-center lg:text-lg text-xs'>
-                        <h1 className='text-red-500 font-semibold lg:text-lg text-xs'>Age</h1>
+                        <h1 className='text-red-500 font-semibold lg:text-lg text-xs'>Age</h1>{' '}
                         <p className='text-sm'>{koi.age ? `${koi.age} years` : 'N/A'}</p>
                       </div>
                       <div className='text-center lg:text-lg text-xs'>
@@ -602,6 +616,26 @@ function KoiDetails() {
                 </div>
               )}
 
+              {isImagePopupOpen && (
+                <div
+                  className='fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50'
+                  onClick={closePopup}
+                >
+                  <div className='relative'>
+                    <img
+                      src={koi.imageUrl}
+                      alt={koi.name}
+                      className=' w-[90vh] object-contain'
+                    />
+                    <button
+                      className='absolute top-4 right-4 text-white text-3xl font-bold'
+                      onClick={closePopup}
+                    >
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* Koi description */}
               {koi && (
                 <div
@@ -611,17 +645,19 @@ function KoiDetails() {
                 >
                   <h2 className='font-bold text-center lg:text-xl text-lg mb-2'>Koi Description</h2>
                   <p className='lg:mb-4 mb-2 lg:text-lg text-xs '>
-                    <strong>{koi.name || 'Unnamed Koi'}</strong> with size <strong>{koi.physique || 'Unknown'}</strong>{' '}
-                    has been swimming in the pond "<strong>{koi.koiPond?.name || 'No pond information'}</strong>" since{' '}
+                    2 10 <strong>{koi.name || 'Unnamed Koi'}</strong> with size{' '}
+                    <strong>{koi.physique || 'Unknown'}</strong> has been swimming in the pond "
+                    <strong>{koi.koiPond?.name || 'No pond information'}</strong>" since{' '}
                     <strong>{formatDate(koi.pondDate) || 'Unknown Date'}</strong>.
                   </p>
                   <p className='lg:mb-4 mb-2 lg:text-lg text-xs '>
-                    <strong>{koi.name || 'Unnamed Koi'}</strong> was bought for{' '}
+                    2 10 <strong>{koi.name || 'Unnamed Koi'}</strong> was bought for{' '}
                     <strong>{koi.price ? `${koi.price}€` : 'Unknown Price'}</strong> and was bred by{' '}
                     <strong>{koi.breeder || 'Unknown Breeder'}</strong>.
                   </p>
                   <p className='mb-2 lg:text-lg text-xs '>
-                    <strong>{koi.name || 'Unnamed Koi'}</strong> was <strong>{koi.status || 'Unknown Status'}</strong>.
+                    2 10 <strong>{koi.name || 'Unnamed Koi'}</strong> was{' '}
+                    <strong>{koi.status || 'Unknown Status'}</strong>.
                   </p>
                 </div>
               )}
@@ -639,7 +675,7 @@ function KoiDetails() {
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
                     stroke='currentColor'
-                    className='w-8 h-8 text-red-500 cursor-pointer'
+                    className='w-8 h-8 text-blue-500 cursor-pointer'
                     onClick={toggleAddGrowthFormVisibility}
                   >
                     <path
@@ -651,37 +687,57 @@ function KoiDetails() {
                 </div>
 
                 {growth.length > 0 ? (
-                  growth.map((g, index) => (
-                    <div
-                      key={index}
-                      className={`flex items-center rounded-lg mb-4 max-h-28 overflow-hidden cursor-pointer ${
-                        isDarkMode ? 'text-white bg-slate-700' : 'text-black bg-white'
-                      }`}
-                      onClick={() => {
-                        toggleEditGrowthFormVisibility(g)
-                        reset(g)
-                      }}
-                    >
-                      <div className='w-2/5 rounded-l-lg overflow-hidden'>
-                        <img
-                          src={g.imageUrl}
-                          alt={`Growth ${index + 1}`}
-                          className='w-full h-full object-cover min-w-[200px]'
-                        />
+                  growth.map((g, index) => {
+                    const prevGrowth = index > 0 ? growth[index - 1] : null;
+                    const lengthChange = prevGrowth
+                      ? ((g.length - prevGrowth.length) / prevGrowth.length) * 100
+                      : null;
+                    const weightChange = prevGrowth
+                      ? ((g.weight - prevGrowth.weight) / prevGrowth.weight) * 100
+                      : null;
+
+                    return (
+                      <div
+                        key={index}
+                        className={`flex border items-center rounded-lg mb-4 max-h-28 overflow-hidden cursor-pointer ${
+                          isDarkMode ? 'text-white bg-slate-700' : 'text-black bg-white'
+                        }`}
+                        onClick={() => {
+                          toggleEditGrowthFormVisibility(g);
+                          reset(g);
+                        }}
+                      >
+                        <div className='w-2/5 rounded-l-lg overflow-hidden'>
+                          <img
+                            src={g.imageUrl}
+                            alt={`Growth ${index + 1}`}
+                            className='w-full h-full object-cover min-w-[200px]'
+                          />
+                        </div>
+                        <div className='w-3/5 pl-4'>
+                          <p className='mb-2'>
+                            <strong>Date:</strong> {formatDate(g.createDate)}
+                          </p>
+                          <p className='mb-2'>
+                            <strong>Length:</strong> {g.length} cm
+                            {prevGrowth && (
+                              <span className={`ml-2 ${lengthChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                                ({lengthChange >= 0 ? '+' : ''}{lengthChange.toFixed(2)}%)
+                              </span>
+                            )}
+                          </p>
+                          <p className='mb-2'>
+                            <strong>Weight:</strong> {g.weight} g
+                            {prevGrowth && (
+                              <span className={`ml-2 ${weightChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                                ({weightChange >= 0 ? '+' : ''}{weightChange.toFixed(2)}%)
+                              </span>
+                            )}
+                          </p>
+                        </div>
                       </div>
-                      <div className='w-3/5 pl-4'>
-                        <p className='mb-2'>
-                          <strong>Date:</strong> {formatDate(g.createDate)}
-                        </p>
-                        <p className='mb-2'>
-                          <strong>Length:</strong> {g.length} cm
-                        </p>
-                        <p className='mb-2'>
-                          <strong>Weight:</strong> {g.weight} g
-                        </p>
-                      </div>
-                    </div>
-                  ))
+                    );
+                  })
                 ) : (
                   <p className='text-center text-sm text-gray-500'>No growth history available</p>
                 )}
@@ -697,7 +753,7 @@ function KoiDetails() {
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
                     stroke='currentColor'
-                    className='w-8 h-8 text-red-500 cursor-pointer'
+                    className='w-8 h-8 text-blue-500 cursor-pointer'
                     onClick={toggleAddRemarkFormVisibility}
                   >
                     <path
@@ -837,7 +893,7 @@ function KoiDetails() {
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='name'
-                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[6px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         Name
                       </label>
@@ -851,7 +907,7 @@ function KoiDetails() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute font-medium lg:text-md text-xs lg:-top-[8px] -top-[6px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                         htmlFor='physique'
                       >
                         Physique
@@ -868,7 +924,7 @@ function KoiDetails() {
                     <div className='relative col-span-1'>
                       <label
                         htmlFor='age'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute  font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         Age
                       </label>
@@ -895,7 +951,7 @@ function KoiDetails() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                         htmlFor='gender'
                       >
                         Gender
@@ -915,7 +971,7 @@ function KoiDetails() {
                     <div className='relative col-span-1'>
                       <label
                         htmlFor='variety'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         Variety
                       </label>
@@ -929,7 +985,7 @@ function KoiDetails() {
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='pondDate'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         In pond since
                       </label>
@@ -945,7 +1001,7 @@ function KoiDetails() {
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='breeder'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         Breeder
                       </label>
@@ -960,7 +1016,7 @@ function KoiDetails() {
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='price'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         Price
                       </label>
@@ -975,7 +1031,7 @@ function KoiDetails() {
                     <div className='relative col-span-1 '>
                       <label
                         htmlFor='status'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         Status
                       </label>
@@ -991,7 +1047,7 @@ function KoiDetails() {
                     </div>
                     <div className='relative col-span-1 mt-[1.5px]'>
                       <label
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                         htmlFor='pondId'
                       >
                         Pond
@@ -1143,7 +1199,7 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='growthDate'
-                        className='absolute lg:text-md text-lg font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Date
                       </label>
@@ -1159,7 +1215,7 @@ function KoiDetails() {
                     {/* Physique input */}
                     <div className='relative'>
                       <label
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                         htmlFor='physique'
                       >
                         Physique
@@ -1180,7 +1236,7 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='length'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Length (cm)
                       </label>
@@ -1196,7 +1252,7 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='weight'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Weight (g)
                       </label>
@@ -1208,7 +1264,6 @@ function KoiDetails() {
                       />
                     </div>
 
-                    {/* Hidden koiFishId input */}
                     <div className='relative'>
                       <input
                         type='hidden'
@@ -1331,7 +1386,7 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='growthDate'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Date
                       </label>
@@ -1347,7 +1402,7 @@ function KoiDetails() {
                     {/* Physique input */}
                     <div className='relative'>
                       <label
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                         htmlFor='physique'
                       >
                         Physique
@@ -1368,7 +1423,7 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='length'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Length (cm)
                       </label>
@@ -1384,7 +1439,7 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='weight'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Weight (g)
                       </label>
@@ -1466,7 +1521,7 @@ function KoiDetails() {
                     <div className='relative col-span-2'>
                       <label
                         htmlFor='title'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Title
                       </label>
@@ -1482,7 +1537,7 @@ function KoiDetails() {
                     <div className='relative col-span-2'>
                       <label
                         htmlFor='note'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Note
                       </label>
@@ -1498,7 +1553,7 @@ function KoiDetails() {
                     <div className='relative col-span-2'>
                       <label
                         htmlFor='createDate'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Date
                       </label>
@@ -1566,7 +1621,7 @@ function KoiDetails() {
                     <div className='relative col-span-2'>
                       <label
                         htmlFor='title'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Title
                       </label>
@@ -1582,7 +1637,7 @@ function KoiDetails() {
                     <div className='relative col-span-2'>
                       <label
                         htmlFor='note'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Note
                       </label>
@@ -1598,7 +1653,7 @@ function KoiDetails() {
                     <div className='relative col-span-2'>
                       <label
                         htmlFor='createDate'
-                        className='absolute text-md font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
                       >
                         Date
                       </label>

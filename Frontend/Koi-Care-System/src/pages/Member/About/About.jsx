@@ -45,7 +45,7 @@ function About() {
         <Header />
 
         <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-          <TopLayout text='About' />
+          <TopLayout text='About' links='member/about'/>
 
           {/* Team Members Section */}
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 mt-8'>

@@ -50,7 +50,7 @@ function Supplier() {
       setSuppliers(res.data.data)
       console.log(res.data.data)
     } catch (error) {
-      console.log('Error fetching tags:', error)
+      console.log('Error fetching suppliers:', error)
     }
   }
 
@@ -74,7 +74,7 @@ function Supplier() {
           Authorization: `Bearer ${token}`
         }
       })
-      toast.success('Tag deleted successfully')
+      toast.success('Supplier deleted successfully')
       getSupplier()
     } catch (error) {
       console.error('Error deleting Supplier:', error)
@@ -103,7 +103,7 @@ function Supplier() {
           </Link>
           <button
             className='p-1 hover:bg-red-500 text-red-600 hover:text-white rounded-full'
-            onClick={() => deleteTag(params.row.id)}
+            onClick={() => deleteSupplier(params.row.id)}
           >
             <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-5'>
               <path
@@ -129,7 +129,7 @@ function Supplier() {
         >
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-            <TopLayout text='Supplier' />
+            <TopLayout text='Supplier' links='shop/supplier'/>
             <div className='w-full flex justify-between items-center relative'>
               <button
                 className='py-2 mb-4 px-3 bg-custom-left-bar text-white hover:bg-blue-600 rounded-md'

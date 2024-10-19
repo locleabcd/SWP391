@@ -136,7 +136,7 @@ function ProductImage() {
         >
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-            <TopLayout text='Product Images' />
+            <TopLayout text='Product Images' links='shop/productImage'/>
             <div className='w-full flex justify-between items-center relative'>
               <button
                 className='cursor-pointer mb-4 py-2 px-3 bg-custom-left-bar text-white hover:bg-blue-600 rounded-md'

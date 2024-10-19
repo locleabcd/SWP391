@@ -213,7 +213,7 @@ function Product() {
       >
         <Header />
         <div className='py-5 px-8 mx-auto'>
-          <TopLayout text='Products' />
+          <TopLayout text='Products' links='shop/product'/>
           <div className='w-full flex justify-between items-center relative'>
             <div className='cursor-pointer'>
               <button

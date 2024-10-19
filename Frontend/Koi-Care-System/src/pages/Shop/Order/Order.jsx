@@ -92,6 +92,12 @@ function Order() {
   }, [])
 
   const updateDelivery = async (id) => {
+    const orderToUpdate = orders.find(order => order.id === id);
+  
+    if (orderToUpdate.status !== 'PROCESSING') {
+      toast.warning('You can only update delivery for orders with the status PROCESSING.')
+      return
+    }
     const isConfirmed = window.confirm('Are you sure to update status delivery')
     if (!isConfirmed) {
       return
@@ -165,7 +171,7 @@ function Order() {
             statusClasses += ' border-red-500 text-red-500'
             break
           default:
-            statusClasses += ' border-gray-500 text-gray-500' // Default case for unexpected status
+            statusClasses += ' border-gray-500 text-gray-500' 
         }
 
         return (
@@ -239,7 +245,7 @@ function Order() {
       >
         <Header />
         <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-          <TopLayout text='Orders' />
+          <TopLayout text='Orders' links='shop/order'/>
           <div className='w-full flex justify-end items-center relative'>
             <button onClick={exportToExcel} className='mb-4 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md'>
               Download Excel
@@ -269,10 +275,14 @@ function Order() {
             </Paper>
           </ThemeProvider>
           {isModalOpen && selectedOrder && (
-            <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
-              <div className='bg-white p-4 border rounded-lg'>
+            <div className={`fixed top-0 left-0 overflow-auto w-full h-full flex justify-center items-center z-50 bg-opacity-50 ${
+              isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-800 text-gray-600'
+            }`}>
+              <div className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] overflow-auto ${
+                    isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
+                  }`}>
                 <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
-                <div className='bg-white p-4 border rounded-lg shadow-lg'>
+                <div className=' p-4 border rounded-lg shadow-lg'>
                   <p className='mb-3 flex items-center gap-2'>
                     <FaCartArrowDown className='text-2xl text-blue-500' />
                     <strong>Order ID:</strong> {selectedOrder.id}
@@ -290,11 +300,11 @@ function Order() {
                     <strong>Phone:</strong> {selectedOrder.phone}
                   </p>
                   <p className='mb-3 flex items-center gap-2'>
-                    <GrNotes className='text-2xl ' />
+                    <GrNotes className='text-2xl text-yellow-500' />
                     <strong>Note:</strong> {selectedOrder.note}
                   </p>
                   <p className='mb-3 flex items-center gap-2'>
-                    <FaUser className='text-2xl ' />
+                    <FaUser className='text-2xl text-blue-500' />
                     <strong>RecipientName:</strong> {selectedOrder.recipientName}
                   </p>
                   <p className='mb-3 flex items-center gap-2'>

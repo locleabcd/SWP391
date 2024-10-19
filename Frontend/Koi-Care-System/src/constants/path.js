@@ -66,7 +66,6 @@ const path = {
   shopAD: '/admin/shop',
   customerAD: '/admin/user',
   viewUserAD: '/admin/user/:id',
-
   userDetail: '/shop/viewUser/:id',
   paymentShop: '/shop/payment',
   orderShop: '/shop/order',
