@@ -1,10 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
-import Header from '../../../components/Shop/Header'
-import LeftSideBar from '../../../components/Shop/LeftSideBar'
+import Header from '../../../components/Admin/Header'
+import LeftSideBar from '../../../components/Admin/LeftSideBar'
 import axios from 'axios'
 import 'react-toastify/dist/ReactToastify.css'
-import TopLayout from '../../../layouts/TopLayoutShop'
+import TopLayout from '../../../layouts/TopLayoutAD'
 import { FaUser } from 'react-icons/fa'
 import { FaPhoneAlt } from 'react-icons/fa'
 import { FaRegAddressCard } from 'react-icons/fa'
@@ -16,9 +17,10 @@ import { MdPendingActions } from 'react-icons/md'
 import * as XLSX from 'xlsx'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
-
 const lightTheme = createTheme({
   palette: {
     mode: 'light'
@@ -34,12 +36,13 @@ const darkTheme = createTheme({
     }
   }
 })
-
-function Payment() {
+ function ManageOrder() {
   const { isDarkMode } = useDarkMode()
-  const [payments, setPayments] = useState([])
+  const [orders, setOrders] = useState([])
   const [selectedOrder, setSelectedOrder] = useState(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const formatDateTime = (inputDate) => {
     const date = new Date(inputDate)
@@ -52,6 +55,11 @@ function Payment() {
     return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`
   }
 
+  const handleShowDetails = (ord) => {
+    setSelectedOrder(ord)
+    setIsModalOpen(true)
+  }
+
   const formatCurrency = (amount) => amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'đ'
 
   const handleCloseModal = () => {
@@ -59,75 +67,109 @@ function Payment() {
     setSelectedOrder(null)
   }
 
-  const getPayment = async () => {
+  const getOrder = async () => {
     try {
       const token = localStorage.getItem('token')
       if (!token) {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/payment/all`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
-      setPayments(res.data.data)
+      setOrders(res.data.data)
       console.log(res.data.data)
     } catch (error) {
-      console.log('Error fetching Payments:', error)
+      console.log('Error fetching Orders:', error)
     }
   }
+
   useEffect(() => {
-    getPayment()
+    getOrder()
   }, [])
 
-  const handleShowOrderDetails = async (orderId) => {
+  const updateDelivery = async (id) => {
+    const isConfirmed = window.confirm('Are you sure to update status delivery')
+    if (!isConfirmed) {
+      return
+    }
+    setIsLoading(true)
+    setIsSubmitting(true)
     try {
       const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api//orders/${orderId}/order`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      const res = await axios.put(
+        `https://koicaresystemv3.azurewebsites.net/api/orders/${id}/order/delivery`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      })
+      )
 
-      setSelectedOrder(res.data.data)
-      setIsModalOpen(true)
+      toast.success('Updated Delivery Status Successfully!')
+      getOrder()
     } catch (error) {
-      console.error('Error fetching order details:', error)
+      console.log(error)
+      toast.error(error.response?.data?.message || 'Failed to update status.')
+    } finally {
+      setIsSubmitting(false)
+      setIsLoading(false)
     }
+  }
+
+  const onSubmit = (orderId) => {
+    updateDelivery(orderId)
   }
 
   const columns = [
-    { field: 'invoiceCode', headerName: 'Invoice Code', width: 200 },
+    { field: 'id', headerName: 'Order ID', width: 100 },
     {
-      field: 'createDate',
-      headerName: 'Create Date',
-      flex: 1,
-      renderCell: (params) => formatDateTime(params.row.createDate)
+      field: 'orderDate',
+      headerName: 'Order Date',
+      width: 170,
+      renderCell: (params) => formatDateTime(params.row.orderDate)
     },
-    { field: 'transactionCode', headerName: 'Transaction Code', width: 200 },
-
-    { field: 'amount', headerName: 'Amount', flex: 1, renderCell: (params) => formatCurrency(params.row.amount) },
+    { field: 'recipientName', headerName: 'Recipient Name', width: 150 },
+    { field: 'phone', headerName: 'Phone', width: 120 },
+    { field: 'address', headerName: 'Address', flex: 1 },
+    {
+      field: 'totalAmount',
+      headerName: 'Total Amount',
+      width: 150,
+      renderCell: (params) => formatCurrency(params.row.totalAmount)
+    },
     {
       field: 'status',
-      headerName: 'Status',
-      width: 200,
+      headerName: 'Order Status',
+      width: 150,
       renderCell: (params) => {
         const status = params.value
-        const isCompleted = status === 'COMPLETED'
+        let statusClasses = 'border-2 text-sm font-medium py-1 px-2 rounded text-center'
+
+        switch (status) {
+          case 'PENDING':
+            statusClasses += ' border-yellow-500 text-yellow-500'
+            break
+          case 'PROCESSING':
+            statusClasses += ' border-blue-500 text-blue-500'
+            break
+          case 'DELIVERED':
+            statusClasses += ' border-green-500 text-green-500'
+            break
+          case 'CANCELLED':
+            statusClasses += ' border-red-500 text-red-500'
+            break
+          default:
+            statusClasses += ' border-gray-500 text-gray-500' // Default case for unexpected status
+        }
 
         return (
           <div className='h-full flex justify-center items-center'>
-            <div
-              className={`flex items-center justify-center py-1 px-2 rounded text-sm font-medium
-                ${isCompleted ? 'border-2 border-green-500 text-green-500' : 'border-2 border-red-500 text-red-500'}`}
-            >
-              {isCompleted ? 'COMPLETED' : 'CANCELLED'}
-            </div>
+            <div className={statusClasses}>{status}</div>
           </div>
         )
       }
@@ -139,7 +181,7 @@ function Payment() {
         <div className='flex h-full justify-center items-center'>
           <button
             className='p-1 hover:bg-green-500 text-green-500 hover:text-white  rounded-full'
-            onClick={() => handleShowOrderDetails(params.row.orderId)}
+            onClick={() => handleShowDetails(params.row)}
           >
             <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-6'>
               <path
@@ -154,6 +196,7 @@ function Payment() {
               />
             </svg>
           </button>
+         
         </div>
       )
     }
@@ -161,21 +204,23 @@ function Payment() {
 
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(
-      payments.map((pay) => ({
-        'Order ID': pay.orderId,
-        invoiceCode: pay.invoiceCode,
-        'Create Date': formatDateTime(pay.createDate),
-        'Transaction Code': pay.transactionCode,
-        Amount: formatCurrency(pay.amount),
-        Status: pay.status
+      orders.map((order) => ({
+        'Order ID': order.id,
+        'Recipient Name': order.recipientName,
+        'Order Date': formatDateTime(order.orderDate),
+        'Total Amount': formatCurrency(order.totalAmount),
+        Address: order.address,
+        Note: order.note,
+        Status: order.status
       }))
     )
 
     const workbook = XLSX.utils.book_new()
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Payments')
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Orders')
 
-    XLSX.writeFile(workbook, 'payments.xlsx')
+    XLSX.writeFile(workbook, 'orders.xlsx')
   }
+
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
@@ -184,7 +229,7 @@ function Payment() {
       >
         <Header />
         <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-          <TopLayout text='Payment' links='shop/payment'/>
+          <TopLayout text='Orders' />
           <div className='w-full flex justify-end items-center relative'>
             <button onClick={exportToExcel} className='mb-4 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md'>
               Download Excel
@@ -194,14 +239,14 @@ function Payment() {
             <CssBaseline />
             <Paper sx={{ height: 670 }}>
               <DataGrid
-                rows={payments}
+                rows={orders}
                 columns={columns}
                 pageSize={10}
                 pageSizeOptions={[5, 10, 20, 50, 100]}
                 rowHeight={60}
                 checkboxSelection
                 disableExtendRowFullWidth
-                getRowId={(row) => row.orderId}
+                getRowId={(row) => row.id}
                 sx={{
                   '& .MuiDataGrid-columnHeaders': {
                     backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
@@ -214,14 +259,10 @@ function Payment() {
             </Paper>
           </ThemeProvider>
           {isModalOpen && selectedOrder && (
-            <div className={`fixed top-0 left-0 overflow-auto w-full h-full flex justify-center items-center z-50 bg-opacity-50 ${
-              isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-800 text-gray-600'
-              }`}>
-              <div className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] overflow-auto ${
-                    isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
-                  }`}>
+            <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
+              <div className='bg-white p-4 border rounded-lg'>
                 <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
-                <div className='p-4 border rounded-lg shadow-lg'>
+                <div className='bg-white p-4 border rounded-lg shadow-lg'>
                   <p className='mb-3 flex items-center gap-2'>
                     <FaCartArrowDown className='text-2xl text-blue-500' />
                     <strong>Order ID:</strong> {selectedOrder.id}
@@ -292,4 +333,4 @@ function Payment() {
     </div>
   )
 }
-export default Payment
+export default ManageOrder

@@ -138,7 +138,7 @@ function Tag() {
         >
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-            <TopLayout text='Tag' />
+            <TopLayout text='Tag' links='shop/tag'/>
             <div className='w-full flex justify-between items-center relative'>
               <button
                 className='cursor-pointer mb-4 py-2 px-3 bg-custom-left-bar text-white hover:bg-blue-600 rounded-md'

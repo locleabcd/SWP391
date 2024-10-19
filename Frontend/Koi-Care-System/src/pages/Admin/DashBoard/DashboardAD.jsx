@@ -1,13 +1,14 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
-import Header from '../../../components/Shop/Header'
-import LeftSideBar from '../../../components/Shop/LeftSideBar'
+import Header from '../../../components/Admin/Header'
+import LeftSideBar from '../../../components/Admin/LeftSideBar'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import TopLayout from '../../../layouts/TopLayoutShop'
-import { BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,Legend } from 'recharts'
+import TopLayout from '../../../layouts/TopLayoutAD'
+import {LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,Legend } from 'recharts'
 import { FaRegUser } from "react-icons/fa"
 import { FaMoneyCheckAlt } from "react-icons/fa";
 import { FaCartArrowDown } from "react-icons/fa";
@@ -37,7 +38,15 @@ const darkTheme = createTheme({
   },
 })
 
-function Dashboard() {
+function DashboardAD() {
+  const [premier, setPremier] = useState([]);
+  const [monthlyTotals, setMonthlyTotals] = useState({ labels: [], data: [] });
+  const [totalPaymentAmount, setTotalPaymentAmount] = useState(0);
+  const [previousTotal, setPreviousTotal] = useState(0); // Giá trị tổng thanh toán của tháng trước
+  const [percentageChange, setPercentageChange] = useState(0); // Phần trăm thay đổi
+  const [lineChartData, setLineChartData] = useState([]);
+  const [todayOrders, setTodayOrders] = useState(0); // State lưu số lượng đơn hàng hôm nay
+  const [todayTotalAmount, setTodayTotalAmount] = useState(0); // State lưu tổng số tiền hôm nay
   const { isDarkMode } = useDarkMode()
   const [categories, setCategories] = useState([])
   const [products, setProducts] = useState([])
@@ -77,7 +86,7 @@ function Dashboard() {
       const chartData = Object.values(groupedData);
       setUsersData(chartData);
       setUsers(res.data.data)
-      console.log(res.data.data)
+      
     } catch (error) {
       console.log('Error fetching users:', error)
     }
@@ -85,23 +94,63 @@ function Dashboard() {
 
   const getOrder = async () => {
     try {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('No token found')
+        throw new Error('No token found');
       }
-
+  
       const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      })
-      setOrders(res.data.data)
-      console.log(res.data.data)
+      });
+  
+      const orders = res.data.data;
+      
+      setOrders(orders);
+      // Tạo dữ liệu cho 7 ngày gần nhất
+      const today = dayjs();
+      const recent7Days = [];
+  
+      for (let i = 0; i < 7; i++) {
+        const currentDate = today.subtract(i, 'day').format('YYYY-MM-DD');
+        const ordersForDay = orders.filter(order => dayjs(order.orderDate).format('YYYY-MM-DD') === currentDate);
+        const totalAmount = ordersForDay.reduce((sum, order) => sum + order.totalAmount, 0);
+        recent7Days.unshift({ name: `Day ${7 - i}`, value: totalAmount });
+      }
+  
+      setLineChartData(recent7Days); // Cập nhật state cho biểu đồ
     } catch (error) {
-      console.log('Error fetching Orders:', error)
+      console.log('Error fetching Orders:', error);
     }
-  }
-
+  };
+  const getTodayOrders = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+  
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+  
+      const today = dayjs().format('YYYY-MM-DD'); // Lấy ngày hiện tại
+   
+      const todayOrdersData  = res.data.data.filter(order => dayjs(order.orderDate).format('YYYY-MM-DD') === today);
+      
+      
+      const totalOrders = todayOrdersData.length;
+      const totalAmount = todayOrdersData.reduce((sum, order) => sum + order.totalAmount, 0);
+      
+      setTodayOrders(totalOrders); // Cập nhật số đơn hàng hôm nay
+      setTodayTotalAmount(totalAmount); // Cập nhật tổng số tiền hôm nay
+    } catch (error) {
+      console.log('Error fetching Orders:', error);
+    }
+  };
   const getCategory = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -116,12 +165,30 @@ function Dashboard() {
       })
 
       setCategories(res.data.data)
+      
+    } catch (error) {
+      console.log('Error fetching category:', error)
+    }
+  }
+  const getPremier = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/subscribe/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setPremier(res.data.data)
       console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching category:', error)
     }
   }
-
   const getProduct = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -134,7 +201,7 @@ function Dashboard() {
       })
 
       setProducts(res.data.data)
-      console.log(res.data.data);
+      
       
     } catch (error) {
       console.log('Error fetching products:', error)
@@ -155,7 +222,7 @@ function Dashboard() {
       })
 
       setBlogs(res.data.data)
-      console.log(res.data.data)
+     
     } catch (error) {
       console.log('Error fetching blogs:', error)
     }
@@ -163,22 +230,66 @@ function Dashboard() {
 
   const getPayment = async () => {
     try {
-      const token = localStorage.getItem('token')
+      const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('No token found')
+        throw new Error('No token found');
       }
 
       const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/payment/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
-      })
-      setPayments(res.data.data)
-      console.log(res.data.data)
+      });
+
+      const paymentsData = res.data.data;
+      setPayments(paymentsData);
+      
+
+      // Tính tổng số tiền thanh toán
+      const totalAmount = paymentsData.reduce((sum, payment) => sum + payment.amount, 0);
+      setTotalPaymentAmount(totalAmount);
+      
+      // Tính phần trăm tăng giảm
+      if (previousTotal !== 0) {
+        const change = ((totalAmount - previousTotal) / previousTotal) * 100;
+        setPercentageChange(change);
+        ;
+      }
+      setPreviousTotal(totalAmount);
+
+      // Tính tổng số tiền theo tháng
+      const monthlyTotals = {};
+      paymentsData.forEach(payment => {
+        const monthYear = dayjs(payment.date).format('YYYY-MM'); // Giả sử mỗi thanh toán có thuộc tính 'date'
+        if (!monthlyTotals[monthYear]) {
+          monthlyTotals[monthYear] = 0;
+        }
+        monthlyTotals[monthYear] += payment.amount; // Cộng dồn số tiền theo tháng
+      });
+      
+
+      // Chuyển đổi dữ liệu thành mảng để biểu đồ
+      const labels = Object.keys(monthlyTotals);
+      const dataValues = Object.values(monthlyTotals);
+      setMonthlyTotals({ labels, data: dataValues });
+      const data = Object.keys(monthlyTotals).map(monthYear => ({
+        name: monthYear,
+        uv: monthlyTotals[monthYear],
+      }));
+      setMonthlyTotals(data);
+      // Kiểm tra dữ liệu cuối cùng cho biểu đồ
+     
     } catch (error) {
-      console.log('Error fetching Payments:', error)
+      console.log('Error fetching Payments:', error);
     }
-  }
+  };
+
+
+  // Định dạng phần trăm
+  const formatPercentage = (percentage) => {
+    return percentage > 0 ? `+${percentage.toFixed(2)}%` : `${percentage.toFixed(2)}%`;
+  };
+
 
   const getSupplier = async () => {
     try {
@@ -194,7 +305,7 @@ function Dashboard() {
       })
 
       setSuppliers(res.data.data)
-      console.log(res.data.data)
+     
     } catch (error) {
       console.log('Error fetching tags:', error)
     }
@@ -208,6 +319,8 @@ function Dashboard() {
     getPayment()
     getBlog()
     getSupplier()
+    getTodayOrders()
+    getPremier()
   }, [])
 
   const columnsProduct = [
@@ -341,8 +454,75 @@ function Dashboard() {
       >
         <Header />
         <div className='py-5 px-[30px] mx-auto'>
-          <TopLayout text='Dashboard' links='shop/dashboard'/>         
+          <TopLayout text='Dashboard' />  
+          <div className="flex space-x-4 ">
+      {/* Card 1: Order Today */}
+      <div className="bg-indigo-500 text-white rounded-lg shadow-lg p-4 w-1/4">
+      <h2 className="text-3xl font-semibold">{formatCurrency(todayTotalAmount)}</h2>
+      <p className="text-lg mb-2">{todayOrders} </p> 
+      
+      <p className="text-m flex items-center">
+        <span className="mr-1">Order Today</span>
+      </p>
+      <div className="h-16 mt-4  rounded-lg">
+        {/* Biểu đồ dạng LineChart */}
+        <ResponsiveContainer width="100%" height="100%">
+          <LineChart data={lineChartData}>
+            <Line type="monotone" dataKey="value" stroke="#F8F8FF" strokeWidth={2} dot={true} />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+
+      {/* Card 2: Income */}
+      <div className="bg-blue-500 text-white rounded-lg shadow-lg p-4 w-1/4">
+        <h2 className="text-2xl font-semibold">$6.200</h2>
+        <p className="text-sm flex items-center">
+          <span className="mr-1">(40.9%)</span>
+          <span className="text-green-300">&#x2191;</span>
+        </p>
+        <p className="text-sm mt-2">Income</p>
+        <div className="h-16 mt-4 bg-blue-700 rounded-lg">
+          {/* Placeholder for line chart */}
+        </div>
+      </div>
+
+      {/* Card 3: Conversion Rate */}
+      <div className="bg-yellow-500 text-white rounded-lg shadow-lg p-4 w-1/4">
+        <h2 className="text-2xl font-semibold">2.49%</h2>
+        <p className="text-sm flex items-center">
+          <span className="mr-1">(84.7%)</span>
+          <span className="text-green-300">&#x2191;</span>
+        </p>
+        <p className="text-sm mt-2">Conversion Rate</p>
+        <div className="h-16 mt-4 bg-yellow-700 rounded-lg">
+          {/* Placeholder for line chart */}
+        </div>
+      </div>
+
+      {/* Card 4: Sessions */}
+      <div className="bg-red-500 text-white rounded-lg shadow-lg p-4 w-1/4">
+      <h2 className="text-3xl font-semibold">{totalPaymentAmount}</h2>
+      <p className="text-sm flex items-center">
+        <span className="text-lg  mr-1">{formatPercentage(percentageChange)}</span>
+        <span className={`text-${percentageChange > 0 ? 'green' : 'red'}-300`}>
+          {percentageChange > 0 ? '↑' : '↓'}
+        </span>
+      </p>
+      <p className="text-m mt-2">Revenue</p>
+
+      <div className="h-20 w-10 mt-4">
+        {/* Hiển thị tiny bar chart */}
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={monthlyTotals}>
+            <Bar dataKey="uv" fill="#F8F8FF" />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
+    </div>
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>
+            
             {/*Summary */}
             <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6'>
               <div className='border flex flex-col justify-center items-center p-6 shadow rounded-lg bg-blue-100'>
@@ -464,11 +644,11 @@ function Dashboard() {
                       nameKey="categoryName"
                       cx="50%"
                       cy="50%"
-                      outerRadius={150}   
-                      innerRadius={80}     
+                      outerRadius={150}   // Larger outer radius for a bigger pie
+                      innerRadius={80}     // Add inner radius for a donut chart effect
                       fill="#8884d8"
                       label={renderCustomizedLabel}
-                      labelLine={false}    
+                      labelLine={false}    // Remove label lines
                     >
                       {categories.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={ColorsCategory[index % ColorsCategory.length]} />
@@ -543,4 +723,4 @@ function Dashboard() {
     </div>
   )
 }
-export default Dashboard
+export default DashboardAD

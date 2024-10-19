@@ -11,6 +11,13 @@ import { FaCrown } from "react-icons/fa";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 
+
+
+function CustomerAD() {
+  const { isDarkMode } = useDarkMode();
+  const [users, setUsers] = useState([]);
+  const fallbackImage =
+    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAkFBMVEX///8WFhgAAAD...';
 const lightTheme = createTheme({
   palette: {
     mode: 'light',
@@ -26,13 +33,6 @@ const darkTheme = createTheme({
     },
   },
 });
-
-function CustomerAD() {
-  const { isDarkMode } = useDarkMode();
-  const [users, setUsers] = useState([]);
-  const fallbackImage =
-    'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAkFBMVEX///8WFhgAAAD...';
-
   const getUser = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -40,11 +40,12 @@ function CustomerAD() {
         throw new Error('No token found');
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/all/member`, {
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/all`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log(res.data.data)
       setUsers(res.data.data);
     } catch (error) {
       console.log('Error fetching users:', error);

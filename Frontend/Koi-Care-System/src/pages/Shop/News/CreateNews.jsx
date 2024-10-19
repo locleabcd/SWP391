@@ -82,7 +82,7 @@ function CreateNews() {
       const res = await axios.post(`https://koicaresystemv3.azurewebsites.net/api/blog/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          'Content-Type': 'multipart/form-data'
+          
         }
       })
       toast.success('Blog created successfully!')

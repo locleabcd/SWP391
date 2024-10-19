@@ -1,12 +1,13 @@
+// eslint-disable-next-line no-unused-vars
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
-import Header from '../../../components/Shop/Header'
-import LeftSideBar from '../../../components/Shop/LeftSideBar'
+import Header from '../../../components/Admin/Header'
+import LeftSideBar from '../../../components/Admin/LeftSideBar'
 import axios from 'axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import TopLayout from '../../../layouts/TopLayoutShop'
+import TopLayout from '../../../layouts/TopLayoutAD'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
@@ -27,8 +28,7 @@ const darkTheme = createTheme({
     }
   }
 })
-
-function Supplier() {
+function SupplierAD() {
   const { isDarkMode } = useDarkMode()
   const [suppliers, setSuppliers] = useState([])
   const [isLoading, setIsLoading] = useState(true)
@@ -50,7 +50,7 @@ function Supplier() {
       setSuppliers(res.data.data)
       console.log(res.data.data)
     } catch (error) {
-      console.log('Error fetching suppliers:', error)
+      console.log('Error fetching tags:', error)
     }
   }
 
@@ -93,7 +93,7 @@ function Supplier() {
       renderCell: (params) => (
         <div className='flex h-full justify-center items-center'>
           <Link
-            to={`/shop/supplier/${params.row.id}`}
+            to={`/admin/supplier/${params.row.id}`}
             className='p-1 hover:bg-green-500 text-green-500 hover:text-white rounded-full'
           >
             <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-5'>
@@ -129,11 +129,11 @@ function Supplier() {
         >
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-            <TopLayout text='Supplier' links='shop/supplier'/>
+            <TopLayout text='Supplier' />
             <div className='w-full flex justify-between items-center relative'>
               <button
                 className='py-2 mb-4 px-3 bg-custom-left-bar text-white hover:bg-blue-600 rounded-md'
-                onClick={() => navigate('/shop/createSupplier')}
+                onClick={() => navigate('/admin/supplier/create')}
               >
                 New Supplier
               </button>
@@ -167,4 +167,4 @@ function Supplier() {
   )
 }
 
-export default Supplier
+export default SupplierAD

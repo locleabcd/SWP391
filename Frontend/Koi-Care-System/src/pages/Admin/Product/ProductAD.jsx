@@ -1,14 +1,15 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
-import Header from '../../../components/Shop/Header'
-import LeftSideBar from '../../../components/Shop/LeftSideBar'
+import Header from '../../../components/Admin/Header'
+import LeftSideBar from '../../../components/Admin/LeftSideBar'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
-import TopLayout from '../../../layouts/TopLayout'
+import TopLayout from '../../../layouts/TopLayoutAD'
 import { Link } from 'react-router-dom'
 import * as XLSX from 'xlsx'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -29,21 +30,19 @@ const darkTheme = createTheme({
     },
   },
 })
-
 const formatPrice = (price) => {
   return price
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ';
 }
 
-function Product() {
+ function ProductAD() {
   const { isDarkMode } = useDarkMode()
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [selectedRows, setSelectedRows] = useState([]);
   const navigate = useNavigate()
   const fallbackImage = 'https://5sfashion.vn/storage/upload/images/posts/Z5FgdGRa5ycTaCqcMZnHfZTkb7FyHATji17rlS4q.jpg'
-
   const getProduct = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -125,7 +124,7 @@ function Product() {
       renderCell: (params) => (
         <div className='flex h-full justify-center items-center'>
           <Link
-            to={`/shop/product/${params.row.id}`}
+            to={`/admin/product/${params.row.id}`}
             className='p-1 hover:bg-green-500 text-green-500 hover:text-white rounded-full'
           >
             <svg
@@ -139,7 +138,7 @@ function Product() {
             </svg>
           </Link>
           <Link
-            to={`/shop/product/view/${params.row.id} `}
+            to={`/admin/product/view/${params.row.id} `}
             className=' p-1 hover:bg-blue-500 text-blue-500 hover:text-white  rounded-full'
           >
             <svg
@@ -183,7 +182,6 @@ function Product() {
       )
     } 
   ]
-
   const exportToExcel = () => {
     const worksheet = XLSX.utils.json_to_sheet(products.map(product => ({
       'ID': product.id,
@@ -202,9 +200,8 @@ function Product() {
 
     XLSX.writeFile(workbook, 'Products.xlsx')
   }
-
   return (
-    <div className='h-screen flex'>
+  <div className='h-screen flex'>
       <LeftSideBar />
       <div
         className={`relative flex-1 overflow-y-auto duration-200 ${
@@ -213,12 +210,12 @@ function Product() {
       >
         <Header />
         <div className='py-5 px-8 mx-auto'>
-          <TopLayout text='Products' links='shop/product'/>
+          <TopLayout text='Products' />
           <div className='w-full flex justify-between items-center relative'>
-            <div className='cursor-pointer'>
+          <div className='cursor-pointer'>
               <button
                 className='py-2 mb-4 px-3 bg-blue-500 text-white hover:bg-blue-700  rounded-md'
-                onClick={() => navigate('/shop/createProduct')}
+                onClick={() => navigate('/admin/product/create')}
               >
                 New Product
               </button>
@@ -256,5 +253,4 @@ function Product() {
     </div>
   )
 }
-
-export default Product
+export default  ProductAD

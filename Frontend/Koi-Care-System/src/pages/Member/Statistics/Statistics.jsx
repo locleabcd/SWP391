@@ -30,6 +30,7 @@ function Statistics() {
   const [ponds, setPonds] = useState([])
   const [kois, setKois] = useState([])
   const [growths, setGrowths] = useState([])
+  const [koiHistoryStandard, setKoiHistoryStandard] = useState([])
   const [selectedKoi, setSelectedKoi] = useState(null)
   const navigate = useNavigate()
   const [selectedPond, setSelectedPond] = useState(null)
@@ -165,7 +166,6 @@ function Statistics() {
       })
       console.log(res.data.data)
       setGrowths(res.data.data)
-      // setGrowthHistoryData(aggregateGrowthHistory(res.data.data))
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
@@ -186,6 +186,7 @@ function Statistics() {
   useEffect(() => {
     if (selectedKoi) {
       getGrowthHistory(selectedKoi.id)
+      getKoiHistoryStandard(selectedKoi.id)
     }
   }, [selectedKoi])
 
@@ -195,9 +196,30 @@ function Statistics() {
 
     if (koi) {
       setSelectedKoi(koi)
-      getGrowthHistory(koiId)
+      // getGrowthHistory(koiId)
+      // getKoiHistoryStandard(koiId)
     } else {
       setSelectedKoi(null)
+    }
+  }
+
+  const getKoiHistoryStandard = async (koifishId) => {
+    try {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('No token found');
+      }
+  
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/reports/GrowthFish/${koifishId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      });
+      console.log('koi history', res.data.data);
+      const filteredData = res.data.data.slice(1)
+      setKoiHistoryStandard(filteredData);
+    } catch (error) {
+      console.error('Error fetching koi history:', error);
     }
   }
 
@@ -228,24 +250,38 @@ function Statistics() {
     }
   }
 
-  const aggregateGrowthHistory = (data) => {
-    const dateMap = {}
+  const aggregateGrowthHistory = (data, standardData) => {
+    const dateMap = {};
+    
+    // Aggregate growth data
     data.forEach((entry) => {
-      const date = formatDate(entry.createDate)
+      const date = formatDate(entry.createDate);
       if (!dateMap[date]) {
-        dateMap[date] = { name: date, length: 0, weight: 0, count: 0 }
+        dateMap[date] = { name: date, length: 0, weight: 0, count: 0, lengthStandard: 0, weightStandard: 0 };
       }
-      dateMap[date].length += entry.length
-      dateMap[date].weight += entry.weight
-      dateMap[date].count += 1
-    })
-
+      dateMap[date].length += entry.length;
+      dateMap[date].weight += entry.weight;
+      dateMap[date].count += 1;
+    });
+    
+    // Aggregate standard data
+    standardData.forEach((entry) => {
+      const date = formatDate(entry.createDate);
+      if (!dateMap[date]) {
+        dateMap[date] = { name: date, length: 0, weight: 0, count: 0, lengthStandard: 0, weightStandard: 0 };
+      }
+      dateMap[date].lengthStandard = entry.length
+      dateMap[date].weightStandard = entry.weight
+    });
+  
     return Object.values(dateMap).map((entry) => ({
       name: entry.name,
       length: entry.length / entry.count,
-      weight: entry.weight / entry.count
-    }))
-  }
+      weight: entry.weight / entry.count,
+      lengthStandard: entry.lengthStandard,
+      weightStandard: entry.weightStandard,
+    }));
+  };
 
   const aggregateWaterData = (data) => {
     const dateMap = {}
@@ -313,7 +349,8 @@ function Statistics() {
   )
 
   const sortedGrowthData = aggregateGrowthHistory(
-    [...growths].sort((a, b) => new Date(a.createDate) - new Date(b.createDate))
+    [...growths].sort((a, b) => new Date(a.createDate) - new Date(b.createDate)),
+    koiHistoryStandard
   )
 
   const formatTooltipValue = (value) => {
@@ -636,12 +673,25 @@ function Statistics() {
                       stroke='#8884d8'
                       fillOpacity={1}
                       fill='url(#lengthColor)'
-                      activeDot={{ r: 6, fill: '#8884d8', stroke: 'white', strokeWidth: 2 }}
+                      name='length'
                     />
+                    <Area
+                      type='monotone'
+                      dataKey='lengthStandard'
+                      stroke='#ff7300'
+                      fillOpacity={0.6}
+                      fill='url(#lengthStandardColor)'
+                      name='standard length'
+                    />
+                    
                     <defs>
                       <linearGradient id='lengthColor' x1='0' y1='0' x2='0' y2='1'>
                         <stop offset='5%' stopColor='#8884d8' stopOpacity={0.8} />
                         <stop offset='95%' stopColor='#8884d8' stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id='lengthStandardColor' x1='0' y1='0' x2='0' y2='1'>
+                        <stop offset='5%' stopColor='#ffc658' stopOpacity={0.8} />
+                        <stop offset='95%' stopColor='#ffc658' stopOpacity={0} />
                       </linearGradient>
                     </defs>
                   </AreaChart>
@@ -676,8 +726,22 @@ function Statistics() {
                       stroke='#82ca9d'
                       fillOpacity={1}
                       fill='url(#weightColor)'
-                      activeDot={{ r: 6, fill: '#82ca9d', stroke: 'white', strokeWidth: 2 }}
+                      name=' weight'
                     />
+                    <Area
+                      type='monotone'
+                      dataKey='weightStandard'
+                      stroke='#ff7300'
+                      fillOpacity={0.6}
+                      fill='url(#weightStandardColor)'
+                      name='standard weight'
+                    />
+                    <defs>
+                      <linearGradient id='weightStandardColor' x1='0' y1='0' x2='0' y2='1'>
+                        <stop offset='5%' stopColor='#ff7300' stopOpacity={0.8} />
+                        <stop offset='95%' stopColor='#ff7300' stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
                     <defs>
                       <linearGradient id='weightColor' x1='0' y1='0' x2='0' y2='1'>
                         <stop offset='5%' stopColor='#82ca9d' stopOpacity={0.8} />

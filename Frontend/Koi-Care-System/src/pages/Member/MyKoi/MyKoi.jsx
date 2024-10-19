@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
@@ -35,16 +34,13 @@ function MyKoi() {
   const toggleButtons = () => {
     setShowButtons(!showButtons)
   }
-
-  // Watch for length and physique changes
   const length = watch('length')
   const physique = watch('physique')
 
-  // // Calculate weight when length or physique changes
   useEffect(() => {
     if (length && physique) {
       let calculatedWeight = 0
-      const lengthCubed = Math.pow(length, 3) // length^3
+      const lengthCubed = Math.pow(length, 3)
 
       if (physique === 'Slim') {
         calculatedWeight = (1.5 * lengthCubed) / 100
@@ -91,7 +87,6 @@ function MyKoi() {
 
       const formData = new FormData()
 
-      // Append all fields to formData
       formData.append('name', data.name)
       formData.append('physique', data.physique)
       formData.append('age', data.age)
@@ -103,13 +98,11 @@ function MyKoi() {
       formData.append('breeder', data.breeder)
       formData.append('price', data.price)
       formData.append('koiPondId', data.pondId)
-      // Append the selected file (image)
       if (selectedFile) {
         formData.append('file', selectedFile)
       }
 
       console.log(data)
-      // eslint-disable-next-line no-unused-vars
       const res = await axios.post(`https://koicaresystemv3.azurewebsites.net/api/koifishs/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -225,14 +218,14 @@ function MyKoi() {
           >
             <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
           </svg>
-          <div className='fixed lg:w-[145px] w-[110px] lg:h-14 h-9 bottom-5 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
+          <div className='fixed lg:w-[140px] w-[100px] lg:h-12 h-9 lg:bottom-7 bottom-5 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
             <p className='lg:text-3xl text-xl font-semibold pt-1 pl-3'>
               {koiCounts[localStorage.getItem('id')] !== undefined ? koiCounts[localStorage.getItem('id')] : '...'} Koi
             </p>
           </div>
 
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-            <TopLayout text='My Koi' />
+            <TopLayout text='My Koi' links='member/myKoi'/>
             <div>
               <div className='w-full flex justify-end relative'>
                 <div className='cursor-pointer' onClick={toggleButtons}>
@@ -307,7 +300,7 @@ function MyKoi() {
                     }
                   }
                 }}
-                className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 py-3'
+                className='grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-3 py-3'
               >
                 {kois.map((koi, index) => (
                   <motion.div

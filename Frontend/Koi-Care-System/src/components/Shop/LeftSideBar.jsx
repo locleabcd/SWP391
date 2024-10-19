@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { PiNewspaperClipping } from 'react-icons/pi'
 import { FaTags } from 'react-icons/fa'
 import { FaRegNewspaper } from 'react-icons/fa'
@@ -16,9 +15,11 @@ import { FaImage } from 'react-icons/fa'
 import { FaCartShopping } from 'react-icons/fa6'
 import { TbReportSearch } from 'react-icons/tb'
 import { FaMoneyBill } from 'react-icons/fa'
-
+import { IoPowerOutline } from 'react-icons/io5'
+import axios from 'axios'
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
+  const [user, setUser] = useState([])
   const [isClosed, setClosed] = useState(() => {
     const savedState = localStorage.getItem('isSidebarClosed')
     return savedState ? JSON.parse(savedState) : false
@@ -42,6 +43,29 @@ function LeftSideBar() {
   useEffect(() => {
     localStorage.setItem('isSidebarClosed', JSON.stringify(isClosed))
   }, [isClosed])
+  const getUser = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const id = localStorage.getItem('id')
+      if (!token) {
+        throw new Error('No token found')
+      }
+      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setUser(res.data.data)
+      console.log(res.data.data)
+    } catch (error) {
+      console.error('Error fetching users:', error)
+    }
+  }
+
+  useEffect(() => {
+    getUser()
+  }, [])
+
   const handleLogout = () => {
     localStorage.clear()
   }
@@ -64,7 +88,7 @@ function LeftSideBar() {
       <div className='relative '>
         {isClosed ? (
           <button
-            className={`absolute duration-200 ease-linear left-20 top-8 p-1 z-30 ${
+            className={`absolute duration-200 ease-linear lg:inline-block hidden lg:left-20 top-5 p-1 z-30 ${
               isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
             } `}
             onClick={() => setClosed(false)}
@@ -82,7 +106,7 @@ function LeftSideBar() {
           </button>
         ) : (
           <button
-            className={`absolute left-[260px] top-6 p-1 z-30 ${
+            className={`lg:absolute lg:left-[260px] lg:inline-block hidden lg:top-6 lg:p-1 lg:z-30 ${
               isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
             } `}
             onClick={() => setClosed(true)}
@@ -102,9 +126,9 @@ function LeftSideBar() {
       </div>
       {/* sidebar */}
       <div
-        className={`absolute top-0 left-0 z-999 flex h-screen flex-col no-scroll-bar overflow-y-auto border-r ${
+        className={`absolute top-0 left-0 z-50 flex h-screen flex-col no-scroll-bar overflow-y-auto border-r ${
           isDarkMode ? 'bg-custom-dark text-white border-gray-700' : 'bg-white text-black border-gray-200'
-        } shadow-sm duration-200 ease-linear lg:static lg:translate-x-0 ${isClosed ? 'w-[80px]' : 'w-[240px]'}`}
+        } shadow-sm duration-200 ease-linear lg:static lg:translate-x-0 ${isClosed ? 'lg:w-[80px] w-0' : 'lg:w-[240px] w-[0px]'}`}
       >
         <div className='flex justify-center items-center'>
           <button className='mt-4 rounded-md'>
@@ -158,7 +182,7 @@ function LeftSideBar() {
                 const active = isActive
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 }`
               }}
@@ -174,7 +198,7 @@ function LeftSideBar() {
             {/* News and Blogs */}
             <div>
               <button
-                className={`min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                className={`min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 } ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
                 onClick={() => setIsNewsOpen(!isNewsOpen)}
@@ -211,7 +235,7 @@ function LeftSideBar() {
                       const active = isActive
                         ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                         : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                      return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                         isClosed ? 'flex-col' : ''
                       }`
                     }}
@@ -230,7 +254,7 @@ function LeftSideBar() {
                       const active = isActive
                         ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                         : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                      return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                         isClosed ? 'flex-col' : ''
                       }`
                     }}
@@ -248,7 +272,7 @@ function LeftSideBar() {
             {/* Manage Shop  */}
             <div>
               <button
-                className={`min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                className={`min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 } ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
                 onClick={() => setIsShopOpen(!isShopOpen)}
@@ -286,7 +310,7 @@ function LeftSideBar() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                           isClosed ? 'flex-col' : ''
                         }`
                       }}
@@ -307,7 +331,7 @@ function LeftSideBar() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                           isClosed ? 'flex-col' : ''
                         }`
                       }}
@@ -328,7 +352,7 @@ function LeftSideBar() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                           isClosed ? 'flex-col' : ''
                         }`
                       }}
@@ -349,7 +373,7 @@ function LeftSideBar() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                           isClosed ? 'flex-col' : ''
                         }`
                       }}
@@ -370,7 +394,7 @@ function LeftSideBar() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                           isClosed ? 'flex-col' : ''
                         }`
                       }}
@@ -388,7 +412,7 @@ function LeftSideBar() {
             </div>
             <div>
               <button
-                className={`min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                className={`min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                   isClosed ? 'flex-col' : ''
                 } ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
                 onClick={() => setIsReportOpen(!isReportOpen)}
@@ -425,7 +449,7 @@ function LeftSideBar() {
                       const active = isActive
                         ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                         : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                      return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center ${
                         isClosed ? 'flex-col' : ''
                       }`
                     }}
@@ -444,7 +468,7 @@ function LeftSideBar() {
                       const active = isActive
                         ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                         : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                      return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                      return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center ${
                         isClosed ? 'flex-col' : ''
                       }`
                     }}
@@ -459,27 +483,31 @@ function LeftSideBar() {
                 </div>
               )}
             </div>
-            <Link
-              onClick={handleLogout}
-              to={path.login}
-              className='px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center border-t absolute inset-x-0 bottom-0 w-full'
-            >
-              <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth='1.5'
-                stroke='currentColor'
-                className='size-8 mr-2'
-              >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15'
+           
+          </div>
+          <div
+            className={`mt-auto sticky bottom-0 z-50 w-full p-2 flex justify-between items-center 
+            ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
+          >
+            <div className={`flex p-4 rounded-lg items-center justify-between w-full ${isDarkMode ? 'bg-custom-layout-dark' : 'bg-white'}`}>
+              <div className='card-content flex items-center '>
+                <img
+                  src={user.avatar || 'default-avatar.png'}
+                  alt='User Avatar'
+                  className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
                 />
-              </svg>
-              <span>Logout</span>
-            </Link>
+                <div className='ml-3'>
+                  <p className='font-semibold text-lg text-black'>{user.name || 'User Name'}</p>
+                  <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
+                </div>
+              </div>
+              <Link onClick={handleLogout} to='/login'>
+                <IoPowerOutline
+                  className='text-2xl text-gray-500 hover:text-red-500 transition-colors duration-200 cursor-pointer'
+                  title='Logout'
+                />
+              </Link>
+            </div>
           </div>
         </div>
       </div>

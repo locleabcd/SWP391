@@ -223,7 +223,7 @@ function ShopNews() {
         >
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] '>
-            <TopLayout text='News' />
+            <TopLayout text='News' links='shop/shopNews'/>
 
             <div className='w-full flex justify-between items-center relative'>
               <button
@@ -247,6 +247,7 @@ function ShopNews() {
                   rowHeight={80}
                   checkboxSelection
                   disableExtendRowFullWidth
+                  disableSelectionOnClick
                   getRowId={(row) => row.blogId}
                   sx={{
                     '& .MuiDataGrid-columnHeaders': {

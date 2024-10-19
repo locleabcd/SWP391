@@ -77,6 +77,17 @@ import OrderShop from './pages/Shop/Order/Order'
 import PaymentShop from './pages/Shop/Payment/Payment'
 import DashboardShop from './pages/Shop/Dashboard/Dashboard'
 import ProfileShop from './pages/Shop/ShopAccount/ProfileShop'
+import UpdateUserAD from './pages/Admin/ManageUsers/UpdateUserAD'
+import DashboardAD from './pages/Admin/DashBoard/DashboardAD'
+import ManageOrder from './pages/Admin/ManageReport/ManageOrder'
+import ProductAD from './pages/Admin/Product/ProductAD'
+import SupplierAD from './pages/Admin/Supplier/SupplierAD'
+import ViewProductAD from './pages/Admin/Product/ViewProductAD'
+import UpdateProductAD from './pages/Admin/Product/UpdateProductAD'
+import CreateProductAD from './pages/Admin/Product/CreateProductAD' 
+import CreateSupplierAD from './pages/Admin/Supplier/CreateSupplierAD'
+import UpdateSupplierAD from './pages/Admin/Supplier/UpdateSupplierAD'
+import ManagePay from './pages/Admin/ManageReport/ManagePay'
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -556,8 +567,51 @@ function App() {
     {
       path: path.profileShop,
       element: <ProfileShop/>
+    },
+    {
+      path: path.updateUserAD,
+      element: <UpdateUserAD/>
+    },
+    {
+      path: path.manageOrder,
+      element: <ManageOrder/>
+    },
+    {
+      path: path.productAD,
+      element:<ProductAD/>
+    },
+    {
+      path: path.supplierAD,
+      element: <SupplierAD/>
+    },
+    {
+      path: path.dashboardAD,
+      element: <DashboardAD/>
+    },
+    {
+      path: path.viewProductAD,
+      element: <ViewProductAD/>
+    },
+    {
+      path: path.updateProductAD,
+      element: <UpdateProductAD/>
+    },
+    {
+      path: path.createProductAD,
+      element: <CreateProductAD/>
+    },
+    {
+      path: path.createSupplierAD,
+      element: <CreateSupplierAD/>
+    },
+    {
+      path: path.updateSupplierAD,
+      element: <UpdateSupplierAD/>
+    },
+    {
+      path: path.managePay,
+      element: <ManagePay/>
     }
-    
   ])
 
   const data = [
