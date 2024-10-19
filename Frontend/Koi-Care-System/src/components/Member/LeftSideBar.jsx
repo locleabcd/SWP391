@@ -10,7 +10,7 @@ import { Link, NavLink } from 'react-router-dom'
 import path from '../../constants/path'
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import logo from '../../assets/logo.png'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect,  useState } from 'react'
 import axios from 'axios'
 import { IoPowerOutline } from 'react-icons/io5'
 import '../../components/Member/animation.css'
@@ -113,7 +113,7 @@ function LeftSideBar() {
               </a>
             )}
           </div>
-
+          
           <div className='flex flex-col justify-center items-center mt-6 duration-200'>
             <div className=''>
               <NavLink
