@@ -54,8 +54,12 @@ const darkTheme = createTheme({
 })
 
 function DashboardAD() {
-  const [premierLast7Days, setPremierLast7Days] = useState([])
-  const [todayPremier, setTodayPremier] = useState(0)
+  const [premierCount, setPremierCount] = useState(0)
+  const [totalMembers, setTotalMembers] = useState(0)
+  const [data, setData] = useState([])
+  const [user2, setUser2] = useState([])
+  const [todayPremierCount, setTodayPremierCount] = useState(0)
+  const [premiers, setPremiers] = useState([])
   const [monthlyTotals, setMonthlyTotals] = useState({ labels: [], data: [] })
   const [totalPaymentAmount, setTotalPaymentAmount] = useState(0)
   const [previousTotal, setPreviousTotal] = useState(0) // Giá trị tổng thanh toán của tháng trước
@@ -107,6 +111,44 @@ function DashboardAD() {
     }
   }
 
+  const getUser2 = async () => {
+    try {
+      const token = localStorage.getItem('token')
+
+      if (!token) {
+        throw new Error('No token found. Please log in to continue.')
+      }
+
+      const res = await axios.get('https://koicaresystemv4.azurewebsites.net/api/profile/all/member', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      const members = res.data.data || []
+
+      if (members.length === 0) {
+        throw new Error('No members found.')
+      }
+
+      // Filter members with 'PREMIUM' status
+      const premierMembers = members.filter((member) => member.status === 'PREMIUM')
+      setPremierCount(premierMembers.length)
+
+      // Calculate the total number of members and the number of Premier members
+      const totalMembers = members.length
+      const premierCount = premierMembers.length
+      setTotalMembers(totalMembers)
+
+      // Set data for the pie chart: Premier vs Total members
+      setData([
+        { value: premierCount }, // Premier members (dark blue)
+        { value: totalMembers - premierCount } // Non-premier members (gray)
+      ])
+    } catch (error) {
+      console.error('Error fetching members:', error.message || error)
+    }
+  }
   const getOrder = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -183,47 +225,76 @@ function DashboardAD() {
       console.log('Error fetching category:', error)
     }
   }
+
   const getPremier = async () => {
     try {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/subscribe/all`, {
-        headers: { Authorization: `Bearer ${token}` }
+      const res = await axios.get('https://koicaresystemv4.azurewebsites.net/api/subscribe/all', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
 
-      const today = new Date()
-      const sevenDaysAgo = new Date(today)
-      sevenDaysAgo.setDate(today.getDate() - 7)
+      const allSubscribers = res.data.data
+      const today = new Date().toISOString().split('T')[0] // Lấy ngày hiện tại theo định dạng YYYY-MM-DD
 
-      const premierLast7Days = res.data.data.filter((subscriber) => {
-        const startDate = new Date(subscriber.startdate)
-        return startDate >= sevenDaysAgo && startDate <= today
+      // Lọc người đăng ký của hôm nay với loại "PREMIUM"
+      const todayPremierSubscribers = allSubscribers.filter((subscriber) => {
+        const subscriberDate = new Date(subscriber.startDate).toISOString().split('T')[0]
+        return subscriberDate === today && subscriber.subscribe === 'PREMIUM'
       })
 
-      const todayPremier = premierLast7Days.filter((subscriber) => {
-        const startDate = new Date(subscriber.startdate)
-        return (
-          startDate.getDate() === today.getDate() &&
-          startDate.getMonth() === today.getMonth() &&
-          startDate.getFullYear() === today.getFullYear()
-        )
-      }).length
-      console.log(todayPremier)
-      console.log(premierLast7Days)
-      setPremierLast7Days(premierLast7Days)
-      setTodayPremier(todayPremier)
+      setPremiers(todayPremierSubscribers) // Lưu danh sách người đăng ký hôm nay vào state
+      setTodayPremierCount(todayPremierSubscribers.length) // Cập nhật số lượng người đăng ký hôm nay
     } catch (error) {
-      console.log('Error fetching premier subscribers:', error)
+      console.log('Error fetching subscribers:', error)
     }
   }
-  const chartData2 = premierLast7Days.map((subscriber) => {
-    const date = new Date(subscriber.startdate).toLocaleDateString()
-    return {
-      date,
-      count: 1 // Aggregate count of premier subscribers per date
+  const getPremierOverLast7Days = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) throw new Error('No token found')
+
+      const res = await axios.get('https://koicaresystemv4.azurewebsites.net/api/subscribe/all', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      const allSubscribers = res.data.data
+      const today = new Date()
+      const dateMap = {}
+
+      // Khởi tạo dateMap với giá trị 0 cho 7 ngày gần nhất
+      for (let i = 0; i < 7; i++) {
+        const date = new Date(today)
+        date.setDate(today.getDate() - i)
+        dateMap[date.toISOString().split('T')[0]] = 0
+      }
+
+      // Tính số lượng người đăng ký "PREMIUM" trong 7 ngày qua
+      allSubscribers.forEach((subscriber) => {
+        const subscriberDate = new Date(subscriber.startDate).toISOString().split('T')[0]
+        if (subscriber.subscribe === 'PREMIUM' && dateMap[subscriberDate] !== undefined) {
+          dateMap[subscriberDate] += 1
+        }
+      })
+
+      // Chuyển dữ liệu thành format dùng cho biểu đồ
+      const chartData = Object.keys(dateMap)
+        .map((date) => ({
+          date, // Ngày dưới dạng chuỗi
+          count: dateMap[date] // Số lượng người đăng ký "PREMIUM"
+        }))
+        .reverse()
+
+      setPremiers(chartData)
+    } catch (error) {
+      console.log('Error fetching subscribers:', error)
     }
-  })
+  }
   const getProduct = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -346,6 +417,8 @@ function DashboardAD() {
     getSupplier()
     getTodayOrders()
     getPremier()
+    getPremierOverLast7Days()
+    getUser2()
   }, [])
 
   const columnsProduct = [
@@ -487,17 +560,15 @@ function DashboardAD() {
         <Header />
         <div className='py-5 px-[30px] mx-auto'>
           <TopLayout text='Dashboard' />
-          <div className='flex space-x-4 '>
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4'>
             {/* Card 1: Order Today */}
-            <div className='bg-indigo-500 text-white rounded-lg shadow-lg p-4 w-1/4'>
+            <div className='bg-indigo-500 text-white rounded-lg shadow-lg p-4 min-h-[200px] sm:min-h-[250px] md:min-h-[300px]'>
               <h2 className='text-3xl font-semibold'>{formatCurrency(todayTotalAmount)}</h2>
-              <p className='text-lg mb-2'>{todayOrders} </p>
-
+              <p className='text-lg mb-2'>{todayOrders}</p>
               <p className='text-m flex items-center'>
                 <span className='mr-1'>Order Today</span>
               </p>
-              <div className='h-16 mt-4  rounded-lg'>
-                {/* Biểu đồ dạng LineChart */}
+              <div className='h-16 mt-4 rounded-lg'>
                 <ResponsiveContainer width='100%' height='100%'>
                   <LineChart data={lineChartData}>
                     <Line type='monotone' dataKey='value' stroke='#F8F8FF' strokeWidth={2} dot={true} />
@@ -507,45 +578,64 @@ function DashboardAD() {
             </div>
 
             {/* Card 2: Income */}
-            <div className='bg-blue-500 text-white rounded-lg shadow-lg p-4 w-1/4'>
-              <h2 className='text-2xl font-semibold'>$6.200</h2>
+            <div className='bg-blue-500 text-white rounded-lg shadow-lg p-4 min-h-[200px] sm:min-h-[250px] md:min-h-[300px]'>
+              <h2 className='text-3xl font-semibold'>{premierCount} </h2>
               <p className='text-sm flex items-center'>
-                <span className='mr-1'>(40.9%)</span>
+                <span className='text-lg mr-1'>
+                  {totalMembers > 0 ? ((premierCount / totalMembers) * 100).toFixed(1) : 0}%
+                </span>
                 <span className='text-green-300'>&#x2191;</span>
               </p>
-              <p className='text-sm mt-2'>Income</p>
-              <div className='h-16 mt-4 bg-blue-700 rounded-lg'>{/* Placeholder for line chart */}</div>
+              <p className='text-lg '>Premium user</p>
+              <div className='h-16 mt-4 rounded-lg'>
+                <ResponsiveContainer width='100%' height={165}>
+                  <PieChart>
+                    <Pie
+                      data={data}
+                      cx='50%'
+                      cy='50%'
+                      startAngle={180}
+                      endAngle={0}
+                      innerRadius={60}
+                      outerRadius={80}
+                      dataKey='value'
+                    >
+                      <Cell key='cell-0' fill='#00FA9A' />
+                      <Cell key='cell-1' fill='#FFFFE0' />
+                    </Pie>
+                    <Tooltip />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             </div>
 
             {/* Card 3: Conversion Rate */}
-            <div className='bg-yellow-500 text-white rounded-lg shadow-lg p-4 w-1/4'>
-              <h2 className='text-2xl font-semibold'>{todayPremier}</h2>
-              <p className='text-lg mb-2'>{todayPremier} Subscribers Today</p>
+            <div className='bg-yellow-500 text-white rounded-lg shadow-lg p-4 min-h-[200px] sm:min-h-[250px] md:min-h-[300px]'>
+              <h2 className='text-3xl font-semibold'>{todayPremierCount}</h2>
+              <p className='text-lg mb-2'>{todayPremierCount} Subscribers Today</p>
               <p className='text-m flex items-center'>
                 <span className='mr-1'>Premier Subscribers</span>
               </p>
               <div className='h-16 mt-4 rounded-lg'>
                 <ResponsiveContainer width='100%' height='100%'>
-                  <LineChart data={chartData2}>
-                    <Line type='monotone' dataKey='count' stroke='#F8F8FF' strokeWidth={2} dot={true} />
+                  <LineChart data={premiers}>
+                    <Line type='monotone' dataKey='count' stroke='#F8F8FF' strokeWidth={2} activeDot={{ r: 8 }} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
             {/* Card 4: Sessions */}
-            <div className='bg-red-500 text-white rounded-lg shadow-lg p-4 w-1/4'>
+            <div className='bg-red-500 text-white rounded-lg shadow-lg p-4 min-h-[200px] sm:min-h-[250px] md:min-h-[300px]'>
               <h2 className='text-3xl font-semibold'>{totalPaymentAmount}</h2>
               <p className='text-sm flex items-center'>
-                <span className='text-lg  mr-1'>{formatPercentage(percentageChange)}</span>
+                <span className='text-lg mr-1'>{formatPercentage(percentageChange)}</span>
                 <span className={`text-${percentageChange > 0 ? 'green' : 'red'}-300`}>
                   {percentageChange > 0 ? '↑' : '↓'}
                 </span>
               </p>
               <p className='text-m mt-2'>Revenue</p>
-
               <div className='h-20 w-10 mt-4'>
-                {/* Hiển thị tiny bar chart */}
                 <ResponsiveContainer width='100%' height='100%'>
                   <BarChart data={monthlyTotals}>
                     <Bar dataKey='uv' fill='#F8F8FF' />
