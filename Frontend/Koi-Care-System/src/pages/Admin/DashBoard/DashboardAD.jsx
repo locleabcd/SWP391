@@ -39,7 +39,8 @@ const darkTheme = createTheme({
 })
 
 function DashboardAD() {
-  const [premier, setPremier] = useState([]);
+  const [premierLast7Days, setPremierLast7Days] = useState([]);
+  const [todayPremier, setTodayPremier] = useState(0);  
   const [monthlyTotals, setMonthlyTotals] = useState({ labels: [], data: [] });
   const [totalPaymentAmount, setTotalPaymentAmount] = useState(0);
   const [previousTotal, setPreviousTotal] = useState(0); // Giá trị tổng thanh toán của tháng trước
@@ -172,23 +173,45 @@ function DashboardAD() {
   }
   const getPremier = async () => {
     try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
+      const token = localStorage.getItem('token');
+      if (!token) throw new Error('No token found');
 
       const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/subscribe/all`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
-      setPremier(res.data.data)
-      console.log(res.data.data)
+      const today = new Date();
+      const sevenDaysAgo = new Date(today);
+      sevenDaysAgo.setDate(today.getDate() - 7);
+
+      const premierLast7Days = res.data.data.filter(subscriber => {
+        const startDate = new Date(subscriber.startdate);
+        return startDate >= sevenDaysAgo && startDate <= today;
+      });
+
+      const todayPremier = premierLast7Days.filter(subscriber => {
+        const startDate = new Date(subscriber.startdate);
+        return (
+          startDate.getDate() === today.getDate() &&
+          startDate.getMonth() === today.getMonth() &&
+          startDate.getFullYear() === today.getFullYear()
+        );
+      }).length;
+      console.log(todayPremier)
+      console.log(premierLast7Days)
+      setPremierLast7Days(premierLast7Days);
+      setTodayPremier(todayPremier);
     } catch (error) {
-      console.log('Error fetching category:', error)
+      console.log('Error fetching premier subscribers:', error);
     }
-  }
+  };
+  const chartData2 = premierLast7Days.map(subscriber => {
+    const date = new Date(subscriber.startdate).toLocaleDateString();
+    return {
+      date,
+      count: 1, // Aggregate count of premier subscribers per date
+    };
+  })
   const getProduct = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -489,14 +512,17 @@ function DashboardAD() {
 
       {/* Card 3: Conversion Rate */}
       <div className="bg-yellow-500 text-white rounded-lg shadow-lg p-4 w-1/4">
-        <h2 className="text-2xl font-semibold">2.49%</h2>
-        <p className="text-sm flex items-center">
-          <span className="mr-1">(84.7%)</span>
-          <span className="text-green-300">&#x2191;</span>
+        <h2 className="text-2xl font-semibold">{todayPremier}</h2>
+        <p className="text-lg mb-2">{todayPremier} Subscribers Today</p>
+        <p className="text-m flex items-center">
+          <span className="mr-1">Premier Subscribers</span>
         </p>
-        <p className="text-sm mt-2">Conversion Rate</p>
-        <div className="h-16 mt-4 bg-yellow-700 rounded-lg">
-          {/* Placeholder for line chart */}
+        <div className="h-16 mt-4 rounded-lg">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={chartData2}>
+              <Line type="monotone" dataKey="count" stroke="#F8F8FF" strokeWidth={2} dot={true} />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </div>
 
