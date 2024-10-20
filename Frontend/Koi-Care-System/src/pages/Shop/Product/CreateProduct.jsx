@@ -283,7 +283,6 @@ function CreateProduct() {
                   } ${errors.issueTypeId ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('issueTypeId', { required: false })}
                 />
-                
               </div>
 
               <div className='mb-4'>

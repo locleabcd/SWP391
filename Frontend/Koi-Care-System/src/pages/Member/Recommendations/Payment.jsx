@@ -151,8 +151,8 @@ function Payment() {
                             className='mr-2 size-6'
                           />
                           <label htmlFor='paypal'>
-                            <h6 className='text-lg font-semibold'>Pay with Paypal</h6>
-                            <p className='text-sm text-gray-600'>
+                            <h6 className='lg:text-lg text-sm font-semibold'>Pay with Paypal</h6>
+                            <p className='lg:text-lg text-sm mt-3 lg:mt-0 text-gray-600'>
                               You will be redirected to PayPal website to complete your purchase securely.
                             </p>
                           </label>
@@ -211,8 +211,10 @@ function Payment() {
                             className='mr-2 size-6'
                           />
                           <label htmlFor='credit_card'>
-                            <h6 className='text-lg font-semibold'>Credit / Debit Card</h6>
-                            <p className='text-sm text-gray-600'>We support Mastercard, Visa, Discover, and Stripe.</p>
+                            <h6 className='lg:text-lg text-sm font-semibold'>Credit / Debit Card</h6>
+                            <p className='lg:text-lg text-sm text-gray-600'>
+                              We support Mastercard, Visa, Discover, and Stripe.
+                            </p>
                           </label>
                         </div>
                         <div>
@@ -263,8 +265,10 @@ function Payment() {
                             className='mr-2  size-6'
                           />
                           <label htmlFor='cash'>
-                            <h6 className='text-lg font-semibold'>Cash on Delivery</h6>
-                            <p className='text-sm text-gray-600'>Pay with cash when your order is delivered.</p>
+                            <h6 className='lg:text-lg text-sm font-semibold'>Cash on Delivery</h6>
+                            <p className='lg:text-lg text-sm text-gray-600'>
+                              Pay with cash when your order is delivered.
+                            </p>
                           </label>
                         </div>
                       </div>

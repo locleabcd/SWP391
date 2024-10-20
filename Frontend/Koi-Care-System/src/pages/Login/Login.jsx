@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { FaSpinner } from 'react-icons/fa'
 import { useForm } from 'react-hook-form'
@@ -14,6 +14,28 @@ function Login() {
   const [loading, setLoading] = useState(false)
   const [captcha, setCaptcha] = useState(null)
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const storeTokenFromURL = async () => {
+      const urlParams = new URLSearchParams(window.location.search)
+      const token = urlParams.get('token')
+      const role = urlParams.get('role')
+      const id = urlParams.get('id')
+      const name = urlParams.get('username')
+      console.log(token)
+      console.log(id)
+      console.log(name)
+      if (token) {
+        localStorage.setItem('token', token)
+        localStorage.setItem('role', role)
+        localStorage.setItem('id', id)
+        localStorage.setItem('name', name)
+        navigate('/member/dashboard')
+      }
+    }
+
+    storeTokenFromURL()
+  }, [navigate])
 
   const {
     register,
@@ -152,7 +174,7 @@ function Login() {
 
         <div className='flex items-center justify-between mt-2'>
           <Link
-            to='https://koicaresystemv3.azurewebsites.net/api/oauth2/authorization/google'
+            to='https://koicaresystemv3.azurewebsites.net/api/oauth2/authorization/google?redirect_uri=https://koi-care-system.vercel.app/member/dashboard'
             className='flex items-center justify-center bg-white border hover:bg-gray-100 border-gray-300 text-gray-800 w-full py-3 rounded-lg mr-2'
           >
             <img src='https://www.google.com/favicon.ico' alt='Google' className='h-5 mr-2' />
