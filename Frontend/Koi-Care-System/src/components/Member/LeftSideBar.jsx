@@ -10,7 +10,7 @@ import { Link, NavLink } from 'react-router-dom'
 import path from '../../constants/path'
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import logo from '../../assets/logo.png'
-import { useEffect,  useState } from 'react'
+import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { IoPowerOutline } from 'react-icons/io5'
 import '../../components/Member/animation.css'
@@ -33,7 +33,7 @@ function LeftSideBar() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/profile/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -113,7 +113,7 @@ function LeftSideBar() {
               </a>
             )}
           </div>
-          
+
           <div className='flex flex-col justify-center items-center mt-6 duration-200'>
             <div className=''>
               <NavLink

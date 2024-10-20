@@ -43,7 +43,7 @@ function NewsAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/tag`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/tag`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -67,7 +67,7 @@ function NewsAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/blog`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/blog`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -94,7 +94,7 @@ function NewsAD() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/blog/delete/${blogId}`, {
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/blog/delete/${blogId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

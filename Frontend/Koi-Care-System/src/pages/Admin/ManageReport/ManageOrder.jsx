@@ -76,7 +76,7 @@ function ManageOrder() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/all`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/orders/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -103,7 +103,7 @@ function ManageOrder() {
       const token = localStorage.getItem('token')
 
       const res = await axios.put(
-        `https://koicaresystemv3.azurewebsites.net/api/orders/${id}/order/delivery`,
+        `https://koicaresystemv4.azurewebsites.net/api/orders/${id}/order/delivery`,
         {},
         {
           headers: {
@@ -198,7 +198,6 @@ function ManageOrder() {
               />
             </svg>
           </button>
-         
         </div>
       )
     }
@@ -225,7 +224,7 @@ function ManageOrder() {
 
   return (
     <div className='h-screen flex flex-col md:flex-row'>
-      <LeftSideBar className="w-full md:w-1/4" />
+      <LeftSideBar className='w-full md:w-1/4' />
       <div
         className={`relative flex-1 ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} overflow-y-auto duration-200 ease-linear`}
       >
@@ -261,12 +260,16 @@ function ManageOrder() {
             </Paper>
           </ThemeProvider>
           {isModalOpen && selectedOrder && (
-            <div className={`fixed top-0 left-0 overflow-auto w-full h-full flex justify-center items-center z-50 bg-opacity-50 ${
-              isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-800 text-gray-600'
-            }`}>
-              <div className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] overflow-auto ${
-                    isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
-                  }`}>
+            <div
+              className={`fixed top-0 left-0 overflow-auto w-full h-full flex justify-center items-center z-50 bg-opacity-50 ${
+                isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-800 text-gray-600'
+              }`}
+            >
+              <div
+                className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] overflow-auto ${
+                  isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
+                }`}
+              >
                 <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
                 <div className=' p-4 border rounded-lg shadow-lg'>
                   <p className='mb-3 flex items-center gap-2'>

@@ -1,15 +1,15 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useDarkMode } from '../../../hooks/DarkModeContext';
-import Header from '../../../components/Admin/Header';
-import LeftSideBar from '../../../components/Admin/LeftSideBar';
-import '../../../index.css';
-import TopLayout from '../../../layouts/TopLayoutAD';
-import 'react-toastify/dist/ReactToastify.css';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { useEffect, useState } from 'react';
-import { addToCartList } from '../../../redux/store/cartList';
-import { useDispatch } from 'react-redux';
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useDarkMode } from '../../../hooks/DarkModeContext'
+import Header from '../../../components/Admin/Header'
+import LeftSideBar from '../../../components/Admin/LeftSideBar'
+import '../../../index.css'
+import TopLayout from '../../../layouts/TopLayoutAD'
+import 'react-toastify/dist/ReactToastify.css'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { useEffect, useState } from 'react'
+import { addToCartList } from '../../../redux/store/cartList'
+import { useDispatch } from 'react-redux'
 
 function ViewProductAD() {
   const { isDarkMode } = useDarkMode()
@@ -62,7 +62,7 @@ function ViewProductAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/products/product/${id}/product`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/products/product/${id}/product`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -95,7 +95,7 @@ function ViewProductAD() {
       }
 
       const res = await axios.get(
-        `https://koicaresystemv3.azurewebsites.net/api/products/product/${cate}/all/products`,
+        `https://koicaresystemv4.azurewebsites.net/api/products/product/${cate}/all/products`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -117,7 +117,7 @@ function ViewProductAD() {
     try {
       const token = localStorage.getItem('token')
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/feedbacks/product/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/feedbacks/product/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -134,7 +134,7 @@ function ViewProductAD() {
     try {
       const token = localStorage.getItem('token')
 
-      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/feedbacks/feedback/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/feedbacks/feedback/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -152,7 +152,7 @@ function ViewProductAD() {
       const userId = localStorage.getItem('id')
 
       await axios.post(
-        'https://koicaresystemv3.azurewebsites.net/api/feedbacks',
+        'https://koicaresystemv4.azurewebsites.net/api/feedbacks',
         {
           star: rating,
           comment: comment,
@@ -197,7 +197,7 @@ function ViewProductAD() {
       const id_feedback = localStorage.getItem('id_feed')
 
       await axios.put(
-        'https://koicaresystemv3.azurewebsites.net/api/feedbacks',
+        'https://koicaresystemv4.azurewebsites.net/api/feedbacks',
         {
           id: id_feedback,
           star: rating,
@@ -691,4 +691,4 @@ function ViewProductAD() {
     </div>
   )
 }
-export default ViewProductAD;
+export default ViewProductAD

@@ -77,7 +77,7 @@ function Statistics() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -110,7 +110,7 @@ function Statistics() {
       const token = localStorage.getItem('token')
 
       const res = await axios.get(
-        `https://koicaresystemv3.azurewebsites.net/api/water-parameters/getByKoiPondId/${koiPondId}`,
+        `https://koicaresystemv4.azurewebsites.net/api/water-parameters/getByKoiPondId/${koiPondId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -137,7 +137,7 @@ function Statistics() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koifishs/user/${id}/allKoi`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/koifishs/user/${id}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -159,7 +159,7 @@ function Statistics() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/growth-history/list/${koifishId}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/growth-history/list/${koifishId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -205,21 +205,21 @@ function Statistics() {
 
   const getKoiHistoryStandard = async (koifishId) => {
     try {
-      const token = localStorage.getItem('token');
+      const token = localStorage.getItem('token')
       if (!token) {
-        throw new Error('No token found');
+        throw new Error('No token found')
       }
-  
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/reports/GrowthFish/${koifishId}`, {
+
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/reports/GrowthFish/${koifishId}`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`
         }
-      });
-      console.log('koi history', res.data.data);
+      })
+      console.log('koi history', res.data.data)
       const filteredData = res.data.data.slice(1)
-      setKoiHistoryStandard(filteredData);
+      setKoiHistoryStandard(filteredData)
     } catch (error) {
-      console.error('Error fetching koi history:', error);
+      console.error('Error fetching koi history:', error)
     }
   }
 
@@ -251,37 +251,37 @@ function Statistics() {
   }
 
   const aggregateGrowthHistory = (data, standardData) => {
-    const dateMap = {};
-    
+    const dateMap = {}
+
     // Aggregate growth data
     data.forEach((entry) => {
-      const date = formatDate(entry.createDate);
+      const date = formatDate(entry.createDate)
       if (!dateMap[date]) {
-        dateMap[date] = { name: date, length: 0, weight: 0, count: 0, lengthStandard: 0, weightStandard: 0 };
+        dateMap[date] = { name: date, length: 0, weight: 0, count: 0, lengthStandard: 0, weightStandard: 0 }
       }
-      dateMap[date].length += entry.length;
-      dateMap[date].weight += entry.weight;
-      dateMap[date].count += 1;
-    });
-    
+      dateMap[date].length += entry.length
+      dateMap[date].weight += entry.weight
+      dateMap[date].count += 1
+    })
+
     // Aggregate standard data
     standardData.forEach((entry) => {
-      const date = formatDate(entry.createDate);
+      const date = formatDate(entry.createDate)
       if (!dateMap[date]) {
-        dateMap[date] = { name: date, length: 0, weight: 0, count: 0, lengthStandard: 0, weightStandard: 0 };
+        dateMap[date] = { name: date, length: 0, weight: 0, count: 0, lengthStandard: 0, weightStandard: 0 }
       }
       dateMap[date].lengthStandard = entry.length
       dateMap[date].weightStandard = entry.weight
-    });
-  
+    })
+
     return Object.values(dateMap).map((entry) => ({
       name: entry.name,
       length: entry.length / entry.count,
       weight: entry.weight / entry.count,
       lengthStandard: entry.lengthStandard,
-      weightStandard: entry.weightStandard,
-    }));
-  };
+      weightStandard: entry.weightStandard
+    }))
+  }
 
   const aggregateWaterData = (data) => {
     const dateMap = {}
@@ -683,7 +683,7 @@ function Statistics() {
                       fill='url(#lengthStandardColor)'
                       name='standard length'
                     />
-                    
+
                     <defs>
                       <linearGradient id='lengthColor' x1='0' y1='0' x2='0' y2='1'>
                         <stop offset='5%' stopColor='#8884d8' stopOpacity={0.8} />

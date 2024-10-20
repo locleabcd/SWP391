@@ -44,7 +44,7 @@ function ViewUser() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/all/member`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/profile/all/member`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -132,7 +132,7 @@ function ViewUser() {
       >
         <Header />
         <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-          <TopLayout text='Users' links='shop/viewUser'/>
+          <TopLayout text='Users' links='shop/viewUser' />
           <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
             <CssBaseline />
             <Paper sx={{ height: 670 }}>

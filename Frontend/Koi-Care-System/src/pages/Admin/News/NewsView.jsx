@@ -20,7 +20,7 @@ function NewsView() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/blog/getID/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/blog/getID/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
