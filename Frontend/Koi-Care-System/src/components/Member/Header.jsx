@@ -36,7 +36,7 @@ function Header() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
+      const response = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -75,7 +75,7 @@ function Header() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/profile/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -99,7 +99,7 @@ function Header() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/carts/user/${userId}/cartId`, {
+      const response = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/carts/user/${userId}/cartId`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -127,9 +127,7 @@ function Header() {
     setIsSearchOpen(!isSearchOpen)
   }
 
-  const filteredPaths = memberPathInfor.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredPaths = memberPathInfor.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
   const name = localStorage.getItem('name')
   const role = localStorage.getItem('role')
@@ -676,23 +674,25 @@ function Header() {
         </div>
       </div>
       {isSearchOpen && (
-        <div className={`absolute top-16 left-[8vh] md:top-[2vh] md:left-[118vh] z-50 mt-2 ${
-          isDarkMode ? ' text-gray-200' : ' text-gray-800'
-        }`}>
+        <div
+          className={`absolute top-16 left-[8vh] md:top-[2vh] md:left-[118vh] z-50 mt-2 ${
+            isDarkMode ? ' text-gray-200' : ' text-gray-800'
+          }`}
+        >
           <input
             type='text'
             placeholder='Search Here'
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className={`p-2 rounded-lg border ${
-              isDarkMode ? ' bg-gray-800 text-gray-200' : ' bg-white text-gray-800'
-            }`}
+            className={`p-2 rounded-lg border ${isDarkMode ? ' bg-gray-800 text-gray-200' : ' bg-white text-gray-800'}`}
           />
           {filteredPaths.length > 0 && (
-            <ul className={`absolute z-50 border border-gray-300 rounded mt-1 w-full max-h-40 overflow-x-auto no-scroll-bar ${
-              isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
-            }`}>
-              {filteredPaths.map(item => (
+            <ul
+              className={`absolute z-50 border border-gray-300 rounded mt-1 w-full max-h-40 overflow-x-auto no-scroll-bar ${
+                isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
+              }`}
+            >
+              {filteredPaths.map((item) => (
                 <li key={item.id}>
                   <NavLink
                     to={item.link}

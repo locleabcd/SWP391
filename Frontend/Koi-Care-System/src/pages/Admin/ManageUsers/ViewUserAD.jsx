@@ -63,7 +63,7 @@ function ViewUserAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/profile/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -86,7 +86,7 @@ function ViewUserAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/payment/user/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/payment/user/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -109,7 +109,7 @@ function ViewUserAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/user/${id}/order`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/orders/user/${id}/order`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -136,7 +136,7 @@ function ViewUserAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api//orders/${orderId}/order`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api//orders/${orderId}/order`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

@@ -42,7 +42,7 @@ function ProductImage() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/images/all`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/images/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -70,7 +70,7 @@ function ProductImage() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/images/image/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/images/image/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -136,7 +136,7 @@ function ProductImage() {
         >
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-            <TopLayout text='Product Images' links='shop/productImage'/>
+            <TopLayout text='Product Images' links='shop/productImage' />
             <div className='w-full flex justify-between items-center relative'>
               <button
                 className='cursor-pointer mb-4 py-2 px-3 bg-custom-left-bar text-white hover:bg-blue-600 rounded-md'

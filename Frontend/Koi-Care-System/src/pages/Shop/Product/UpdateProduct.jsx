@@ -33,7 +33,7 @@ function UpdateProduct() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/categories/all`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/categories/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -57,7 +57,7 @@ function UpdateProduct() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/suppliers/all`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/suppliers/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -80,7 +80,7 @@ function UpdateProduct() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/products/product/${id}/product`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/products/product/${id}/product`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -109,7 +109,7 @@ function UpdateProduct() {
         throw new Error('No token found')
       }
       const res = await axios.put(
-        `https://koicaresystemv3.azurewebsites.net/api/products/product/${id}/update`,
+        `https://koicaresystemv4.azurewebsites.net/api/products/product/${id}/update`,
         {
           name: data.name,
           brand: data.brand,
@@ -305,7 +305,6 @@ function UpdateProduct() {
                   } ${errors.issueTypeId ? 'border-red-500' : 'border-gray-300'}`}
                   {...register('issueTypeId', { required: false })}
                 />
-                
               </div>
               <button
                 type='submit'

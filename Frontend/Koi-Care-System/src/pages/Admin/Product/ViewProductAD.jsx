@@ -10,227 +10,227 @@ import { toast } from 'react-toastify'
 import { useEffect, useState } from 'react'
 import { addToCartList } from '../../../redux/store/cartList'
 import { useDispatch } from 'react-redux'
- function ViewProductAD() {
-    const { isDarkMode } = useDarkMode()
-    const { id } = useParams()
-    const [productId, setProductId] = useState([])
-    const [productRelate, setProductRelate] = useState([])
-    const navigate = useNavigate()
-    const [currentIndex, setCurrentIndex] = useState(0)
-    const [count, setCount] = useState(1)
-    const [active, setActive] = useState('description')
-    const [feedback, setFeedback] = useState([])
-    const [visibleId, setVisibleId] = useState(null)
-    const [rating, setRating] = useState(0)
-    const [hoveredRating, setHoveredRating] = useState(0)
-    const [comment, setComment] = useState('')
-    const [editableFeedback, setEditableFeedback] = useState(null)
-    const [isEditing, setIsEditing] = useState(false)
-    const dispatch = useDispatch()
-    const handleAddToCart = (product) => {
-      dispatch(addToCartList(product, count))
-    }
-  
-    const toggleHide = (id) => {
-      setVisibleId(visibleId === id ? null : id)
-    }
-  
-    const images = productId.images || []
-  
-    const increment = () => {
-      setCount((prevCount) => prevCount + 1)
-    }
-  
-    const decrement = () => {
-      setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : prevCount))
-    }
-  
-    const nextImage = () => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length)
-    }
-  
-    const prevImage = () => {
-      setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1))
-    }
-  
-    const getProductId = async () => {
-      try {
-        const token = localStorage.getItem('token')
-        if (!token) {
-          throw new Error('No token found')
+function ViewProductAD() {
+  const { isDarkMode } = useDarkMode()
+  const { id } = useParams()
+  const [productId, setProductId] = useState([])
+  const [productRelate, setProductRelate] = useState([])
+  const navigate = useNavigate()
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [count, setCount] = useState(1)
+  const [active, setActive] = useState('description')
+  const [feedback, setFeedback] = useState([])
+  const [visibleId, setVisibleId] = useState(null)
+  const [rating, setRating] = useState(0)
+  const [hoveredRating, setHoveredRating] = useState(0)
+  const [comment, setComment] = useState('')
+  const [editableFeedback, setEditableFeedback] = useState(null)
+  const [isEditing, setIsEditing] = useState(false)
+  const dispatch = useDispatch()
+  const handleAddToCart = (product) => {
+    dispatch(addToCartList(product, count))
+  }
+
+  const toggleHide = (id) => {
+    setVisibleId(visibleId === id ? null : id)
+  }
+
+  const images = productId.images || []
+
+  const increment = () => {
+    setCount((prevCount) => prevCount + 1)
+  }
+
+  const decrement = () => {
+    setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : prevCount))
+  }
+
+  const nextImage = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length)
+  }
+
+  const prevImage = () => {
+    setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1))
+  }
+
+  const getProductId = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/products/product/${id}/product`, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-  
-        const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/products/product/${id}/product`, {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        console.log(res.data.data)
-        setProductId(res.data.data)
-      } catch (error) {
-        if (axios.isAxiosError(error)) {
-          if (error.response?.status === 401) {
-            console.error('Unauthorized access - Token expired or invalid. Logging out...')
-            localStorage.removeItem('token')
-            localStorage.removeItem('id')
-            toast.error('Token expired navigate to login')
-            navigate('/login')
-          } else {
-            console.error('Error fetching ponds:', error.response?.status, error.message)
-          }
+      })
+      console.log(res.data.data)
+      setProductId(res.data.data)
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          console.error('Unauthorized access - Token expired or invalid. Logging out...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('id')
+          toast.error('Token expired navigate to login')
+          navigate('/login')
         } else {
-          console.error('An unexpected error occurred:', error)
+          console.error('Error fetching ponds:', error.response?.status, error.message)
         }
+      } else {
+        console.error('An unexpected error occurred:', error)
       }
     }
-  
-    const getProductRelate = async () => {
-      try {
-        const token = localStorage.getItem('token')
-        const cate = productId.category?.name || ''
-        if (!token) {
-          throw new Error('No token found')
-        }
-  
-        const res = await axios.get(
-          `https://koicaresystemv3.azurewebsites.net/api/products/product/${cate}/all/products`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        )
-        if (!cate) {
-          console.log('No category available')
-        }
-  
-        const filteredProducts = res.data.data.filter((products) => String(products.id) !== String(id))
-        setProductRelate(filteredProducts)
-      } catch (error) {
-        console.log(error)
+  }
+
+  const getProductRelate = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const cate = productId.category?.name || ''
+      if (!token) {
+        throw new Error('No token found')
       }
-    }
-  
-    const getFeedback = async () => {
-      try {
-        const token = localStorage.getItem('token')
-  
-        const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/feedbacks/product/${id}`, {
+
+      const res = await axios.get(
+        `https://koicaresystemv4.azurewebsites.net/api/products/product/${cate}/all/products`,
+        {
           headers: {
             Authorization: `Bearer ${token}`
           }
-        })
-  
-        console.log(res.data.data)
-        setFeedback(res.data.data)
-      } catch (error) {
-        console.log(error)
+        }
+      )
+      if (!cate) {
+        console.log('No category available')
       }
+
+      const filteredProducts = res.data.data.filter((products) => String(products.id) !== String(id))
+      setProductRelate(filteredProducts)
+    } catch (error) {
+      console.log(error)
     }
-  
-    const deleteFeedback = async (id) => {
-      try {
-        const token = localStorage.getItem('token')
-  
-        await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/feedbacks/feedback/${id}/delete`, {
+  }
+
+  const getFeedback = async () => {
+    try {
+      const token = localStorage.getItem('token')
+
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/feedbacks/product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      console.log(res.data.data)
+      setFeedback(res.data.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const deleteFeedback = async (id) => {
+    try {
+      const token = localStorage.getItem('token')
+
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/feedbacks/feedback/${id}/delete`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      getFeedback()
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  const createFeedback = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+
+      await axios.post(
+        'https://koicaresystemv4.azurewebsites.net/api/feedbacks',
+        {
+          star: rating,
+          comment: comment,
+          userId: userId,
+          productId: id
+        },
+        {
           headers: {
             Authorization: `Bearer ${token}`
           }
-        })
-  
-        getFeedback()
-      } catch (err) {
-        console.log(err)
-      }
-    }
-  
-    const createFeedback = async () => {
-      try {
-        const token = localStorage.getItem('token')
-        const userId = localStorage.getItem('id')
-  
-        await axios.post(
-          'https://koicaresystemv3.azurewebsites.net/api/feedbacks',
-          {
-            star: rating,
-            comment: comment,
-            userId: userId,
-            productId: id
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        )
-        getFeedback()
-        getProductId()
-        setRating(0)
-        setComment('')
-        setHoveredRating(0)
-      } catch (error) {
-        console.error('Error details:', error)
-      }
-    }
-  
-    const handleEdit = (feedbacks) => {
-      setEditableFeedback(feedbacks)
-      localStorage.setItem('id_feed', feedbacks.id)
-      setRating(feedbacks.star)
-      setComment(feedbacks.comment)
-      setIsEditing(true)
-    }
-  
-    const handleCancelEdit = () => {
-      setEditableFeedback(null)
+        }
+      )
+      getFeedback()
+      getProductId()
       setRating(0)
       setComment('')
       setHoveredRating(0)
-      setIsEditing(false)
+    } catch (error) {
+      console.error('Error details:', error)
     }
-  
-    const updateFeedback = async () => {
-      try {
-        const token = localStorage.getItem('token')
-        const id_feedback = localStorage.getItem('id_feed')
-  
-        await axios.put(
-          'https://koicaresystemv3.azurewebsites.net/api/feedbacks',
-          {
-            id: id_feedback,
-            star: rating,
-            comment: comment,
-            productId: id
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
+  }
+
+  const handleEdit = (feedbacks) => {
+    setEditableFeedback(feedbacks)
+    localStorage.setItem('id_feed', feedbacks.id)
+    setRating(feedbacks.star)
+    setComment(feedbacks.comment)
+    setIsEditing(true)
+  }
+
+  const handleCancelEdit = () => {
+    setEditableFeedback(null)
+    setRating(0)
+    setComment('')
+    setHoveredRating(0)
+    setIsEditing(false)
+  }
+
+  const updateFeedback = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const id_feedback = localStorage.getItem('id_feed')
+
+      await axios.put(
+        'https://koicaresystemv4.azurewebsites.net/api/feedbacks',
+        {
+          id: id_feedback,
+          star: rating,
+          comment: comment,
+          productId: id
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
           }
-        )
-        getFeedback()
-        setRating(0)
-        setComment('')
-        setHoveredRating(0)
-        setEditableFeedback(null)
-      } catch (error) {
-        console.log(error)
-      }
-    }
-  
-    useEffect(() => {
+        }
+      )
       getFeedback()
-    }, [])
-  
-    useEffect(() => {
-      getProductId()
-    }, [id])
-  
-    useEffect(() => {
-      if (productId?.category) {
-        getProductRelate()
-      }
-    }, [productId])
+      setRating(0)
+      setComment('')
+      setHoveredRating(0)
+      setEditableFeedback(null)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    getFeedback()
+  }, [])
+
+  useEffect(() => {
+    getProductId()
+  }, [id])
+
+  useEffect(() => {
+    if (productId?.category) {
+      getProductRelate()
+    }
+  }, [productId])
   return (
     <div>
       <div className='h-screen flex'>
@@ -683,7 +683,6 @@ import { useDispatch } from 'react-redux'
         </div>
       </div>
     </div>
-  
   )
 }
-export default  ViewProductAD
+export default ViewProductAD

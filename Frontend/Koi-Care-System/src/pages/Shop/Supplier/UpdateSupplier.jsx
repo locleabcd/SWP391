@@ -30,7 +30,7 @@ function UpdateSupplier() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/suppliers/supplier/${id}/by_id`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/suppliers/supplier/${id}/by_id`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -58,7 +58,7 @@ function UpdateSupplier() {
         throw new Error('No token found')
       }
       const res = await axios.put(
-        `https://koicaresystemv3.azurewebsites.net/api/suppliers/supplier/${id}/update`,
+        `https://koicaresystemv4.azurewebsites.net/api/suppliers/supplier/${id}/update`,
         {
           name: data.name,
           phone: data.phone,

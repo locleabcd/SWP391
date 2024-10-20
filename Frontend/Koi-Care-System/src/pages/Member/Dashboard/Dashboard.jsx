@@ -27,7 +27,7 @@ function Dashboard() {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('id')
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/payment/user/${userId}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/payment/user/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -67,7 +67,7 @@ function Dashboard() {
       const allReports = []
 
       for (const date of surroundingDates) {
-        const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/reports/FishPondWater', {
+        const res = await axios.get('https://koicaresystemv4.azurewebsites.net/api/reports/FishPondWater', {
           headers: {
             Authorization: `Bearer ${token}`
           },
@@ -100,7 +100,7 @@ function Dashboard() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/${orderId}/order`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/orders/${orderId}/order`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -124,7 +124,7 @@ function Dashboard() {
         throw new Error('No token found')
       }
       const res = await axios.get(
-        `https://koicaresystemv3.azurewebsites.net/api/water-parameters/getByUserId/${userId}`,
+        `https://koicaresystemv4.azurewebsites.net/api/water-parameters/getByUserId/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -148,7 +148,7 @@ function Dashboard() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koifishs/user/${id}/allKoi`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/koifishs/user/${id}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -175,7 +175,7 @@ function Dashboard() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

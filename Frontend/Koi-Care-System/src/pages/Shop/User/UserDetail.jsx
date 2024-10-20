@@ -63,7 +63,7 @@ function UserDetail() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/profile/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -86,7 +86,7 @@ function UserDetail() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/payment/user/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/payment/user/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -109,7 +109,7 @@ function UserDetail() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/user/${id}/order`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/orders/user/${id}/order`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -136,7 +136,7 @@ function UserDetail() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api//orders/${orderId}/order`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api//orders/${orderId}/order`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -203,15 +203,15 @@ function UserDetail() {
                                 {formatCurrency(pay.amount)}
                               </td>
                               <td className='py-3 px-1 text-center border-b border-gray-200'>
-                              <div
-                                className={`p-1 rounded text-sm font-medium border-2 ${
-                                  pay.status === 'COMPLETED'
-                                    ? 'border-green-500 text-green-500'
-                                    : 'border-red-500 text-red-500'
-                                }`}
-                              >
-                                {pay.status}
-                              </div>
+                                <div
+                                  className={`p-1 rounded text-sm font-medium border-2 ${
+                                    pay.status === 'COMPLETED'
+                                      ? 'border-green-500 text-green-500'
+                                      : 'border-red-500 text-red-500'
+                                  }`}
+                                >
+                                  {pay.status}
+                                </div>
                               </td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>
                                 <div className='flex justify-center items-center'>
@@ -271,21 +271,21 @@ function UserDetail() {
                                 {formatCurrency(ord.totalAmount)}
                               </td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>
-                              <div
-                                className={`p-1 rounded text-sm font-medium border-2 ${
-                                  ord.status === 'PENDING'
-                                    ? 'border-yellow-500 text-yellow-500'
-                                    : ord.status === 'PROCESSING'
-                                    ? 'border-blue-500 text-blue-500'
-                                    : ord.status === 'DELIVERED'
-                                    ? 'border-green-500 text-green-500'
-                                    : ord.status === 'CANCELLED'
-                                    ? 'border-red-500 text-red-500'
-                                    : ''
-                                }`}
-                              >
-                                {ord.status}
-                              </div>
+                                <div
+                                  className={`p-1 rounded text-sm font-medium border-2 ${
+                                    ord.status === 'PENDING'
+                                      ? 'border-yellow-500 text-yellow-500'
+                                      : ord.status === 'PROCESSING'
+                                        ? 'border-blue-500 text-blue-500'
+                                        : ord.status === 'DELIVERED'
+                                          ? 'border-green-500 text-green-500'
+                                          : ord.status === 'CANCELLED'
+                                            ? 'border-red-500 text-red-500'
+                                            : ''
+                                  }`}
+                                >
+                                  {ord.status}
+                                </div>
                               </td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>
                                 <div className='flex justify-center items-center'>
@@ -333,7 +333,7 @@ function UserDetail() {
                     </h2>
                     <p className='py-3 flex items-center gap-2'>
                       <IoMail className='text-2xl text-red-500' />
-                      <strong>Email:</strong> 
+                      <strong>Email:</strong>
                       {user.email}
                     </p>
                     <p className='py-3 flex items-center gap-2'>
@@ -373,12 +373,16 @@ function UserDetail() {
               </div>
 
               {isModalOpen && selectedOrder && (
-                <div className={`fixed top-0 left-0 overflow-auto w-full h-full flex justify-center items-center z-50 bg-opacity-50 ${
-                  isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-800 text-gray-600'
-                }`}>
-                  <div className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] overflow-auto ${
-                    isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
-                  }`}>
+                <div
+                  className={`fixed top-0 left-0 overflow-auto w-full h-full flex justify-center items-center z-50 bg-opacity-50 ${
+                    isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-800 text-gray-600'
+                  }`}
+                >
+                  <div
+                    className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] overflow-auto ${
+                      isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
+                    }`}
+                  >
                     <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
                     <div className=' p-4 border rounded-lg shadow-lg'>
                       <p className='mb-3 flex items-center gap-2'>

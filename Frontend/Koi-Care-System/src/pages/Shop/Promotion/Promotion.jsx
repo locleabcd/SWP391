@@ -69,7 +69,7 @@ function Promotion() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/promotions/all`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/promotions/all`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       setPromotions(res.data.data)
@@ -86,7 +86,7 @@ function Promotion() {
       if (!token) throw new Error('No token found')
 
       const res = await axios.get(
-        `https://koicaresystemv3.azurewebsites.net/api/promotions/${promotionId}/products/view`,
+        `https://koicaresystemv4.azurewebsites.net/api/promotions/${promotionId}/products/view`,
         {
           headers: { Authorization: `Bearer ${token}` }
         }
@@ -113,7 +113,7 @@ function Promotion() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/promotions/promotion/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/promotions/promotion/${id}/delete`, {
         headers: { Authorization: `Bearer ${token}` }
       })
 

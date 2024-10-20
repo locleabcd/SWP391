@@ -37,7 +37,7 @@ function ProfileShop() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/profile/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -81,7 +81,7 @@ function ProfileShop() {
         formData.append('file', selectedFile)
       }
 
-      const res = await axios.put(`https://koicaresystemv3.azurewebsites.net/api/profile/update/${id}`, formData, {
+      const res = await axios.put(`https://koicaresystemv4.azurewebsites.net/api/profile/update/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -113,7 +113,7 @@ function ProfileShop() {
       }
 
       const res = await axios.patch(
-        'https://koicaresystemv3.azurewebsites.net/api/users/changePassword',
+        'https://koicaresystemv4.azurewebsites.net/api/users/changePassword',
         {
           currentPassword,
           newPassword
