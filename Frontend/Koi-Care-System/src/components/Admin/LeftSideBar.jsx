@@ -11,8 +11,8 @@ import { FaBox } from 'react-icons/fa'
 import { FaCartShopping } from 'react-icons/fa6'
 import { TbReportSearch } from 'react-icons/tb'
 import { FaMoneyBill } from 'react-icons/fa'
-
 import { AiFillShop } from 'react-icons/ai'
+import { FaRegNewspaper } from 'react-icons/fa'
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
   const [isClosed, setClosed] = useState(() => {
@@ -53,9 +53,9 @@ const [isShopOpen, setIsShopOpen] = useState(() => {
       <div className='relative '>
         {isClosed ? (
           <button
-            className={`absolute duration-200 ease-linear left-20 top-8 p-1 z-30 ${
-              isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-            } `}
+          className={`absolute duration-200 ease-linear lg:inline-block hidden lg:left-20 top-5 p-1 z-30 ${
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+          } `}
             onClick={() => setClosed(false)}
           >
             <svg
@@ -71,9 +71,9 @@ const [isShopOpen, setIsShopOpen] = useState(() => {
           </button>
         ) : (
           <button
-            className={`absolute left-[260px] top-6 p-1 z-30 ${
-              isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-            } `}
+          className={`lg:absolute lg:left-[260px] lg:inline-block hidden lg:top-6 lg:p-1 lg:z-30 ${
+            isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+          } `}
             onClick={() => setClosed(true)}
           >
             <svg
@@ -90,9 +90,9 @@ const [isShopOpen, setIsShopOpen] = useState(() => {
         )}
       </div>
       {/* sidebar */}
-      <div className={`absolute top-0 left-0 z-999 flex h-screen flex-col no-scroll-bar overflow-y-auto border-r ${
+      <div  className={`absolute top-0 left-0 z-50 flex h-screen flex-col no-scroll-bar overflow-y-auto border-r ${
           isDarkMode ? 'bg-custom-dark text-white border-gray-700' : 'bg-white text-black border-gray-200'
-        } shadow-sm duration-200 ease-linear lg:static lg:translate-x-0 ${isClosed ? 'w-[80px]' : 'w-[240px]'}`}
+        } shadow-sm duration-200 ease-linear lg:static lg:translate-x-0 ${isClosed ? 'lg:w-[80px] w-0' : 'lg:w-[240px] w-[0px]'}`}
       >
         <div className='flex justify-center items-center'>
           <button className='mt-4 rounded-md'>
@@ -137,6 +137,24 @@ const [isShopOpen, setIsShopOpen] = useState(() => {
                 {!isClosed && <span className='font-semibold'>Dashboard</span>}
               </div>
             </NavLink>
+            <NavLink
+                      to={path.newsAD}
+                      className={({ isActive }) => {
+                        const active = isActive
+                          ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
+                          : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
+                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${
+                          isClosed ? 'flex-col' : ''
+                        }`
+                      }}
+                    >
+                      <div className='flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
+                          < FaRegNewspaper className='w-full h-full' />
+                        </div>
+                        {!isClosed && <span className='font-semibold'>News</span>}
+                      </div>
+                    </NavLink>
           <div>
               <button
                 className={`min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center ${

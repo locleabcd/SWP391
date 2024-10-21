@@ -81,7 +81,9 @@ const path = {
   createProductAD: '/admin/product/create',
   createSupplierAD: '/admin/supplier/create',
   updateSupplierAD: '/admin/supplier/:id',
-  managePay: '/admin/payment'
+  managePay: '/admin/payment',
+  newsAD: '/admin/news',
+  newsView:'/admin/news/:id'
 }
 
 export default path

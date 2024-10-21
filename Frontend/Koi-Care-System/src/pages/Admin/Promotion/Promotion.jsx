@@ -306,11 +306,19 @@ function Promotion() {
               </Paper>
             </ThemeProvider>
             {isModalOpen && selectedPromotion && (
-              <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
-                <div className='bg-white p-4 border rounded-lg'>
+              <div
+                className={`fixed top-0 left-0 overflow-auto w-full h-full flex justify-center items-center z-50 bg-opacity-50 ${
+                  isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-800 text-gray-600'
+                }`}
+              >
+                <div
+                  className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] overflow-auto ${
+                    isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
+                  }`}
+                >
                   <h3 className='text-xl text-center font-bold mb-4'>PROMOTION DETAILS</h3>
                   <div>
-                    <div className='bg-white p-4 border rounded-lg shadow-lg'>
+                    <div className=' p-4 border rounded-lg shadow-lg'>
                       <p className='mb-3 flex items-center gap-2'>
                         <FaUser /> Name: {selectedPromotion.name}
                       </p>

@@ -114,18 +114,20 @@ function UpdateUserAD() {
         <Header />
         <div className='py-5 px-[30px] mx-auto'>
           <TopLayout text='Shop' textName='Update Shop' links='admin/shop' />
-          <div className='bg-white p-6 rounded-md border'>
+          <div className=' p-6 rounded-md border'>
             {/* Form for updating user */}
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* Username Input */}
               <div className='mb-4'>
-                <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='username'>
+                <label className='block  text-sm font-bold mb-2' htmlFor='username'>
                   Username
                 </label>
                 <input
                   id='username'
                   type='text'
-                  className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                  className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  }`}
                   {...register('username', { required: true })}
                 />
                 {errors.username && <p className='text-red-500 text-xs italic'>Please enter a username.</p>}
@@ -135,13 +137,15 @@ function UpdateUserAD() {
 
               {/* Password Input (optional) */}
               <div className='mb-4'>
-                <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='password'>
+                <label className='block  text-sm font-bold mb-2' htmlFor='password'>
                   Password (Leave empty if not changing)
                 </label>
                 <input
                   id='password'
                   type='password'
-                  className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                  className={`shadow appearance-none border rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline ${
+                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                  }`}
                   {...register('password')}
                 />
               </div>

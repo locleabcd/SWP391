@@ -88,6 +88,8 @@ import CreateProductAD from './pages/Admin/Product/CreateProductAD'
 import CreateSupplierAD from './pages/Admin/Supplier/CreateSupplierAD'
 import UpdateSupplierAD from './pages/Admin/Supplier/UpdateSupplierAD'
 import ManagePay from './pages/Admin/ManageReport/ManagePay'
+import NewsAD from './pages/Admin/News/NewsAD'
+import NewsView from './pages/Admin/News/NewsView'
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -611,6 +613,14 @@ function App() {
     {
       path: path.managePay,
       element: <ManagePay/>
+    },
+    {
+      path: path.newsAD,
+      element: <NewsAD/>
+    },
+    {
+      path: path.newsView,
+      element: <NewsView/>
     }
   ])
 

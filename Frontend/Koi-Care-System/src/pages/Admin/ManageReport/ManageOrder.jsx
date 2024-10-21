@@ -21,6 +21,7 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
+
 const lightTheme = createTheme({
   palette: {
     mode: 'light'
@@ -36,6 +37,7 @@ const darkTheme = createTheme({
     }
   }
 })
+
 function ManageOrder() {
   const { isDarkMode } = useDarkMode()
   const [orders, setOrders] = useState([])
@@ -221,13 +223,13 @@ function ManageOrder() {
   }
 
   return (
-    <div className='h-screen flex'>
-      <LeftSideBar />
+    <div className='h-screen flex flex-col md:flex-row'>
+      <LeftSideBar className='w-full md:w-1/4' />
       <div
-        className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} overflow-y-auto flex-1 flex-col overflow-x-hidden duration-200 ease-linear`}
+        className={`relative flex-1 ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} overflow-y-auto duration-200 ease-linear`}
       >
         <Header />
-        <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
+        <div className='py-5 px-4 sm:px-6 md:px-8 mx-auto max-w-[1750px]'>
           <TopLayout text='Orders' />
           <div className='w-full flex justify-end items-center relative'>
             <button onClick={exportToExcel} className='mb-4 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md'>
@@ -258,10 +260,18 @@ function ManageOrder() {
             </Paper>
           </ThemeProvider>
           {isModalOpen && selectedOrder && (
-            <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
-              <div className='bg-white p-4 border rounded-lg'>
+            <div
+              className={`fixed top-0 left-0 overflow-auto w-full h-full flex justify-center items-center z-50 bg-opacity-50 ${
+                isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-800 text-gray-600'
+              }`}
+            >
+              <div
+                className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] overflow-auto ${
+                  isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
+                }`}
+              >
                 <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
-                <div className='bg-white p-4 border rounded-lg shadow-lg'>
+                <div className=' p-4 border rounded-lg shadow-lg'>
                   <p className='mb-3 flex items-center gap-2'>
                     <FaCartArrowDown className='text-2xl text-blue-500' />
                     <strong>Order ID:</strong> {selectedOrder.id}
@@ -279,11 +289,11 @@ function ManageOrder() {
                     <strong>Phone:</strong> {selectedOrder.phone}
                   </p>
                   <p className='mb-3 flex items-center gap-2'>
-                    <GrNotes className='text-2xl ' />
+                    <GrNotes className='text-2xl text-yellow-500' />
                     <strong>Note:</strong> {selectedOrder.note}
                   </p>
                   <p className='mb-3 flex items-center gap-2'>
-                    <FaUser className='text-2xl ' />
+                    <FaUser className='text-2xl text-blue-500' />
                     <strong>RecipientName:</strong> {selectedOrder.recipientName}
                   </p>
                   <p className='mb-3 flex items-center gap-2'>
@@ -332,4 +342,5 @@ function ManageOrder() {
     </div>
   )
 }
+
 export default ManageOrder
