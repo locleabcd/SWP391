@@ -75,7 +75,7 @@ function Order() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/all`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/orders/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -92,8 +92,8 @@ function Order() {
   }, [])
 
   const updateDelivery = async (id) => {
-    const orderToUpdate = orders.find(order => order.id === id);
-  
+    const orderToUpdate = orders.find((order) => order.id === id)
+
     if (orderToUpdate.status !== 'PROCESSING') {
       toast.warning('You can only update delivery for orders with the status PROCESSING.')
       return
@@ -108,7 +108,7 @@ function Order() {
       const token = localStorage.getItem('token')
 
       const res = await axios.put(
-        `https://koicaresystemv3.azurewebsites.net/api/orders/${id}/order/delivery`,
+        `https://koicaresystemv4.azurewebsites.net/api/orders/${id}/order/delivery`,
         {},
         {
           headers: {
@@ -171,7 +171,7 @@ function Order() {
             statusClasses += ' border-red-500 text-red-500'
             break
           default:
-            statusClasses += ' border-gray-500 text-gray-500' 
+            statusClasses += ' border-gray-500 text-gray-500'
         }
 
         return (
@@ -207,7 +207,7 @@ function Order() {
             className='p-1 hover:bg-blue-500 text-blue-500 hover:text-white  rounded-full'
             onClick={() => onSubmit(params.row.id)}
           >
-            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' class='size-6'>
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-6'>
               <path d='M3.375 4.5C2.339 4.5 1.5 5.34 1.5 6.375V13.5h12V6.375c0-1.036-.84-1.875-1.875-1.875h-8.25ZM13.5 15h-12v2.625c0 1.035.84 1.875 1.875 1.875h.375a3 3 0 1 1 6 0h3a.75.75 0 0 0 .75-.75V15Z' />
               <path d='M8.25 19.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0ZM15.75 6.75a.75.75 0 0 0-.75.75v11.25c0 .087.015.17.042.248a3 3 0 0 1 5.958.464c.853-.175 1.522-.935 1.464-1.883a18.659 18.659 0 0 0-3.732-10.104 1.837 1.837 0 0 0-1.47-.725H15.75Z' />
               <path d='M19.5 19.5a1.5 1.5 0 1 0-3 0 1.5 1.5 0 0 0 3 0Z' />
@@ -245,7 +245,7 @@ function Order() {
       >
         <Header />
         <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-          <TopLayout text='Orders' links='shop/order'/>
+          <TopLayout text='Orders' links='shop/order' />
           <div className='w-full flex justify-end items-center relative'>
             <button onClick={exportToExcel} className='mb-4 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md'>
               Download Excel
@@ -275,12 +275,16 @@ function Order() {
             </Paper>
           </ThemeProvider>
           {isModalOpen && selectedOrder && (
-            <div className={`fixed top-0 left-0 overflow-auto w-full h-full flex justify-center items-center z-50 bg-opacity-50 ${
-              isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-800 text-gray-600'
-            }`}>
-              <div className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] overflow-auto ${
-                    isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
-                  }`}>
+            <div
+              className={`fixed top-0 left-0 overflow-auto w-full h-full flex justify-center items-center z-50 bg-opacity-50 ${
+                isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-800 text-gray-600'
+              }`}
+            >
+              <div
+                className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] overflow-auto ${
+                  isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
+                }`}
+              >
                 <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
                 <div className=' p-4 border rounded-lg shadow-lg'>
                   <p className='mb-3 flex items-center gap-2'>

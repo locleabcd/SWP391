@@ -62,7 +62,7 @@ function ViewProduct() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/products/product/${id}/product`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/products/product/${id}/product`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -95,7 +95,7 @@ function ViewProduct() {
       }
 
       const res = await axios.get(
-        `https://koicaresystemv3.azurewebsites.net/api/products/product/${cate}/all/products`,
+        `https://koicaresystemv4.azurewebsites.net/api/products/product/${cate}/all/products`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -117,7 +117,7 @@ function ViewProduct() {
     try {
       const token = localStorage.getItem('token')
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/feedbacks/product/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/feedbacks/product/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -134,7 +134,7 @@ function ViewProduct() {
     try {
       const token = localStorage.getItem('token')
 
-      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/feedbacks/feedback/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/feedbacks/feedback/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -152,7 +152,7 @@ function ViewProduct() {
       const userId = localStorage.getItem('id')
 
       await axios.post(
-        'https://koicaresystemv3.azurewebsites.net/api/feedbacks',
+        'https://koicaresystemv4.azurewebsites.net/api/feedbacks',
         {
           star: rating,
           comment: comment,
@@ -197,7 +197,7 @@ function ViewProduct() {
       const id_feedback = localStorage.getItem('id_feed')
 
       await axios.put(
-        'https://koicaresystemv3.azurewebsites.net/api/feedbacks',
+        'https://koicaresystemv4.azurewebsites.net/api/feedbacks',
         {
           id: id_feedback,
           star: rating,
@@ -247,12 +247,12 @@ function ViewProduct() {
           <Header />
 
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] '>
-            <TopLayout text='Product' textName='View Product' links='shop/product' />
+            <TopLayout text='Products' textName='Detail' links='shop/product' />
 
-            <div className='flex border border-gray-200 px-7 py-5 min-h-[700px] rounded-xl'>
-              <div className='flex-none w-[600px]'>
+            <div className='grid lg:grid-cols-7 grid-cols-1 lg:border lg:border-gray-200 lg:px-7 lg:py-5 min-h-[700px] rounded-xl'>
+              <div className='col-span-3'>
                 <div id='controls-carousel' className='relative w-full' data-carousel='static'>
-                  <div className='relative h-[650px] duration-500 transition-all overflow-hidden rounded-xl border border-gray-200'>
+                  <div className='relative lg:h-[650px] md:h-[650px] h-[350px] duration-500 transition-all overflow-hidden rounded-xl border border-gray-200'>
                     {images.map((image, index) => (
                       <div
                         key={image.id}
@@ -273,7 +273,7 @@ function ViewProduct() {
                       <button
                         key={image.id}
                         onClick={() => setCurrentIndex(index)}
-                        className={`w-32 h-32 border rounded-md overflow-hidden focus:outline-none ${
+                        className={`lg:size-32 md:size-32 size-20 border rounded-md overflow-hidden focus:outline-none ${
                           currentIndex === index ? 'border-blue-500' : 'border-gray-300'
                         }`}
                       >
@@ -287,10 +287,10 @@ function ViewProduct() {
                   </div>
                   <button
                     type='button'
-                    className='absolute top-0 start-0 z-10 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none'
+                    className='absolute lg:top-0 -top-10 lg:start-0 -start-3 z-10 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none'
                     onClick={prevImage}
                   >
-                    <span className='inline-flex items-center justify-center w-8 h-8 rounded-full bg-black'>
+                    <span className='inline-flex items-center justify-center lg:size-8 size-6 rounded-full bg-black'>
                       <svg
                         className='w-4 h-4 text-white rtl:rotate-180'
                         aria-hidden='true'
@@ -311,10 +311,10 @@ function ViewProduct() {
                   </button>
                   <button
                     type='button'
-                    className='absolute top-0 end-0 z-10 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none'
+                    className='absolute lg:top-0 -top-10 lg:end-0 -end-3 z-10 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none'
                     onClick={nextImage}
                   >
-                    <span className='inline-flex items-center justify-center w-8 h-8 rounded-full bg-black'>
+                    <span className='inline-flex items-center justify-center lg:size-8 size-6 rounded-full bg-black'>
                       <svg
                         className='w-4 h-4 text-white rtl:rotate-180'
                         aria-hidden='true'
@@ -335,22 +335,23 @@ function ViewProduct() {
                   </button>
                 </div>
               </div>
-              <div className='flex-auto px-10 py-8'>
+              <div className='col-span-4 lg:px-10 lg:py-8 py-5'>
                 <div className='border-b border-gray-200 pb-8'>
                   <div className='flex gap-5 items-center'>
                     <div
-                      className={`px-2 py-2 rounded-2xl ${
-                        isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
-                      } `}
+                      className={`p-2 rounded-2xl ${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'} `}
                     >
                       In Stock
                     </div>
                     <div>{productId.category?.name || 'No category available'}</div>
                   </div>
-                  <div className='text-3xl font-semibold mt-5'>{productId.name}</div>
-                  <div className='text-xl text-justify mt-5'>{productId.description}</div>
-                  <div className='text-3xl mt-5 font-semibold'>${productId.price}</div>
-                  <div className='flex mt-5 gap-3 items-center'>
+                  <div className='lg:text-3xl md:text-2xl text-xl font-semibold mt-5'>{productId.name}</div>
+                  <div className='lg:text-xl md:text-xl text-lg text-justify mt-5'>{productId.description}</div>
+                  <div className='lg:text-3xl md:text-2xl text-xl lg:mt-5 mt-2 font-semibold'>
+                    {' '}
+                    {(productId?.price ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                  </div>
+                  <div className='flex lg:mt-5 mt-2 gap-3 items-center'>
                     <div className='flex'>
                       {[...Array(5)].map((_, index) => {
                         const fullStar = index < Math.floor(productId.rating)
@@ -364,7 +365,7 @@ function ViewProduct() {
                             viewBox='0 0 24 24'
                             strokeWidth={1.5}
                             stroke='currentColor'
-                            className='size-6 text-yellow-500'
+                            className='lg:size-6 md:size-6 size-5 text-yellow-500'
                           >
                             <defs>
                               <linearGradient id='half-star'>
@@ -381,12 +382,12 @@ function ViewProduct() {
                         )
                       })}
                     </div>
-                    <div className='text-xl text-blue-300'>({feedback.length} reviews)</div>
+                    <div className='lg:text-xl md:text-xl text-lg text-blue-300'>({feedback.length} reviews)</div>
                   </div>
                 </div>
 
                 <div className='flex mt-5 gap-5 items-center border-b border-gray-200 pb-10 pt-5'>
-                  <div className='text-3xl font-semibold'>Quantity:</div>
+                  <div className='lg:text-3x md:text-3xl text-xl font-semibold'>Quantity:</div>
                   <div className='flex border border-blue-400 gap-5 rounded-lg'>
                     <button className='border-blue-400 border-r rounded-lg p-2' onClick={decrement}>
                       <svg
@@ -395,7 +396,7 @@ function ViewProduct() {
                         viewBox='0 0 24 24'
                         strokeWidth={1.5}
                         stroke='currentColor'
-                        className='size-8 text-blue-400'
+                        className='lg:size-8 md:size-8 size-5 text-blue-400'
                       >
                         <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
                       </svg>
@@ -404,7 +405,7 @@ function ViewProduct() {
                       type='text'
                       value={count}
                       readOnly
-                      className={`outline-none w-10 text-center text-xl text-blue-400 ${
+                      className={`outline-none lg:w-10 md:w-10 w-4 text-center text-xl text-blue-400 ${
                         isDarkMode ? 'bg-custom-dark' : ''
                       }`}
                     />
@@ -415,7 +416,7 @@ function ViewProduct() {
                         viewBox='0 0 24 24'
                         strokeWidth={1.5}
                         stroke='currentColor'
-                        className='size-8 text-blue-400'
+                        className='lg:size-8 md:size-8 size-5 text-blue-400'
                       >
                         <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
                       </svg>
@@ -423,13 +424,17 @@ function ViewProduct() {
                   </div>
                 </div>
 
-                <div className='flex mt-5 gap-5 items-center border-b border-gray-200 pb-10 pt-5'>
-                  <button className='text-xl py-4 px-10 bg-blue-400 hover:bg-blue-500 text-white rounded-lg'>
+                <div className='flex lg:flex-row flex-col mt-5 gap-5 items-center border-b border-gray-200 pb-10 pt-5'>
+                  <Link
+                    to='/member/checkout'
+                    onClick={() => handleAddToCart(productId)}
+                    className='lg:text-xl lg:py-4 lg:px-10 text-lg w-full text-center py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg'
+                  >
                     Buy Now
-                  </button>
+                  </Link>
                   <button
                     onClick={() => handleAddToCart(productId)}
-                    className='text-xl py-4 px-10 bg-orange-500 hover:bg-orange-600 text-white rounded-lg'
+                    className='lg:text-xl lg:py-4 lg:px-10 text-lg w-full text-center py-3 bg-orange-500 hover:bg-orange-600 text-white rounded-lg'
                   >
                     Add to cart
                   </button>
@@ -437,9 +442,9 @@ function ViewProduct() {
               </div>
             </div>
 
-            <div className='mt-20 border border-gray-200 rounded-xl px-10 py-5'>
-              <div className='text-3xl'>Post Reviews</div>
-              <div className='flex items-center mt-10'>
+            <div className='lg:mt-20 mt-10 lg:border lg:border-gray-200 rounded-xl lg:px-10 lg:py-5'>
+              <div className='lg:text-3xl text-xl'>Post Reviews</div>
+              <div className='flex items-center lg:mt-10 mt-3'>
                 {[...Array(5)].map((_, index) => (
                   <svg
                     key={index}
@@ -448,7 +453,7 @@ function ViewProduct() {
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
                     stroke='currentColor'
-                    className='h-8 w-8 cursor-pointer hover:scale-110 text-yellow-400 transition-transform duration-200'
+                    className='lg:size-8 size-6 cursor-pointer hover:scale-110 text-yellow-400 transition-transform duration-200'
                     onMouseEnter={() => setHoveredRating(index + 1)}
                     onMouseLeave={() => setHoveredRating(0)}
                     onClick={() => setRating(index + 1)}
@@ -465,13 +470,13 @@ function ViewProduct() {
                 type='text'
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                className={`mt-5 rounded-xl w-full h-32 text-black px-5 py-2 focus:border ${
+                className={`mt-5 rounded-xl w-full lg:h-32 h-20 text-black px-5 py-2 focus:border ${
                   isDarkMode ? 'bg-custom-dark text-white' : ''
                 } focus:border-blue-400 text-start flex outline-none border border-gray-200`}
               />
               <button
                 type='submit'
-                className='mt-5 px-5 py-3 bg-blue-400 hover:bg-blue-500 rounded-lg text-white'
+                className='mt-5 lg:px-5 lg:py-3 py-2 px-3 lg:text-base text-sm bg-blue-400 hover:bg-blue-500 rounded-lg text-white'
                 onClick={editableFeedback ? updateFeedback : createFeedback}
               >
                 {editableFeedback ? 'Edit Review' : 'Post Review'}
@@ -480,7 +485,7 @@ function ViewProduct() {
               {isEditing && (
                 <button
                   type='button'
-                  className='px-5 py-3 bg-red-400 hover:bg-red-500 rounded-lg ml-5 text-white'
+                  className='lg:px-5 lg:py-3 py-2 px-3 lg:text-base text-sm bg-red-400 hover:bg-red-500 rounded-lg ml-5 text-white'
                   onClick={handleCancelEdit}
                 >
                   Cancel
@@ -488,10 +493,10 @@ function ViewProduct() {
               )}
             </div>
 
-            <div className='mt-20 border rounded-xl border-gray-200 px-10 py-5'>
+            <div className='lg:mt-20 mt-10 lg:border rounded-xl lg:border-gray-200 lg:px-10 lg:py-5'>
               <div className='flex gap-2'>
                 <div
-                  className={`text-xl py-3 px-4 border-b cursor-pointer ease-in duration-200 ${
+                  className={`lg:text-xl text-lg py-3 px-4 border-b cursor-pointer ease-in duration-200 ${
                     active === 'description' ? ' border-blue-400' : 'border-transparent'
                   }`}
                   onClick={() => setActive('description')}
@@ -499,7 +504,7 @@ function ViewProduct() {
                   Description
                 </div>
                 <div
-                  className={`text-xl py-3 px-4 border-b cursor-pointer ${
+                  className={`lg:text-xl text-lg py-3 px-4 border-b cursor-pointer ${
                     active === 'reviews' ? 'border-blue-400' : 'border-transparent'
                   }`}
                   onClick={() => setActive('reviews')}
@@ -511,17 +516,15 @@ function ViewProduct() {
               <div className='py-3'>
                 {active === 'description' && (
                   <div className=''>
-                    <div className='text-2xl font-semibold text-justify leading-7 indent-7 py-5'>
-                      {productId.description}
-                    </div>
+                    <div className='lg:text-2xl text-xl font-semibold text-justify py-5'>{productId.description}</div>
                     <div className='text-lg text-justify indent-7 py-2'>{productId.description_detail}</div>
                   </div>
                 )}
                 {active === 'reviews' && (
-                  <div className='flex gap-10'>
-                    <div className='flex-none w-[400px] max-h-[280px] border border-gray-200 flex flex-col items-center justify-center py-20'>
-                      <div className='text-2xl font-semibold'>Average Rating</div>
-                      <div className='mt-3 text-3xl text-blue-400'>{productId.rating.toFixed(1)}/5</div>
+                  <div className='flex lg:flex-row flex-col gap-10'>
+                    <div className='flex-none lg:w-[400px] max-h-[280px] border border-gray-200 flex flex-col items-center justify-center lg:py-20 py-10'>
+                      <div className='lg:text-2xl text-xl font-semibold'>Average Rating</div>
+                      <div className='mt-3 lg:text-3xl text-2xl text-blue-400'>{productId.rating.toFixed(1)}/5</div>
                       <div className='flex mt-3'>
                         {[...Array(5)].map((_, index) => {
                           const fullStar = index < Math.floor(productId.rating)
@@ -535,7 +538,7 @@ function ViewProduct() {
                               viewBox='0 0 24 24'
                               strokeWidth={1.5}
                               stroke='currentColor'
-                              className='size-6 text-yellow-500'
+                              className='lg:size-6 size-5 text-yellow-500'
                             >
                               <defs>
                                 <linearGradient id='half-star'>
@@ -554,23 +557,23 @@ function ViewProduct() {
                       </div>
                     </div>
 
-                    <div className='flex-auto flex flex-col border max-h-[280px] gap-10 overflow-y-auto border-gray-200 px-8 py-10'>
-                      <div className='text-2xl font-semibold'>Comment</div>
+                    <div className='flex-auto flex flex-col lg:border max-h-[280px] gap-10 overflow-y-auto lg:border-gray-200 lg:px-8 lg:py-10'>
+                      <div className='lg:text-2xl text-xl font-semibold'>Comment</div>
                       {feedback.map((feedbacks) => (
                         <div
                           className={`flex justify-between items-center ${
                             isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
-                          }  p-5 ml-2 rounded-xl`}
+                          }  lg:p-5 p-2 ml-2 rounded-xl`}
                           key={feedbacks.id}
                         >
                           <div className=''>
-                            <div className='flex gap-5'>
+                            <div className='flex gap-5 items-center'>
                               <img
                                 src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
-                                className='w-12 h-12 rounded-full border border-gray-300'
+                                className='lg:size-12 size-8 rounded-full border border-gray-300'
                               />
                               <div className=''>
-                                <div className=''>{feedbacks.username}</div>
+                                <div className='lg:text-lg text-base'>{feedbacks.username}</div>
                                 <div className='flex'>
                                   {[...Array(5)].map((_, index) => {
                                     const fullStar = index < Math.floor(feedbacks.star)
@@ -584,7 +587,7 @@ function ViewProduct() {
                                         viewBox='0 0 24 24'
                                         strokeWidth={1.5}
                                         stroke='currentColor'
-                                        className='size-6 text-yellow-500'
+                                        className='lg:size-6 size-4 text-yellow-500'
                                       >
                                         <defs>
                                           <linearGradient id='half-star'>
@@ -603,7 +606,7 @@ function ViewProduct() {
                                 </div>
                               </div>
                             </div>
-                            <div className='mt-5'>{feedbacks.comment}</div>
+                            <div className='mt-5 lg:text-lg text-base'>{feedbacks.comment}</div>
                           </div>
                           <div
                             className='flex flex-col justify-center items-center'
@@ -615,7 +618,7 @@ function ViewProduct() {
                               viewBox='0 0 24 24'
                               strokeWidth={1.5}
                               stroke='currentColor'
-                              className='size-6 cursor-pointer relative top-12 -right-4'
+                              className='lg:size-6 size-5 cursor-pointer relative top-12 lg:-right-4 -right-0'
                             >
                               <path
                                 strokeLinecap='round'
@@ -648,15 +651,15 @@ function ViewProduct() {
               </div>
             </div>
 
-            <div className='mt-20'>
-              <div className='text-3xl font-semibold'>Related Products</div>
+            <div className='lg:mt-20 mt-10'>
+              <div className='lg:text-3xl text-2xl font-semibold'>Related Products</div>
               <div>
-                <div className='grid grid-cols-4 gap-8 py-3 mt-4'>
+                <div className='grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 gap-8 py-3 mt-4'>
                   {productRelate.length > 0 ? (
                     productRelate.map((products) => (
                       <div key={products.id} className='border border-gray-200 rounded-xl hover:scale-105 duration-300'>
                         <div>
-                          <div className='border-b border-gray-200 max-h-[300px]'>
+                          <div className='border-b border-gray-200 lg:max-h-[300px]'>
                             <Link
                               to={`/member/recommendations/${products.id}`}
                               key={products.images[0].id}
@@ -670,9 +673,9 @@ function ViewProduct() {
                             </Link>
                           </div>
                         </div>
-                        <div className='px-7 py-5 text-xl mt-5 font-medium'>
+                        <div className='px-7 py-5 text-xl lg:mt-5 font-medium'>
                           <div className='line-clamp-1'>{products.name}</div>
-                          <div className='mt-3'>${products.price}</div>
+                          {(products?.price ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                         </div>
                       </div>
                     ))

@@ -44,7 +44,7 @@ function ShopNews() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/tag`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/tag`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -68,7 +68,7 @@ function ShopNews() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/blog`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/blog`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -95,7 +95,7 @@ function ShopNews() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/blog/delete/${blogId}`, {
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/blog/delete/${blogId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -223,7 +223,7 @@ function ShopNews() {
         >
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] '>
-            <TopLayout text='News' links='shop/shopNews'/>
+            <TopLayout text='News' links='shop/shopNews' />
 
             <div className='w-full flex justify-between items-center relative'>
               <button

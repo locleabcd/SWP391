@@ -41,7 +41,7 @@ function Supplier() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/suppliers/all`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/suppliers/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -69,7 +69,7 @@ function Supplier() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/suppliers/supplier/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/suppliers/supplier/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -129,7 +129,7 @@ function Supplier() {
         >
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-            <TopLayout text='Supplier' links='shop/supplier'/>
+            <TopLayout text='Supplier' links='shop/supplier' />
             <div className='w-full flex justify-between items-center relative'>
               <button
                 className='py-2 mb-4 px-3 bg-custom-left-bar text-white hover:bg-blue-600 rounded-md'

@@ -63,7 +63,7 @@ function ViewUserAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/profile/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/profile/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -86,7 +86,7 @@ function ViewUserAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/payment/user/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/payment/user/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -109,7 +109,7 @@ function ViewUserAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/orders/user/${id}/order`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/orders/user/${id}/order`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -136,7 +136,7 @@ function ViewUserAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api//orders/${orderId}/order`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api//orders/${orderId}/order`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -158,28 +158,8 @@ function ViewUserAD() {
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Users' textName='User Details' links='admin/user' />
-
-            <div className='w-full flex justify-end items-center relative'>
-              <input type='text' className='p-2 border rounded-md mr-4' placeholder='Search' />
-              <div className='cursor-pointer'>
-                <svg
-                  xmlns='http://www.w3.org/2000/svg'
-                  fill='none'
-                  viewBox='0 0 24 24'
-                  strokeWidth={1.5}
-                  stroke='currentColor'
-                  className='w-8 h-8 text-red-500'
-                >
-                  <path
-                    strokeLinecap='round'
-                    strokeLinejoin='round'
-                    d='M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75'
-                  />
-                </svg>
-              </div>
-            </div>
-            <div className='mt-6 border rounded-lg p-6 flex  gap-4'>
-              <div className='Oder-Payment-Table w-[65%] mt-10'>
+            <div className='mt-6 border rounded-lg p-6 flex flex-col lg:flex-row gap-4'>
+              <div className='Oder-Payment-Table lg:w-[65%] md:w-full mt-10'>
                 <div className='flex justify-center space-x-4'>
                   <button
                     className={`px-4 w-full rounded-3xl py-2 ${activeTable === 'payment' ? 'bg-blue-500 text-white' : 'bg-gray-400'}`}
@@ -222,6 +202,17 @@ function ViewUserAD() {
                                 {formatCurrency(pay.amount)}
                               </td>
                               <td className='py-3 px-1 text-center border-b border-gray-200'>{pay.status}</td>
+                              <td className='py-3 px-1 text-center border-b border-gray-200'>
+                                <div
+                                  className={`p-1 rounded text-sm font-medium border-2 ${
+                                    pay.status === 'COMPLETED'
+                                      ? 'border-green-500 text-green-500'
+                                      : 'border-red-500 text-red-500'
+                                  }`}
+                                >
+                                  {pay.status}
+                                </div>
+                              </td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>
                                 <div className='flex justify-center items-center'>
                                   <button className='p-1 hover:bg-green-500 text-green-500 hover:text-white  rounded-full'>
@@ -255,7 +246,7 @@ function ViewUserAD() {
                     )}
                   </div>
                 ) : (
-                  <div className='Order-Table overflow-x-auto mt-10'>
+                  <div className='Order-Table overflow-x-auto max-h-[50vh] mt-10'>
                     {order ? (
                       <table className='min-w-full border-spacing-x-1 border-gray-200'>
                         <thead>
@@ -279,7 +270,23 @@ function ViewUserAD() {
                               <td className='py-2 px-1 text-center border-b border-gray-200'>
                                 {formatCurrency(ord.totalAmount)}
                               </td>
-                              <td className='py-2 px-1 text-center border-b border-gray-200'>{ord.status}</td>
+                              <td className='py-2 px-1 text-center border-b border-gray-200'>
+                                <div
+                                  className={`p-1 rounded text-sm font-medium border-2 ${
+                                    ord.status === 'PENDING'
+                                      ? 'border-yellow-500 text-yellow-500'
+                                      : ord.status === 'PROCESSING'
+                                        ? 'border-blue-500 text-blue-500'
+                                        : ord.status === 'DELIVERED'
+                                          ? 'border-green-500 text-green-500'
+                                          : ord.status === 'CANCELLED'
+                                            ? 'border-red-500 text-red-500'
+                                            : ''
+                                  }`}
+                                >
+                                  {ord.status}
+                                </div>
+                              </td>
                               <td className='py-2 px-1 text-center border-b border-gray-200'>
                                 <div className='flex justify-center items-center'>
                                   <button
@@ -317,7 +324,7 @@ function ViewUserAD() {
                 )}
               </div>
               {/* user profile  */}
-              <div className='mt-6 border rounded-lg p-6 gap-4 w-[35%] overflow-x-auto'>
+              <div className='mt-6 border rounded-lg p-6 gap-4 lg:w-[35%] w-full overflow-x-auto'>
                 {user ? (
                   <div className='user-profile'>
                     <h2 className='text-xl flex items-center justify-center gap-2 font-bold text-blue-800 mb-4'>
@@ -365,10 +372,18 @@ function ViewUserAD() {
               </div>
 
               {isModalOpen && selectedOrder && (
-                <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
-                  <div className='bg-white p-4 border rounded-lg'>
+                <div
+                  className={`fixed top-0 left-0 overflow-auto w-full h-full flex justify-center items-center z-50 bg-opacity-50 ${
+                    isDarkMode ? 'bg-gray-900 text-gray-200' : 'bg-gray-800 text-gray-600'
+                  }`}
+                >
+                  <div
+                    className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] overflow-auto ${
+                      isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
+                    }`}
+                  >
                     <h3 className='text-xl text-center font-bold mb-4'>ORDER DETAILS</h3>
-                    <div className='bg-white p-4 border rounded-lg shadow-lg'>
+                    <div className=' p-4 border rounded-lg shadow-lg'>
                       <p className='mb-3 flex items-center gap-2'>
                         <FaCartArrowDown className='text-2xl text-blue-500' />
                         <strong>Order ID:</strong> {selectedOrder.id}
@@ -386,11 +401,11 @@ function ViewUserAD() {
                         <strong>Phone:</strong> {selectedOrder.phone}
                       </p>
                       <p className='mb-3 flex items-center gap-2'>
-                        <GrNotes className='text-2xl ' />
+                        <GrNotes className='text-2xl text-yellow-500' />
                         <strong>Note:</strong> {selectedOrder.note}
                       </p>
                       <p className='mb-3 flex items-center gap-2'>
-                        <FaUser className='text-2xl ' />
+                        <FaUser className='text-2xl text-blue-500' />
                         <strong>RecipientName:</strong> {selectedOrder.recipientName}
                       </p>
                       <p className='mb-3 flex items-center gap-2'>

@@ -19,8 +19,7 @@ function UpdateImage() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    reset
+    formState: { errors }
   } = useForm()
 
   const updateImage = async (data) => {
@@ -36,7 +35,7 @@ function UpdateImage() {
         formData.append('file', data.file[0])
       }
 
-      const res = await axios.put(`https://koicaresystemv3.azurewebsites.net/api/images/image/${id}/update`, formData, {
+      const res = await axios.put(`https://koicaresystemv4.azurewebsites.net/api/images/image/${id}/update`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`

@@ -30,7 +30,7 @@ function News() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/tag`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/tag`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -50,7 +50,7 @@ function News() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/blog`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/blog`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
