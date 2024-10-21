@@ -560,7 +560,7 @@ function DashboardAD() {
         <Header />
         <div className='py-5 px-[30px] mx-auto'>
           <TopLayout text='Dashboard' />
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4'>
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4'>
             {/* Card 1: Order Today */}
             <div className='bg-indigo-500 text-white rounded-lg shadow-lg p-4 min-h-[200px] sm:min-h-[250px] md:min-h-[300px]'>
               <h2 className='text-3xl font-semibold'>{formatCurrency(todayTotalAmount)}</h2>
@@ -578,7 +578,7 @@ function DashboardAD() {
             </div>
 
             {/* Card 2: Income */}
-            <div className='bg-blue-500 text-white rounded-lg shadow-lg p-4 min-h-[200px] sm:min-h-[250px] md:min-h-[300px]'>
+            <div className='bg-blue-500 text-white rounded-lg shadow-lg p-4 min-h-[250px] sm:min-h-[250px] md:min-h-[300px]'>
               <h2 className='text-3xl font-semibold'>{premierCount} </h2>
               <p className='text-sm flex items-center'>
                 <span className='text-lg mr-1'>
