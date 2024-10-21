@@ -3,7 +3,7 @@ import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
@@ -17,8 +17,7 @@ function CreateImage() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    reset
+    formState: { errors }
   } = useForm()
 
   const getProduct = async () => {
@@ -28,7 +27,7 @@ function CreateImage() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/products/all`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/products/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -62,7 +61,7 @@ function CreateImage() {
         }
         formData.append('productId', data.productId)
 
-        const res = await axios.post(`https://koicaresystemv3.azurewebsites.net/api/images/upload`, formData, {
+        const res = await axios.post(`https://koicaresystemv4.azurewebsites.net/api/images/upload`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'

@@ -38,14 +38,14 @@ function KoiDetails() {
   const [currentRemark, setCurrentRemark] = useState(null)
   const [isAddRemarkFormVisible, setIsAddRemarkFormVisible] = useState(false)
   const [isEditRemarkFormVisible, setIsEditRemarkFormVisible] = useState(false)
-  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false);
+  const [isImagePopupOpen, setIsImagePopupOpen] = useState(false)
 
   const handleImageClick = () => {
-    setIsImagePopupOpen(true);
+    setIsImagePopupOpen(true)
   }
 
   const closePopup = () => {
-    setIsImagePopupOpen(false);
+    setIsImagePopupOpen(false)
   }
 
   const {
@@ -57,9 +57,9 @@ function KoiDetails() {
     setValue
   } = useForm({
     defaultValues: {
-      length: 0,
+      length: 0
     }
-  });
+  })
 
   const length = watch('length')
   const physique = watch('physique')
@@ -106,12 +106,12 @@ function KoiDetails() {
   }
 
   const toggleCloseGrowthForm = () => {
-    setIsEditGrowthFormVisible(!isEditGrowthFormVisible);
-    setIsAddGrowthFormVisible(false);
-    setCurrentGrowth(null);
-    setBaseImage(null);
-    reset({}); 
-  };
+    setIsEditGrowthFormVisible(!isEditGrowthFormVisible)
+    setIsAddGrowthFormVisible(false)
+    setCurrentGrowth(null)
+    setBaseImage(null)
+    reset({})
+  }
 
   const toggleEditGrowthFormVisibility = (growth) => {
     if (growth) {
@@ -152,7 +152,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/growth-history/list/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/growth-history/list/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -186,7 +186,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/remark/get-all/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/remark/get-all/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -227,7 +227,7 @@ function KoiDetails() {
 
       if (id) {
         await axios.put(
-          `https://koicaresystemv3.azurewebsites.net/api/remark/update/${id}`,
+          `https://koicaresystemv4.azurewebsites.net/api/remark/update/${id}`,
           {
             title: data.title,
             createDate: data.createDate,
@@ -247,7 +247,7 @@ function KoiDetails() {
           note: data.note,
           koiFishId: data.koiFishId
         }
-        await axios.post('https://koicaresystemv3.azurewebsites.net/api/remark/create', jsonData, {
+        await axios.post('https://koicaresystemv4.azurewebsites.net/api/remark/create', jsonData, {
           headers: {
             Authorization: `Bearer ${token}`
           }
@@ -288,7 +288,7 @@ function KoiDetails() {
           formData.append('file', selectedFile)
         }
 
-        await axios.put(`https://koicaresystemv3.azurewebsites.net/api/growth-history/update/${id}`, formData, {
+        await axios.put(`https://koicaresystemv4.azurewebsites.net/api/growth-history/update/${id}`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -304,7 +304,7 @@ function KoiDetails() {
         if (selectedFile) {
           formData.append('file', selectedFile)
         }
-        await axios.post('https://koicaresystemv3.azurewebsites.net/api/growth-history/create', formData, {
+        await axios.post('https://koicaresystemv4.azurewebsites.net/api/growth-history/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -357,7 +357,7 @@ function KoiDetails() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koifishs/koifish/${id}`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/koifishs/koifish/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -385,7 +385,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/growth-history/delete/${id}`, {
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/growth-history/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -412,7 +412,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/remark/delete/${id}`, {
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/remark/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -434,7 +434,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -485,7 +485,7 @@ function KoiDetails() {
         formData.append('file', selectedFile)
       }
       const res = await axios.put(
-        `https://koicaresystemv3.azurewebsites.net/api/koifishs/koifish/${id}/update`,
+        `https://koicaresystemv4.azurewebsites.net/api/koifishs/koifish/${id}/update`,
         formData,
         {
           headers: {
@@ -517,7 +517,7 @@ function KoiDetails() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/koifishs/koifish/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/koifishs/koifish/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -622,16 +622,11 @@ function KoiDetails() {
                   onClick={closePopup}
                 >
                   <div className='relative'>
-                    <img
-                      src={koi.imageUrl}
-                      alt={koi.name}
-                      className=' w-[90vh] object-contain'
-                    />
+                    <img src={koi.imageUrl} alt={koi.name} className=' w-[90vh] object-contain' />
                     <button
                       className='absolute top-4 right-4 text-white text-3xl font-bold'
                       onClick={closePopup}
-                    >
-                    </button>
+                    ></button>
                   </div>
                 </div>
               )}
@@ -688,13 +683,9 @@ function KoiDetails() {
 
                 {growth.length > 0 ? (
                   growth.map((g, index) => {
-                    const prevGrowth = index > 0 ? growth[index - 1] : null;
-                    const lengthChange = prevGrowth
-                      ? ((g.length - prevGrowth.length) / prevGrowth.length) * 100
-                      : null;
-                    const weightChange = prevGrowth
-                      ? ((g.weight - prevGrowth.weight) / prevGrowth.weight) * 100
-                      : null;
+                    const prevGrowth = index > 0 ? growth[index - 1] : null
+                    const lengthChange = prevGrowth ? ((g.length - prevGrowth.length) / prevGrowth.length) * 100 : null
+                    const weightChange = prevGrowth ? ((g.weight - prevGrowth.weight) / prevGrowth.weight) * 100 : null
 
                     return (
                       <div
@@ -703,8 +694,8 @@ function KoiDetails() {
                           isDarkMode ? 'text-white bg-slate-700' : 'text-black bg-white'
                         }`}
                         onClick={() => {
-                          toggleEditGrowthFormVisibility(g);
-                          reset(g);
+                          toggleEditGrowthFormVisibility(g)
+                          reset(g)
                         }}
                       >
                         <div className='w-2/5 rounded-l-lg overflow-hidden'>
@@ -722,7 +713,8 @@ function KoiDetails() {
                             <strong>Length:</strong> {g.length} cm
                             {prevGrowth && (
                               <span className={`ml-2 ${lengthChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                                ({lengthChange >= 0 ? '+' : ''}{lengthChange.toFixed(2)}%)
+                                ({lengthChange >= 0 ? '+' : ''}
+                                {lengthChange.toFixed(2)}%)
                               </span>
                             )}
                           </p>
@@ -730,13 +722,14 @@ function KoiDetails() {
                             <strong>Weight:</strong> {g.weight} g
                             {prevGrowth && (
                               <span className={`ml-2 ${weightChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
-                                ({weightChange >= 0 ? '+' : ''}{weightChange.toFixed(2)}%)
+                                ({weightChange >= 0 ? '+' : ''}
+                                {weightChange.toFixed(2)}%)
                               </span>
                             )}
                           </p>
                         </div>
                       </div>
-                    );
+                    )
                   })
                 ) : (
                   <p className='text-center text-sm text-gray-500'>No growth history available</p>

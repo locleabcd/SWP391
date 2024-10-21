@@ -12,13 +12,13 @@ import Paper from '@mui/material/Paper'
 import TopLayout from '../../../layouts/TopLayoutAD'
 import { Link } from 'react-router-dom'
 import * as XLSX from 'xlsx'
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider, createTheme } from '@mui/material/styles'
+import CssBaseline from '@mui/material/CssBaseline'
 
 const lightTheme = createTheme({
   palette: {
-    mode: 'light',
-  },
+    mode: 'light'
+  }
 })
 
 const darkTheme = createTheme({
@@ -26,21 +26,19 @@ const darkTheme = createTheme({
     mode: 'dark',
     background: {
       default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
-      paper: 'rgb(36 48 63 / var(--tw-bg-opacity))',
-    },
-  },
+      paper: 'rgb(36 48 63 / var(--tw-bg-opacity))'
+    }
+  }
 })
 const formatPrice = (price) => {
-  return price
-    .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ';
+  return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ'
 }
 
- function ProductAD() {
+function ProductAD() {
   const { isDarkMode } = useDarkMode()
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([])
   const navigate = useNavigate()
   const fallbackImage = 'https://5sfashion.vn/storage/upload/images/posts/Z5FgdGRa5ycTaCqcMZnHfZTkb7FyHATji17rlS4q.jpg'
   const getProduct = async () => {
@@ -48,15 +46,14 @@ const formatPrice = (price) => {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get('https://koicaresystemv3.azurewebsites.net/api/products/all', {
+      const res = await axios.get('https://koicaresystemv4.azurewebsites.net/api/products/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
 
       setProducts(res.data.data)
-      console.log(res.data.data);
-      
+      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching products:', error)
     }
@@ -75,7 +72,7 @@ const formatPrice = (price) => {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/products/product/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/products/product/${id}/delete`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       toast.success('Product deleted successfully')
@@ -95,16 +92,16 @@ const formatPrice = (price) => {
       renderCell: (params) => (
         <div className='h-full flex items-center'>
           <img
-          src={params.row.images?.[0]?.downloadUrl || fallbackImage}
-          alt='Product'
-          className='w-24 h-16 object-cover rounded-md '
+            src={params.row.images?.[0]?.downloadUrl || fallbackImage}
+            alt='Product'
+            className='w-24 h-16 object-cover rounded-md '
           />
-        </div>     
+        </div>
       )
     },
     { field: 'name', headerName: 'Product Name', flex: 0.5 },
     { field: 'brand', headerName: 'Brand', flex: 0.5 },
-    { field: 'price', headerName: 'Price', width: 120, renderCell: (params) => formatPrice(params.row.price),},
+    { field: 'price', headerName: 'Price', width: 120, renderCell: (params) => formatPrice(params.row.price) },
     { field: 'inventory', headerName: 'Inventory', width: 150 },
     {
       field: 'category',
@@ -127,12 +124,7 @@ const formatPrice = (price) => {
             to={`/admin/product/${params.row.id}`}
             className='p-1 hover:bg-green-500 text-green-500 hover:text-white rounded-full'
           >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 24 24'
-              fill='currentColor'
-              className='size-5'
-            >
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-5'>
               <path d='M21.731 2.269a2.625 2.625 0 0 0-3.712 0l-1.157 1.157 3.712 3.712 1.157-1.157a2.625 2.625 0 0 0 0-3.712ZM19.513 8.199l-3.712-3.712-8.4 8.4a5.25 5.25 0 0 0-1.32 2.214l-.8 2.685a.75.75 0 0 0 .933.933l2.685-.8a5.25 5.25 0 0 0 2.214-1.32l8.4-8.4Z' />
               <path d='M5.25 5.25a3 3 0 0 0-3 3v10.5a3 3 0 0 0 3 3h10.5a3 3 0 0 0 3-3V13.5a.75.75 0 0 0-1.5 0v5.25a1.5 1.5 0 0 1-1.5 1.5H5.25a1.5 1.5 0 0 1-1.5-1.5V8.25a1.5 1.5 0 0 1 1.5-1.5h5.25a.75.75 0 0 0 0-1.5H5.25Z' />
             </svg>
@@ -141,12 +133,7 @@ const formatPrice = (price) => {
             to={`/admin/product/view/${params.row.id} `}
             className=' p-1 hover:bg-blue-500 text-blue-500 hover:text-white  rounded-full'
           >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 24 24'
-              fill='currentColor'
-              className='size-5 '
-            >
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-5 '>
               <path d='M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z' />
               <path
                 fillRule='evenodd'
@@ -159,12 +146,7 @@ const formatPrice = (price) => {
             className='p-1 hover:bg-red-500 text-red-600 hover:text-white rounded-full'
             onClick={() => deleteProduct(params.row.id)}
           >
-            <svg
-              xmlns='http://www.w3.org/2000/svg'
-              viewBox='0 0 24 24'
-              fill='currentColor'
-              className='size-5'
-            >
+            <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='currentColor' className='size-5'>
               <path
                 fillRule='evenodd'
                 d='M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005
@@ -180,20 +162,22 @@ const formatPrice = (price) => {
           </button>
         </div>
       )
-    } 
+    }
   ]
   const exportToExcel = () => {
-    const worksheet = XLSX.utils.json_to_sheet(products.map(product => ({
-      'ID': product.id,
-      'Product Name': product.name,
-      'Brand': product.brand,
-      'Price': formatPrice(product.price),
-      'Inventory': product.inventory,
-      'Category': product?.category?.name || 'Unknown',
-      'Supplier': product?.supplier?.name || 'Unknown',
-      'Decription': product.description,
-      'Description detail': product.description_detail,
-    })));
+    const worksheet = XLSX.utils.json_to_sheet(
+      products.map((product) => ({
+        ID: product.id,
+        'Product Name': product.name,
+        Brand: product.brand,
+        Price: formatPrice(product.price),
+        Inventory: product.inventory,
+        Category: product?.category?.name || 'Unknown',
+        Supplier: product?.supplier?.name || 'Unknown',
+        Decription: product.description,
+        'Description detail': product.description_detail
+      }))
+    )
 
     const workbook = XLSX.utils.book_new()
     XLSX.utils.book_append_sheet(workbook, worksheet, 'Products')
@@ -201,7 +185,7 @@ const formatPrice = (price) => {
     XLSX.writeFile(workbook, 'Products.xlsx')
   }
   return (
-  <div className='h-screen flex'>
+    <div className='h-screen flex'>
       <LeftSideBar />
       <div
         className={`relative flex-1 overflow-y-auto duration-200 ${
@@ -212,7 +196,7 @@ const formatPrice = (price) => {
         <div className='py-5 px-8 mx-auto'>
           <TopLayout text='Products' />
           <div className='w-full flex justify-between items-center relative'>
-          <div className='cursor-pointer'>
+            <div className='cursor-pointer'>
               <button
                 className='py-2 mb-4 px-3 bg-blue-500 text-white hover:bg-blue-700  rounded-md'
                 onClick={() => navigate('/admin/product/create')}
@@ -221,14 +205,17 @@ const formatPrice = (price) => {
               </button>
             </div>
             <div className='cursor-pointer'>
-              <button onClick={exportToExcel} className="py-2 mb-4 px-3 bg-blue-500 text-white hover:bg-blue-700 rounded-md">
+              <button
+                onClick={exportToExcel}
+                className='py-2 mb-4 px-3 bg-blue-500 text-white hover:bg-blue-700 rounded-md'
+              >
                 Download Excel
               </button>
-            </div>           
+            </div>
           </div>
           <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
             <CssBaseline />
-            <Paper sx={{ height: 670}}>
+            <Paper sx={{ height: 670 }}>
               <DataGrid
                 rows={products}
                 columns={columns}
@@ -247,10 +234,10 @@ const formatPrice = (price) => {
                 }}
               />
             </Paper>
-          </ThemeProvider>  
+          </ThemeProvider>
         </div>
       </div>
     </div>
   )
 }
-export default  ProductAD
+export default ProductAD

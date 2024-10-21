@@ -17,31 +17,31 @@ html {
   position: relative;
   z-index: 1;
   overflow: hidden;
+  border-radius: 12px; /* Bo tròn góc */
 }
 
 .neon-border::before {
   content: '';
   position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
+  top: -2px; /* Kích thước viền nhỏ */
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
   border-radius: inherit;
-  background: linear-gradient(45deg, #ff0080, #ff8c00, #40e0d0, #ff0080);
+  background: linear-gradient(45deg, #b0c4de, #4682b4, #87ceeb);
   background-size: 400% 400%;
   z-index: -1;
-  filter: blur(8px);
-  animation: neon-border-animation 8s ease infinite;
+  filter: blur(4px); /* Độ mờ của viền */
+  animation: neon-border-spin 4s linear infinite; /* Hiệu ứng chạy vòng quanh */
 }
 
-@keyframes neon-border-animation {
+@keyframes neon-border-spin {
   0% {
     background-position: 0% 50%;
   }
-  50% {
-    background-position: 100% 50%;
-  }
   100% {
-    background-position: 0% 50%;
+    background-position: 400% 50%; /* Chạy vòng quanh */
   }
 }
+
+  

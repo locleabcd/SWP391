@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
-import Header from '../../../components/Shop/Header'
-import LeftSideBar from '../../../components/Shop/LeftSideBar'
+import Header from '../../../components/Admin/Header'
+import LeftSideBar from '../../../components/Admin/LeftSideBar'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import TopLayout from '../../../layouts/TopLayoutShop'
+import TopLayout from '../../../layouts/TopLayoutAD'
 import { useNavigate, useParams } from 'react-router-dom'
-
-function ViewNews() {
+function NewsView() {
   const [newDetail, setNewsDetail] = useState([])
   const { id } = useParams()
   const { isDarkMode } = useDarkMode()
@@ -61,7 +60,7 @@ function ViewNews() {
       >
         <Header />
         <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-          <TopLayout text='News' textName='News Detail' links='shop/shopNews' />
+          <TopLayout text='News' textName='News Detail' links='admin/news' />
           <div className=' flex flex-col justify-center items-center border border-gray-200'>
             <div
               className={`${
@@ -251,5 +250,4 @@ function ViewNews() {
     </div>
   )
 }
-
-export default ViewNews
+export default NewsView

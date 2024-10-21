@@ -41,7 +41,7 @@ function Category() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv3.azurewebsites.net/api/categories/all`, {
+      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/categories/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -69,7 +69,7 @@ function Category() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystemv3.azurewebsites.net/api/categories/category/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/categories/category/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -134,7 +134,7 @@ function Category() {
         >
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-            <TopLayout text='Category' links='shop/category'/>
+            <TopLayout text='Category' links='shop/category' />
             <div className='w-full flex justify-between items-center relative mb-4'>
               <div className='cursor-pointer'>
                 <button
