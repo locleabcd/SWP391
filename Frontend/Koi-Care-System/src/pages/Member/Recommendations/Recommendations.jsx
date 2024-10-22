@@ -239,6 +239,10 @@ function Recommendations() {
   const paginatedProducts = searchProduct.slice(startIndex, endIndex)
   const totalPage = Math.ceil(searchProduct.length / pageSize)
 
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber)
+  }
+
   return (
     <div>
       <div className='h-screen flex'>
@@ -620,24 +624,25 @@ function Recommendations() {
                       <button
                         disabled={currentPage === 1}
                         onClick={() => setCurrentPage(currentPage - 1)}
-                        className={`px-4 py-2 border border-gray-300 rounded-md mx-1 ${
+                        className={`px-4 py-2 text-lg border border-gray-300 rounded-md mx-1 ${
                           currentPage === 1 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'
                         }`}
                       >
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          strokeWidth={2}
-                          stroke='currentColor'
-                          className='w-5 h-5'
-                        >
-                          <path strokeLinecap='round' strokeLinejoin='round' d='M15 19l-7-7 7-7' />
-                        </svg>
+                        Prev
                       </button>
-                      <div>
-                        {currentPage} / {totalPage}
-                      </div>
+
+                      {Array.from({ length: totalPage }, (_, index) => index + 1).map((page) => (
+                        <button
+                          key={page}
+                          onClick={() => handlePageChange(page)}
+                          className={`px-3 py-2 mx-1 border border-gray-300 rounded-md ${
+                            currentPage === page ? 'bg-blue-500 text-white' : 'hover:bg-gray-100'
+                          }`}
+                        >
+                          {page}
+                        </button>
+                      ))}
+
                       <button
                         disabled={endIndex >= searchProduct.length}
                         onClick={() => setCurrentPage(currentPage + 1)}
@@ -645,16 +650,7 @@ function Recommendations() {
                           endIndex >= searchProduct.length ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100'
                         }`}
                       >
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          strokeWidth={2}
-                          stroke='currentColor'
-                          className='w-5 h-5'
-                        >
-                          <path strokeLinecap='round' strokeLinejoin='round' d='M9 5l7 7-7 7' />
-                        </svg>
+                        Next
                       </button>
                     </div>
                   </>

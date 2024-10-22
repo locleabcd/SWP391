@@ -19,7 +19,6 @@ import '../../../index.css'
 function MyPond() {
   const { isDarkMode } = useDarkMode()
   const [ponds, setPonds] = useState([])
-  const [koi, setKoi] = useState([])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isAddFormVisible, setIsAddFormVisible] = useState(false)
@@ -292,6 +291,10 @@ function MyPond() {
 
   const sortByName = (sortType) => {
     sortPonds(sortType, 'name')
+  }
+
+  const isNameDuplicate = (name) => {
+    return ponds.some((pond) => pond.name.toLowerCase() === name.toLowerCase())
   }
 
   return (
@@ -634,9 +637,12 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('name', { required: 'Name is required' })}
+                          {...register('name', {
+                            required: 'Name is required',
+                            validate: (value) => !isNameDuplicate(value) || 'Name already exists'
+                          })}
                         />
-                        {/* {errors.name && <p className='text-red-500 text-sm'>{errors.name.message}</p>} */}
+                        {errors.name && <p className='text-red-500 lg:text-lg text-sm'>{errors.name.message}</p>}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -649,15 +655,15 @@ function MyPond() {
                           Volume:
                         </label>
                         <input
-                          type='text'
+                          type='number'
                           id='volume'
                           placeholder='Enter volume'
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('volume')}
+                          {...register('volume', { required: 'Volume is required' })}
                         />
-                        {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>}
+                        {errors.volume && <p className='text-red-500 lg:text-lg text-sm'>{errors.volume.message}</p>}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -670,15 +676,15 @@ function MyPond() {
                           Depth (m)
                         </label>
                         <input
-                          type='text'
+                          type='number'
                           id='depth'
                           placeholder='Enter depth in meters'
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('depth')}
+                          {...register('depth', { required: 'Depth is required' })}
                         />
-                        {errors.depth && <p className='text-red-500 text-sm'>{errors.depth.message}</p>}
+                        {errors.depth && <p className='text-red-500 lg:text-lg text-sm'>{errors.depth.message}</p>}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -691,15 +697,17 @@ function MyPond() {
                           Drain Count
                         </label>
                         <input
-                          type='text'
+                          type='number'
                           id='drainCount'
                           placeholder='Enter drain count'
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('drainCount')}
+                          {...register('drainCount', { required: 'Drain Count is required' })}
                         />
-                        {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>}
+                        {errors.drainCount && (
+                          <p className='text-red-500 lg:text-lg text-sm'>{errors.drainCount.message}</p>
+                        )}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -712,15 +720,15 @@ function MyPond() {
                           Skimmer Count
                         </label>
                         <input
-                          type='text'
+                          type='number'
                           id='skimmerCount'
                           placeholder='Enter skimmer count'
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('skimmer')}
+                          {...register('skimmer', { required: 'Skimmer is required' })}
                         />
-                        {errors.skimmer && <p className='text-red-500 text-sm'>{errors.skimmer.message}</p>}
+                        {errors.skimmer && <p className='text-red-500 lg:text-lg text-sm'>{errors.skimmer.message}</p>}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -733,15 +741,17 @@ function MyPond() {
                           Pumping Capacity
                         </label>
                         <input
-                          type='text'
+                          type='number'
                           id='pumpCapacity'
                           placeholder='Enter pumping capacity'
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('pumpCapacity')}
+                          {...register('pumpCapacity', { required: 'Pump Capacity is required' })}
                         />
-                        {errors.pumpCapacity && <p className='text-red-500 text-sm'>{errors.pumpCapacity.message}</p>}
+                        {errors.pumpCapacity && (
+                          <p className='text-red-500 lg:text-lg text-sm'>{errors.pumpCapacity.message}</p>
+                        )}
                       </div>
 
                       <div className='mb-4 relative col-span-1'>
@@ -759,9 +769,9 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('date')}
+                          {...register('date', { required: 'Date is required' })}
                         />
-                        {errors.date && <p className='text-red-500 text-sm'>{errors.pumpCapacity.message}</p>}
+                        {errors.date && <p className='text-red-500 lg:text-lg text-sm'>{errors.date.message}</p>}
                       </div>
                     </div>
                   </form>
@@ -816,7 +826,7 @@ function MyPond() {
                     <div className='grid grid-cols-2 grid-rows-4 gap-4'>
                       <div
                         id='imageSingle'
-                        className='lg:mb-6 col-span-1 row-span-2 rounded-lg h-full w-full flex  items-center justify-center border border-black'
+                        className='lg:mb-6 col-span-1 row-span-2 h-full w-full flex rounded-lg  items-center justify-center border border-black'
                       >
                         {baseImage ? (
                           <div className='pre-upload max-w-[40vw] relative lg:max-h-[154px] w-full h-full'>
@@ -824,7 +834,7 @@ function MyPond() {
                             <input
                               type='file'
                               id='upload-input'
-                              className='absolute top-10 h-20 opacity-0'
+                              className='absolute h-full w-full opacity-0 object-cover'
                               accept='image/*'
                               {...register('file')}
                               onChange={handleImageChange}
@@ -859,8 +869,8 @@ function MyPond() {
                                 />
                                 <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
                               </svg>
-                              <div className='py-3'>
-                                <span className='lg:text-xl text-xs'>Choose images here</span>
+                              <div className='py-3 text-sm lg:text-xs'>
+                                <span>Choose images here</span>
                               </div>
                             </div>
 
@@ -876,137 +886,142 @@ function MyPond() {
                         )}
                       </div>
                       {/* {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>} */}
-
                       <div className='lg:mb-4 relative col-span-1'>
                         <label
                           htmlFor='name'
-                          className={`absolute -top-[12px] left-3 lg:text-lg text-sm text-red-500 ${
+                          className={`absolute block -top-[12px] ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } font-semibold`}
+                          } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                         >
                           Name:
                         </label>
                         <input
                           type='text'
                           id='name'
-                          placeholder='Enter volume'
+                          placeholder='Enter name'
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } border border-black rounded-lg focus:outline-none  transition-colors duration-200`}
-                          {...register('name')}
+                          } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
+                          {...register('name', {
+                            required: 'Name is required'
+                          })}
                         />
-                        {/* {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>} */}
+                        {errors.name && <p className='text-red-500 lg:text-lg text-sm'>{errors.name.message}</p>}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
                         <label
                           htmlFor='volume'
-                          className={`absolute -top-[12px] left-3 lg:text-lg text-sm text-red-500 ${
+                          className={`absolute lg:text-lg text-sm -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold`}
                         >
                           Volume:
                         </label>
                         <input
-                          type='text'
+                          type='number'
                           id='volume'
                           placeholder='Enter volume'
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('volume')}
+                          {...register('volume', { required: 'Volume is required' })}
                         />
-                        {/* {errors.volume && <p className='text-red-500 text-sm'>{errors.volume.message}</p>} */}
+                        {errors.volume && <p className='text-red-500 lg:text-lg text-sm'>{errors.volume.message}</p>}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
                         <label
                           htmlFor='depth'
-                          className={`absolute -top-[12px] left-3 lg:text-lg text-sm text-red-500 ${
+                          className={`absolute lg:text-lg text-sm -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold`}
                         >
-                          Depth (m):
+                          Depth (m)
                         </label>
                         <input
-                          type='text'
+                          type='number'
                           id='depth'
                           placeholder='Enter depth in meters'
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('depth')}
+                          {...register('depth', { required: 'Depth is required' })}
                         />
-                        {errors.depth && <p className='text-red-500 text-sm'>{errors.depth.message}</p>}
+                        {errors.depth && <p className='text-red-500 lg:text-lg text-sm'>{errors.depth.message}</p>}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
                         <label
                           htmlFor='drainCount'
-                          className={`absolute -top-[12px] left-3 lg:text-lg text-sm text-red-500 ${
+                          className={`absolute -top-[12px] lg:text-lg text-sm left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold`}
                         >
-                          Drain Count:
+                          Drain Count
                         </label>
                         <input
-                          type='text'
+                          type='number'
                           id='drainCount'
                           placeholder='Enter drain count'
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('drainCount')}
+                          {...register('drainCount', { required: 'Drain Count is required' })}
                         />
-                        {/* {errors.drainCount && <p className='text-red-500 text-sm'>{errors.drainCount.message}</p>} */}
+                        {errors.drainCount && (
+                          <p className='text-red-500 lg:text-lg text-sm'>{errors.drainCount.message}</p>
+                        )}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
                         <label
                           htmlFor='skimmerCount'
-                          className={`absolute -top-[12px] left-3 lg:text-lg text-sm text-red-500 ${
+                          className={`absolute -top-[12px] lg:text-lg text-sm left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold`}
                         >
                           Skimmer Count
                         </label>
                         <input
-                          type='text'
+                          type='number'
                           id='skimmerCount'
                           placeholder='Enter skimmer count'
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('skimmer')}
+                          {...register('skimmer', { required: 'Skimmer is required' })}
                         />
-                        {errors.skimmer && <p className='text-red-500 text-sm'>{errors.skimmer.message}</p>}
+                        {errors.skimmer && <p className='text-red-500 lg:text-lg text-sm'>{errors.skimmer.message}</p>}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
                         <label
                           htmlFor='pumpCapacity'
-                          className={`absolute -top-[12px] left-3 lg:text-lg text-sm text-red-500 ${
+                          className={`absolute -top-[12px] lg:text-lg text-sm left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold`}
                         >
                           Pumping Capacity
                         </label>
                         <input
-                          type='text'
+                          type='number'
                           id='pumpCapacity'
-                          placeholder='Enter pumping capacity in l/h'
+                          placeholder='Enter pumping capacity'
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('pumpCapacity')}
+                          {...register('pumpCapacity', { required: 'Pump Capacity is required' })}
                         />
-                        {errors.pumpCapacity && <p className='text-red-500 text-sm'>{errors.pumpCapacity.message}</p>}
+                        {errors.pumpCapacity && (
+                          <p className='text-red-500 lg:text-lg text-sm'>{errors.pumpCapacity.message}</p>
+                        )}
                       </div>
 
-                      <div className='lg:mb-4 relative col-span-1'>
+                      <div className='mb-4 relative col-span-1'>
                         <label
                           htmlFor='pumpCapacity'
-                          className={`absolute -top-[12px] left-3 text-red-500 ${
+                          className={`absolute -top-[12px] lg:text-lg text-sm  left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold`}
                         >
@@ -1018,14 +1033,21 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('date')}
+                          {...register('date', { required: 'Date is required' })}
                         />
-                        {errors.date && <p className='text-red-500 text-sm'>{errors.date.message}</p>}
+                        {errors.date && <p className='text-red-500 lg:text-lg text-sm'>{errors.date.message}</p>}
                       </div>
                     </div>
                   </form>
                   <div className='w-full flex flex-col justify-center'>
-                    <button className='mx-auto' onClick={() => deletePond(currentPond.id)}>
+                    <button
+                      className='mx-auto'
+                      onClick={() => {
+                        if (window.confirm('Are you sure you want to delete this pond?')) {
+                          deletePond(currentPond.id)
+                        }
+                      }}
+                    >
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'

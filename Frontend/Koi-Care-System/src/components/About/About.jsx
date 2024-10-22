@@ -1,11 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 function About() {
   return (
-    <div className='block bg-custom-dark text-white'>
+    <div className='block'>
       <div className=' justify-center  py-20 px-20  font-medium '>
-        <h className='text-3xl block  text-center text-white font-bold py-8 bg-gradient-to-r from-pink-300 to-red-400'>
-          About us
-        </h>
+        <h className='text-3xl block  text-center font-bold py-8 bg-gradient-to-r from-pink-300 to-red-400'>About us</h>
 
         <div className=' grid grid-flow-row-dense p-8 grid-cols-4'>
           <p className='text-wrap text-xl font-bold  text-left pl-8'>Our Mission</p>
