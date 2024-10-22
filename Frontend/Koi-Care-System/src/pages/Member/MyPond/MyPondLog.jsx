@@ -415,7 +415,7 @@ function MyPondLog() {
               )}
 
               {isEditFormVisible && (
-                <div className='fixed inset-0 bg-black bg-opacity-50 h-screen flex z-40'>
+                <div className='fixed inset-0 bg-black h-screen flex justify-center items-end bg-opacity-50 z-40'>
                   <div
                     className={`${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
@@ -570,7 +570,14 @@ function MyPondLog() {
                     </div>
 
                     <div className='w-full flex flex-col justify-center'>
-                      <button className='mx-auto' onClick={() => deleteLog()}>
+                      <button
+                        className='mx-auto'
+                        onClick={() => {
+                          if (window.confirm('Are you sure you want to delete this pond log?')) {
+                            deleteLog()
+                          }
+                        }}
+                      >
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'

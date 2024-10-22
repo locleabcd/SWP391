@@ -11,8 +11,8 @@ import { FadeRight } from '../../utils/animation'
 function Feature() {
   return (
     <div>
-      <div className='flex h-[90vh] bg-custom-dark text-white'>
-        <div className='w-2/5 flex flex-col items-center justify-center h-full py-10'>
+      <div className='flex h-[90vh]'>
+        <div className='w-2/5 pl-16 flex flex-col items-center justify-center h-full py-10'>
           <div className='flex flex-col justify-center ml-10 py-10 px-5 font-medium'>
             <motion.div
               initial='hidden'
@@ -35,8 +35,8 @@ function Feature() {
           <img className='' src={pond} alt='img' />
         </div>
       </div>
-      <div className='flex h-[90vh] bg-custom-dark text-white'>
-        <div className='w-2/5 flex flex-col items-center justify-center h-full py-10'>
+      <div className='flex h-[90vh]'>
+        <div className='w-2/5 pl-16 flex flex-col items-center justify-center h-full py-10'>
           <div className='flex flex-col justify-center ml-10 py-10 px-5 font-medium'>
             <h className='text-3xl text-center font-bold mb-12'>Manage and track your koi!</h>
             <p className='text-justify text-xl'>
@@ -53,8 +53,8 @@ function Feature() {
         </div>
       </div>
 
-      <div className='flex h-[90vh] bg-custom-dark text-white'>
-        <div className='w-2/5 flex flex-col items-center justify-center h-full py-10'>
+      <div className='flex h-[90vh]'>
+        <div className='w-2/5 pl-16 flex flex-col items-center justify-center h-full py-10'>
           <div className='flex flex-col justify-center ml-10 py-10 px-5 font-medium'>
             <h className='text-3xl text-center font-bold mb-12'>Manage and Track Your Koi!</h>
             <p className='text-justify text-xl'>
@@ -71,8 +71,8 @@ function Feature() {
         </div>
       </div>
 
-      <div className='flex h-[90vh] bg-custom-dark text-white'>
-        <div className='w-2/5 flex flex-col items-center justify-center h-full py-10'>
+      <div className='flex h-[90vh]'>
+        <div className='w-2/5 pl-16 flex flex-col items-center justify-center h-full py-10'>
           <div className='flex flex-col justify-center ml-10 py-10 px-5 font-medium'>
             <h className='text-3xl text-center font-bold mb-12'>Monitor Statistics for Informed Koi Care!</h>
             <p className='text-justify text-xl'>
@@ -90,8 +90,8 @@ function Feature() {
         </div>
       </div>
 
-      <div className='flex h-[90vh] bg-custom-dark text-white'>
-        <div className='w-2/5 flex flex-col items-center justify-center h-full py-10'>
+      <div className='flex h-[90vh]'>
+        <div className='w-2/5 pl-16 flex flex-col items-center justify-center h-full py-10'>
           <div className='flex flex-col justify-center ml-10 py-10 px-5 font-medium'>
             <h className='text-3xl text-center font-bold mb-12'>Determine the Right Amount of Salt for Your Pond!</h>
             <p className='text-justify text-xl'>
@@ -109,8 +109,8 @@ function Feature() {
         </div>
       </div>
 
-      <div className='flex h-[90vh] bg-custom-dark text-white'>
-        <div className='w-2/5 flex flex-col items-center justify-center h-full py-10'>
+      <div className='flex h-[90vh]'>
+        <div className='w-2/5 pl-16 flex flex-col items-center justify-center h-full py-10'>
           <div className='flex flex-col justify-center ml-10 py-10 px-5 font-medium'>
             <h className='text-3xl text-center font-bold mb-12'>Manager Water for Pond</h>
             <p className='text-justify text-xl'>

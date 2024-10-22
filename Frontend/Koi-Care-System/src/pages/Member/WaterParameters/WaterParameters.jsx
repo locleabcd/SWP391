@@ -2774,7 +2774,11 @@ function WaterParameters() {
                   </div>
                 </form>
                 <div className='w-full flex flex-col justify-center'>
-                  <button className='mx-auto' onClick={() => deleteParameter(currentParameter.id)}>
+                  <button className='mx-auto' onClick={() => {
+                          if (window.confirm('Are you sure you want to delete this pond?')) {
+                            deleteParameter(parameters.id)
+                          }
+                        }}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
