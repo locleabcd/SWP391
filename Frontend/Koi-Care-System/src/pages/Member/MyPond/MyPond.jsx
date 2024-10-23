@@ -315,7 +315,7 @@ function MyPond() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='fixed z-50 bottom-2 right-5 text-lg text-white outline-none rounded-r-sm lg:rounded-r-xl bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
+              className='fixed z-20 bottom-2 right-5 text-lg text-white outline-none rounded-r-sm lg:rounded-r-xl bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
               onClick={() => {
                 toggleAddFormVisibility()
               }}
@@ -333,7 +333,7 @@ function MyPond() {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed z-50 bottom-2 right-[51px] lg:right-[84px] text-lg shadow-lg text-white rounded-l-sm lg:rounded-l-xl bg-custom-left-bar size-8 lg:size-16 lg:p-2 cursor-pointer'
+                className='fixed z-20 bottom-2 right-[51px] lg:right-[84px] text-lg shadow-lg text-white rounded-l-sm lg:rounded-l-xl bg-custom-left-bar size-8 lg:size-16 lg:p-2 cursor-pointer'
               >
                 <path
                   strokeLinecap='round'
@@ -558,7 +558,7 @@ function MyPond() {
                       </button>
                     </div>
                     <h3 className='mb-5 text-xl lg:text-2xl font-bold'>Add a Pond</h3>
-                    <div className='grid grid-cols-2 grid-rows-4 gap-4'>
+                    <div className='grid grid-cols-2 grid-rows-4 gap-6'>
                       <div
                         id='imageSingle'
                         className='lg:mb-6 col-span-1 row-span-2 h-full w-full flex rounded-lg  items-center justify-center border border-black'
@@ -604,7 +604,7 @@ function MyPond() {
                                 />
                                 <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
                               </svg>
-                              <div className='py-3 text-sm lg:text-xs'>
+                              <div className='py-3 text-sm lg:text-xl'>
                                 <span>Choose images here</span>
                               </div>
                             </div>
@@ -642,7 +642,9 @@ function MyPond() {
                             validate: (value) => !isNameDuplicate(value) || 'Name already exists'
                           })}
                         />
-                        {errors.name && <p className='text-red-500 lg:text-lg text-sm'>{errors.name.message}</p>}
+                        {errors.name && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.name.message}</p>
+                        )}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -663,7 +665,9 @@ function MyPond() {
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('volume', { required: 'Volume is required' })}
                         />
-                        {errors.volume && <p className='text-red-500 lg:text-lg text-sm'>{errors.volume.message}</p>}
+                        {errors.volume && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.volume.message}</p>
+                        )}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -684,7 +688,9 @@ function MyPond() {
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('depth', { required: 'Depth is required' })}
                         />
-                        {errors.depth && <p className='text-red-500 lg:text-lg text-sm'>{errors.depth.message}</p>}
+                        {errors.depth && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.depth.message}</p>
+                        )}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -706,7 +712,7 @@ function MyPond() {
                           {...register('drainCount', { required: 'Drain Count is required' })}
                         />
                         {errors.drainCount && (
-                          <p className='text-red-500 lg:text-lg text-sm'>{errors.drainCount.message}</p>
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.drainCount.message}</p>
                         )}
                       </div>
 
@@ -728,7 +734,9 @@ function MyPond() {
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('skimmer', { required: 'Skimmer is required' })}
                         />
-                        {errors.skimmer && <p className='text-red-500 lg:text-lg text-sm'>{errors.skimmer.message}</p>}
+                        {errors.skimmer && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.skimmer.message}</p>
+                        )}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -750,7 +758,7 @@ function MyPond() {
                           {...register('pumpCapacity', { required: 'Pump Capacity is required' })}
                         />
                         {errors.pumpCapacity && (
-                          <p className='text-red-500 lg:text-lg text-sm'>{errors.pumpCapacity.message}</p>
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.pumpCapacity.message}</p>
                         )}
                       </div>
 
@@ -771,7 +779,9 @@ function MyPond() {
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('date', { required: 'Date is required' })}
                         />
-                        {errors.date && <p className='text-red-500 lg:text-lg text-sm'>{errors.date.message}</p>}
+                        {errors.date && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.date.message}</p>
+                        )}
                       </div>
                     </div>
                   </form>
@@ -823,7 +833,7 @@ function MyPond() {
                       </button>
                     </div>
                     <h3 className='mb-5 text-xl lg:text-2xl font-bold'>Edit Pond</h3>
-                    <div className='grid grid-cols-2 grid-rows-4 gap-4'>
+                    <div className='grid grid-cols-2 grid-rows-4 gap-6'>
                       <div
                         id='imageSingle'
                         className='lg:mb-6 col-span-1 row-span-2 h-full w-full flex rounded-lg  items-center justify-center border border-black'
@@ -869,7 +879,7 @@ function MyPond() {
                                 />
                                 <path d='M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383zm.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z' />
                               </svg>
-                              <div className='py-3 text-sm lg:text-xs'>
+                              <div className='py-3 text-sm lg:text-xl'>
                                 <span>Choose images here</span>
                               </div>
                             </div>
@@ -906,7 +916,9 @@ function MyPond() {
                             required: 'Name is required'
                           })}
                         />
-                        {errors.name && <p className='text-red-500 lg:text-lg text-sm'>{errors.name.message}</p>}
+                        {errors.name && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.name.message}</p>
+                        )}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -927,7 +939,9 @@ function MyPond() {
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('volume', { required: 'Volume is required' })}
                         />
-                        {errors.volume && <p className='text-red-500 lg:text-lg text-sm'>{errors.volume.message}</p>}
+                        {errors.volume && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.volume.message}</p>
+                        )}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -948,7 +962,9 @@ function MyPond() {
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('depth', { required: 'Depth is required' })}
                         />
-                        {errors.depth && <p className='text-red-500 lg:text-lg text-sm'>{errors.depth.message}</p>}
+                        {errors.depth && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.depth.message}</p>
+                        )}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -970,7 +986,7 @@ function MyPond() {
                           {...register('drainCount', { required: 'Drain Count is required' })}
                         />
                         {errors.drainCount && (
-                          <p className='text-red-500 lg:text-lg text-sm'>{errors.drainCount.message}</p>
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.drainCount.message}</p>
                         )}
                       </div>
 
@@ -992,7 +1008,9 @@ function MyPond() {
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('skimmer', { required: 'Skimmer is required' })}
                         />
-                        {errors.skimmer && <p className='text-red-500 lg:text-lg text-sm'>{errors.skimmer.message}</p>}
+                        {errors.skimmer && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.skimmer.message}</p>
+                        )}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
@@ -1014,7 +1032,7 @@ function MyPond() {
                           {...register('pumpCapacity', { required: 'Pump Capacity is required' })}
                         />
                         {errors.pumpCapacity && (
-                          <p className='text-red-500 lg:text-lg text-sm'>{errors.pumpCapacity.message}</p>
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.pumpCapacity.message}</p>
                         )}
                       </div>
 
@@ -1035,7 +1053,9 @@ function MyPond() {
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('date', { required: 'Date is required' })}
                         />
-                        {errors.date && <p className='text-red-500 lg:text-lg text-sm'>{errors.date.message}</p>}
+                        {errors.date && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.date.message}</p>
+                        )}
                       </div>
                     </div>
                   </form>
