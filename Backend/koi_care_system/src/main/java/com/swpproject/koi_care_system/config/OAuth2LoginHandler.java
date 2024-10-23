@@ -18,6 +18,8 @@ import org.springframework.security.web.authentication.SavedRequestAwareAuthenti
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Map;
 
 @Slf4j
@@ -43,6 +45,11 @@ public class OAuth2LoginHandler extends SavedRequestAwareAuthenticationSuccessHa
                 User newUser = userMapper.maptoUserGoogle(email, name);
                 newUser.setPassword(JwtUtils.generateRandomPassword());
                 userRepository.save(newUser);
+                newUser.setBlogs(new HashSet<>());
+                newUser.setReminders(new ArrayList<>());
+                newUser.setNotifications(new ArrayList<>());
+                newUser.setOrders(new ArrayList<>());
+                newUser.setKoiPondList(new ArrayList<>());
                 newUser.setUserProfile(profileService.createProfileOauth(newUser, imageUrl));
                 return userRepository.save(newUser);
             });

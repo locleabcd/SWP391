@@ -79,9 +79,9 @@ public class UserService implements IUserService {
     @PreAuthorize("hasRole('ADMIN')")
     @Override
     public void deleteUserByID(Long id) {
-        userRepo.findById(id).ifPresentOrElse(userRepo::delete, () -> {
-            throw new AppException(ErrorCode.USER_NOT_EXISTED);
-        });
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        user.setStatus(false);
     }
 
     @Override

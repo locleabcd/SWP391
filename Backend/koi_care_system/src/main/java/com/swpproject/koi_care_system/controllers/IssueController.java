@@ -3,8 +3,8 @@ package com.swpproject.koi_care_system.controllers;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.issue.IIssueService;
 import com.swpproject.koi_care_system.service.issue.IIssueTypeService;
+import com.swpproject.koi_care_system.service.waterparameter.IWaterParametersService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,12 +17,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class IssueController {
     private final IIssueService issueService;
     private final IIssueTypeService iIssueTypeService;
-//TODO: autowired
+    private final IWaterParametersService waterParameters;
     @GetMapping("/all/{waterParametersId}")
     public ResponseEntity<ApiResponse> getAllIssues(@PathVariable Long waterParametersId) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("All issues from water parameters")
                 .data(issueService.getIssue(waterParametersId))
+                .build());
+    }
+
+    @GetMapping("/latest/{koipondId}")
+    public ResponseEntity<ApiResponse> getCurrentIssueByKoiPondId(@PathVariable Long koipondId) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("All current issue of koi pond")
+                .data(issueService.getIssue(waterParameters.getLatestWaterParametersByKoiPondId(koipondId).getId()))
                 .build());
     }
     @GetMapping("/issueType/all")

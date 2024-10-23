@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.text.ParseException;
 
 @RestController
@@ -36,20 +37,20 @@ public class AuthenticationController {
     }
 
     @GetMapping("/verifyEmail")
-    ResponseEntity<ApiResponse> verifyUserEmail(@RequestParam String email, @RequestParam String token) throws ParseException, JOSEException {
-        if (jwtUtils.verificationToken(token)) {
+    public ResponseEntity<Void> verifyUserEmail(
+            @RequestParam String email,
+            @RequestParam String token,
+            @RequestParam String redirect) throws ParseException, JOSEException {
+
+        boolean isVerified = jwtUtils.verificationToken(token);
+        if (isVerified) {
             userService.verifyUser(email, token);
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(redirect)).build();
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.builder()
-                    .message("Invalid or expired token")
-                    .data(false)
-                    .build());
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(redirect)).build();
         }
-        return ResponseEntity.ok(ApiResponse.builder()
-                .message("Verify token")
-                .data(true)
-                .build());
     }
+
 
     @PostMapping("/forgotPassword/{email}")
     ResponseEntity<ApiResponse> forgotPassword(@PathVariable String email) {
