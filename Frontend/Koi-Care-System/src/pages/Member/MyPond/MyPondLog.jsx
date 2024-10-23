@@ -415,7 +415,7 @@ function MyPondLog() {
               )}
 
               {isEditFormVisible && (
-                <div className='fixed inset-0 bg-black bg-opacity-50 h-screen flex z-40'>
+                <div className='fixed inset-0 bg-black bg-opacity-50 h-screen flex justify-center z-40'>
                   <div
                     className={`${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'

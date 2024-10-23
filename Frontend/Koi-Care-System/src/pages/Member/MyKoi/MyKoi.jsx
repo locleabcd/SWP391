@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom'
 import { FaSpinner } from 'react-icons/fa'
 import TopLayout from '../../../layouts/TopLayout'
 import { motion } from 'framer-motion'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function MyKoi() {
   const { isDarkMode } = useDarkMode()
@@ -111,9 +113,11 @@ function MyKoi() {
       })
       setIsAddFormVisible(false)
       getKoi()
+      toast.success('Create Koi Successfully!')
       reset()
     } catch (error) {
       console.log(error)
+      toast.error('Create Koi Fail!')
     } finally {
       setIsSubmitting(false)
       setIsLoading(false)
