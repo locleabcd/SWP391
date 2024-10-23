@@ -14,6 +14,7 @@ import TopLayout from '../../../layouts/TopLayout'
 import InfoBox from '../../../components/WaterParam/InfoBox'
 import { motion } from 'framer-motion'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
+import 'aos/dist/aos.css'
 
 function WaterParameters() {
   const { isDarkMode } = useDarkMode()
@@ -1088,7 +1089,10 @@ function WaterParameters() {
 
           {isAddFormVisible && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 '>
-              <div className='bg-white lg:min-w-[70vh] mb-auto mt-auto p-6 rounded-lg shadow-lg lg:max-h-[75vh] max-h-[70vh] overflow-y-auto no-scroll-bar '>
+              <div
+                className='bg-white lg:min-w-[70vh] mb-auto mt-auto p-6 rounded-lg shadow-lg lg:max-h-[75vh] max-h-[70vh] overflow-y-auto no-scroll-bar '
+                data-aos='fade-up'
+              >
                 <form onSubmit={handleSubmit(createParameter)} noValidate>
                   <div className='flex justify-between mb-5'>
                     <svg
@@ -1933,7 +1937,11 @@ function WaterParameters() {
           )}
           {isEditFormVisible && currentParameter && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 '>
-              <div className='bg-white lg:min-w-[70vh] mb-auto mt-auto p-6 rounded-lg shadow-lg lg:max-h-[75vh] max-h-[70vh] overflow-y-auto no-scroll-bar'>
+              <div
+                className='bg-white lg:min-w-[70vh] mb-auto mt-auto p-6 rounded-lg shadow-lg lg:max-h-[75vh] 
+              max-h-[70vh] overflow-y-auto no-scroll-bar'
+                data-aos='fade-up'
+              >
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                   <div className='flex justify-between mb-5'>
                     <svg
@@ -2774,7 +2782,14 @@ function WaterParameters() {
                   </div>
                 </form>
                 <div className='w-full flex flex-col justify-center'>
-                  <button className='mx-auto' onClick={() => deleteParameter(currentParameter.id)}>
+                  <button
+                    className='mx-auto'
+                    onClick={() => {
+                      if (window.confirm('Are you sure you want to delete this pond?')) {
+                        deleteParameter(parameters.id)
+                      }
+                    }}
+                  >
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'

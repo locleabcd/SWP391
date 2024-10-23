@@ -18,7 +18,8 @@ export default {
         'custom-border': 'rgb(51, 63, 85)'
       },
       animation: {
-        'slow-spin': 'spin 4s linear infinite'
+        'slow-spin': 'spin 4s linear infinite',
+        'slow-spinn': 'spin 20s linear infinite'
       }
     }
   },

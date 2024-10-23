@@ -784,7 +784,10 @@ function KoiDetails() {
 
           {isEditFormVisible && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40 '>
-              <div className='bg-white lg:min-w-[80vh] lg:max-h-[75vh] max-h-[70vh] m-auto p-6 rounded-lg shadow-lg overflow-y-auto no-scroll-bar'>
+              <div
+                className='bg-white lg:min-w-[80vh] lg:max-h-[75vh] max-h-[70vh] m-auto p-6 rounded-lg shadow-lg overflow-y-auto no-scroll-bar'
+                data-aos='fade-up'
+              >
                 {/* Form for editing koi */}
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                   <div className='flex justify-between mb-5'>
@@ -1088,7 +1091,6 @@ function KoiDetails() {
           {isAddGrowthFormVisible && koi && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40 '>
               <div className='bg-white lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg' data-aos='fade-up'>
-                {/* Form for adding growth record */}
                 <form onSubmit={handleSubmit(onSubmitGrowth)} noValidate>
                   <div className='flex justify-between mb-5'>
                     <svg
@@ -1275,7 +1277,6 @@ function KoiDetails() {
           {isEditGrowthFormVisible && currentGrowth && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
               <div className='bg-white lg:min-w-[40vw] m-auto p-6 rounded-lg shadow-lg' data-aos='fade-up'>
-                {/* Form for adding growth record */}
                 <form onSubmit={handleSubmit(onSubmitGrowth)} noValidate>
                   <div className='flex justify-between mb-5'>
                     <svg
@@ -1471,7 +1472,7 @@ function KoiDetails() {
 
           {isAddRemarkFormVisible && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40 '>
-              <div className='bg-white lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg'>
+              <div className='bg-white lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg' data-aos='fade-up'>
                 {/* Form for adding growth record */}
                 <form onSubmit={handleSubmit(onSubmitRemark)} noValidate>
                   <div className='flex justify-between mb-5'>
@@ -1571,7 +1572,7 @@ function KoiDetails() {
 
           {isEditRemarkFormVisible && currentRemark && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
-              <div className='bg-white min-w-[40vw] m-auto p-6 rounded-lg shadow-lg'>
+              <div className='bg-white min-w-[40vw] m-auto p-6 rounded-lg shadow-lg' data-aos='fade-up'>
                 {/* Form for adding growth record */}
                 <form onSubmit={handleSubmit(onSubmitRemark)} noValidate>
                   <div className='flex justify-between mb-5'>

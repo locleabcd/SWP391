@@ -81,6 +81,7 @@ function Header() {
         }
       })
       setUser(res.data.data)
+      localStorage.setItem('avt', res.data.data.avatar)
       console.log(res.data.data)
     } catch (error) {
       console.error('Error fetching users:', error)
