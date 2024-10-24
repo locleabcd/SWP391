@@ -1,13 +1,12 @@
 package com.swpproject.koi_care_system.service.koipond;
 
-import com.swpproject.koi_care_system.dto.KoiFishDto;
 import com.swpproject.koi_care_system.dto.KoiPondDto;
 import com.swpproject.koi_care_system.exceptions.AlreadyExistsException;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.mapper.KoiPondMapper;
+import com.swpproject.koi_care_system.models.KoiPond;
 import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
-import com.swpproject.koi_care_system.models.KoiPond;
 import com.swpproject.koi_care_system.repository.KoiPondRepository;
 import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import lombok.AccessLevel;
@@ -19,8 +18,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -37,9 +34,9 @@ public class KoiPondService implements IKoiPondService {
         }
         KoiPond koiPond = koiPondMapper.mapToKoiPond(addKoiPondRequest);
         if(addKoiPondRequest.getFile()!=null)
-            koiPond.setImageUrl(!addKoiPondRequest.getFile().isEmpty()?imageStorage.uploadImage(addKoiPondRequest.getFile()):"https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg");
+            koiPond.setImageUrl(!addKoiPondRequest.getFile().isEmpty() ? imageStorage.uploadImage(addKoiPondRequest.getFile()) : "https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg");
         else
-            koiPond.setImageUrl("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg");
+            koiPond.setImageUrl("https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg");
         return koiPondMapper.toDto(koiPondRepository.save(koiPond));
     }
     @Override
@@ -57,7 +54,7 @@ public class KoiPondService implements IKoiPondService {
     public void deleteKoiPond(Long id) {
         koiPondRepository.findById(id)
                 .ifPresentOrElse(koiPond -> {
-                    if(!koiPond.getImageUrl().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg")){
+                    if (!koiPond.getImageUrl().equals("https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg")) {
                         try {
                             imageStorage.deleteImage(koiPond.getImageUrl());
                         }catch (Exception e){
@@ -77,7 +74,7 @@ public class KoiPondService implements IKoiPondService {
         if(koiPondUpdateRequest.getFile()!=null) {
             if(!koiPondUpdateRequest.getFile().isEmpty())
                 try {
-                    if(!oldKoiPond.getImageUrl().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg"))
+                    if (!oldKoiPond.getImageUrl().equals("https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg"))
                         imageStorage.deleteImage(oldKoiPond.getImageUrl());
                     oldKoiPond.setImageUrl(imageStorage.uploadImage(koiPondUpdateRequest.getFile()));
                 } catch (IOException e) {

@@ -1,6 +1,5 @@
 package com.swpproject.koi_care_system.service.waterparameter;
 
-import com.swpproject.koi_care_system.dto.KoiPondDto;
 import com.swpproject.koi_care_system.dto.WaterParameterDto;
 import com.swpproject.koi_care_system.mapper.WaterParameterMapper;
 import com.swpproject.koi_care_system.models.KoiPond;
@@ -23,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,7 +40,6 @@ public class WaterParameterService implements IWaterParameters {
         WaterParameters waterParameters = waterParameterMapper.mapToWaterParameters(parametersCreateRequest);
         waterParameters.setKoiPond(koiPond);
         waterParametersRepository.save(waterParameters);
-        issueTypeService.init();//RUN THROUGH AND CREATE ISSUE TYPES
         issueService.detectIssues(waterParameters);//check issue
         return waterParameterMapper.mapToWaterParameterDto(waterParameters);
     }

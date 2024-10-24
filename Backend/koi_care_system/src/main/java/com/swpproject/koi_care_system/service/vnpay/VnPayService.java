@@ -5,7 +5,7 @@ import com.swpproject.koi_care_system.dto.VnPayDto;
 import com.swpproject.koi_care_system.models.Order;
 import com.swpproject.koi_care_system.repository.OrderRepository;
 import com.swpproject.koi_care_system.service.order.IOrderService;
-import com.swpproject.koi_care_system.ultis.VNPayUtil;
+import com.swpproject.koi_care_system.utils.VNPayUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,8 +32,8 @@ public class VnPayService {
             vnpParamsMap.put("vnp_BankCode", bankCode);
         }
         Long userId = Long.parseLong(request.getParameter("userId"));
-        //Long orderId = orderService.getUserOrders(userId).getLast().getId();
-        Long orderId = 1L;
+        Long orderId = orderService.getUserOrders(userId).getLast().getId();
+        //Long orderId = 1L;
         vnpParamsMap.put("vnp_OrderInfo","Thanh toan cho don hang # "+ orderId);
         vnpParamsMap.put("vnp_IpAddr", VNPayUtil.getIpAddress(request));
         //build query url

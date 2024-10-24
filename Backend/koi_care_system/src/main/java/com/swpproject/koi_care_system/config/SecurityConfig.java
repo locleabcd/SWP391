@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,8 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+    @Autowired
+    private OAuth2LoginHandler oAuth2LoginHandler;
 
     private final String[] PUBLIC_ENDPOINTS = {
             "/users/register",
@@ -55,17 +58,18 @@ public class SecurityConfig {
                                 "/payment/vn-pay-return",
                                 "/v3/api-docs",
                                 "/v3/api-docs/**",
+                                "/oauth2/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()
                 );
         httpSecurity
                 .formLogin(form -> form
-                        .loginPage("https://koi-care-system.vercel.app/login")
+                        .loginPage("/login")
                         .permitAll())
                 .oauth2Login(oauth -> oauth
                         .loginPage("https://koi-care-system.vercel.app/login")
-                        .defaultSuccessUrl("https://koi-care-system.vercel.app/member", true)
+                        .successHandler(oAuth2LoginHandler)
                         .failureUrl("https://koi-care-system.vercel.app/login?error=true")
                 );
 
@@ -86,12 +90,12 @@ public class SecurityConfig {
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
-            "https://koi-care-system.vercel.app", 
-            "http://localhost:5173"
+                "https://koi-care-system.vercel.app",
+                "http://localhost:5173"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
-        //configuration.setAllowCredentials(true);
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;

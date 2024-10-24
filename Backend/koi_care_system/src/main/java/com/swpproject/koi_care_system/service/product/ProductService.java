@@ -126,8 +126,10 @@ public class ProductService implements IProductService {
         productsTmp.forEach(product->{
             updateProductRating(product);
             product.getPromotions().forEach(promotion -> {
-                if(promotion.getStatus().equals(PromotionStatus.REJECTED)||promotion.getStatus().equals(PromotionStatus.ENDED))
+                if(promotion.getStatus().equals(PromotionStatus.REJECTED)||promotion.getStatus().equals(PromotionStatus.ENDED)){
                     product.getPromotions().remove(promotion);
+                    promotion.getProducts().remove(product);
+                }
 
             });
         });

@@ -9,14 +9,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
 import java.util.Map;
 
-import static com.swpproject.koi_care_system.ultis.EmailUtils.getVerificationUrl;
+import static com.swpproject.koi_care_system.utils.EmailUtils.getVerificationUrl;
 
+@EnableAsync
 @Service
 @RequiredArgsConstructor
 public class EmailService implements IEmailService {

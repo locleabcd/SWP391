@@ -6,6 +6,7 @@ import com.swpproject.koi_care_system.payload.request.ResetPasswordRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
 import com.swpproject.koi_care_system.service.user.IUserService;
+import com.swpproject.koi_care_system.utils.JwtUtils;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.text.ParseException;
 
 @RestController
@@ -23,6 +25,7 @@ import java.text.ParseException;
 public class AuthenticationController {
     IAuthenticationService authService;
     IUserService userService;
+    JwtUtils jwtUtils;
 
     @PostMapping("/loginKoiCare")
     ResponseEntity<ApiResponse> authenticate(@RequestBody @Valid AuthenticationRequest request) {
@@ -34,20 +37,20 @@ public class AuthenticationController {
     }
 
     @GetMapping("/verifyEmail")
-    ResponseEntity<ApiResponse> verifyUserEmail(@RequestParam String email, @RequestParam String token) throws ParseException, JOSEException {
-        var result = authService.verificationToken(token);
-        if (result) {
+    public ResponseEntity<Void> verifyUserEmail(
+            @RequestParam String email,
+            @RequestParam String token,
+            @RequestParam String redirect) throws ParseException, JOSEException {
+
+        boolean isVerified = jwtUtils.verificationToken(token);
+        String redirectUrl = redirect + "?status=" + (isVerified ? "success" : "failed");
+
+        if (isVerified) {
             userService.verifyUser(email, token);
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(redirectUrl)).build();
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(ApiResponse.builder()
-                    .message("Invalid or expired token")
-                    .data(false)
-                    .build());
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(redirectUrl)).build();
         }
-        return ResponseEntity.ok(ApiResponse.builder()
-                .message("Verify token")
-                .data(true)
-                .build());
     }
 
     @PostMapping("/forgotPassword/{email}")

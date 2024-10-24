@@ -11,13 +11,12 @@ import com.swpproject.koi_care_system.payload.request.ChangePasswordRequest;
 import com.swpproject.koi_care_system.payload.request.CreateUserRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateUserRequest;
 import com.swpproject.koi_care_system.repository.UserRepository;
-import com.swpproject.koi_care_system.service.authentication.IAuthenticationService;
 import com.swpproject.koi_care_system.service.email.IEmailService;
 import com.swpproject.koi_care_system.service.profile.ProfileService;
+import com.swpproject.koi_care_system.utils.JwtUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ public class UserService implements IUserService {
     ProfileService profileService;
     PasswordEncoder passwordEncoder;
     IEmailService emailService;
-    IAuthenticationService authenticationService;
+    JwtUtils jwtUtils;
 
     public UserDTO createUser(CreateUserRequest request) {
         if (userRepo.existsByUsername(request.getUsername())) {
@@ -46,7 +45,7 @@ public class UserService implements IUserService {
         User user = userMapper.maptoUser(request);
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        var token = authenticationService.generateToken(user);
+        var token = jwtUtils.generateToken(user);
         emailService.send(user.getUsername(), user.getEmail(), "Welcome New User, Your Verify Email", token);
 
         return userMapper.maptoUserDTO(userRepo.save(user));
@@ -58,7 +57,7 @@ public class UserService implements IUserService {
                 .map(userMapper::maptoUserDTO).toList();
     }
 
-    @PostAuthorize("returnObject.username == authentication.name")
+    @PreAuthorize("hasRole('ADMIN')")
     public UserDTO findUserByID(Long userID) {
         return userMapper.maptoUserDTO(userRepo.findById(userID).orElseThrow(() -> new RuntimeException("User Not Found")));
     }
@@ -67,6 +66,8 @@ public class UserService implements IUserService {
     public UserDTO updateUserByID(Long id, UpdateUserRequest request) {
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+        if (!user.getUsername().equals(request.getUsername()))
+            throw new AppException(ErrorCode.USER_EXISTED);
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         userMapper.updateUser(user, request);
         return userMapper.maptoUserDTO(userRepo.save(user));
@@ -74,9 +75,10 @@ public class UserService implements IUserService {
 
     @PreAuthorize("hasRole('ADMIN')")
     public void deleteUserByID(Long id) {
-        userRepo.findById(id).ifPresentOrElse(userRepo::delete, () -> {
-            throw new RuntimeException("User not found");
-        });
+        User user = userRepo.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        user.setStatus(false);
+        userRepo.save(user);
     }
 
     @Override
@@ -92,8 +94,6 @@ public class UserService implements IUserService {
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         userRepo.save(user);
     }
-    //TODO: method update password MEMBER and SHOP
-    //TODO: ADMIN update SHOP name, email, password
 
     @Override
     public void verifyUser(String email, String token) {

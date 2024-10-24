@@ -40,8 +40,8 @@ public class ReportController {
                 .build());
     }
 
-    @GetMapping("/GrowthFish")
-    public ResponseEntity<ApiResponse> getGrowthFishReport(@RequestParam Long koiFishId){
+    @GetMapping("/GrowthFish/{koiFishId}")
+    public ResponseEntity<ApiResponse> getGrowthFishReport(@PathVariable Long koiFishId){
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("Get report success")
                 .data(fishGrowthReportService.getFishGrowthReport(koiFishId))

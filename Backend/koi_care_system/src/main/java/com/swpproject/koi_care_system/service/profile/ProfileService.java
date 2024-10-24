@@ -1,7 +1,7 @@
 package com.swpproject.koi_care_system.service.profile;
+
 import com.swpproject.koi_care_system.dto.UserProfileDto;
 import com.swpproject.koi_care_system.enums.ErrorCode;
-import com.swpproject.koi_care_system.enums.Role;
 import com.swpproject.koi_care_system.exceptions.AppException;
 import com.swpproject.koi_care_system.mapper.UserProfileMapper;
 import com.swpproject.koi_care_system.models.User;
@@ -36,7 +36,7 @@ public class ProfileService implements IProfileService {
         userProfile.setCreatedDate(LocalDate.now());
         userProfileRepository.save(userProfile);
         userProfile.setSubscribePlan(subscribePlanService.initDefault(user.getId()));
-        userProfile.setAvatar("https://koicareimage.blob.core.windows.net/koicarestorage/defaultProfile.jpg");
+        userProfile.setAvatar("https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultProfile.jpg");
         return userProfileRepository.save(userProfile);
     }
 
@@ -47,7 +47,7 @@ public class ProfileService implements IProfileService {
         if(profileUpdateRequest.getFile()!=null){
             if(!profileUpdateRequest.getFile().isEmpty()){
                 try{
-                    if(!userProfile.getAvatar().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultProfile.jpg"))
+                    if (!userProfile.getAvatar().equals("https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultProfile.jpg"))
                         imageStorage.deleteImage(userProfile.getAvatar());
                     userProfile.setAvatar(imageStorage.uploadImage(profileUpdateRequest.getFile()));
                 }catch (Exception e) {
@@ -81,8 +81,8 @@ public class ProfileService implements IProfileService {
     public UserProfile createProfileOauth(User user, String imageUrl) {
         UserProfile userProfile = userProfileMapper.mapToUserProfile(user);
         userProfile.setCreatedDate(LocalDate.now());
-        userProfile.setAvatar(imageUrl);
         userProfileRepository.save(userProfile);
+        userProfile.setAvatar(imageUrl);
         userProfile.setSubscribePlan(subscribePlanService.initDefault(user.getId()));
         return userProfileRepository.save(userProfile);
     }

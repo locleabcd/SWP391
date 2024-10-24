@@ -1,14 +1,15 @@
 package com.swpproject.koi_care_system.service.koifish;
 
 import com.swpproject.koi_care_system.dto.KoiFishDto;
-import com.swpproject.koi_care_system.exceptions.AlreadyExistsException;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.mapper.KoiFishMapper;
 import com.swpproject.koi_care_system.models.KoiFish;
+import com.swpproject.koi_care_system.models.OriginStateOfFish;
 import com.swpproject.koi_care_system.payload.request.AddKoiFishRequest;
 import com.swpproject.koi_care_system.payload.request.KoiFishUpdateRequest;
 import com.swpproject.koi_care_system.repository.KoiFishRepository;
 import com.swpproject.koi_care_system.repository.KoiPondRepository;
+import com.swpproject.koi_care_system.repository.OriginStateOfFishRepository;
 import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import com.swpproject.koi_care_system.service.koipond.IKoiPondService;
 import lombok.AccessLevel;
@@ -22,8 +23,6 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +34,7 @@ public class KoiFishService implements IKoiFishService {
     KoiPondRepository koiPondRepository;
     KoiFishMapper koiFishMapper;
     ImageStorage imageStorage;
+    OriginStateOfFishRepository originStateOfFishRepository;
     @Override
     @PreAuthorize("hasRole('MEMBER')")
     public KoiFishDto addKoiFish(AddKoiFishRequest addKoiFishRequest) throws IOException {
@@ -42,10 +42,22 @@ public class KoiFishService implements IKoiFishService {
         if(addKoiFishRequest.getFile()!=null)
             koiFish.setImageUrl(imageStorage.uploadImage(addKoiFishRequest.getFile()));
         else
-            koiFish.setImageUrl("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg");
+            koiFish.setImageUrl("https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg");
         koiFish.setStatus("Alive");
         koiFish.setKoiPond(koiPondRepository.findKoiPondsById(addKoiFishRequest.getKoiPondId()));
-        return koiFishMapper.toDto(koiFishRepository.save(koiFish));
+        koiFish=koiFishRepository.save(koiFish);
+        originStateOfFishRepository.save(OriginStateOfFish.builder()
+                        .name(koiFish.getName())
+                        .age(koiFish.getAge())
+                        .physique(koiFish.getPhysique())
+                        .variety(koiFish.getVariety())
+                        .weight(koiFish.getWeight())
+                        .gender(koiFish.getGender())
+                        .length(koiFish.getLength())
+                        .pondDate(koiFish.getPondDate())
+                        .koiFish(koiFish)
+                .build());
+        return koiFishMapper.toDto(koiFish);
     }
     @Override
     @PreAuthorize("hasRole('MEMBER')")
@@ -92,7 +104,7 @@ public class KoiFishService implements IKoiFishService {
         if(koiFishUpdateRequest.getFile()!=null)
             if(!koiFishUpdateRequest.getFile().isEmpty()){
                 try {
-                    if(!oldKoiFish.getImageUrl().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg"))
+                    if (!oldKoiFish.getImageUrl().equals("https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg"))
                         imageStorage.deleteImage(oldKoiFish.getImageUrl());
                     oldKoiFish.setImageUrl(imageStorage.uploadImage(koiFishUpdateRequest.getFile()));
                 }catch (Exception e){

@@ -1,6 +1,6 @@
 package com.swpproject.koi_care_system.config;
 
-import com.swpproject.koi_care_system.ultis.VNPayUtil;
+import com.swpproject.koi_care_system.utils.VNPayUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
