@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -17,6 +18,7 @@ import java.util.Map;
 
 import static com.swpproject.koi_care_system.utils.EmailUtils.getVerificationUrl;
 
+@EnableAsync
 @Service
 @RequiredArgsConstructor
 public class EmailService implements IEmailService {
@@ -57,6 +59,7 @@ public class EmailService implements IEmailService {
     }
 
     @Override
+    @Async
     public void sendOtp(String name, String to, String subject, String otp) {
         try {
             Context context = new Context();

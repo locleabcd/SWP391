@@ -63,7 +63,7 @@ public class UserController {
                 .build());
     }
 
-    @DeleteMapping("/delete/{id}")
+    @PutMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteUser(@PathVariable Long id) {
         userService.deleteUserByID(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.builder()

@@ -22,7 +22,7 @@ import java.util.Date;
 public class JwtUtils {
 
 
-    @Value("${jwt.signer.key}")
+    @Value("${jwt.signerKey}")
     private String SIGNER_KEY;
 
 
@@ -77,6 +77,15 @@ public class JwtUtils {
         }
 
         return false;
+    }
+
+    public String getUsernameFromToken(String token) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            return signedJWT.getJWTClaimsSet().getSubject();
+        } catch (ParseException e) {
+            throw new AppException(ErrorCode.INVALID_TOKEN);
+        }
     }
 
     private Role buildScope(User user) {

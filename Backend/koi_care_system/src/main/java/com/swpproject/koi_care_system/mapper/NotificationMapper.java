@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface NotificationMapper {
 
+    @Mapping(target = "user", ignore = true)
     @Mapping(target = "id", ignore = true)
     Notification mapToNotification(NotificationRequest request);
 

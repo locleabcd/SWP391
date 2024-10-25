@@ -15,4 +15,5 @@ public class NotificationRequest {
     String message;
     boolean delivered;
     LocalDateTime dateTime;
+    Long userId;
 }
