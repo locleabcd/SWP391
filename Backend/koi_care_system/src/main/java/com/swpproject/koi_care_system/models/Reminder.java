@@ -22,5 +22,8 @@ public class Reminder {
     LocalDateTime dateTime;
     @Enumerated(EnumType.STRING)
     ReminderRepeat repeatInterval;
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    User user;
 
 }
