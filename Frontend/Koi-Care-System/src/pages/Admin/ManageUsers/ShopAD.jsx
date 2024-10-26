@@ -13,7 +13,7 @@ import Paper from '@mui/material/Paper'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import { Modal, Button, TextField, Box } from '@mui/material'
-import { FaUser, FaMoneyBillWave, FaEdit, FaTrash, FaInfoCircle, FaEye } from 'react-icons/fa'
+import { FaUser, FaMoneyBillWave, FaEdit, FaTrash, FaInfoCircle, FaEye, FaCircle } from 'react-icons/fa'
 
 function ShopAD() {
   const { isDarkMode } = useDarkMode()
@@ -54,6 +54,7 @@ function ShopAD() {
       })
       const shopUsers = res.data.data.filter((user) => user.role === 'SHOP')
       setManageShops(shopUsers)
+      console.log(shopUsers)
     } catch (error) {
       console.log('Error fetching promotions:', error)
     }
@@ -69,24 +70,50 @@ function ShopAD() {
         throw new Error('No token found')
       }
 
-      // Gắn API xóa staff ở đây
-      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/users/delete/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      // API to update status to inactive (set to false)
+      await axios.put(
+        `https://koicaresystemv4.azurewebsites.net/api/users/delete/${id}`,
+        { status: false }, // Assuming the API accepts a status field to set active/inactive
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      })
+      )
 
-      toast.success('Staff deleted successfully')
-      getUsers() // Cập nhật danh sách sau khi xóa
+      toast.success('User deactivated successfully')
+      getUsers() // Refresh the user list after status update
     } catch (error) {
       console.error(error)
-      toast.error('Failed to delete staff')
+      toast.error('Failed to deactivate user')
     }
   }
   const columns = [
     { field: 'username', headerName: 'Username', width: 120 },
     { field: 'email', headerName: 'Email', flex: 1 },
     { field: 'role', headerName: 'Role', width: 120 },
+    {
+      field: 'status',
+      headerName: 'Status',
+      width: 100,
+      renderCell: (params) => (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100%',
+            width: '100%',
+            padding: '0'
+          }}
+        >
+          <FaCircle
+            color={params.row.status ? 'green' : 'red'}
+            className={`status-icon ${params.row.status ? 'active' : 'inactive'}`}
+          />
+        </div>
+      )
+    },
     {
       field: 'actions',
       headerName: 'Actions',

@@ -110,23 +110,23 @@ function CustomerAD() {
     {
       field: 'image',
       headerName: 'Image',
-      width: 120,
+      width: 100,
       renderCell: (params) => (
         <img src={params.row.avatar || fallbackImage} alt='User' className='w-24 h-16 object-cover rounded-md' />
       )
     },
     { field: 'name', headerName: 'Name', width: 120 },
-    { field: 'email', headerName: 'Email', width: 220 },
-    { field: 'phone', headerName: 'Phone', width: 150 },
-    { field: 'address', headerName: 'Address', width: 150 },
+    { field: 'email', headerName: 'Email', width: 200 },
+    { field: 'phone', headerName: 'Phone', width: 110 },
+    { field: 'address', headerName: 'Address', width: 120 },
     { field: 'createdDate', headerName: 'Create Date', width: 120 },
     { field: 'dateOfBirth', headerName: 'Date of Birth', width: 120 },
-    { field: 'bio', headerName: 'bio', width: 160 },
-    { field: 'role', headerName: 'Role', width: 120 },
+
+    { field: 'role', headerName: 'Role', width: 80 },
     {
       field: 'status',
       headerName: 'Status',
-      width: 120,
+      width: 100,
       renderCell: (params) => (
         <div className='h-full flex justify-center items-center'>
           <div
