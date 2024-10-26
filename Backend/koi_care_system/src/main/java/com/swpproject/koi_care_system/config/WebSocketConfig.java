@@ -12,15 +12,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic");
+        config.enableSimpleBroker("/topic","/user","/queue");
         config.setApplicationDestinationPrefixes("/app");
+        config.setUserDestinationPrefix("/user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws").setAllowedOrigins("https://koi-care-system.vercel.app", "https://koicaresystemv4.azurewebsites.net").
+        registry.addEndpoint("/ws").setAllowedOrigins("https://koi-care-system.vercel.app", "https://koicaresystemv4.azurewebsites.net","http://localhost:5173","http://localhost:8080").
                 withSockJS();
     }
-
 }
 

@@ -32,8 +32,8 @@ public class VnPayService {
             vnpParamsMap.put("vnp_BankCode", bankCode);
         }
         Long userId = Long.parseLong(request.getParameter("userId"));
-        Long orderId = orderService.getUserOrders(userId).getLast().getId();
-        //Long orderId = 1L;
+        //Long orderId = orderService.getUserOrders(userId).getLast().getId();
+        Long orderId = 1L;
         vnpParamsMap.put("vnp_OrderInfo","Thanh toan cho don hang # "+ orderId);
         vnpParamsMap.put("vnp_IpAddr", VNPayUtil.getIpAddress(request));
         //build query url
