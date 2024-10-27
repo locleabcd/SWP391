@@ -10,6 +10,8 @@ import { Link } from 'react-router-dom'
 import { FaSpinner } from 'react-icons/fa'
 import TopLayout from '../../../layouts/TopLayout'
 import { motion } from 'framer-motion'
+import { toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 function MyKoi() {
   const { isDarkMode } = useDarkMode()
@@ -111,9 +113,10 @@ function MyKoi() {
       })
       setIsAddFormVisible(false)
       getKoi()
-      reset()
+      toast.success('Create Koi Successfully!')
     } catch (error) {
       console.log(error)
+      toast.error('Create Koi Fail!')
     } finally {
       setIsSubmitting(false)
       setIsLoading(false)
@@ -132,8 +135,6 @@ function MyKoi() {
           Authorization: `Bearer ${token}`
         }
       })
-
-      console.log('data', res.data)
       setPonds(res.data.data)
     } catch (error) {
       console.error('Error fetching ponds:', error)
@@ -158,7 +159,6 @@ function MyKoi() {
         ...prevCounts,
         [id]: koiCount
       }))
-      console.log(koiCount)
       setKois(res.data.data)
     } catch (error) {
       console.error('Error fetching koi:', error)
@@ -196,6 +196,10 @@ function MyKoi() {
 
   const sortByName = (sortType) => {
     sortKois(sortType, 'name')
+  }
+
+  const isNameDuplicate = (name) => {
+    return kois.some((koi) => koi.name.toLowerCase() === name.toLowerCase())
   }
 
   return (
@@ -350,7 +354,9 @@ function MyKoi() {
       {isAddFormVisible && (
         <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 '>
           <div
-            className='bg-white lg:min-w-[100vh] mb-auto mt-auto p-6 rounded-lg shadow-lg max-h-[90vh] overflow-y-auto no-scroll-bar'
+            className={` ${
+              isDarkMode ? 'bg-custom-dark' : 'bg-white'
+            }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
             data-aos='fade-up'
           >
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -454,39 +460,51 @@ function MyKoi() {
                   )}
                 </div>
 
-                {/* {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>} */}
-
-                <div className='relative col-span-1 '>
+                <div className='relative col-span-1 lg:mb-4 lg:mb-4'>
                   <label
                     htmlFor='name'
-                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                    className={`absolute block -top-[12px] ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                   >
                     Name
                   </label>
                   <input
                     type='text'
                     id='name'
-                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                    className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                     {...register('name', {
                       required: 'Name is required',
-                      maxLength: { value: 20, message: 'Name must be at most 50 characters long' }
+                      maxLength: {
+                        value: 20,
+                        message: 'Name must be at most 50 characters long'
+                      },
+                      validate: (value) => !isNameDuplicate(value) || 'Name already exists'
                     })}
                   />
                   {errors.name && (
-                    <p className='absolute -bottom-[3px] left-3 text-red-500 text-sm'>{errors.name.message}</p>
+                    <p className='absolute -bottom-[3px] left-3 lg:-bottom-[22px] lg:left-3 text-red-500 text-sm'>
+                      {errors.name.message}
+                    </p>
                   )}
                 </div>
 
-                <div className='relative col-span-1'>
+                <div className='relative col-span-1 lg:mb-4'>
                   <label
                     htmlFor='physique'
-                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                    className={`absolute block -top-[12px] ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                   >
                     Physique
                   </label>
                   <select
                     id='physique'
-                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                    className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                     {...register('physique')}
                   >
                     <option value='Normal'>Normal</option>
@@ -495,39 +513,45 @@ function MyKoi() {
                   </select>
                 </div>
 
-                <div className='relative col-span-1'>
+                <div className='relative col-span-1 lg:mb-4'>
                   <label
                     htmlFor='age'
-                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                    className={`absolute block -top-[12px] ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                   >
                     Age
                   </label>
-                  <div></div>
-                  <select
-                    id='age'
-                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
-                    {...register('age')}
-                  >
-                    <option value={0}>Select Age</option>
-                    <option value={0}>0 years</option>
-                    <option value={1}>Tosai (1 year)</option>
-                    <option value={2}>Nisai (2 years)</option>
-                    <option value={3}>Sansai (3 years)</option>
-                    <option value={4}>Yonsai (4 years)</option>
-                    <option value={5}>Gosai (5 years)</option>
-                    <option value={6}>Rokusai (6 years)</option>
-                    <option value={7}>Nanasai (7 years)</option>
-                    {[...Array(95)].map((_, i) => (
-                      <option key={i + 8} value={i + 8}>
-                        {i + 8} years
-                      </option>
-                    ))}
-                  </select>
+                  <div className='h-10'>
+                    <select
+                      id='age'
+                      className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                        isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                      } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                      {...register('age')}
+                    >
+                      <option value={0}>0 years</option>
+                      <option value={1}>Tosai (1 year)</option>
+                      <option value={2}>Nisai (2 years)</option>
+                      <option value={3}>Sansai (3 years)</option>
+                      <option value={4}>Yonsai (4 years)</option>
+                      <option value={5}>Gosai (5 years)</option>
+                      <option value={6}>Rokusai (6 years)</option>
+                      <option value={7}>Nanasai (7 years)</option>
+                      {[...Array(95)].map((_, i) => (
+                        <option key={i + 6} value={i + 6}>
+                          {i + 6} years
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
 
-                <div className='relative col-span-1'>
+                <div className='relative col-span-1 lg:mb-4'>
                   <label
-                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                    className={`absolute block -top-[12px] ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                     htmlFor='length'
                   >
                     Length
@@ -536,20 +560,26 @@ function MyKoi() {
                     type='number'
                     id='length'
                     placeholder='cm'
-                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                    className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                     {...register('length', {
                       required: 'Length is required',
-                      max: { value: 200, message: 'Length must not exceed 200 cm' }
+                      max: { value: 150, message: 'Length must not exceed 150 cm' }
                     })}
                   />
                   {errors.length && (
-                    <p className='absolute -bottom-[20px] left-3 text-red-500 text-sm'>{errors.length.message}</p>
+                    <p className='absolute -bottom-[8px] left-3 lg:-bottom-[20px] lg:left-3 text-red-500 text-sm'>
+                      {errors.length.message}
+                    </p>
                   )}
                 </div>
 
-                <div className='relative col-span-1'>
+                <div className='relative col-span-1 lg:mb-4'>
                   <label
-                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                    className={`absolute block -top-[12px] ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                     htmlFor='weight'
                   >
                     Weight
@@ -558,25 +588,36 @@ function MyKoi() {
                     type='number'
                     id='weight'
                     placeholder='g'
-                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
-                    {...register('weight', { required: 'Weight is required' })}
+                    className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
+                    {...register('weight', {
+                      required: 'Weight is required',
+                      max: { value: 60000, message: 'Weigth must not exceed 60000 g' }
+                    })}
                   />
                   {errors.weight && (
-                    <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.weight.message}</p>
+                    <p className='absolute -bottom-[8px] lg:-bottom-[20px] lg:left-3 left-3 text-red-500 text-sm'>
+                      {errors.weight.message}
+                    </p>
                   )}
                 </div>
 
-                <div className='relative col-span-1'>
+                <div className='relative col-span-1 lg:mb-4'>
                   <label
-                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                    className={`absolute block -top-[12px] ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                     htmlFor='gender'
                   >
                     Gender
                   </label>
                   <select
                     id='gender'
-                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
-                    {...register('gender', { required: false })}
+                    className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
+                    {...register('gender')}
                   >
                     <option value='Undefined'>Select Gender</option>
                     <option value='Male'>Male</option>
@@ -585,9 +626,11 @@ function MyKoi() {
                   </select>
                 </div>
 
-                <div className='relative col-span-1'>
+                <div className='relative col-span-1 lg:mb-4'>
                   <label
-                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                    className={`absolute block -top-[12px] ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                     htmlFor='variety'
                   >
                     Variety
@@ -595,14 +638,18 @@ function MyKoi() {
                   <input
                     type='text'
                     id='variety'
-                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                    className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                     {...register('variety', { required: false })}
                   />
                 </div>
 
-                <div className='relative col-span-1'>
+                <div className='relative col-span-1 lg:mb-4'>
                   <label
-                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                    className={`absolute block -top-[12px] ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                     htmlFor='pondDate'
                   >
                     In Pond Date
@@ -611,14 +658,18 @@ function MyKoi() {
                     type='date'
                     id='pondDate'
                     defaultValue={new Date().toISOString().split('T')[0]}
-                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                    className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                     {...register('pondDate')}
                   />
                 </div>
 
-                <div className='relative col-span-1'>
+                <div className='relative col-span-1 lg:mb-4'>
                   <label
-                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                    className={`absolute block -top-[12px] ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                     htmlFor='breeder'
                   >
                     Breeder
@@ -626,14 +677,18 @@ function MyKoi() {
                   <input
                     type='text'
                     id='breeder'
-                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                    className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                     {...register('breeder', { required: false })}
                   />
                 </div>
 
-                <div className='relative col-span-1'>
+                <div className='relative col-span-1 lg:mb-4'>
                   <label
-                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                    className={`absolute block -top-[12px] ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                     htmlFor='price'
                   >
                     Price
@@ -641,28 +696,36 @@ function MyKoi() {
                   <input
                     type='number'
                     id='price'
-                    placeholder='$'
-                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                    placeholder='VND'
+                    className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                     {...register('price', {
-                      required: false,
-                      maxLength: { value: 10, message: 'Price must be at most 10 characters long' },
+                      required: 'Price is required',
                       min: { value: 1, message: 'Price must be greater than 0' }
                     })}
                   />
+                  {errors.price && (
+                    <p className='absolute -bottom-4 left-4 lg:-bottom-6 lg:left-4 text-red-500 text-sm'>
+                      {errors.price.message}
+                    </p>
+                  )}
                 </div>
-                {errors.price && (
-                  <p className='absolute -bottom-1 left-3 text-red-500 text-sm'>{errors.price.message}</p>
-                )}
-                <div className='relative col-span-1'>
+
+                <div className='relative col-span-1 lg:mb-4 mt-2'>
                   <label
-                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                    className={`absolute block -top-[12px] ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                     htmlFor='pondId'
                   >
                     Pond
                   </label>
                   <select
                     id='pondId'
-                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                    className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                     {...register('pondId', { required: 'Please select a pond' })}
                   >
                     {ponds.map((pond) => (
@@ -676,9 +739,11 @@ function MyKoi() {
                   )}
                 </div>
 
-                <div className='relative col-span-1'>
+                <div className='relative col-span-1 lg:mb-4 mt-2'>
                   <label
-                    className='absolute lg:text-lg text-sm font-medium lg:-top-[12px] -top-[8px] left-3 text-red-500 bg-white'
+                    className={`absolute block -top-[12px] ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                     htmlFor='price'
                   >
                     Status
@@ -687,7 +752,9 @@ function MyKoi() {
                     type='text'
                     id='status'
                     value='Alive'
-                    className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                    className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                      isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                    } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                     readOnly
                   />
                 </div>
