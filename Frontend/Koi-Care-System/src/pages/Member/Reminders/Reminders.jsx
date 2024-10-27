@@ -5,30 +5,6 @@ import TopLayout from '../../../layouts/TopLayout'
 import '../../../index.css'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-<<<<<<< HEAD
-
-function Reminders() {
-  const { isDarkMode } = useDarkMode()
-  const [reminders, setReminders] = useState([])
-
-  const getReminders = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const res = await axios.get('https://koicaresystemv4.azurewebsites.net/api/reminders/list', {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      setReminders(res.data.data)
-      console.log(res.data.data)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  useEffect(() => {
-    getReminders()
-=======
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { Switch } from '@mui/material'
 import { useForm } from 'react-hook-form'
@@ -75,7 +51,6 @@ function Reminders() {
 
   useEffect(() => {
     getReminder()
->>>>>>> kien
   }, [])
 
   return (
@@ -92,8 +67,6 @@ function Reminders() {
 
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] max-h-[800px]'>
             <TopLayout text='Reminders' links='/member/reminders' />
-<<<<<<< HEAD
-=======
             <div className='grid grid-cols-3 gap-32 mt-10'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
@@ -389,7 +362,6 @@ function Reminders() {
                 </div>
               </div>
             )}
->>>>>>> kien
           </div>
         </div>
       </div>
