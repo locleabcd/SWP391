@@ -35,7 +35,7 @@ function MyPond() {
   const getIssue = async (koipondId) => {
     try {
       const token = localStorage.getItem('token')
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/issues/latest/${koipondId}`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/issues/latest/${koipondId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -63,7 +63,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/koifishs/koipond/${id}/allKoi`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/koifishs/koipond/${id}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -128,7 +128,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -178,7 +178,7 @@ function MyPond() {
           formData.append('file', selectedFile)
         }
 
-        await axios.put(`https://koicaresystemv4.azurewebsites.net/api/koiponds/koipond/${id}/update`, formData, {
+        await axios.put(`http://68.183.232.120:8080/api/koiponds/koipond/${id}/update`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -197,7 +197,7 @@ function MyPond() {
         if (selectedFile) {
           formData.append('file', selectedFile)
         }
-        await axios.post('https://koicaresystemv4.azurewebsites.net/api/koiponds/create', formData, {
+        await axios.post('http://68.183.232.120:8080/api/koiponds/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -246,7 +246,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/koiponds/koipond/${id}/delete`, {
+      await axios.delete(`http://68.183.232.120:8080/api/koiponds/koipond/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

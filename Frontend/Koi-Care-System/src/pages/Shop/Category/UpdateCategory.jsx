@@ -30,7 +30,7 @@ function UpdateCategory() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/categories/category/${id}/category`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/categories/category/${id}/category`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -58,7 +58,7 @@ function UpdateCategory() {
         throw new Error('No token found')
       }
       await axios.put(
-        `https://koicaresystemv4.azurewebsites.net/api/categories/category/${id}/update`,
+        `http://68.183.232.120:8080/api/categories/category/${id}/update`,
         {
           name: data.name
         },

@@ -84,7 +84,7 @@ import ProductAD from './pages/Admin/Product/ProductAD'
 import SupplierAD from './pages/Admin/Supplier/SupplierAD'
 import ViewProductAD from './pages/Admin/Product/ViewProductAD'
 import UpdateProductAD from './pages/Admin/Product/UpdateProductAD'
-import CreateProductAD from './pages/Admin/Product/CreateProductAD' 
+import CreateProductAD from './pages/Admin/Product/CreateProductAD'
 import CreateSupplierAD from './pages/Admin/Supplier/CreateSupplierAD'
 import UpdateSupplierAD from './pages/Admin/Supplier/UpdateSupplierAD'
 import ManagePay from './pages/Admin/ManageReport/ManagePay'
@@ -544,15 +544,15 @@ function App() {
     },
     {
       path: path.shopAD,
-      element: <ShopAD/>
+      element: <ShopAD />
     },
     {
       path: path.customerAD,
-      element: <CustomerAD/>
+      element: <CustomerAD />
     },
     {
       path: path.viewUserAD,
-      element: <ViewUserAD/>
+      element: <ViewUserAD />
     },
     {
       path: path.orderShop,
@@ -568,81 +568,61 @@ function App() {
     },
     {
       path: path.profileShop,
-      element: <ProfileShop/>
+      element: <ProfileShop />
     },
     {
       path: path.updateUserAD,
-      element: <UpdateUserAD/>
+      element: <UpdateUserAD />
     },
     {
       path: path.manageOrder,
-      element: <ManageOrder/>
+      element: <ManageOrder />
     },
     {
       path: path.productAD,
-      element:<ProductAD/>
+      element: <ProductAD />
     },
     {
       path: path.supplierAD,
-      element: <SupplierAD/>
+      element: <SupplierAD />
     },
     {
       path: path.dashboardAD,
-      element: <DashboardAD/>
+      element: <DashboardAD />
     },
     {
       path: path.viewProductAD,
-      element: <ViewProductAD/>
+      element: <ViewProductAD />
     },
     {
       path: path.updateProductAD,
-      element: <UpdateProductAD/>
+      element: <UpdateProductAD />
     },
     {
       path: path.createProductAD,
-      element: <CreateProductAD/>
+      element: <CreateProductAD />
     },
     {
       path: path.createSupplierAD,
-      element: <CreateSupplierAD/>
+      element: <CreateSupplierAD />
     },
     {
       path: path.updateSupplierAD,
-      element: <UpdateSupplierAD/>
+      element: <UpdateSupplierAD />
     },
     {
       path: path.managePay,
-      element: <ManagePay/>
+      element: <ManagePay />
     },
     {
       path: path.newsAD,
-      element: <NewsAD/>
+      element: <NewsAD />
     },
     {
       path: path.newsView,
-      element: <NewsView/>
+      element: <NewsView />
     }
   ])
-
-  const data = [
-    {
-      Id: 2,
-      Subject: 'Meeting',
-      StartTime: new Date(2018, 1, 15, 10, 0),
-      EndTime: new Date(2018, 1, 15, 12, 30),
-      IsAllDay: false,
-      Status: 'Completed',
-      Priority: 'High'
-    }
-  ]
-  const fieldsData = {
-    id: 'Id',
-    subject: { name: 'Subject' },
-    isAllDay: { name: 'IsAllDay' },
-    startTime: { name: 'StartTime' },
-    endTime: { name: 'EndTime' }
-  }
-  const eventSettings = { dataSource: data, fields: fieldsData }
 
   return (
     <>
