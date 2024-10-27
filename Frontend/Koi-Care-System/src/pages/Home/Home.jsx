@@ -16,7 +16,7 @@ function Home() {
               <button className='p-2 rounded-md hover:bg-gray-100'>
                 <img className='w-12 animate-slow-spin' src={logo} alt='Logo' />
               </button>
-              <a href='#' className='text-2xl font-bold'>
+              <a href='#' className='text-3xl font-bold'>
                 Koi Care System
               </a>
             </div>
@@ -30,7 +30,7 @@ function Home() {
                     duration={500}
                     spy={true}
                     activeClass='bg-red-500 text-white'
-                    className='cursor-pointer hover:bg-red-500 font-medium text-xl px-4 py-2 rounded-md transition'
+                    className='cursor-pointer hover:bg-red-500 hover:text-white font-medium text-2xl px-4 py-2 rounded-md transition'
                   >
                     Home
                   </ScrollLink>
@@ -42,7 +42,7 @@ function Home() {
                     duration={500}
                     spy={true}
                     activeClass='bg-red-500 text-white'
-                    className='cursor-pointer hover:bg-red-500 font-medium text-xl px-4 py-2 rounded-md transition'
+                    className='cursor-pointer hover:bg-red-500 hover:text-white font-medium text-2xl px-4 py-2 rounded-md transition'
                   >
                     Our Features
                   </ScrollLink>
@@ -54,13 +54,16 @@ function Home() {
                     duration={500}
                     spy={true}
                     activeClass='bg-red-500 text-white'
-                    className='cursor-pointer hover:bg-red-500 font-medium text-xl px-4 py-2 rounded-md transition'
+                    className='cursor-pointer hover:bg-red-500 hover:text-white font-medium text-2xl px-4 py-2 rounded-md transition'
                   >
                     About
                   </ScrollLink>
                 </li>
                 <li>
-                  <Link to='/login' className='hover:bg-red-500 font-medium text-xl px-4 py-2 rounded-md transition'>
+                  <Link
+                    to='/login'
+                    className='hover:bg-red-500 hover:text-white font-medium text-2xl px-4 py-2 rounded-md transition'
+                  >
                     Sign in
                   </Link>
                 </li>

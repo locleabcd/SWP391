@@ -33,7 +33,7 @@ function UpdatePromotion() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/promotions/${id}/products/view`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/promotions/${id}/products/view`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       console.log('Product details response:', res.data.data)
@@ -55,7 +55,7 @@ function UpdatePromotion() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/promotions/promotion/${id}`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/promotions/promotion/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -84,7 +84,7 @@ function UpdatePromotion() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/products/all`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/products/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -125,7 +125,7 @@ function UpdatePromotion() {
 
       // Send selectedProductIds to the backend
       const res = await axios.put(
-        `https://koicaresystemv4.azurewebsites.net/api/promotions/promotion/${id}/update`,
+        `http://68.183.232.120:8080/api/promotions/promotion/${id}/update`,
         {
           id: id,
           name: data.name,

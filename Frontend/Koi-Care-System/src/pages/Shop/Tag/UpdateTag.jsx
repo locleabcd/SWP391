@@ -30,7 +30,7 @@ function UpdateTag() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/tag/getID/${id}`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/tag/getID/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -58,7 +58,7 @@ function UpdateTag() {
         throw new Error('No token found')
       }
       const res = await axios.put(
-        `https://koicaresystemv4.azurewebsites.net/api/tag/update/${id}`,
+        `http://68.183.232.120:8080/api/tag/update/${id}`,
         {
           tagName: data.tagName,
           tagDescription: data.tagDescription

@@ -61,7 +61,7 @@ function MyPondLogId() {
         console.log('not found token')
       }
 
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/log/koiPond/${pondId}`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/log/koiPond/${pondId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -82,7 +82,7 @@ function MyPondLogId() {
       }
       const logId = localStorage.getItem('logId')
 
-      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/log/delete/${logId}`, {
+      await axios.delete(`http://68.183.232.120:8080/api/log/delete/${logId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -101,7 +101,7 @@ function MyPondLogId() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -130,7 +130,7 @@ function MyPondLogId() {
       const token = localStorage.getItem('token')
 
       await axios.post(
-        'https://koicaresystemv4.azurewebsites.net/api/log/create',
+        'http://68.183.232.120:8080/api/log/create',
         {
           logTitle: title,
           logDate: dateTime,
@@ -156,7 +156,7 @@ function MyPondLogId() {
       const token = localStorage.getItem('token')
       const logId = localStorage.getItem('logId')
       await axios.put(
-        `https://koicaresystemv4.azurewebsites.net/api/log/update/${logId}`,
+        `http://68.183.232.120:8080/api/log/update/${logId}`,
         {
           logTitle: title,
           logDate: dateTime,

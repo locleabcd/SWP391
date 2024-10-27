@@ -63,7 +63,7 @@ function MyPondLog() {
         console.log('not found token')
       }
 
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/log/user/${userId}/getAll`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/log/user/${userId}/getAll`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -84,7 +84,7 @@ function MyPondLog() {
       }
       const logId = localStorage.getItem('logId')
 
-      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/log/delete/${logId}`, {
+      await axios.delete(`http://68.183.232.120:8080/api/log/delete/${logId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -103,7 +103,7 @@ function MyPondLog() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -132,7 +132,7 @@ function MyPondLog() {
       const token = localStorage.getItem('token')
 
       await axios.post(
-        'https://koicaresystemv4.azurewebsites.net/api/log/create',
+        'http://68.183.232.120:8080/api/log/create',
         {
           logTitle: title,
           logDate: dateTime,
@@ -158,7 +158,7 @@ function MyPondLog() {
       const token = localStorage.getItem('token')
       const logId = localStorage.getItem('logId')
       await axios.put(
-        `https://koicaresystemv4.azurewebsites.net/api/log/update/${logId}`,
+        `http://68.183.232.120:8080/api/log/update/${logId}`,
         {
           logTitle: title,
           logDate: dateTime,
@@ -264,7 +264,7 @@ function MyPondLog() {
                     className={` ${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
                     }  lg:min-w-[80vh] m-auto p-6 lg:rounded-lg`}
-                    data-aos='fade-up'
+                    // data-aos='fade-up'
                   >
                     <div className='flex justify-between mb-5'>
                       <svg
