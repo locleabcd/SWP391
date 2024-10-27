@@ -36,7 +36,7 @@ function UpdateUserAD() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/users/${id}`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/users/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -83,7 +83,7 @@ function UpdateUserAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.put(`https://koicaresystemv4.azurewebsites.net/api/users/update/${id}`, updatedData, {
+      const res = await axios.put(`http://68.183.232.120:8080/api/users/update/${id}`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`
         }

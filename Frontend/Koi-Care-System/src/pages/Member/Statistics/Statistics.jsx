@@ -77,7 +77,7 @@ function Statistics() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -109,14 +109,11 @@ function Statistics() {
     try {
       const token = localStorage.getItem('token')
 
-      const res = await axios.get(
-        `https://koicaresystemv4.azurewebsites.net/api/water-parameters/getByKoiPondId/${koiPondId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+      const res = await axios.get(`http://68.183.232.120:8080/api/water-parameters/getByKoiPondId/${koiPondId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      )
+      })
 
       setWater(res.data.data)
       console.log(res.data.data)
@@ -137,7 +134,7 @@ function Statistics() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/koifishs/user/${id}/allKoi`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/koifishs/user/${id}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -159,7 +156,7 @@ function Statistics() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/growth-history/list/${koifishId}`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/growth-history/list/${koifishId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -210,7 +207,7 @@ function Statistics() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/reports/GrowthFish/${koifishId}`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/reports/GrowthFish/${koifishId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

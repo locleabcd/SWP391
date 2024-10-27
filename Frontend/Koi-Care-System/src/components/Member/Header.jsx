@@ -36,7 +36,7 @@ function Header() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
+      const response = await axios.get(`http://68.183.232.120:8080/api/carts/cart/${cartId}/my-cart`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -75,7 +75,7 @@ function Header() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/profile/${id}`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/profile/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -100,7 +100,7 @@ function Header() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/carts/user/${userId}/cartId`, {
+      const response = await axios.get(`http://68.183.232.120:8080/api/carts/user/${userId}/cartId`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -332,7 +332,7 @@ function Header() {
                   <span>My Profile</span>
                 </NavLink>
                 <NavLink
-                  to={path.shopCart}
+                  to={path.orderMember}
                   className={`px-4 py-2 flex items-center ${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`}
                 >
                   <svg
@@ -349,7 +349,7 @@ function Header() {
                       d='M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z'
                     />
                   </svg>
-                  <span>Shop Cart</span>
+                  <span>My Orders</span>
                 </NavLink>
                 <Link
                   onClick={handleLogout}

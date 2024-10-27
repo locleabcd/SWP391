@@ -18,7 +18,7 @@ import Statistics from './pages/Member/Statistics/Statistics'
 import News from './pages/Member/News/News'
 import MyAccount from './pages/Member/MyAccount/MyAccount'
 import Profile from './pages/Member/MyAccount/Profile/Profile'
-import ShopCart from './pages/Member/MyAccount/ShopCart/ShopCart'
+import OrderMember from './pages/Member/MyAccount/Order/Order'
 import MyPond from './pages/Member/MyPond/MyPond'
 import VerifyEmail from './pages/VerifyEmail/VerifyEmail'
 import VerifySuccess from './pages/VerifyEmail/VerifySuccess'
@@ -84,7 +84,7 @@ import ProductAD from './pages/Admin/Product/ProductAD'
 import SupplierAD from './pages/Admin/Supplier/SupplierAD'
 import ViewProductAD from './pages/Admin/Product/ViewProductAD'
 import UpdateProductAD from './pages/Admin/Product/UpdateProductAD'
-import CreateProductAD from './pages/Admin/Product/CreateProductAD' 
+import CreateProductAD from './pages/Admin/Product/CreateProductAD'
 import CreateSupplierAD from './pages/Admin/Supplier/CreateSupplierAD'
 import UpdateSupplierAD from './pages/Admin/Supplier/UpdateSupplierAD'
 import ManagePay from './pages/Admin/ManageReport/ManagePay'
@@ -151,10 +151,10 @@ function App() {
       )
     },
     {
-      path: path.shopCart,
+      path: path.orderMember,
       element: (
         <ProtectedRoute isAuthenticated={isAuthenticated}>
-          <ShopCart />
+          <OrderMember />
         </ProtectedRoute>
       )
     },
@@ -544,15 +544,15 @@ function App() {
     },
     {
       path: path.shopAD,
-      element: <ShopAD/>
+      element: <ShopAD />
     },
     {
       path: path.customerAD,
-      element: <CustomerAD/>
+      element: <CustomerAD />
     },
     {
       path: path.viewUserAD,
-      element: <ViewUserAD/>
+      element: <ViewUserAD />
     },
     {
       path: path.orderShop,
@@ -568,59 +568,59 @@ function App() {
     },
     {
       path: path.profileShop,
-      element: <ProfileShop/>
+      element: <ProfileShop />
     },
     {
       path: path.updateUserAD,
-      element: <UpdateUserAD/>
+      element: <UpdateUserAD />
     },
     {
       path: path.manageOrder,
-      element: <ManageOrder/>
+      element: <ManageOrder />
     },
     {
       path: path.productAD,
-      element:<ProductAD/>
+      element: <ProductAD />
     },
     {
       path: path.supplierAD,
-      element: <SupplierAD/>
+      element: <SupplierAD />
     },
     {
       path: path.dashboardAD,
-      element: <DashboardAD/>
+      element: <DashboardAD />
     },
     {
       path: path.viewProductAD,
-      element: <ViewProductAD/>
+      element: <ViewProductAD />
     },
     {
       path: path.updateProductAD,
-      element: <UpdateProductAD/>
+      element: <UpdateProductAD />
     },
     {
       path: path.createProductAD,
-      element: <CreateProductAD/>
+      element: <CreateProductAD />
     },
     {
       path: path.createSupplierAD,
-      element: <CreateSupplierAD/>
+      element: <CreateSupplierAD />
     },
     {
       path: path.updateSupplierAD,
-      element: <UpdateSupplierAD/>
+      element: <UpdateSupplierAD />
     },
     {
       path: path.managePay,
-      element: <ManagePay/>
+      element: <ManagePay />
     },
     {
       path: path.newsAD,
-      element: <NewsAD/>
+      element: <NewsAD />
     },
     {
       path: path.newsView,
-      element: <NewsView/>
+      element: <NewsView />
     }
   ])
 

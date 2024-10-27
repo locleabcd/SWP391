@@ -15,7 +15,7 @@ function Email() {
     setLoading(true)
     localStorage.setItem('email', email)
     axios
-      .post(`https://koicaresystemv4.azurewebsites.net/api/auth/forgotPassword/${email}`)
+      .post(`http://68.183.232.120:8080/api/auth/forgotPassword/${email}`)
       .then(() => navigate('/otp'))
       .then(() => toast.success('A new OTP has been sent to your email.'))
       .finally(() => setLoading(false))

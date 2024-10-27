@@ -62,7 +62,7 @@ function ViewProductAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/products/product/${id}/product`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/products/product/${id}/product`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -94,14 +94,11 @@ function ViewProductAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(
-        `https://koicaresystemv4.azurewebsites.net/api/products/product/${cate}/all/products`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+      const res = await axios.get(`http://68.183.232.120:8080/api/products/product/${cate}/all/products`, {
+        headers: {
+          Authorization: `Bearer ${token}`
         }
-      )
+      })
       if (!cate) {
         console.log('No category available')
       }
@@ -117,7 +114,7 @@ function ViewProductAD() {
     try {
       const token = localStorage.getItem('token')
 
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/feedbacks/product/${id}`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/feedbacks/product/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -134,7 +131,7 @@ function ViewProductAD() {
     try {
       const token = localStorage.getItem('token')
 
-      await axios.delete(`https://koicaresystemv4.azurewebsites.net/api/feedbacks/feedback/${id}/delete`, {
+      await axios.delete(`http://68.183.232.120:8080/api/feedbacks/feedback/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -152,7 +149,7 @@ function ViewProductAD() {
       const userId = localStorage.getItem('id')
 
       await axios.post(
-        'https://koicaresystemv4.azurewebsites.net/api/feedbacks',
+        'http://68.183.232.120:8080/api/feedbacks',
         {
           star: rating,
           comment: comment,
@@ -197,7 +194,7 @@ function ViewProductAD() {
       const id_feedback = localStorage.getItem('id_feed')
 
       await axios.put(
-        'https://koicaresystemv4.azurewebsites.net/api/feedbacks',
+        'http://68.183.232.120:8080/api/feedbacks',
         {
           id: id_feedback,
           star: rating,

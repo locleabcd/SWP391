@@ -13,7 +13,7 @@ const path = {
   verifySuccess: '/verify',
   myAccount: '/member/myAccount',
   profile: '/member/myAccount/profile',
-  shopCart: '/member/myAccount/shopCart',
+  orderMember: '/member/myAccount/order',
   dashboard: '/member/dashboard',
   myKoi: '/member/myKoi',
   pricing: '/member/pricing',
@@ -83,7 +83,7 @@ const path = {
   updateSupplierAD: '/admin/supplier/:id',
   managePay: '/admin/payment',
   newsAD: '/admin/news',
-  newsView:'/admin/news/:id'
+  newsView: '/admin/news/:id'
 }
 
 export default path

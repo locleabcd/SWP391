@@ -44,7 +44,7 @@ function ViewUser() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv4.azurewebsites.net/api/profile/all/member`, {
+      const res = await axios.get(`http://68.183.232.120:8080/api/profile/all/member`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
