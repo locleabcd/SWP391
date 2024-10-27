@@ -36,7 +36,7 @@ function Header() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`http://68.183.232.120:8080/api/carts/cart/${cartId}/my-cart`, {
+      const response = await axios.get(`http://146.190.84.154:8080/api/carts/cart/${cartId}/my-cart`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -75,7 +75,7 @@ function Header() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://68.183.232.120:8080/api/profile/${id}`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/profile/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -100,7 +100,7 @@ function Header() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`http://68.183.232.120:8080/api/carts/user/${userId}/cartId`, {
+      const response = await axios.get(`http://146.190.84.154:8080/api/carts/user/${userId}/cartId`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

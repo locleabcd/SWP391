@@ -33,7 +33,7 @@ function CreateSupplierAD() {
         throw new Error('No token found')
       }
       const res = await axios.post(
-        `http://68.183.232.120:8080/api/suppliers/add`,
+        `http://146.190.84.154:8080/api/suppliers/add`,
         {
           name: data.name,
           phone: data.phone,

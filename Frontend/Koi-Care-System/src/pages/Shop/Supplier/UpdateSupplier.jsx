@@ -30,7 +30,7 @@ function UpdateSupplier() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://68.183.232.120:8080/api/suppliers/supplier/${id}/by_id`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/suppliers/supplier/${id}/by_id`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -58,7 +58,7 @@ function UpdateSupplier() {
         throw new Error('No token found')
       }
       const res = await axios.put(
-        `http://68.183.232.120:8080/api/suppliers/supplier/${id}/update`,
+        `http://146.190.84.154:8080/api/suppliers/supplier/${id}/update`,
         {
           name: data.name,
           phone: data.phone,

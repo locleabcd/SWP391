@@ -65,7 +65,7 @@ function ManagePay() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/payment/all`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/payment/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -87,7 +87,7 @@ function ManagePay() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api//orders/${orderId}/order`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api//orders/${orderId}/order`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

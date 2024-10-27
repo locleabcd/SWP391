@@ -76,7 +76,7 @@ function ManageOrder() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/orders/all`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/orders/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -103,7 +103,7 @@ function ManageOrder() {
       const token = localStorage.getItem('token')
 
       const res = await axios.put(
-        `http://68.183.232.120:8080/api/orders/${id}/order/delivery`,
+        `http://146.190.84.154:8080/api/orders/${id}/order/delivery`,
         {},
         {
           headers: {

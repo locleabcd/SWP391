@@ -36,7 +36,7 @@ function CreateNews() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/tag`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/tag`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -81,7 +81,7 @@ function CreateNews() {
 
       console.log(data)
       // eslint-disable-next-line no-unused-vars
-      const res = await axios.post(`http://68.183.232.120:8080/api/blog/create`, formData, {
+      const res = await axios.post(`http://146.190.84.154:8080/api/blog/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`
         }

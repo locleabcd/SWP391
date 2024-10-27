@@ -33,7 +33,7 @@ function ResetPassword() {
       return
     }
     axios
-      .post(`http://68.183.232.120:8080/api/auth/resetPassword`, {
+      .post(`http://146.190.84.154:8080/api/auth/resetPassword`, {
         email: email,
         newPassword: password,
         otp: otp

@@ -85,7 +85,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/profile/all/member`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/profile/all/member`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -119,7 +119,7 @@ function DashboardAD() {
         throw new Error('No token found. Please log in to continue.')
       }
 
-      const res = await axios.get('http://68.183.232.120:8080/api/profile/all/member', {
+      const res = await axios.get('http://146.190.84.154:8080/api/profile/all/member', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -156,7 +156,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/orders/all`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/orders/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -188,7 +188,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/orders/all`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/orders/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -214,7 +214,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/reports/category`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/reports/category`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -231,7 +231,7 @@ function DashboardAD() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get('http://68.183.232.120:8080/api/subscribe/all', {
+      const res = await axios.get('http://146.190.84.154:8080/api/subscribe/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -257,7 +257,7 @@ function DashboardAD() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get('http://68.183.232.120:8080/api/subscribe/all', {
+      const res = await axios.get('http://146.190.84.154:8080/api/subscribe/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -300,7 +300,7 @@ function DashboardAD() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get('http://68.183.232.120:8080/api/reports/product', {
+      const res = await axios.get('http://146.190.84.154:8080/api/reports/product', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -319,7 +319,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/blog`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/blog`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -338,7 +338,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/payment/all`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/payment/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -395,7 +395,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/suppliers/all`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/suppliers/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

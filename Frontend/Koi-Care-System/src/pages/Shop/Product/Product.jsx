@@ -47,7 +47,7 @@ function Product() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get('http://68.183.232.120:8080/api/products/all', {
+      const res = await axios.get('http://146.190.84.154:8080/api/products/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -73,7 +73,7 @@ function Product() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      await axios.delete(`http://68.183.232.120:8080/api/products/product/${id}/delete`, {
+      await axios.delete(`http://146.190.84.154:8080/api/products/product/${id}/delete`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       toast.success('Product deleted successfully')
