@@ -62,7 +62,7 @@ function Recommendations() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/products/product/${id}/product`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/products/product/${id}/product`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -94,7 +94,7 @@ function Recommendations() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/products/product/${cate}/all/products`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/products/product/${cate}/all/products`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -114,7 +114,7 @@ function Recommendations() {
     try {
       const token = localStorage.getItem('token')
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/feedbacks/product/${id}`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/feedbacks/product/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -131,7 +131,7 @@ function Recommendations() {
     try {
       const token = localStorage.getItem('token')
 
-      await axios.delete(`http://68.183.232.120:8080/api/feedbacks/feedback/${id}/delete`, {
+      await axios.delete(`http://146.190.84.154:8080/api/feedbacks/feedback/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -149,7 +149,7 @@ function Recommendations() {
       const userId = localStorage.getItem('id')
 
       await axios.post(
-        'http://68.183.232.120:8080/api/feedbacks',
+        'http://146.190.84.154:8080/api/feedbacks',
         {
           star: rating,
           comment: comment,
@@ -194,7 +194,7 @@ function Recommendations() {
       const id_feedback = localStorage.getItem('id_feed')
 
       await axios.put(
-        'http://68.183.232.120:8080/api/feedbacks',
+        'http://146.190.84.154:8080/api/feedbacks',
         {
           id: id_feedback,
           star: rating,

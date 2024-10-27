@@ -15,7 +15,7 @@ function Pricing() {
       const token = localStorage.getItem('token')
 
       await axios.post(
-        'http://68.183.232.120:8080/api/orders/order/premium',
+        'http://146.190.84.154:8080/api/orders/order/premium',
         {
           userId: userId,
           time: '1MONTH'

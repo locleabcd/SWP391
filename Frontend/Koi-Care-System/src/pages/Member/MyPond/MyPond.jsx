@@ -30,12 +30,10 @@ function MyPond() {
   const [issue, setIssue] = useState([])
   const [showButtons, setShowButtons] = useState(false)
 
-  const navigate = useNavigate()
-
   const getIssue = async (koipondId) => {
     try {
       const token = localStorage.getItem('token')
-      const res = await axios.get(`http://68.183.232.120:8080/api/issues/latest/${koipondId}`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/issues/latest/${koipondId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -63,7 +61,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://68.183.232.120:8080/api/koifishs/koipond/${id}/allKoi`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/koifishs/koipond/${id}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -101,7 +99,6 @@ function MyPond() {
     setIsAddFormVisible(!isAddFormVisible)
     setIsEditFormVisible(false)
     setCurrentPond(null)
-    reset()
   }
 
   const toggleCloseForm = () => {
@@ -109,7 +106,6 @@ function MyPond() {
     setIsEditFormVisible(false)
     setCurrentPond(null)
     setBaseImage(null)
-    reset(ponds)
   }
 
   const toggleEditFormVisibility = (pond) => {
@@ -117,7 +113,6 @@ function MyPond() {
       setCurrentPond(pond)
       setIsEditFormVisible(true)
       setIsAddFormVisible(false)
-      reset()
     }
   }
 
@@ -128,7 +123,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://68.183.232.120:8080/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -136,19 +131,7 @@ function MyPond() {
       console.log(res.data.data)
       setPonds(res.data.data)
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          console.error('Unauthorized access - Token expired or invalid. Logging out...')
-          localStorage.removeItem('token')
-          localStorage.removeItem('id')
-          toast.error('Token expired navigate to login')
-          navigate('/login')
-        } else {
-          console.error('Error fetching ponds:', error.response?.status, error.message)
-        }
-      } else {
-        console.error('An unexpected error occurred:', error)
-      }
+      console.error('An unexpected error occurred:', error)
     }
   }
 
@@ -179,7 +162,7 @@ function MyPond() {
           formData.append('file', selectedFile)
         }
 
-        await axios.put(`http://68.183.232.120:8080/api/koiponds/koipond/${id}/update`, formData, {
+        await axios.put(`http://146.190.84.154:8080/api/koiponds/koipond/${id}/update`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -198,7 +181,7 @@ function MyPond() {
         if (selectedFile) {
           formData.append('file', selectedFile)
         }
-        await axios.post('http://68.183.232.120:8080/api/koiponds/create', formData, {
+        await axios.post('http://146.190.84.154:8080/api/koiponds/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -208,10 +191,10 @@ function MyPond() {
         console.log('date', data.date)
       }
 
-      reset()
       getPond()
       setIsAddFormVisible(false)
       setIsEditFormVisible(false)
+      reset()
     } catch (error) {
       console.log('Error creating/updating pond:', error)
     } finally {
@@ -247,7 +230,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`http://68.183.232.120:8080/api/koiponds/koipond/${id}/delete`, {
+      await axios.delete(`http://146.190.84.154:8080/api/koiponds/koipond/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -516,7 +499,6 @@ function MyPond() {
                   className={` ${
                     isDarkMode ? 'bg-custom-dark' : 'bg-white'
                   }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
-                  data-aos='fade-up'
                 >
                   <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className='flex justify-between mb-5'>
@@ -795,7 +777,6 @@ function MyPond() {
                   className={`${
                     isDarkMode ? 'bg-custom-dark' : 'bg-white'
                   } lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
-                  data-aos='fade-up'
                 >
                   <form onSubmit={handleSubmit(onSubmit)} noValidate>
                     <div className='flex justify-between mb-5'>

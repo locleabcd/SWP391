@@ -32,7 +32,7 @@ export default function CreateProductAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/categories/all`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/categories/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -56,7 +56,7 @@ export default function CreateProductAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/suppliers/all`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/suppliers/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -83,7 +83,7 @@ export default function CreateProductAD() {
         throw new Error('No token found')
       }
       const res = await axios.post(
-        `http://68.183.232.120:8080/api/products/add`,
+        `http://146.190.84.154:8080/api/products/add`,
         {
           name: data.name,
           brand: data.brand,
@@ -116,7 +116,7 @@ export default function CreateProductAD() {
         formData.append('productId', productId)
 
         // Upload images
-        await axios.post(`http://68.183.232.120:8080/api/images/upload`, formData, {
+        await axios.post(`http://146.190.84.154:8080/api/images/upload`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'

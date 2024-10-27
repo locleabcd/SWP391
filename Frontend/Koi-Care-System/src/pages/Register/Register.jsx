@@ -24,7 +24,7 @@ function Register() {
     console.log('Submitting data:', data)
 
     try {
-      const response = await axios.post('http://68.183.232.120:8080/api/users/register', {
+      const response = await axios.post('http://146.190.84.154:8080/api/users/register', {
         username: data.username,
         email: data.email,
         password: data.password

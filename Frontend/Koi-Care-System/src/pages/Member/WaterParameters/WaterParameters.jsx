@@ -48,7 +48,7 @@ function WaterParameters() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://68.183.232.120:8080/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -70,7 +70,7 @@ function WaterParameters() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://68.183.232.120:8080/api/water-parameters/getByUserId/${userId}`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/water-parameters/getByUserId/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -108,7 +108,7 @@ function WaterParameters() {
       }
 
       const res = await axios.post(
-        `http://68.183.232.120:8080/api/water-parameters/create`,
+        `http://146.190.84.154:8080/api/water-parameters/create`,
         {
           koiPondId: data.pondId,
           createDateTime: data.createDateTime,
@@ -160,7 +160,7 @@ function WaterParameters() {
       }
       console.log(data)
       const res = await axios.put(
-        `http://68.183.232.120:8080/api/water-parameters/update/${waterId}`,
+        `http://146.190.84.154:8080/api/water-parameters/update/${waterId}`,
         {
           koiPondId: data.pondId,
           createDateTime: data.createDateTime,
@@ -204,7 +204,7 @@ function WaterParameters() {
       if (!token) {
         throw new Error('no token found')
       }
-      await axios.delete(`http://68.183.232.120:8080/api/water-parameters/delete/${waterId}`, {
+      await axios.delete(`http://146.190.84.154:8080/api/water-parameters/delete/${waterId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

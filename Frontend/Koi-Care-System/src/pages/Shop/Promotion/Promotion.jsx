@@ -69,7 +69,7 @@ function Promotion() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/promotions/all`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/promotions/all`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       setPromotions(res.data.data)
@@ -85,7 +85,7 @@ function Promotion() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/promotions/${promotionId}/products/view`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/promotions/${promotionId}/products/view`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       console.log(res.data.data)
@@ -110,7 +110,7 @@ function Promotion() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      await axios.delete(`http://68.183.232.120:8080/api/promotions/promotion/${id}/delete`, {
+      await axios.delete(`http://146.190.84.154:8080/api/promotions/promotion/${id}/delete`, {
         headers: { Authorization: `Bearer ${token}` }
       })
 

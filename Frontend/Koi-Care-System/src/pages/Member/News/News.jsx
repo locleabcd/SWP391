@@ -30,7 +30,7 @@ function News() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/tag`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/tag`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -50,7 +50,7 @@ function News() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/blog`, {
+      const res = await axios.get(`http://146.190.84.154:8080/api/blog`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
