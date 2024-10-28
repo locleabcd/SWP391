@@ -8,6 +8,10 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { useForm } from 'react-hook-form'
+import Select from 'react-select'
+import makeAnimated from 'react-select/animated'
+
+const animatedComponents = makeAnimated()
 
 function CreateProduct() {
   const { isDarkMode } = useDarkMode()
@@ -16,13 +20,43 @@ function CreateProduct() {
   const navigate = useNavigate()
   const [categories, setCategories] = useState([])
   const [suppliers, setSuppliers] = useState([])
+  const [issues, setIssues] = useState([])
+  const [selectedIssues, setSelectedIssues] = useState([])
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    reset
+    formState: { errors }
   } = useForm()
+
+  const getIssue = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/issues/issueType/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setIssues(
+        res.data.data.map((issue) => ({
+          value: issue.id,
+          label: issue.parameterType
+        }))
+      )
+      console.log(res.data.data)
+    } catch (error) {
+      console.log('Error fetching issue type:', error)
+    }
+  }
+
+  useEffect(() => {
+    getIssue()
+  }, [])
 
   const getCategory = async () => {
     try {
@@ -81,6 +115,9 @@ function CreateProduct() {
       if (!token) {
         throw new Error('No token found')
       }
+
+      const issueTypeIds = selectedIssues.map((issue) => issue.value)
+
       const res = await axios.post(
         `https://koicaresystemv2.azurewebsites.net/api/products/add`,
         {
@@ -92,10 +129,7 @@ function CreateProduct() {
           description_detail: data.description_detail,
           category: data.category,
           supplierName: data.supplierName,
-          issueTypeId: data.issueTypeId
-            .split(',')
-            .map((id) => parseInt(id.trim()))
-            .filter((id) => !isNaN(id))
+          issueTypeId: issueTypeIds
         },
         {
           headers: {
@@ -103,18 +137,16 @@ function CreateProduct() {
           }
         }
       )
-      const productId = res.data.data.id // Assuming the response includes the product ID
+      const productId = res.data.data.id
 
-      // Prepare files for upload
       const files = data.files
       if (files && files.length > 0) {
         const formData = new FormData()
         for (const file of files) {
-          formData.append('files', file) // Ghi từng file vào formData
+          formData.append('files', file)
         }
         formData.append('productId', productId)
 
-        // Upload images
         await axios.post(`https://koicaresystemv2.azurewebsites.net/api/images/upload`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -131,6 +163,10 @@ function CreateProduct() {
       setIsSubmitting(false)
       setIsLoading(false)
     }
+  }
+
+  const handleChange = (selectedIssues) => {
+    setSelectedIssues(selectedIssues)
   }
 
   return (
@@ -273,15 +309,58 @@ function CreateProduct() {
 
               <div className='mb-4'>
                 <label htmlFor='issueTypeId' className='block text-sm font-medium mb-2'>
-                  Issue Type
+                  Select Issue
                 </label>
-                <input
-                  type='text'
-                  id='issueTypeId'
-                  className={`w-full p-2 border rounded-md ${
-                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.issueTypeId ? 'border-red-500' : 'border-gray-300'}`}
-                  {...register('issueTypeId', { required: false })}
+                <Select
+                  isMulti
+                  options={issues}
+                  value={selectedIssues}
+                  onChange={handleChange}
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  styles={{
+                    control: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF',
+                      color: isDarkMode ? '#FFFFFF' : '#000000',
+                      borderColor: errors.tags ? '#EF4444' : '#D1D5DB',
+                      '&:hover': {
+                        borderColor: errors.tags ? '#EF4444' : '#9CA3AF'
+                      }
+                    }),
+                    menu: (provided) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF'
+                    }),
+                    option: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: state.isFocused
+                        ? isDarkMode
+                          ? '#374151'
+                          : '#E5E7EB'
+                        : isDarkMode
+                          ? '#1F2937'
+                          : '#FFFFFF',
+                      color: isDarkMode ? '#FFFFFF' : '#000000'
+                    }),
+                    multiValue: (provided) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#4B5563' : '#E5E7EB',
+                      color: isDarkMode ? '#FFFFFF' : '#000000'
+                    }),
+                    multiValueLabel: (provided) => ({
+                      ...provided,
+                      color: isDarkMode ? '#FFFFFF' : '#000000'
+                    }),
+                    multiValueRemove: (provided) => ({
+                      ...provided,
+                      color: isDarkMode ? '#FFFFFF' : '#000000',
+                      ':hover': {
+                        backgroundColor: isDarkMode ? '#374151' : '#D1D5DB',
+                        color: isDarkMode ? '#F87171' : '#EF4444'
+                      }
+                    })
+                  }}
                 />
               </div>
 
