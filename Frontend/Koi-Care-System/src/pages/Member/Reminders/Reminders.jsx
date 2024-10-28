@@ -8,6 +8,7 @@ import axios from 'axios'
 import FormControlLabel from '@mui/material/FormControlLabel'
 import { Switch } from '@mui/material'
 import { useForm } from 'react-hook-form'
+import { FaSpinner } from 'react-icons/fa'
 
 function Reminders() {
   const { isDarkMode } = useDarkMode()
@@ -16,20 +17,32 @@ function Reminders() {
   const [dateTime, setDateTime] = useState('')
   const [title, setTitle] = useState('')
   const [interval, setInterval] = useState('')
-  const [currentReminder, setCurrentReminder] = useState(null)
   const [isEditFormVisible, setIsEditFormVisible] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [currentLog, setCurrentLog] = useState(null)
+  const [reminderId, setReminderId] = useState(null)
 
-  const openEditForm = (log) => {
-    setTitle(log.logTitle)
-    setDateTime(log.logDate)
-    setInterval(log.interval)
-    localStorage.setItem('logId', log.logId)
+  const openEditForm = (reminder) => {
+    setTitle(reminder.title)
+    setDateTime(reminder.dateTime)
+    setInterval(reminder.interval)
+    localStorage.setItem('reminderId', reminder.id)
+    setReminderId(reminder.id)
     toggleEditFormVisibility(true)
+  }
+
+  const toggleCloseForm = () => {
+    setIsEditFormVisible(false)
+    setTitle('')
+    setDateTime('')
+    setInterval('')
+    setReminderId(null)
+    setCurrentLog(null)
   }
 
   const toggleEditFormVisibility = (reminders) => {
     if (reminders) {
-      setCurrentReminder(reminders)
+      setCurrentLog(reminders)
       setIsEditFormVisible(true)
       setIsAddFormVisible(false)
     }
@@ -55,6 +68,7 @@ function Reminders() {
   }, [])
 
   const createReminder = async () => {
+    setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       await axios.post(
@@ -62,7 +76,7 @@ function Reminders() {
         {
           title: title,
           dateTime: dateTime,
-          repeatInterval: interval.toUpperCase
+          repeatInterval: interval
         },
         {
           headers: {
@@ -70,23 +84,29 @@ function Reminders() {
           }
         }
       )
+      console.log(interval)
       getReminder()
       setIsAddFormVisible(false)
     } catch (err) {
       console.log(interval)
       console.log(err)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   const updateReminder = async () => {
+    setIsLoading(true)
+    if (!reminderId) return
     try {
       const token = localStorage.getItem('token')
+      const id = localStorage.getItem('reminderId')
       await axios.put(
-        'http://146.190.84.154:8080/api/reminders/create',
+        `http://146.190.84.154:8080/api/reminders/update/${id}`,
         {
           title: title,
           dateTime: dateTime,
-          repeatInterval: interval.toUpperCase
+          repeatInterval: interval
         },
         {
           headers: {
@@ -95,10 +115,35 @@ function Reminders() {
         }
       )
       getReminder()
-      setIsEditFormVisible(false)
+      toggleCloseForm()
     } catch (err) {
       console.log(interval)
       console.log(err)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const deleteReminder = async () => {
+    setIsLoading(true)
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        console.log('not found token')
+      }
+      const id = localStorage.getItem('reminderId')
+
+      await axios.delete(`http://146.190.84.154:8080/api/reminders/delete/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      getReminder()
+      toggleCloseForm()
+    } catch (error) {
+      console.log('err', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -137,7 +182,7 @@ function Reminders() {
 
               {reminder.map((reminders) => (
                 <div
-                  onClick={() => openEditForm()}
+                  onClick={() => openEditForm(reminders)}
                   key={reminders.id}
                   className='border border-gray-200 rounded-3xl shadow-xl px-8 py-6 flex justify-between items-center'
                 >
@@ -284,7 +329,7 @@ function Reminders() {
                       />
                     </div>
 
-                    <div className='lg:mb-4 relative col-span-1'>
+                    <div className='relative col-span-1'>
                       <label
                         className={`absolute lg:text-lg text-sm -top-[12px] left-3 text-red-500 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
@@ -302,7 +347,7 @@ function Reminders() {
                       />
                     </div>
 
-                    <div className='lg:mb-4 relative col-span-1'>
+                    <div className='relative col-span-1'>
                       <label
                         htmlFor='drainCount'
                         className={`absolute -top-[12px] lg:text-lg text-sm left-3 text-red-500 ${
@@ -317,9 +362,10 @@ function Reminders() {
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                         onChange={(e) => setInterval(e.target.value)}
                       >
-                        <option value='onetime'>onetime</option>
-                        <option value='daily'>daily</option>
-                        <option value='weekly'>weekly</option>
+                        <option value='Select'>Select</option>
+                        <option value='ONE_TIME'>ONE_TIME</option>
+                        <option value='DAILY'>DAILY</option>
+                        <option value='WEEKLY'>WEEKLY</option>
                       </select>
                       <input />
                     </div>
@@ -343,7 +389,7 @@ function Reminders() {
                       strokeWidth={1.5}
                       stroke='currentColor'
                       onClick={() => {
-                        setIsEditFormVisible(false)
+                        toggleCloseForm()
                       }}
                       className='size-10 text-red-500 cursor-pointer'
                     >
@@ -391,7 +437,7 @@ function Reminders() {
                       />
                     </div>
 
-                    <div className='lg:mb-4 relative col-span-1'>
+                    <div className='relative col-span-1'>
                       <label
                         className={`absolute lg:text-lg text-sm -top-[12px] left-3 text-red-500 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
@@ -409,7 +455,7 @@ function Reminders() {
                       />
                     </div>
 
-                    <div className='lg:mb-4 relative col-span-1'>
+                    <div className='relative col-span-1'>
                       <label
                         htmlFor='drainCount'
                         className={`absolute -top-[12px] lg:text-lg text-sm left-3 text-red-500 ${
@@ -424,14 +470,47 @@ function Reminders() {
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                         onChange={(e) => setInterval(e.target.value)}
                       >
-                        <option value='onetime'>onetime</option>
-                        <option value='daily'>daily</option>
-                        <option value='weekly'>weekly</option>
+                        <option value='ONE_TIME'>ONE_TIME</option>
+                        <option value='DAILY'>DAILY</option>
+                        <option value='WEEKLY'>WEEKLY</option>
                       </select>
                       <input />
                     </div>
                   </div>
+                  <div className='w-full flex flex-col justify-center'>
+                    <button
+                      className='mx-auto'
+                      onClick={() => {
+                        if (window.confirm('Are you sure you want to delete this pond log?')) {
+                          deleteReminder()
+                        }
+                      }}
+                    >
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='lg:size-12 size-8 mx-auto lg:p-2 p-1 rounded-full bg-red-500 text-white cursor-pointer mt-5'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z'
+                        />
+                      </svg>
+                    </button>
+
+                    <p className='text-center font-semibold'>Delete this log</p>
+                  </div>
                 </div>
+              </div>
+            )}
+
+            {isLoading && (
+              <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+                <FaSpinner className='animate-spin text-green-500 text-6xl' />
               </div>
             )}
           </div>
