@@ -210,11 +210,12 @@ const Chat = () => {
       {isJoined && (
         <div className={`chat-container rounded-xl ${nickname ? '' : 'hidden'}`}>
           {userRole === 'SHOP' ? (
-            <div className='users-list col-span-1'>
-              <h2 className='text-lg font-bold'>Online Users</h2>
-              <ul className='mt-2 space-y-2'>{connectedUsers.map((user) => appendUserElement(user))}</ul>
+            <div className='users-list flex'>
+              <ul className='mt-2 space-y-2 border border-gray-100 bg-gray-50'>
+                {connectedUsers.map((user) => appendUserElement(user))}
+              </ul>
               <div className='chat-area col-span-3'>
-                <div className='w-full flex gap-4 justify-between items-center px-2 py-2 border bg-gray-50'>
+                {/* <div className='w-full flex gap-4 justify-between items-center px-2 py-2 border bg-gray-50'>
                   <div className='flex gap-3 items-center'>
                     <img
                       src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
@@ -250,7 +251,7 @@ const Chat = () => {
                       </svg>
                     </button>
                   </div>
-                </div>
+                </div> */}
 
                 <div
                   ref={chatAreaRef}
