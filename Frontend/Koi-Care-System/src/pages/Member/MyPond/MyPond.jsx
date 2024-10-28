@@ -15,6 +15,7 @@ import TopLayout from '../../../layouts/TopLayout'
 import { motion } from 'framer-motion'
 import 'aos/dist/aos.css'
 import '../../../index.css'
+import Chat from '../../../components/Chat/Chat'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
@@ -33,7 +34,7 @@ function MyPond() {
   const getIssue = async (koipondId) => {
     try {
       const token = localStorage.getItem('token')
-      const res = await axios.get(`http://146.190.84.154:8080/api/issues/latest/${koipondId}`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiissues/latest/${koipondId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -61,7 +62,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://146.190.84.154:8080/api/koifishs/koipond/${id}/allKoi`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apikoifishs/koipond/${id}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -123,7 +124,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://146.190.84.154:8080/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apikoiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -162,7 +163,7 @@ function MyPond() {
           formData.append('file', selectedFile)
         }
 
-        await axios.put(`http://146.190.84.154:8080/api/koiponds/koipond/${id}/update`, formData, {
+        await axios.put(`https://koicaresystemv2.azurewebsites.net/apikoiponds/koipond/${id}/update`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -181,7 +182,7 @@ function MyPond() {
         if (selectedFile) {
           formData.append('file', selectedFile)
         }
-        await axios.post('http://146.190.84.154:8080/api/koiponds/create', formData, {
+        await axios.post('https://koicaresystemv2.azurewebsites.net/apikoiponds/create', formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
@@ -230,7 +231,7 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`http://146.190.84.154:8080/api/koiponds/koipond/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv2.azurewebsites.net/apikoiponds/koipond/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -290,6 +291,7 @@ function MyPond() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
+          <Chat />
 
           <div className='w-full flex justify-end'>
             <svg
@@ -298,7 +300,7 @@ function MyPond() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='fixed z-20 bottom-2 right-5 text-lg text-white outline-none rounded-r-sm lg:rounded-r-xl bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
+              className='fixed z-20 bottom-5 left-[364px] text-lg text-white outline-none rounded-r-sm lg:rounded-r-xl bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
               onClick={() => {
                 toggleAddFormVisibility()
               }}
@@ -316,7 +318,7 @@ function MyPond() {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed z-20 bottom-2 right-[51px] lg:right-[84px] text-lg shadow-lg text-white rounded-l-sm lg:rounded-l-xl bg-custom-left-bar size-8 lg:size-16 lg:p-2 cursor-pointer'
+                className='fixed z-20 bottom-5 right-[51px] lg:left-[300px] text-lg shadow-lg text-white rounded-l-sm lg:rounded-l-xl bg-custom-left-bar size-8 lg:size-16 lg:p-2 cursor-pointer'
               >
                 <path
                   strokeLinecap='round'

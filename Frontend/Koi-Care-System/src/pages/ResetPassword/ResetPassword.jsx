@@ -33,7 +33,7 @@ function ResetPassword() {
       return
     }
     axios
-      .post(`http://146.190.84.154:8080/api/auth/resetPassword`, {
+      .post(`https://koicaresystemv2.azurewebsites.net/apiauth/resetPassword`, {
         email: email,
         newPassword: password,
         otp: otp

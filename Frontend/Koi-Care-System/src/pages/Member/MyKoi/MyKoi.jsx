@@ -105,7 +105,7 @@ function MyKoi() {
       }
 
       console.log(data)
-      const res = await axios.post(`http://146.190.84.154:8080/api/koifishs/create`, formData, {
+      const res = await axios.post(`https://koicaresystemv2.azurewebsites.net/apikoifishs/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -130,7 +130,7 @@ function MyKoi() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://146.190.84.154:8080/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apikoiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -149,7 +149,7 @@ function MyKoi() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://146.190.84.154:8080/api/koifishs/user/${id}/allKoi`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apikoifishs/user/${id}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -211,24 +211,31 @@ function MyKoi() {
            shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <svg
-            xmlns='http://www.w3.org/2000/svg'
-            fill='none'
-            viewBox='0 0 24 24'
-            strokeWidth={1.5}
-            stroke='currentColor'
-            className='fixed lg:bottom-7 bottom-[22px] right-5 text-lg hover:bg-blue-600 text-white rounded-full shadow-lg lg:size-12 size-8 cursor-pointer z-30'
-            onClick={toggleAddFormVisibility}
-          >
-            <path strokeLinecap='round' strokeLinejoin='round' d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z' />
-          </svg>
-          <div className='fixed lg:w-[140px] w-[100px] lg:h-12 h-9 lg:bottom-7 bottom-5 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
-            <p className='lg:text-3xl text-xl font-semibold pt-1 pl-3'>
-              {koiCounts[localStorage.getItem('id')] !== undefined ? koiCounts[localStorage.getItem('id')] : '...'} Koi
-            </p>
-          </div>
 
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
+            <div className=''>
+              <svg
+                xmlns='http://www.w3.org/2000/svg'
+                fill='none'
+                viewBox='0 0 24 24'
+                strokeWidth={1.5}
+                stroke='currentColor'
+                className='fixed lg:bottom-7 bottom-[22px] right-5 text-lg hover:bg-blue-600 text-white rounded-full shadow-lg lg:size-12 size-8 cursor-pointer z-30'
+                onClick={toggleAddFormVisibility}
+              >
+                <path
+                  strokeLinecap='round'
+                  strokeLinejoin='round'
+                  d='M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
+                />
+              </svg>
+              <div className='fixed lg:w-[140px] w-[100px] lg:h-12 h-9 lg:bottom-7 bottom-5 right-5 rounded-3xl text-white bg-custom-left-bar z-20'>
+                <p className='lg:text-3xl text-xl font-semibold pt-1 pl-3'>
+                  {koiCounts[localStorage.getItem('id')] !== undefined ? koiCounts[localStorage.getItem('id')] : '...'}{' '}
+                  Koi
+                </p>
+              </div>
+            </div>
             <TopLayout text='My Koi' links='member/myKoi' />
             <div>
               <div className='w-full flex justify-end relative'>

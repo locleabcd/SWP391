@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux'
 import { AddToWishlist, RemoveFromWishlist } from '../../../redux/store/wishList'
 import { addToCartList } from '../../../redux/store/cartList'
 import { motion } from 'framer-motion'
+import Chat from '../../../components/Chat/Chat'
 
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
@@ -87,7 +88,7 @@ function Recommendations() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get('http://146.190.84.154:8080/api/categories/all', {
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/apicategories/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -119,7 +120,7 @@ function Recommendations() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get('http://146.190.84.154:8080/api/products/all', {
+      const response = await axios.get('https://koicaresystemv2.azurewebsites.net/apiproducts/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -139,7 +140,7 @@ function Recommendations() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`http://146.190.84.154:8080/api/carts/user/${userId}/cartId`, {
+      const response = await axios.get(`https://koicaresystemv2.azurewebsites.net/apicarts/user/${userId}/cartId`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -258,6 +259,8 @@ function Recommendations() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
+
+          <Chat />
 
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Recommendations' links='member/recommendations' />
