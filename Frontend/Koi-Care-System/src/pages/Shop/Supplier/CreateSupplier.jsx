@@ -32,7 +32,7 @@ function CreateSupplier() {
         throw new Error('No token found')
       }
       const res = await axios.post(
-        `http://68.183.232.120:8080/api/suppliers/add`,
+        `https://koicaresystemv2.azurewebsites.net/api/suppliers/add`,
         {
           name: data.name,
           phone: data.phone,

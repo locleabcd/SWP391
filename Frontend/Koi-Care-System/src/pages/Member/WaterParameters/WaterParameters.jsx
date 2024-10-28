@@ -48,7 +48,7 @@ function WaterParameters() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://68.183.232.120:8080/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -70,11 +70,14 @@ function WaterParameters() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://68.183.232.120:8080/api/water-parameters/getByUserId/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      const res = await axios.get(
+        `https://koicaresystemv2.azurewebsites.net/api/water-parameters/getByUserId/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      })
+      )
       setParameters(res.data.data)
     } catch (error) {
       console.error('Error fetching water parameters:', error)
@@ -108,7 +111,7 @@ function WaterParameters() {
       }
 
       const res = await axios.post(
-        `http://68.183.232.120:8080/api/water-parameters/create`,
+        `https://koicaresystemv2.azurewebsites.net/api/water-parameters/create`,
         {
           koiPondId: data.pondId,
           createDateTime: data.createDateTime,
@@ -160,7 +163,7 @@ function WaterParameters() {
       }
       console.log(data)
       const res = await axios.put(
-        `http://68.183.232.120:8080/api/water-parameters/update/${waterId}`,
+        `https://koicaresystemv2.azurewebsites.net/api/water-parameters/update/${waterId}`,
         {
           koiPondId: data.pondId,
           createDateTime: data.createDateTime,
@@ -204,7 +207,7 @@ function WaterParameters() {
       if (!token) {
         throw new Error('no token found')
       }
-      await axios.delete(`http://68.183.232.120:8080/api/water-parameters/delete/${waterId}`, {
+      await axios.delete(`https://koicaresystemv2.azurewebsites.net/api/water-parameters/delete/${waterId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

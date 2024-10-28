@@ -27,7 +27,7 @@ function CreateImage() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/products/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/products/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -61,7 +61,7 @@ function CreateImage() {
         }
         formData.append('productId', data.productId)
 
-        const res = await axios.post(`http://68.183.232.120:8080/api/images/upload`, formData, {
+        const res = await axios.post(`https://koicaresystemv2.azurewebsites.net/api/images/upload`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'

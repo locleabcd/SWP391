@@ -54,7 +54,7 @@ function CreatePromotion() {
         description: data.description,
         productIds: selectedProductIds // Use selectedProductIds directly
       }
-      const res = await axios.post(`http://68.183.232.120:8080/api/promotions/create`, requestBody, {
+      const res = await axios.post(`https://koicaresystemv2.azurewebsites.net/api/promotions/create`, requestBody, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -76,7 +76,7 @@ function CreatePromotion() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/products/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/products/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

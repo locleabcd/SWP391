@@ -35,7 +35,7 @@ function UpdateImage() {
         formData.append('file', data.file[0])
       }
 
-      const res = await axios.put(`http://68.183.232.120:8080/api/images/image/${id}/update`, formData, {
+      const res = await axios.put(`https://koicaresystemv2.azurewebsites.net/api/images/image/${id}/update`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`

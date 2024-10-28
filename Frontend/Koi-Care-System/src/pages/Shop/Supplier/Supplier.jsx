@@ -41,7 +41,7 @@ function Supplier() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/suppliers/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/suppliers/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -69,7 +69,7 @@ function Supplier() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`http://68.183.232.120:8080/api/suppliers/supplier/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv2.azurewebsites.net/api/suppliers/supplier/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

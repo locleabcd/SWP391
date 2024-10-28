@@ -32,7 +32,7 @@ function CreateTag() {
         throw new Error('No token found')
       }
       const res = await axios.post(
-        `http://68.183.232.120:8080/api/tag/create`,
+        `https://koicaresystemv2.azurewebsites.net/api/tag/create`,
         {
           tagName: data.tagName,
           tagDescription: data.tagDescription

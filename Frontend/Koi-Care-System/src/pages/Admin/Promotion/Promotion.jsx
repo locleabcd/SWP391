@@ -70,7 +70,7 @@ function Promotion() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/promotions/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/promotions/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -90,9 +90,12 @@ function Promotion() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/promotions/${promotionId}/products/view`, {
-        headers: { Authorization: `Bearer ${token}` }
-      })
+      const res = await axios.get(
+        `https://koicaresystemv2.azurewebsites.net/api/promotions/${promotionId}/products/view`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
       console.log(res.data.data)
       console.log('Product details response:', res.data) // Kiểm tra phản hồi từ API
       if (res.data && res.data.data) {
@@ -123,7 +126,7 @@ function Promotion() {
       }
 
       const res = await axios.put(
-        `http://68.183.232.120:8080/api/promotions/promotion/confirm`,
+        `https://koicaresystemv2.azurewebsites.net/api/promotions/promotion/confirm`,
         {
           promotionId: data.id, // Sử dụng id thay cho promotionId
           status: data.status

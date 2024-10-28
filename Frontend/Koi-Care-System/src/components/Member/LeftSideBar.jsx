@@ -33,7 +33,7 @@ function LeftSideBar() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://68.183.232.120:8080/api/profile/${id}`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/profile/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

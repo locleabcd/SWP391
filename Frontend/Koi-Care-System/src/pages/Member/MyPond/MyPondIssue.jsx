@@ -58,7 +58,7 @@ function MyPondIssue() {
     try {
       const token = localStorage.getItem('token')
       const koipondId = id
-      const res = await axios.get(`http://68.183.232.120:8080/api/issues/latest/${koipondId}`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/issues/latest/${koipondId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -73,7 +73,7 @@ function MyPondIssue() {
   const getProduct = async (issueTypeId) => {
     try {
       const token = localStorage.getItem('token')
-      const res = await axios.get(`http://68.183.232.120:8080/api/products/recommend/${issueTypeId}`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/products/recommend/${issueTypeId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

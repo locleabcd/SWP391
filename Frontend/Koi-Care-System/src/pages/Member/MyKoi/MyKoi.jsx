@@ -105,7 +105,7 @@ function MyKoi() {
       }
 
       console.log(data)
-      const res = await axios.post(`http://68.183.232.120:8080/api/koifishs/create`, formData, {
+      const res = await axios.post(`https://koicaresystemv2.azurewebsites.net/api/koifishs/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -130,7 +130,7 @@ function MyKoi() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://68.183.232.120:8080/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -149,7 +149,7 @@ function MyKoi() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://68.183.232.120:8080/api/koifishs/user/${id}/allKoi`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/koifishs/user/${id}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

@@ -33,7 +33,7 @@ function CreateCategory() {
         throw new Error('No token found')
       }
       const res = await axios.post(
-        `http://68.183.232.120:8080/api/categories/add`,
+        `https://koicaresystemv2.azurewebsites.net/api/categories/add`,
         {
           name: data.name
         },
