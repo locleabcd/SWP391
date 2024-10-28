@@ -4,7 +4,7 @@ import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 import axios from 'axios'
 var stompClient = null
-const Chat = () => {
+const Chat2 = () => {
   const [nickname, setNickname] = useState('')
   const [selectedUserId, setSelectedUserId] = useState(null)
   const [connectedUsers, setConnectedUsers] = useState([])
@@ -247,4 +247,4 @@ const Chat = () => {
   )
 }
 
-export default Chat
+export default Chat2

@@ -12,6 +12,7 @@ import TopLayout from '../../../layouts/TopLayout'
 import { motion } from 'framer-motion'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Chat from '../../../components/Chat/Chat'
 
 function MyKoi() {
   const { isDarkMode } = useDarkMode()
@@ -211,7 +212,7 @@ function MyKoi() {
            shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-
+          <Chat />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <div className=''>
               <svg
