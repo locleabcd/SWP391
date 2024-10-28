@@ -15,6 +15,7 @@ import TopLayout from '../../../layouts/TopLayout'
 import { motion } from 'framer-motion'
 import 'aos/dist/aos.css'
 import '../../../index.css'
+import Chat from '../../../components/Chat/Chat'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
@@ -152,7 +153,6 @@ function MyPond() {
       if (id) {
         const formData = new FormData()
         formData.append('name', data.name)
-        formData.append('createDate', data.date)
         formData.append('drainCount', data.drainCount)
         formData.append('depth', data.depth)
         formData.append('skimmer', data.skimmer)
@@ -290,6 +290,7 @@ function MyPond() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
+          <Chat />
 
           <div className='w-full flex justify-end'>
             <svg
@@ -298,7 +299,7 @@ function MyPond() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='fixed z-20 bottom-2 right-5 text-lg text-white outline-none rounded-r-sm lg:rounded-r-xl bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
+              className='fixed z-20 bottom-5 left-[364px] text-lg text-white outline-none rounded-r-sm lg:rounded-r-xl bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
               onClick={() => {
                 toggleAddFormVisibility()
               }}
@@ -316,7 +317,7 @@ function MyPond() {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed z-20 bottom-2 right-[51px] lg:right-[84px] text-lg shadow-lg text-white rounded-l-sm lg:rounded-l-xl bg-custom-left-bar size-8 lg:size-16 lg:p-2 cursor-pointer'
+                className='fixed z-20 bottom-5 right-[51px] lg:left-[300px] text-lg shadow-lg text-white rounded-l-sm lg:rounded-l-xl bg-custom-left-bar size-8 lg:size-16 lg:p-2 cursor-pointer'
               >
                 <path
                   strokeLinecap='round'
@@ -1014,28 +1015,6 @@ function MyPond() {
                         />
                         {errors.pumpCapacity && (
                           <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.pumpCapacity.message}</p>
-                        )}
-                      </div>
-
-                      <div className='mb-4 relative col-span-1'>
-                        <label
-                          htmlFor='pumpCapacity'
-                          className={`absolute -top-[12px] lg:text-lg text-sm  left-3 text-red-500 ${
-                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } font-semibold`}
-                        >
-                          Date:
-                        </label>
-                        <input
-                          type='date'
-                          id='date'
-                          className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
-                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('date', { required: 'Date is required' })}
-                        />
-                        {errors.date && (
-                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.date.message}</p>
                         )}
                       </div>
                     </div>

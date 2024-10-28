@@ -5,6 +5,7 @@ import About from '../../components/About/About'
 import Feature from '../../components/Features/Feature'
 import { Link as ScrollLink } from 'react-scroll'
 import '../../index.css'
+import { FaFacebook, FaTwitter, FaInstagram } from 'react-icons/fa'
 
 function Home() {
   return (
@@ -84,13 +85,13 @@ function Home() {
           <About />
         </div>
 
-        <footer className='py-6 border-t border-gray-200'>
+        <footer className='py-6 border-t bg-red-200 border-gray-200'>
           <div className='container mx-auto text-center'>
             <p className='mb-2'>© 2024 Koi Care System.</p>
             <p className='mb-2'>Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh 700000</p>
             <p className='mb-2'>
               <a href='mailto:info@koicare.com' className='text-red-500 hover:underline'>
-                info@koicare.com
+                koicaresystem@gmail.com
               </a>
             </p>
 
@@ -98,15 +99,15 @@ function Home() {
               Policy
             </Link>
 
-            <div className='flex justify-center space-x-4 mt-4'>
+            <div className='flex justify-center items-center space-x-4 mt-4'>
               <a href='https://www.facebook.com' target='_blank' rel='noopener noreferrer'>
-                <img src='../assets/facebook.png' alt='Facebook' className='w-6 h-6' />
+                <FaFacebook className='w-6 h-6' />
               </a>
               <a href='https://www.twitter.com' target='_blank' rel='noopener noreferrer'>
-                <img src='../assets/twitter.png' alt='Twitter' className='w-6 h-6' />
+                <FaTwitter className='w-6 h-6' />
               </a>
               <a href='https://www.instagram.com' target='_blank' rel='noopener noreferrer'>
-                <img src='../assets/instagram.png' alt='Instagram' className='w-6 h-6' />
+                <FaInstagram className='w-6 h-6' />
               </a>
             </div>
           </div>

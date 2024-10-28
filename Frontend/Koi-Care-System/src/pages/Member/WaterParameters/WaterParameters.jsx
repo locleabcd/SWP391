@@ -15,6 +15,7 @@ import InfoBox from '../../../components/WaterParam/InfoBox'
 import { motion } from 'framer-motion'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import 'aos/dist/aos.css'
+import Chat from '../../../components/Chat/Chat'
 
 function WaterParameters() {
   const { isDarkMode } = useDarkMode()
@@ -813,6 +814,7 @@ function WaterParameters() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
+          <Chat />
           <div className='w-full flex justify-end'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -820,7 +822,7 @@ function WaterParameters() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='fixed bottom-5 right-5 text-full rounded-full text-white bg-custom-left-bar shadow-lg size-8 lg:size-14 cursor-pointer z-10'
+              className='fixed z-20 bottom-5 left-[275px] text-lg text-white outline-none rounded-full bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
               onClick={() => {
                 toggleAddFormVisibility()
                 reset()

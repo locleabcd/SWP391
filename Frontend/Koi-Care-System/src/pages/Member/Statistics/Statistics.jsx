@@ -23,6 +23,7 @@ import {
   Bar
 } from 'recharts'
 import { motion } from 'framer-motion'
+import Chat from '../../../components/Chat/Chat'
 
 function Statistics() {
   const { isDarkMode } = useDarkMode()
@@ -368,7 +369,7 @@ function Statistics() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-
+          <Chat />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Statistics' links='member/statistics' />
             <div className='pb-6 lg:text-lg text-sm flex justify-between items-center'>

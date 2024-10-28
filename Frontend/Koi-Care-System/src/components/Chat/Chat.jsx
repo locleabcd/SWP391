@@ -31,7 +31,9 @@ const Chat = () => {
       stompClient = Stomp.over(socket)
       stompClient.connect({}, onConnected, onError)
     }
+    fetchAndDisplayUserChat()
   }
+
   const onError = () => {
     console.log('Could not connect to WebSocket server. Please refresh this page to try again!')
   }
@@ -68,6 +70,20 @@ const Chat = () => {
     setSelectedUserId(userId)
     fetchAndDisplayUserChat(userId)
   }
+
+  const fetchAndDisplayUserChat = async () => {
+    const token = localStorage.getItem('token')
+    const response = await axios.get(`${baseUrl}/messages/${nickname}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+    console.log(response.data)
+    const messages = response.data.data
+    setChatMessages(messages)
+    scrollToBottom()
+  }
+
   const staffItemClick = (userId) => {
     setSelectedUserId(userId)
     localStorage.setItem('selectedUserId', userId)
@@ -77,6 +93,7 @@ const Chat = () => {
     }
     fetchAndDisplayStaffChat(userId)
   }
+
   const appendUserElement = (user) => {
     return (
       <li
@@ -86,7 +103,7 @@ const Chat = () => {
         onClick={() => staffItemClick(user.nickname)}
       >
         <img
-          src='https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultProfile.jpg'
+          src='https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultProfile.jpg'
           alt={user.nickname}
           className='w-8 h-8 rounded-full mr-2'
         />
@@ -115,19 +132,6 @@ const Chat = () => {
     const messages = response.data.data
     setChatMessages(messages)
     setSelectedUserId(userId)
-    scrollToBottom()
-  }
-
-  const fetchAndDisplayUserChat = async () => {
-    const token = localStorage.getItem('token')
-    const response = await axios.get(`${baseUrl}/messages/${nickname}`, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    console.log(response.data)
-    const messages = response.data.data
-    setChatMessages(messages)
     scrollToBottom()
   }
 
@@ -174,73 +178,236 @@ const Chat = () => {
   }
 
   return (
-    <div className='container mx-auto p-4'>
-      <h2 className='text-2xl font-bold text-center mb-4'>One to One Chat | Spring Boot & Websocket</h2>
-      <div className={`user-form`}>
+    <div className='fixed bottom-4 right-8 z-50'>
+      <div className={`${isJoined ? 'opacity-0' : 'opacity-100'}`}>
         <form onSubmit={connect} className='space-y-4'>
-          <button type='submit' className='bg-blue-500 text-white px-4 py-2 rounded' onClick={() => setIsJoined(true)}>
-            Enter Chatroom
+          <button
+            type='submit'
+            className='bg-blue-500 text-white px-3 py-3 rounded-full'
+            onClick={() => {
+              setIsJoined(true)
+              userItemClick('SupportService')
+            }}
+          >
+            <svg
+              xmlns='http://www.w3.org/2000/svg'
+              fill='none'
+              viewBox='0 0 24 24'
+              strokeWidth={1.5}
+              stroke='currentColor'
+              className='size-10'
+            >
+              <path
+                strokeLinecap='round'
+                strokeLinejoin='round'
+                d='M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z'
+              />
+            </svg>
           </button>
         </form>
       </div>
 
       {isJoined && (
-        <div className={`chat-container ${nickname ? '' : 'hidden'} grid grid-cols-4 gap-4`}>
+        <div className={`chat-container rounded-xl ${nickname ? '' : 'hidden'}`}>
           {userRole === 'SHOP' ? (
             <div className='users-list col-span-1'>
               <h2 className='text-lg font-bold'>Online Users</h2>
               <ul className='mt-2 space-y-2'>{connectedUsers.map((user) => appendUserElement(user))}</ul>
-              <div className='mt-4'>
-                <button onClick={onLogout} className='bg-red-500 text-white px-4 py-2 rounded mt-2'>
-                  Logout
-                </button>
+              <div className='chat-area col-span-3'>
+                <div className='w-full flex gap-4 justify-between items-center px-2 py-2 border bg-gray-50'>
+                  <div className='flex gap-3 items-center'>
+                    <img
+                      src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
+                      className='lg:size-11 size-8 rounded-full border border-gray-300'
+                    />
+                    <div className=''>Shop staff</div>
+                  </div>
+                  <div className='flex gap-2'>
+                    <button>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='size-7'
+                        onClick={() => setIsJoined(false)}
+                      >
+                        <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
+                      </svg>
+                    </button>
+
+                    <button onClick={onLogout}>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='size-7'
+                      >
+                        <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
+                <div
+                  ref={chatAreaRef}
+                  onClick={() => {
+                    setIsJoined(true)
+                    userItemClick('SupportService')
+                  }}
+                  className='chat-messages p-4 h-[430px] w-[430px] overflow-y-auto border bg-gray-50'
+                >
+                  {chatMessages.map((message, index) => (
+                    <div
+                      key={index}
+                      className={`message ${message.senderId === nickname ? 'text-right' : 'text-left'} mb-2 `}
+                    >
+                      <p
+                        className={`inline-block p-2 rounded-full break-words max-w-[75%] 
+    ${message.senderId === nickname ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
+                      >
+                        {message.content}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+
+                {selectedUserId && (
+                  <form onSubmit={sendMessage} className='message-form flex'>
+                    <input
+                      type='text'
+                      id='message'
+                      className='flex-grow border-x p-4 outline-none bg-gray-50'
+                      value={messageInput}
+                      onClick={() => {
+                        setIsJoined(true)
+                        userItemClick('SupportService')
+                      }}
+                      onChange={(e) => setMessageInput(e.target.value)}
+                      placeholder='Aa'
+                      required
+                    />
+                    <button className='bg-gray-50 border-r text-black px-2 py-2'>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='size-6'
+                      >
+                        <path
+                          strokeLinecap='round'
+                          strokeLinejoin='round'
+                          d='M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5'
+                        />
+                      </svg>
+                    </button>
+                  </form>
+                )}
               </div>
             </div>
           ) : (
-            <div className='users-list col-span-1'>
-              <h2 className='text-lg font-bold'>Online Users</h2>
-              <button className='mt-2 space-y-2' onClick={() => userItemClick('SupportService')}>
-                Support Service
-              </button>
-              <div className='mt-4'>
-                <button onClick={onLogout} className='bg-red-500 text-white px-4 py-2 rounded mt-2'>
-                  Logout
-                </button>
+            <div className='chat-area col-span-3'>
+              <div className='w-full flex gap-4 justify-between items-center px-2 py-2 border bg-gray-50'>
+                <div className='flex gap-3 items-center'>
+                  <img
+                    src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
+                    className='lg:size-11 size-8 rounded-full border border-gray-300'
+                  />
+                  <div className=''>Shop staff</div>
+                </div>
+                <div className='flex gap-2'>
+                  <button>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='size-7'
+                      onClick={() => setIsJoined(false)}
+                    >
+                      <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
+                    </svg>
+                  </button>
+
+                  <button onClick={onLogout}>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='size-7'
+                    >
+                      <path strokeLinecap='round' strokeLinejoin='round' d='M6 18 18 6M6 6l12 12' />
+                    </svg>
+                  </button>
+                </div>
               </div>
+
+              <div
+                ref={chatAreaRef}
+                onClick={() => {
+                  setIsJoined(true)
+                  userItemClick('SupportService')
+                }}
+                className='chat-messages p-4 h-[430px] w-[430px] overflow-y-auto border bg-gray-50'
+              >
+                {chatMessages.map((message, index) => (
+                  <div
+                    key={index}
+                    className={`message ${message.senderId === nickname ? 'text-right' : 'text-left'} mb-2 `}
+                  >
+                    <p
+                      className={`inline-block p-2 rounded-full break-words max-w-[75%] 
+    ${message.senderId === nickname ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
+                    >
+                      {message.content}
+                    </p>
+                  </div>
+                ))}
+              </div>
+
+              {selectedUserId && (
+                <form onSubmit={sendMessage} className='message-form flex'>
+                  <input
+                    type='text'
+                    id='message'
+                    className='flex-grow border-x p-4 outline-none bg-gray-50'
+                    value={messageInput}
+                    onClick={() => {
+                      setIsJoined(true)
+                      userItemClick('SupportService')
+                    }}
+                    onChange={(e) => setMessageInput(e.target.value)}
+                    placeholder='Aa'
+                    required
+                  />
+                  <button className='bg-gray-50 border-r text-black px-2 py-2'>
+                    <svg
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill='none'
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='size-6'
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5'
+                      />
+                    </svg>
+                  </button>
+                </form>
+              )}
             </div>
           )}
-
-          <div className='chat-area col-span-3'>
-            <div ref={chatAreaRef} className='chat-messages p-4 h-96 overflow-y-auto border bg-gray-100'>
-              {chatMessages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`message ${message.senderId === nickname ? 'text-right' : 'text-left'} mb-2`}
-                >
-                  <p
-                    className={`inline-block p-2 rounded ${message.senderId === nickname ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
-                  >
-                    {message.content}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {selectedUserId && (
-              <form onSubmit={sendMessage} className='message-form mt-4 flex'>
-                <input
-                  type='text'
-                  id='message'
-                  className='flex-grow border p-2'
-                  value={messageInput}
-                  onChange={(e) => setMessageInput(e.target.value)}
-                  placeholder='Type your message...'
-                  required
-                />
-                <button className='bg-blue-500 text-white px-4 py-2 rounded ml-2'>Send</button>
-              </form>
-            )}
-          </div>
         </div>
       )}
     </div>
