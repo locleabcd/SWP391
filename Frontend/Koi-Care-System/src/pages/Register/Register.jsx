@@ -24,7 +24,7 @@ function Register() {
     console.log('Submitting data:', data)
 
     try {
-      const response = await axios.post('https://koicaresystemv2.azurewebsites.net/apiusers/register', {
+      const response = await axios.post('https://koicaresystemv2.azurewebsites.net/api/users/register', {
         username: data.username,
         email: data.email,
         password: data.password

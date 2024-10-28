@@ -44,7 +44,7 @@ function ShopNews() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apitag`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/tag`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -68,7 +68,7 @@ function ShopNews() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiblog`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/blog`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -95,7 +95,7 @@ function ShopNews() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystemv2.azurewebsites.net/apiblog/delete/${blogId}`, {
+      await axios.delete(`https://koicaresystemv2.azurewebsites.net/api/blog/delete/${blogId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

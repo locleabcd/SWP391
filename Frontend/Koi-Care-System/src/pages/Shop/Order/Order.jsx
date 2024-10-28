@@ -75,7 +75,7 @@ function Order() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiorders/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/orders/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -108,7 +108,7 @@ function Order() {
       const token = localStorage.getItem('token')
 
       const res = await axios.put(
-        `https://koicaresystemv2.azurewebsites.net/apiorders/${id}/order/delivery`,
+        `https://koicaresystemv2.azurewebsites.net/api/orders/${id}/order/delivery`,
         {},
         {
           headers: {

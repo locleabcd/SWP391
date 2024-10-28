@@ -39,7 +39,7 @@ function CustomerAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiprofile/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/profile/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -67,7 +67,7 @@ function CustomerAD() {
         time: period
       }
 
-      const response = await axios.put('https://koicaresystemv2.azurewebsites.net/apisubscribe/upgrade', data, {
+      const response = await axios.put('https://koicaresystemv2.azurewebsites.net/api/subscribe/upgrade', data, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json'

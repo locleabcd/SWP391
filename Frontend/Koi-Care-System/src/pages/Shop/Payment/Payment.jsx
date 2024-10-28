@@ -66,7 +66,7 @@ function Payment() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apipayment/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/payment/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -88,7 +88,7 @@ function Payment() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/orders/${orderId}/order`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api//orders/${orderId}/order`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

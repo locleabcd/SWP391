@@ -15,7 +15,7 @@ function Pricing() {
       const token = localStorage.getItem('token')
 
       await axios.post(
-        'https://koicaresystemv2.azurewebsites.net/apiorders/order/premium',
+        'https://koicaresystemv2.azurewebsites.net/api/orders/order/premium',
         {
           userId: userId,
           time: '1MONTH'

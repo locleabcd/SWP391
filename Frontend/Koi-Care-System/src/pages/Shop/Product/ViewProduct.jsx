@@ -62,7 +62,7 @@ function ViewProduct() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiproducts/product/${id}/product`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/products/product/${id}/product`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -95,7 +95,7 @@ function ViewProduct() {
       }
 
       const res = await axios.get(
-        `https://koicaresystemv2.azurewebsites.net/apiproducts/product/${cate}/all/products`,
+        `https://koicaresystemv2.azurewebsites.net/api/products/product/${cate}/all/products`,
         {
           headers: {
             Authorization: `Bearer ${token}`
@@ -117,7 +117,7 @@ function ViewProduct() {
     try {
       const token = localStorage.getItem('token')
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apifeedbacks/product/${id}`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/feedbacks/product/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -134,7 +134,7 @@ function ViewProduct() {
     try {
       const token = localStorage.getItem('token')
 
-      await axios.delete(`https://koicaresystemv2.azurewebsites.net/apifeedbacks/feedback/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv2.azurewebsites.net/api/feedbacks/feedback/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -152,7 +152,7 @@ function ViewProduct() {
       const userId = localStorage.getItem('id')
 
       await axios.post(
-        'https://koicaresystemv2.azurewebsites.net/apifeedbacks',
+        'https://koicaresystemv2.azurewebsites.net/api/feedbacks',
         {
           star: rating,
           comment: comment,
@@ -197,7 +197,7 @@ function ViewProduct() {
       const id_feedback = localStorage.getItem('id_feed')
 
       await axios.put(
-        'https://koicaresystemv2.azurewebsites.net/apifeedbacks',
+        'https://koicaresystemv2.azurewebsites.net/api/feedbacks',
         {
           id: id_feedback,
           star: rating,

@@ -51,7 +51,7 @@ function Reminders() {
   const getReminder = async () => {
     const token = localStorage.getItem('token')
     try {
-      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/apireminders/list', {
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/reminders/list', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -72,7 +72,7 @@ function Reminders() {
     try {
       const token = localStorage.getItem('token')
       await axios.post(
-        'https://koicaresystemv2.azurewebsites.net/apireminders/create',
+        'https://koicaresystemv2.azurewebsites.net/api/reminders/create',
         {
           title: title,
           dateTime: dateTime,
@@ -102,7 +102,7 @@ function Reminders() {
       const token = localStorage.getItem('token')
       const id = localStorage.getItem('reminderId')
       await axios.put(
-        `https://koicaresystemv2.azurewebsites.net/apireminders/update/${id}`,
+        `https://koicaresystemv2.azurewebsites.net/api/reminders/update/${id}`,
         {
           title: title,
           dateTime: dateTime,
@@ -133,7 +133,7 @@ function Reminders() {
       }
       const id = localStorage.getItem('reminderId')
 
-      await axios.delete(`https://koicaresystemv2.azurewebsites.net/apireminders/delete/${id}`, {
+      await axios.delete(`https://koicaresystemv2.azurewebsites.net/api/reminders/delete/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

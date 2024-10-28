@@ -49,7 +49,7 @@ function Checkout() {
       }
 
       await axios.post(
-        'https://koicaresystemv2.azurewebsites.net/apiorders/order',
+        'https://koicaresystemv2.azurewebsites.net/api/orders/order',
         {
           userId: userId,
           address: destination,
@@ -81,7 +81,7 @@ function Checkout() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`https://koicaresystemv2.azurewebsites.net/apicarts/cart/${cartId}/my-cart`, {
+      const response = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

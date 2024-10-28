@@ -42,7 +42,7 @@ function ProductImage() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiimages/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/images/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -70,7 +70,7 @@ function ProductImage() {
       if (!token) {
         throw new Error('No token found')
       }
-      await axios.delete(`https://koicaresystemv2.azurewebsites.net/apiimages/image/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv2.azurewebsites.net/api/images/image/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

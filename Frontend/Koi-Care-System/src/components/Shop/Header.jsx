@@ -51,7 +51,7 @@ function Header() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiprofile/${id}`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/profile/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

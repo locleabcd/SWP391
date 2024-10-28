@@ -88,7 +88,7 @@ function Recommendations() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/apicategories/all', {
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/categories/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -120,7 +120,7 @@ function Recommendations() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get('https://koicaresystemv2.azurewebsites.net/apiproducts/all', {
+      const response = await axios.get('https://koicaresystemv2.azurewebsites.net/api/products/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -140,7 +140,7 @@ function Recommendations() {
         throw new Error('No token found')
       }
 
-      const response = await axios.get(`https://koicaresystemv2.azurewebsites.net/apicarts/user/${userId}/cartId`, {
+      const response = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/carts/user/${userId}/cartId`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

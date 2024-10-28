@@ -85,7 +85,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiprofile/all/member`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/profile/all/member`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -119,7 +119,7 @@ function DashboardAD() {
         throw new Error('No token found. Please log in to continue.')
       }
 
-      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/apiprofile/all/member', {
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/profile/all/member', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -156,7 +156,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiorders/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/orders/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -188,7 +188,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiorders/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/orders/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -214,7 +214,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apireports/category`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/reports/category`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -231,7 +231,7 @@ function DashboardAD() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/apisubscribe/all', {
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/subscribe/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -257,7 +257,7 @@ function DashboardAD() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/apisubscribe/all', {
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/subscribe/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -300,7 +300,7 @@ function DashboardAD() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/apireports/product', {
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/reports/product', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -319,7 +319,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiblog`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/blog`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -338,7 +338,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apipayment/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/payment/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -395,7 +395,7 @@ function DashboardAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apisuppliers/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/suppliers/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
