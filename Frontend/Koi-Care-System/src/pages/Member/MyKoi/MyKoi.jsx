@@ -460,7 +460,7 @@ function MyKoi() {
                   )}
                 </div>
 
-                <div className='relative col-span-1 lg:mb-4 lg:mb-4'>
+                <div className='relative col-span-1 lg:mb-4'>
                   <label
                     htmlFor='name'
                     className={`absolute block -top-[12px] ${
@@ -472,6 +472,7 @@ function MyKoi() {
                   <input
                     type='text'
                     id='name'
+                    placeholder='Enter Name'
                     className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
                     } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
@@ -638,6 +639,7 @@ function MyKoi() {
                   <input
                     type='text'
                     id='variety'
+                    placeholder='Enter Variety'
                     className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
                     } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
@@ -677,6 +679,7 @@ function MyKoi() {
                   <input
                     type='text'
                     id='breeder'
+                    placeholder='Enter Breeder'
                     className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
                     } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}

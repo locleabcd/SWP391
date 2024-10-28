@@ -67,7 +67,7 @@ function KoiDetails() {
   useEffect(() => {
     if (length && physique) {
       let calculatedWeight = 0
-      const lengthCubed = Math.pow(length, 3) // length^3
+      const lengthCubed = Math.pow(length, 3)
 
       if (physique === 'Slim') {
         calculatedWeight = (1.5 * lengthCubed) / 100
@@ -97,6 +97,8 @@ function KoiDetails() {
     const options = { year: 'numeric', month: 'long', day: 'numeric' }
     return new Date(dateString).toLocaleDateString(undefined, options)
   }
+
+  const formatCurrency = (amount) => amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + 'đ'
 
   const toggleAddGrowthFormVisibility = () => {
     setIsAddGrowthFormVisible(!isAddGrowthFormVisible)
@@ -537,6 +539,10 @@ function KoiDetails() {
     updateKoi(data, id)
   }
 
+  const isNameDuplicate = (name) => {
+    return koi.some((koi) => koi.name.toLowerCase() === name.toLowerCase())
+  }
+
   return (
     <div>
       <div className='h-screen flex'>
@@ -640,19 +646,17 @@ function KoiDetails() {
                 >
                   <h2 className='font-bold text-center lg:text-xl text-lg mb-2'>Koi Description</h2>
                   <p className='lg:mb-4 mb-2 lg:text-lg text-xs '>
-                    2 10 <strong>{koi.name || 'Unnamed Koi'}</strong> with size{' '}
-                    <strong>{koi.physique || 'Unknown'}</strong> has been swimming in the pond "
-                    <strong>{koi.koiPond?.name || 'No pond information'}</strong>" since{' '}
+                    <strong>{koi.name || 'Unnamed Koi'}</strong> with size <strong>{koi.physique || 'Unknown'}</strong>{' '}
+                    has been swimming in the pond "<strong>{koi.koiPond?.name || 'No pond information'}</strong>" since{' '}
                     <strong>{formatDate(koi.pondDate) || 'Unknown Date'}</strong>.
                   </p>
                   <p className='lg:mb-4 mb-2 lg:text-lg text-xs '>
-                    2 10 <strong>{koi.name || 'Unnamed Koi'}</strong> was bought for{' '}
-                    <strong>{koi.price ? `${koi.price}€` : 'Unknown Price'}</strong> and was bred by{' '}
+                    <strong>{koi.name || 'Unnamed Koi'}</strong> was bought for{' '}
+                    <strong>{koi.price ? `${formatCurrency(koi.price)}` : 'Unknown Price'}</strong> and was bred by{' '}
                     <strong>{koi.breeder || 'Unknown Breeder'}</strong>.
                   </p>
                   <p className='mb-2 lg:text-lg text-xs '>
-                    2 10 <strong>{koi.name || 'Unnamed Koi'}</strong> was{' '}
-                    <strong>{koi.status || 'Unknown Status'}</strong>.
+                    <strong>{koi.name || 'Unnamed Koi'}</strong> was <strong>{koi.status || 'Unknown Status'}</strong>.
                   </p>
                 </div>
               )}
@@ -783,9 +787,11 @@ function KoiDetails() {
           </div>
 
           {isEditFormVisible && (
-            <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40 '>
+            <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50'>
               <div
-                className='bg-white lg:min-w-[80vh] lg:max-h-[75vh] max-h-[70vh] m-auto p-6 rounded-lg shadow-lg overflow-y-auto no-scroll-bar'
+                className={` ${
+                  isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
                 data-aos='fade-up'
               >
                 {/* Form for editing koi */}
@@ -886,32 +892,45 @@ function KoiDetails() {
                         </label>
                       )}
                     </div>
-                    <div className='relative col-span-1 '>
+                    <div className='relative col-span-1 lg:mb-4'>
                       <label
                         htmlFor='name'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
+                        className={`absolute block -top-[12px] ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                       >
                         Name
                       </label>
                       <input
                         type='text'
                         id='name'
-                        className='mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
-                        {...register('name')}
+                        className={`mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
+                        {...register('name', {
+                          required: 'Name is required',
+                          maxLength: {
+                            value: 20,
+                            message: 'Name must be at most 50 characters long'
+                          }
+                        })}
                       />
+                      {errors.name && (
+                        <p className='absolute -bottom-[3px] left-3 lg:-bottom-[22px] lg:left-3 text-red-500 text-sm'>
+                          {errors.name.message}
+                        </p>
+                      )}
                     </div>
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                         htmlFor='physique'
+                        className={`absolute block -top-[12px] ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                       >
                         Physique
                       </label>
                       <input
-                        type='physique'
+                        type='text'
                         id='physique'
-                        className='mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                         {...register('physique')}
                         readOnly
                       />
@@ -920,13 +939,13 @@ function KoiDetails() {
                     <div className='relative col-span-1'>
                       <label
                         htmlFor='age'
-                        className='absolute  font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Age
                       </label>
                       <select
                         id='age'
-                        className='mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                         {...register('age')}
                       >
                         <option value={0}>0 years</option>
@@ -947,17 +966,16 @@ function KoiDetails() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                         htmlFor='gender'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Gender
                       </label>
                       <select
                         id='gender'
-                        className='mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                         {...register('gender')}
                       >
-                        {/* <option value=""></option> */}
                         <option value='Male'>Male</option>
                         <option value='Female'>Female</option>
                         <option value='Undefined'>Undefined</option>
@@ -967,37 +985,39 @@ function KoiDetails() {
                     <div className='relative col-span-1'>
                       <label
                         htmlFor='variety'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Variety
                       </label>
                       <input
                         type='text'
                         id='variety'
-                        className='mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
+                        placeholder='Enter Variety'
+                        className={`mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                         {...register('variety')}
                       />
                     </div>
-                    <div className='relative col-span-1 '>
+
+                    <div className='relative col-span-1'>
                       <label
                         htmlFor='pondDate'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         In pond since
                       </label>
-
                       <input
                         type='date'
                         id='pondDate'
-                        className='mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                         defaultValue={koi.pondDate}
                         {...register('pondDate')}
                       />
                     </div>
-                    <div className='relative col-span-1 '>
+
+                    <div className='relative col-span-1'>
                       <label
                         htmlFor='breeder'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Breeder
                       </label>
@@ -1005,14 +1025,17 @@ function KoiDetails() {
                         type='text'
                         id='breeder'
                         placeholder='Enter Breeder Name'
-                        className='mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                         {...register('breeder', { required: false })}
                       />
                     </div>
-                    <div className='relative col-span-1 '>
+
+                    <div className='relative col-span-1'>
                       <label
+                        className={`absolute block -top-[12px] ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        } left-3 lg:text-lg text-sm text-red-500 font-semibold`}
                         htmlFor='price'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                       >
                         Price
                       </label>
@@ -1020,20 +1043,31 @@ function KoiDetails() {
                         type='number'
                         id='price'
                         placeholder='VND'
-                        className='mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
-                        {...register('price', { required: false })}
+                        className={`mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
+                        {...register('price', {
+                          required: 'Price is required',
+                          min: { value: 1, message: 'Price must be greater than 0' }
+                        })}
                       />
+                      {errors.price && (
+                        <p className='absolute -bottom-4 left-4 lg:-bottom-2 lg:left-4 text-red-500 text-sm'>
+                          {errors.price.message}
+                        </p>
+                      )}
                     </div>
-                    <div className='relative col-span-1 '>
+
+                    <div className='relative col-span-1'>
                       <label
                         htmlFor='status'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Status
                       </label>
                       <select
                         id='status'
-                        className='mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                         {...register('status')}
                         defaultValue={koi.status}
                       >
@@ -1041,16 +1075,17 @@ function KoiDetails() {
                         <option>Dead</option>
                       </select>
                     </div>
+
                     <div className='relative col-span-1 mt-[1.5px]'>
                       <label
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 bg-white'
                         htmlFor='pondId'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[6px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Pond
                       </label>
                       <select
                         id='pondId'
-                        className='mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                         {...register('pondId')}
                         defaultValue={koi.koiPond.id}
                       >
@@ -1060,9 +1095,6 @@ function KoiDetails() {
                           </option>
                         ))}
                       </select>
-                      {/* {errors.pondId && (
-                        <p className='absolute -bottom-[14px] left-3 text-red-500 text-sm'>{errors.pondId.message}</p>
-                      )} */}
                     </div>
                   </div>
                 </form>
@@ -1090,7 +1122,12 @@ function KoiDetails() {
 
           {isAddGrowthFormVisible && koi && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40 '>
-              <div className='bg-white lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg' data-aos='fade-up'>
+              <div
+                className={` ${
+                  isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
+                data-aos='fade-up'
+              >
                 <form onSubmit={handleSubmit(onSubmitGrowth)} noValidate>
                   <div className='flex justify-between mb-5'>
                     <svg
@@ -1128,7 +1165,6 @@ function KoiDetails() {
                   </div>
 
                   <div className='grid grid-cols-2 gap-4'>
-                    {/* Image upload input takes 2 columns */}
                     <div
                       id='growth-image'
                       className='col-span-2 rounded-lg mb-6 h-full flex justify-center items-center border border-black'
@@ -1189,19 +1225,22 @@ function KoiDetails() {
                         </label>
                       )}
                     </div>
-
                     {/* Date input */}
                     <div className='relative'>
                       <label
                         htmlFor='growthDate'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        }`}
                       >
                         Date
                       </label>
                       <input
                         type='datetime-local'
                         id='growthDate'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        }`}
                         {...register('createDate')}
                         defaultValue={koi.pondDate}
                       />
@@ -1210,14 +1249,18 @@ function KoiDetails() {
                     {/* Physique input */}
                     <div className='relative'>
                       <label
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        }`}
                         htmlFor='physique'
                       >
                         Physique
                       </label>
                       <select
                         id='physique'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        }`}
                         defaultValue={koi.physique}
                         {...register('physique')}
                       >
@@ -1231,14 +1274,18 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='length'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        }`}
                       >
                         Length (cm)
                       </label>
                       <input
                         type='number'
                         id='length'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        }`}
                         {...register('length')}
                       />
                     </div>
@@ -1247,14 +1294,18 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='weight'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        }`}
                       >
                         Weight (g)
                       </label>
                       <input
                         type='number'
                         id='weight'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        }`}
                         {...register('weight')}
                       />
                     </div>
@@ -1276,7 +1327,12 @@ function KoiDetails() {
 
           {isEditGrowthFormVisible && currentGrowth && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
-              <div className='bg-white lg:min-w-[40vw] m-auto p-6 rounded-lg shadow-lg' data-aos='fade-up'>
+              <div
+                className={` ${
+                  isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
+                data-aos='fade-up'
+              >
                 <form onSubmit={handleSubmit(onSubmitGrowth)} noValidate>
                   <div className='flex justify-between mb-5'>
                     <svg
@@ -1314,7 +1370,6 @@ function KoiDetails() {
                   </div>
 
                   <div className='grid grid-cols-2 gap-4'>
-                    {/* Image upload input takes 2 columns */}
                     <div
                       id='growth-image'
                       className='col-span-2 mb-6 h-full flex justify-center items-center border border-black'
@@ -1380,14 +1435,14 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='growthDate'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Date
                       </label>
                       <input
                         type='datetime-local'
                         id='growthDate'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                         {...register('createDate')}
                         defaultValue={koi.pondDate}
                       />
@@ -1396,15 +1451,14 @@ function KoiDetails() {
                     {/* Physique input */}
                     <div className='relative'>
                       <label
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                         htmlFor='physique'
                       >
                         Physique
                       </label>
                       <select
                         id='physique'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
-                        value={koi.physique}
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                         {...register('physique')}
                       >
                         <option value='Slim'>Slim</option>
@@ -1417,14 +1471,14 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='length'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Length (cm)
                       </label>
                       <input
                         type='number'
                         id='length'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                         {...register('length')}
                       />
                     </div>
@@ -1433,14 +1487,14 @@ function KoiDetails() {
                     <div className='relative'>
                       <label
                         htmlFor='weight'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Weight (g)
                       </label>
                       <input
                         type='number'
                         id='weight'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                         {...register('weight')}
                         defaultValue={currentGrowth ? currentGrowth.weight : ''}
                       />
@@ -1472,7 +1526,12 @@ function KoiDetails() {
 
           {isAddRemarkFormVisible && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40 '>
-              <div className='bg-white lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg' data-aos='fade-up'>
+              <div
+                className={` ${
+                  isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
+                data-aos='fade-up'
+              >
                 {/* Form for adding growth record */}
                 <form onSubmit={handleSubmit(onSubmitRemark)} noValidate>
                   <div className='flex justify-between mb-5'>
@@ -1512,51 +1571,50 @@ function KoiDetails() {
 
                   <div className='grid grid-cols-2 gap-4'>
                     {/* Title input */}
-                    <div className='relative col-span-2'>
+                    <div className={`relative col-span-2 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}>
                       <label
                         htmlFor='title'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Title
                       </label>
                       <input
                         type='text'
                         id='title'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
-                        {...register('title', { required: true })}
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
+                        {...register('title', { required: false })}
                       />
                     </div>
 
                     {/* Note input */}
-                    <div className='relative col-span-2'>
+                    <div className={`relative col-span-2 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}>
                       <label
                         htmlFor='note'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Note
                       </label>
                       <textarea
                         id='note'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
-                        {...register('note', { required: true })}
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
+                        {...register('note', { required: false })}
                         rows={4}
                       />
                     </div>
 
                     {/* Creation Date input */}
-                    <div className='relative col-span-2'>
+                    <div className={`relative col-span-2 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}>
                       <label
                         htmlFor='createDate'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Date
                       </label>
                       <input
                         type='datetime-local'
                         id='createDate'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
-                        max={new Date().toISOString().slice(0, 16)}
-                        {...register('createDate', { required: true })}
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
+                        {...register('createDate', { required: false })}
                       />
                     </div>
 
@@ -1572,7 +1630,12 @@ function KoiDetails() {
 
           {isEditRemarkFormVisible && currentRemark && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
-              <div className='bg-white min-w-[40vw] m-auto p-6 rounded-lg shadow-lg' data-aos='fade-up'>
+              <div
+                className={` ${
+                  isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
+                data-aos='fade-up'
+              >
                 {/* Form for adding growth record */}
                 <form onSubmit={handleSubmit(onSubmitRemark)} noValidate>
                   <div className='flex justify-between mb-5'>
@@ -1612,50 +1675,50 @@ function KoiDetails() {
 
                   <div className='grid grid-cols-2 gap-4'>
                     {/* Title input */}
-                    <div className='relative col-span-2'>
+                    <div className={`relative col-span-2 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}>
                       <label
                         htmlFor='title'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Title
                       </label>
                       <input
                         type='text'
                         id='title'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
-                        {...register('title', { required: true })}
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
+                        {...register('title', { required: false })}
                       />
                     </div>
 
                     {/* Note input */}
-                    <div className='relative col-span-2'>
+                    <div className={`relative col-span-2 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}>
                       <label
                         htmlFor='note'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Note
                       </label>
                       <textarea
                         id='note'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
-                        {...register('note', { required: true })}
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
+                        {...register('note', { required: false })}
                         rows={4}
                       />
                     </div>
 
                     {/* Creation Date input */}
-                    <div className='relative col-span-2'>
+                    <div className={`relative col-span-2 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}>
                       <label
                         htmlFor='createDate'
-                        className='absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 bg-white'
+                        className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                       >
                         Date
                       </label>
                       <input
                         type='datetime-local'
                         id='createDate'
-                        className='mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm'
-                        {...register('createDate', { required: true })}
+                        className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
+                        {...register('createDate', { required: false })}
                       />
                     </div>
                   </div>
