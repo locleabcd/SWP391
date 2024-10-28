@@ -90,6 +90,7 @@ import UpdateSupplierAD from './pages/Admin/Supplier/UpdateSupplierAD'
 import ManagePay from './pages/Admin/ManageReport/ManagePay'
 import NewsAD from './pages/Admin/News/NewsAD'
 import NewsView from './pages/Admin/News/NewsView'
+import Chat from './components/Chat/Chat'
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 
@@ -621,6 +622,10 @@ function App() {
     {
       path: path.newsView,
       element: <NewsView />
+    },
+    {
+      path: path.chat,
+      element: <Chat />
     }
   ])
 
