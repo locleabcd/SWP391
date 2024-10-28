@@ -11,6 +11,7 @@ import { IoIosWater } from 'react-icons/io'
 import { LuAlarmClock } from 'react-icons/lu'
 import { MdOutlinePayments } from 'react-icons/md'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
+import Chat from '../../../components/Chat/Chat'
 
 function Dashboard() {
   const { isDarkMode } = useDarkMode()
@@ -221,6 +222,7 @@ function Dashboard() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
+          <Chat />
 
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] '>
             <TopLayout text='Dashboard' links='member/dashboard' />

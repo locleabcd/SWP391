@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import TopLayout from '../../../layouts/TopLayout'
 import '../SaltCalculator/range.css'
+import Chat from '../../../components/Chat/Chat'
 
 function SaltCalculator() {
   const { isDarkMode } = useDarkMode()
@@ -100,6 +101,7 @@ function SaltCalculator() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
+          <Chat />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Salt Calculator' />
           </div>

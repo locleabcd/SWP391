@@ -5,6 +5,7 @@ import TopLayout from '../../../layouts/TopLayout'
 import axios from 'axios'
 import { useState, useEffect, useCallback } from 'react'
 import '../FoodCalculator/rangeFood.css'
+import Chat from '../../../components/Chat/Chat'
 
 function FoodCalculator() {
   const { isDarkMode } = useDarkMode()
@@ -249,6 +250,7 @@ Over 28°C is not a good temperature to feed at!`
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
+          <Chat />
           <div className='py-5 px-[30px] mx-auto'>
             <TopLayout text='Food Calculator' />
             <div className='p-2 text-lg min-h-screen'>

@@ -13,9 +13,8 @@ const Chat = () => {
   const [isJoined, setIsJoined] = useState(false)
   const [userRole, setUserRole] = useState('')
   const [hasUpdated, setHasUpdated] = useState(false)
-  const [check, setCheck] = useState(false)
   const chatAreaRef = useRef(null)
-  const baseUrl = 'http://146.190.84.154:8080/api'
+  const baseUrl = 'https://koicaresystemv2.azurewebsites.net/api'
   const initValue = () => {
     setNickname(localStorage.getItem('name'))
     setUserRole(localStorage.getItem('role'))
@@ -34,6 +33,7 @@ const Chat = () => {
     }
     fetchAndDisplayUserChat()
   }
+
   const onError = () => {
     console.log('Could not connect to WebSocket server. Please refresh this page to try again!')
   }
@@ -208,7 +208,7 @@ const Chat = () => {
       </div>
 
       {isJoined && (
-        <div className={`chat-container ${nickname ? '' : 'hidden'}`}>
+        <div className={`chat-container rounded-xl ${nickname ? '' : 'hidden'}`}>
           {/* {userRole === 'SHOP' ? (
             <div className='users-list col-span-1'>
               <h2 className='text-lg font-bold'>Online Users</h2>
@@ -233,8 +233,8 @@ const Chat = () => {
             </div>
           )} */}
 
-          <div className='chat-area col-span-3 rounded-xl'>
-            <div className='w-full flex gap-4 justify-between items-center px-2 border bg-gray-200'>
+          <div className='chat-area col-span-3'>
+            <div className='w-full flex gap-4 justify-between items-center px-2 py-2 border bg-gray-50'>
               <div className='flex gap-3 items-center'>
                 <img
                   src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
@@ -272,14 +272,22 @@ const Chat = () => {
               </div>
             </div>
 
-            <div ref={chatAreaRef} className='chat-messages p-4 h-96 w-[360px] overflow-y-auto border bg-gray-100'>
+            <div
+              ref={chatAreaRef}
+              onClick={() => {
+                setIsJoined(true)
+                userItemClick('SupportService')
+              }}
+              className='chat-messages p-4 h-[430px] w-[430px] overflow-y-auto border bg-gray-50'
+            >
               {chatMessages.map((message, index) => (
                 <div
                   key={index}
-                  className={`message ${message.senderId === nickname ? 'text-right' : 'text-left'} mb-2`}
+                  className={`message ${message.senderId === nickname ? 'text-right' : 'text-left'} mb-2 `}
                 >
                   <p
-                    className={`inline-block p-2 rounded ${message.senderId === nickname ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
+                    className={`inline-block p-2 rounded-full break-words max-w-[75%] 
+    ${message.senderId === nickname ? 'bg-blue-500 text-white' : 'bg-gray-300 text-black'}`}
                   >
                     {message.content}
                   </p>
@@ -288,11 +296,11 @@ const Chat = () => {
             </div>
 
             {selectedUserId && (
-              <form onSubmit={sendMessage} className='message-form flex gap-2'>
+              <form onSubmit={sendMessage} className='message-form flex'>
                 <input
                   type='text'
                   id='message'
-                  className='flex-grow border p-2'
+                  className='flex-grow border-x p-4 outline-none bg-gray-50'
                   value={messageInput}
                   onClick={() => {
                     setIsJoined(true)
@@ -302,7 +310,7 @@ const Chat = () => {
                   placeholder='Aa'
                   required
                 />
-                <button className='bg-blue-500 text-white px-2 py-2 rounded'>
+                <button className='bg-gray-50 border-r text-black px-2 py-2'>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
