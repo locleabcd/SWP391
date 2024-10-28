@@ -33,7 +33,7 @@ function UpdateProductAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://146.190.84.154:8080/api/categories/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apicategories/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -57,7 +57,7 @@ function UpdateProductAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://146.190.84.154:8080/api/suppliers/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apisuppliers/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -80,7 +80,7 @@ function UpdateProductAD() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://146.190.84.154:8080/api/products/product/${id}/product`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiproducts/product/${id}/product`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -109,7 +109,7 @@ function UpdateProductAD() {
         throw new Error('No token found')
       }
       const res = await axios.put(
-        `http://146.190.84.154:8080/api/products/product/${id}/update`,
+        `https://koicaresystemv2.azurewebsites.net/apiproducts/product/${id}/update`,
         {
           name: data.name,
           brand: data.brand,

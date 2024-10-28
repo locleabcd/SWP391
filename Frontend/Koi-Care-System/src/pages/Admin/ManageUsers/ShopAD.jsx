@@ -47,7 +47,7 @@ function ShopAD() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://146.190.84.154:8080/api/users`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiusers`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -72,7 +72,7 @@ function ShopAD() {
 
       // API to update status to inactive (set to false)
       await axios.put(
-        `http://146.190.84.154:8080/api/users/delete/${id}`,
+        `https://koicaresystemv2.azurewebsites.net/apiusers/delete/${id}`,
         { status: false }, // Assuming the API accepts a status field to set active/inactive
         {
           headers: {
@@ -164,7 +164,7 @@ function ShopAD() {
       if (email) {
         requestBody.email = email
       }
-      const res = await axios.post(`http://146.190.84.154:8080/api/users/register/staff`, requestBody, {
+      const res = await axios.post(`https://koicaresystemv2.azurewebsites.net/apiusers/register/staff`, requestBody, {
         headers: {
           Authorization: `Bearer ${token}`
         }

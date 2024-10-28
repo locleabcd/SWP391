@@ -46,7 +46,7 @@ function ProductAD() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      const res = await axios.get('http://146.190.84.154:8080/api/products/all', {
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/apiproducts/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -72,7 +72,7 @@ function ProductAD() {
       const token = localStorage.getItem('token')
       if (!token) throw new Error('No token found')
 
-      await axios.delete(`http://146.190.84.154:8080/api/products/product/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv2.azurewebsites.net/apiproducts/product/${id}/delete`, {
         headers: { Authorization: `Bearer ${token}` }
       })
       toast.success('Product deleted successfully')

@@ -53,7 +53,7 @@ function Login() {
     //  }
 
     try {
-      const response = await axios.post('http://146.190.84.154:8080/api/auth/loginKoiCare', {
+      const response = await axios.post('https://koicaresystemv2.azurewebsites.net/apiauth/loginKoiCare', {
         username: data.username,
         password: data.password
       })
@@ -174,7 +174,7 @@ function Login() {
 
         <div className='flex items-center justify-between mt-2'>
           <Link
-            to='http://146.190.84.154:8080/api/oauth2/authorization/google?redirect_uri=https://koi-care-system.vercel.app/member/dashboard'
+            to='https://koicaresystemv2.azurewebsites.net/apioauth2/authorization/google?redirect_uri=https://koi-care-system.vercel.app/member/dashboard'
             className='flex items-center justify-center bg-white border hover:bg-gray-100 border-gray-300 text-gray-800 w-full py-3 rounded-lg mr-2'
           >
             <img src='https://www.google.com/favicon.ico' alt='Google' className='h-5 mr-2' />

@@ -32,7 +32,7 @@ export default function CreateProductAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://146.190.84.154:8080/api/categories/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apicategories/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -56,7 +56,7 @@ export default function CreateProductAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://146.190.84.154:8080/api/suppliers/all`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apisuppliers/all`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -83,7 +83,7 @@ export default function CreateProductAD() {
         throw new Error('No token found')
       }
       const res = await axios.post(
-        `http://146.190.84.154:8080/api/products/add`,
+        `https://koicaresystemv2.azurewebsites.net/apiproducts/add`,
         {
           name: data.name,
           brand: data.brand,
@@ -116,7 +116,7 @@ export default function CreateProductAD() {
         formData.append('productId', productId)
 
         // Upload images
-        await axios.post(`http://146.190.84.154:8080/api/images/upload`, formData, {
+        await axios.post(`https://koicaresystemv2.azurewebsites.net/apiimages/upload`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
