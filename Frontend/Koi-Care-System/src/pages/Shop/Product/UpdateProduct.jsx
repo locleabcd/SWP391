@@ -8,6 +8,10 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
+import makeAnimated from 'react-select/animated'
+import Select from 'react-select'
+
+const animatedComponents = makeAnimated()
 
 function UpdateProduct() {
   const { id } = useParams()
@@ -18,6 +22,8 @@ function UpdateProduct() {
   const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [suppliers, setSuppliers] = useState([])
+  const [issues, setIssues] = useState([])
+  const [selectedIssues, setSelectedIssues] = useState([])
 
   const {
     register,
@@ -25,6 +31,35 @@ function UpdateProduct() {
     formState: { errors },
     reset
   } = useForm()
+
+  const getIssue = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/issues/issueType/all`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setIssues(
+        res.data.data.map((issue) => ({
+          value: issue.id,
+          label: issue.parameterType
+        }))
+      )
+      console.log(res.data.data)
+    } catch (error) {
+      console.log('Error fetching issue type:', error)
+    }
+  }
+
+  useEffect(() => {
+    getIssue()
+  }, [])
 
   const getCategory = async () => {
     try {
@@ -88,6 +123,7 @@ function UpdateProduct() {
       console.log(res.data.data)
       setProducts(res.data.data)
       reset(res.data.data)
+      // setSelectedIssues(res.data.data.issues.map((issue) => ({ value: issue.id, label: issue.parameterType })))
     } catch (error) {
       console.error('Error fetching Product:', error)
       toast.error('Failed to fetch Product details.')
@@ -108,6 +144,7 @@ function UpdateProduct() {
       if (!token) {
         throw new Error('No token found')
       }
+      const issueTypeIds = selectedIssues.map((issue) => issue.value)
       const res = await axios.put(
         `https://koicaresystemv2.azurewebsites.net/api/products/product/${id}/update`,
         {
@@ -122,10 +159,7 @@ function UpdateProduct() {
             name: products.category.name
           },
           supplierName: data.supplierName,
-          issueTypeId: data.issueTypeId
-            .split(',')
-            .map((id) => parseInt(id.trim()))
-            .filter((id) => !isNaN(id))
+          issueTypeId: issueTypeIds
         },
         {
           headers: {
@@ -295,15 +329,58 @@ function UpdateProduct() {
 
               <div className='mb-4'>
                 <label htmlFor='issueTypeId' className='block text-sm font-medium mb-2'>
-                  Issue Type
+                  Select Issue
                 </label>
-                <input
-                  type='text'
-                  id='issueTypeId'
-                  className={`w-full p-2 border rounded-md ${
-                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.issueTypeId ? 'border-red-500' : 'border-gray-300'}`}
-                  {...register('issueTypeId', { required: false })}
+                <Select
+                  isMulti
+                  options={issues}
+                  value={selectedIssues}
+                  onChange={setSelectedIssues}
+                  closeMenuOnSelect={false}
+                  components={animatedComponents}
+                  styles={{
+                    control: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF',
+                      color: isDarkMode ? '#FFFFFF' : '#000000',
+                      borderColor: errors.tags ? '#EF4444' : '#D1D5DB',
+                      '&:hover': {
+                        borderColor: errors.tags ? '#EF4444' : '#9CA3AF'
+                      }
+                    }),
+                    menu: (provided) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF'
+                    }),
+                    option: (provided, state) => ({
+                      ...provided,
+                      backgroundColor: state.isFocused
+                        ? isDarkMode
+                          ? '#374151'
+                          : '#E5E7EB'
+                        : isDarkMode
+                          ? '#1F2937'
+                          : '#FFFFFF',
+                      color: isDarkMode ? '#FFFFFF' : '#000000'
+                    }),
+                    multiValue: (provided) => ({
+                      ...provided,
+                      backgroundColor: isDarkMode ? '#4B5563' : '#E5E7EB',
+                      color: isDarkMode ? '#FFFFFF' : '#000000'
+                    }),
+                    multiValueLabel: (provided) => ({
+                      ...provided,
+                      color: isDarkMode ? '#FFFFFF' : '#000000'
+                    }),
+                    multiValueRemove: (provided) => ({
+                      ...provided,
+                      color: isDarkMode ? '#FFFFFF' : '#000000',
+                      ':hover': {
+                        backgroundColor: isDarkMode ? '#374151' : '#D1D5DB',
+                        color: isDarkMode ? '#F87171' : '#EF4444'
+                      }
+                    })
+                  }}
                 />
               </div>
               <button
