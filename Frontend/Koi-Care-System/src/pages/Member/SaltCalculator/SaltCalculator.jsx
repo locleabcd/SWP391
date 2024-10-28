@@ -26,7 +26,7 @@ function SaltCalculator() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://146.190.84.154:8080/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apikoiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

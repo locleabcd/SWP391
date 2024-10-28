@@ -15,6 +15,7 @@ import InfoBox from '../../../components/WaterParam/InfoBox'
 import { motion } from 'framer-motion'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import 'aos/dist/aos.css'
+import Chat from '../../../components/Chat/Chat'
 
 function WaterParameters() {
   const { isDarkMode } = useDarkMode()
@@ -48,7 +49,7 @@ function WaterParameters() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://146.190.84.154:8080/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apikoiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -70,11 +71,14 @@ function WaterParameters() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://146.190.84.154:8080/api/water-parameters/getByUserId/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      const res = await axios.get(
+        `https://koicaresystemv2.azurewebsites.net/apiwater-parameters/getByUserId/${userId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      })
+      )
       setParameters(res.data.data)
     } catch (error) {
       console.error('Error fetching water parameters:', error)
@@ -108,7 +112,7 @@ function WaterParameters() {
       }
 
       const res = await axios.post(
-        `http://146.190.84.154:8080/api/water-parameters/create`,
+        `https://koicaresystemv2.azurewebsites.net/apiwater-parameters/create`,
         {
           koiPondId: data.pondId,
           createDateTime: data.createDateTime,
@@ -160,7 +164,7 @@ function WaterParameters() {
       }
       console.log(data)
       const res = await axios.put(
-        `http://146.190.84.154:8080/api/water-parameters/update/${waterId}`,
+        `https://koicaresystemv2.azurewebsites.net/apiwater-parameters/update/${waterId}`,
         {
           koiPondId: data.pondId,
           createDateTime: data.createDateTime,
@@ -204,7 +208,7 @@ function WaterParameters() {
       if (!token) {
         throw new Error('no token found')
       }
-      await axios.delete(`http://146.190.84.154:8080/api/water-parameters/delete/${waterId}`, {
+      await axios.delete(`https://koicaresystemv2.azurewebsites.net/apiwater-parameters/delete/${waterId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -810,6 +814,7 @@ function WaterParameters() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
+          <Chat />
           <div className='w-full flex justify-end'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -817,7 +822,7 @@ function WaterParameters() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='fixed bottom-5 right-5 text-full rounded-full text-white bg-custom-left-bar shadow-lg size-8 lg:size-14 cursor-pointer z-10'
+              className='fixed z-20 bottom-5 left-[275px] text-lg text-white outline-none rounded-full bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
               onClick={() => {
                 toggleAddFormVisibility()
                 reset()

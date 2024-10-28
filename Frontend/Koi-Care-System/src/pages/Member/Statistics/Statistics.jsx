@@ -77,7 +77,7 @@ function Statistics() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://146.190.84.154:8080/api/koiponds/user/${id}/koiponds`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apikoiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -109,11 +109,14 @@ function Statistics() {
     try {
       const token = localStorage.getItem('token')
 
-      const res = await axios.get(`http://146.190.84.154:8080/api/water-parameters/getByKoiPondId/${koiPondId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      const res = await axios.get(
+        `https://koicaresystemv2.azurewebsites.net/apiwater-parameters/getByKoiPondId/${koiPondId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      })
+      )
 
       setWater(res.data.data)
       console.log(res.data.data)
@@ -134,7 +137,7 @@ function Statistics() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://146.190.84.154:8080/api/koifishs/user/${id}/allKoi`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apikoifishs/user/${id}/allKoi`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -156,7 +159,7 @@ function Statistics() {
       if (!token) {
         throw new Error('No token found')
       }
-      const res = await axios.get(`http://146.190.84.154:8080/api/growth-history/list/${koifishId}`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apigrowth-history/list/${koifishId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -207,7 +210,7 @@ function Statistics() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://146.190.84.154:8080/api/reports/GrowthFish/${koifishId}`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apireports/GrowthFish/${koifishId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }

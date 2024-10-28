@@ -62,7 +62,7 @@ function Recommendations() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://146.190.84.154:8080/api/products/product/${id}/product`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apiproducts/product/${id}/product`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -94,11 +94,14 @@ function Recommendations() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`http://146.190.84.154:8080/api/products/product/${cate}/all/products`, {
-        headers: {
-          Authorization: `Bearer ${token}`
+      const res = await axios.get(
+        `https://koicaresystemv2.azurewebsites.net/apiproducts/product/${cate}/all/products`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
         }
-      })
+      )
       if (!cate) {
         console.log('No category available')
       }
@@ -114,7 +117,7 @@ function Recommendations() {
     try {
       const token = localStorage.getItem('token')
 
-      const res = await axios.get(`http://146.190.84.154:8080/api/feedbacks/product/${id}`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/apifeedbacks/product/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -131,7 +134,7 @@ function Recommendations() {
     try {
       const token = localStorage.getItem('token')
 
-      await axios.delete(`http://146.190.84.154:8080/api/feedbacks/feedback/${id}/delete`, {
+      await axios.delete(`https://koicaresystemv2.azurewebsites.net/apifeedbacks/feedback/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -149,7 +152,7 @@ function Recommendations() {
       const userId = localStorage.getItem('id')
 
       await axios.post(
-        'http://146.190.84.154:8080/api/feedbacks',
+        'https://koicaresystemv2.azurewebsites.net/apifeedbacks',
         {
           star: rating,
           comment: comment,
@@ -194,7 +197,7 @@ function Recommendations() {
       const id_feedback = localStorage.getItem('id_feed')
 
       await axios.put(
-        'http://146.190.84.154:8080/api/feedbacks',
+        'https://koicaresystemv2.azurewebsites.net/apifeedbacks',
         {
           id: id_feedback,
           star: rating,
