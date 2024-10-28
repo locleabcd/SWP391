@@ -10,8 +10,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutAD'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
+
 import { Modal, Button, TextField, Box } from '@mui/material'
 import { FaUser, FaMoneyBillWave, FaEdit, FaTrash, FaInfoCircle, FaEye, FaCircle } from 'react-icons/fa'
 
@@ -198,74 +197,72 @@ function ShopAD() {
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Shop' />
-            <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-              <CssBaseline />
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
-                <Button variant='contained' onClick={() => setIsFormOpen(true)}>
-                  Create Staff
-                </Button>
-              </Box>
 
-              <Modal open={isFormOpen} onClose={() => setIsFormOpen(false)}>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    height: '100vh' // Căn giữa theo chiều dọc
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
+              <Button variant='contained' onClick={() => setIsFormOpen(true)}>
+                Create Staff
+              </Button>
+            </Box>
+
+            <Modal open={isFormOpen} onClose={() => setIsFormOpen(false)}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: '100vh' // Căn giữa theo chiều dọc
+                }}
+              >
+                <div
+                  style={{
+                    padding: '20px',
+                    backgroundColor: isDarkMode ? '#333' : '#fff',
+                    width: '400px', // Độ rộng của form
+                    borderRadius: '8px' // Bo góc cho form
                   }}
                 >
-                  <div
-                    style={{
-                      padding: '20px',
-                      backgroundColor: isDarkMode ? '#333' : '#fff',
-                      width: '400px', // Độ rộng của form
-                      borderRadius: '8px' // Bo góc cho form
-                    }}
-                  >
-                    <h2>Create Staff</h2>
-                    <TextField
-                      label='Username'
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      required
-                      style={{ marginBottom: '20px', width: '100%' }}
-                    />
-                    <TextField
-                      label='Email (optional)'
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      style={{ marginBottom: '20px', width: '100%' }}
-                    />
-                    <Button variant='contained' onClick={handleCreateStaff} style={{ marginRight: '10px' }}>
-                      Create
-                    </Button>
-                    <Button variant='outlined' onClick={() => setIsFormOpen(false)}>
-                      Cancel
-                    </Button>
-                  </div>
-                </Box>
-              </Modal>
+                  <h2>Create Staff</h2>
+                  <TextField
+                    label='Username'
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    style={{ marginBottom: '20px', width: '100%' }}
+                  />
+                  <TextField
+                    label='Email (optional)'
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    style={{ marginBottom: '20px', width: '100%' }}
+                  />
+                  <Button variant='contained' onClick={handleCreateStaff} style={{ marginRight: '10px' }}>
+                    Create
+                  </Button>
+                  <Button variant='outlined' onClick={() => setIsFormOpen(false)}>
+                    Cancel
+                  </Button>
+                </div>
+              </Box>
+            </Modal>
 
-              <Paper sx={{ height: 670 }}>
-                <DataGrid
-                  rows={manageShops}
-                  columns={columns}
-                  pageSize={10}
-                  rowHeight={80}
-                  getRowId={(row) => row._id || row.id} // Sử dụng đúng thuộc tính id
-                  checkboxSelection
-                  sx={{
-                    '& .MuiDataGrid-columnHeaders': {
-                      backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
-                    },
-                    '& .MuiDataGrid-row:hover': {
-                      backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
-                    }
-                  }}
-                />
-              </Paper>
-            </ThemeProvider>
+            <Paper sx={{ height: 670 }}>
+              <DataGrid
+                rows={manageShops}
+                columns={columns}
+                pageSize={10}
+                rowHeight={80}
+                getRowId={(row) => row._id || row.id} // Sử dụng đúng thuộc tính id
+                checkboxSelection
+                sx={{
+                  '& .MuiDataGrid-columnHeaders': {
+                    backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
+                  },
+                  '& .MuiDataGrid-row:hover': {
+                    backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
+                  }
+                }}
+              />
+            </Paper>
           </div>
         </div>
       </div>

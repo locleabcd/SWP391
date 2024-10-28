@@ -15,8 +15,7 @@ import { MdPendingActions } from 'react-icons/md'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
 import * as XLSX from 'xlsx'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
+
 function Promotion() {
   const { isDarkMode } = useDarkMode()
   const [promotions, setPromotion] = useState([])
@@ -282,28 +281,27 @@ function Promotion() {
                 </button>
               </div>
             </div>
-            <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-              <CssBaseline />
-              <Paper sx={{ height: 670 }}>
-                <DataGrid
-                  rows={promotions}
-                  columns={columns}
-                  checkboxSelection
-                  disableExtendRowFullWidth
-                  pageSizeOptions={[5, 10, 20, 50, 100]}
-                  pageSize={10}
-                  rowHeight={80}
-                  sx={{
-                    '& .MuiDataGrid-columnHeaders': {
-                      backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
-                    },
-                    '& .MuiDataGrid-row:hover': {
-                      backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
-                    }
-                  }}
-                />
-              </Paper>
-            </ThemeProvider>
+
+            <Paper sx={{ height: 670 }}>
+              <DataGrid
+                rows={promotions}
+                columns={columns}
+                checkboxSelection
+                disableExtendRowFullWidth
+                pageSizeOptions={[5, 10, 20, 50, 100]}
+                pageSize={10}
+                rowHeight={80}
+                sx={{
+                  '& .MuiDataGrid-columnHeaders': {
+                    backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
+                  },
+                  '& .MuiDataGrid-row:hover': {
+                    backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
+                  }
+                }}
+              />
+            </Paper>
+
             {isModalOpen && selectedPromotion && (
               <div
                 className={`fixed top-0 left-0 overflow-auto w-full h-full flex justify-center items-center z-50 bg-opacity-50 ${

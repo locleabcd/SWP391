@@ -8,8 +8,7 @@ import TopLayout from '../../../layouts/TopLayoutAD'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
 import { FaCrown, FaSyncAlt } from 'react-icons/fa'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
+
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 function CustomerAD() {
@@ -198,27 +197,25 @@ function CustomerAD() {
         <Header />
         <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
           <TopLayout text='Users' />
-          <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-            <CssBaseline />
-            <Paper sx={{ height: 670 }}>
-              <DataGrid
-                rows={users}
-                columns={columns}
-                pageSize={10}
-                rowHeight={80}
-                getRowId={(row) => row.id}
-                checkboxSelection
-                sx={{
-                  '& .MuiDataGrid-columnHeaders': {
-                    backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
-                  },
-                  '& .MuiDataGrid-row:hover': {
-                    backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
-                  }
-                }}
-              />
-            </Paper>
-          </ThemeProvider>
+
+          <Paper sx={{ height: 670 }}>
+            <DataGrid
+              rows={users}
+              columns={columns}
+              pageSize={10}
+              rowHeight={80}
+              getRowId={(row) => row.id}
+              checkboxSelection
+              sx={{
+                '& .MuiDataGrid-columnHeaders': {
+                  backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
+                },
+                '& .MuiDataGrid-row:hover': {
+                  backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
+                }
+              }}
+            />
+          </Paper>
         </div>
       </div>
     </div>

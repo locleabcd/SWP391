@@ -16,24 +16,7 @@ import { MdPendingActions } from 'react-icons/md'
 import * as XLSX from 'xlsx'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
-import { ThemeProvider, createTheme } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
 
-const lightTheme = createTheme({
-  palette: {
-    mode: 'light'
-  }
-})
-
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    background: {
-      default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
-      paper: 'rgb(36 48 63 / var(--tw-bg-opacity))'
-    }
-  }
-})
 function ManagePay() {
   const { isDarkMode } = useDarkMode()
   const [payments, setPayments] = useState([])
@@ -189,29 +172,28 @@ function ManagePay() {
               Download Excel
             </button>
           </div>
-          <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-            <CssBaseline />
-            <Paper sx={{ height: 670 }}>
-              <DataGrid
-                rows={payments}
-                columns={columns}
-                pageSize={10}
-                pageSizeOptions={[5, 10, 20, 50, 100]}
-                rowHeight={60}
-                checkboxSelection
-                disableExtendRowFullWidth
-                getRowId={(row) => row.orderId}
-                sx={{
-                  '& .MuiDataGrid-columnHeaders': {
-                    backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
-                  },
-                  '& .MuiDataGrid-row:hover': {
-                    backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
-                  }
-                }}
-              />
-            </Paper>
-          </ThemeProvider>
+
+          <Paper sx={{ height: 670 }}>
+            <DataGrid
+              rows={payments}
+              columns={columns}
+              pageSize={10}
+              pageSizeOptions={[5, 10, 20, 50, 100]}
+              rowHeight={60}
+              checkboxSelection
+              disableExtendRowFullWidth
+              getRowId={(row) => row.orderId}
+              sx={{
+                '& .MuiDataGrid-columnHeaders': {
+                  backgroundColor: isDarkMode ? '#333' : '#f5f5f5'
+                },
+                '& .MuiDataGrid-row:hover': {
+                  backgroundColor: isDarkMode ? 'rgb(36 48 63 / var(--tw-bg-opacity))' : '#e0e0e0'
+                }
+              }}
+            />
+          </Paper>
+
           {isModalOpen && selectedOrder && (
             <div className='fixed top-0 left-0 overflow-auto  w-full h-full text-gray-600 flex justify-center items-center bg-gray-800 z-50 bg-opacity-50'>
               <div className='bg-white p-4 border rounded-lg'>
