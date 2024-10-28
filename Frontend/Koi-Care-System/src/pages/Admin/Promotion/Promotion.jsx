@@ -25,21 +25,7 @@ function Promotion() {
   const [productDetails, setProductDetails] = useState([])
   const [isModalOpen, setIsModalOpen] = useState(false)
   const navigate = useNavigate()
-  const lightTheme = createTheme({
-    palette: {
-      mode: 'light'
-    }
-  })
 
-  const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-      background: {
-        default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
-        paper: 'rgb(36 48 63 / var(--tw-bg-opacity))'
-      }
-    }
-  })
   const formatDateTime = (inputDate) => {
     const date = new Date(inputDate)
     const day = String(date.getDate()).padStart(2, '0')
