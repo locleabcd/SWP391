@@ -31,6 +31,7 @@ import Paper from '@mui/material/Paper'
 import { ThemeProvider, createTheme } from '@mui/material/styles'
 import CssBaseline from '@mui/material/CssBaseline'
 import dayjs from 'dayjs'
+import Chat from '../../../components/Chat/Chat'
 
 const lightTheme = createTheme({
   palette: {
@@ -357,6 +358,8 @@ function Dashboard() {
         } overflow-y-auto flex-1 flex-col overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
+        <Chat />
+
         <div className='py-5 px-[30px] mx-auto'>
           <TopLayout text='Dashboard' links='shop/dashboard' />
           <div className='grid grid-cols-1 lg:grid-cols-2 gap-10'>

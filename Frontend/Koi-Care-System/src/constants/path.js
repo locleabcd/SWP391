@@ -84,7 +84,7 @@ const path = {
   managePay: '/admin/payment',
   newsAD: '/admin/news',
   newsView: '/admin/news/:id',
-  chat: '/member/chat'
+  chat: '/chat'
 }
 
 export default path
