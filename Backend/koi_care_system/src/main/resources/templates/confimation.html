@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order Confirmation</title>
+</head>
+<body>
+<h2>Thank you for your order, <span th:text="${name}"></span>!</h2>
+<p>Your order has been successfully processed.</p>
+
+<h3>Order Details:</h3>
+<ul>
+    <li>Order ID: <span th:text="${orderId}"></span></li>
+    <li>Order Date: <span th:text="${orderDate}"></span></li>
+    <li>Total Amount: <span th:text="${totalAmount}"></span></li>
+</ul>
+
+<h3>Purchased Products:</h3>
+<ul>
+    <li th:each="product : ${products}">
+        <span th:text="${product.name}"></span> - Quantity: <span th:text="${product.quantity}"></span>
+    </li>
+</ul>
+
+<p>If you have any questions, feel free to contact our support team.</p>
+<p>Best regards, <br/> Koi Care System Team</p>
+</body>
+</html>

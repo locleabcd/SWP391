@@ -20,6 +20,7 @@ public class BlogDto {
     String blogImage;
     LocalDate blogDate;
     UserDTO user;
+    String avatar;
     Set<TagDto> tags;
 
 }
