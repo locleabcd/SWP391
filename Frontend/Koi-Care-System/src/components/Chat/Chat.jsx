@@ -6,6 +6,7 @@ import axios from 'axios'
 import Draggable from 'react-draggable'
 import '../../index.css'
 import { useDarkMode } from '../../hooks/DarkModeContext'
+import ima from '../../assets/z5978611373804_665d93e0385a23cc592b004bdfae4025.jpg'
 
 var stompClient = null
 const Chat = () => {
@@ -241,15 +242,15 @@ const Chat = () => {
                 <img
                   alt='Chat Button'
                   data-src='https://bot.mygpt.vn/mygpt-chat-icon.png'
-                  className='chat-button lazyloaded size-28 relative'
-                  src='https://bot.mygpt.vn/mygpt-chat-icon.png'
+                  className='chat-button lazyloaded w-[80px] relative'
+                  src={ima}
                   loading='lazy'
                 />
 
                 {messages.map((msg, index) => (
                   <div
                     key={index}
-                    className='chat absolute text-white rounded-r-full shadow-xl text-xl top-8 w-96 px-10 left-28 py-4 bg-orange-500'
+                    className='chat absolute text-white rounded-r-full shadow-xl text-xl top-2 w-80 px-16 left-24 py-4 bg-blue-300'
                   >
                     {msg}
                   </div>
@@ -281,6 +282,18 @@ const Chat = () => {
                     </div>
                     <div className='flex gap-2'>
                       <button onClick={onLogout}>
+                        <button onClick={() => setIsJoined(false)}>
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            fill='none'
+                            viewBox='0 0 24 24'
+                            strokeWidth={1.5}
+                            stroke='currentColor'
+                            className='size-7'
+                          >
+                            <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
+                          </svg>
+                        </button>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'
@@ -351,7 +364,19 @@ const Chat = () => {
                   <div className='py-2'>
                     <div className='text-xl text-white'>Koi Care System Chat Box</div>
                   </div>
-                  <div className='text-white'>
+                  <div className='text-white flex gap-2'>
+                    <button onClick={() => setIsJoined(false)}>
+                      <svg
+                        xmlns='http://www.w3.org/2000/svg'
+                        fill='none'
+                        viewBox='0 0 24 24'
+                        strokeWidth={1.5}
+                        stroke='currentColor'
+                        className='size-7'
+                      >
+                        <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
+                      </svg>
+                    </button>
                     <button onClick={onLogout}>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
