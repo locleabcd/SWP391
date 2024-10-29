@@ -28,7 +28,7 @@ public class NotificationService implements INotificationService {
     @Override
     public NotificationDto createNotification(NotificationRequest request) {
         Notification notification = notificationMapper.mapToNotification(request);
-        User user = userRepository.findById(request.getUserId()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User user = userRepository.findByUsername(request.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         notification.setUser(user);
         return notificationMapper.mapToNotificationDto(notificaitonRepository.save(notification));
     }

@@ -6,8 +6,8 @@ spring:
     password: ${DB_PASSWORD}
   data:
     mongodb:
-      uri: mongodb+srv://phuocdcase180581:lAPxgFTsLNzxCd47@cluster0.8ivzr.mongodb.net/?retryWrites=true&w=majority
-      database: myDatabase
+      uri: ${MONGO_URI}
+      database: ${MONGO_DB}
 
   jpa:
     hibernate:
