@@ -16,7 +16,7 @@ function News() {
   const [blogs, setBlogs] = useState([])
   const [showButtons, setShowButtons] = useState(false)
   const [search, setSearch] = useState('')
-
+  const [profiles, setProfiles] = useState([])
   const navigate = useNavigate()
 
   const toggleButtons = () => {
@@ -46,35 +46,66 @@ function News() {
   const getBlog = async () => {
     try {
       const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
+      if (!token) throw new Error('No token found')
 
       const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/blog`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       })
 
       setBlogs(res.data.data)
       console.log(res.data.data)
+
+      // Lấy userId của từng bài blog và gọi getProfile để lấy avatar
+      res.data.data.forEach((blog) => {
+        const creatorId = blog.user.id
+        getProfile(creatorId) // Gọi hàm getProfile với userId của người tạo bài viết
+      })
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
           console.error('Unauthorized access - Token expired or invalid. Logging out...')
           localStorage.removeItem('token')
           localStorage.removeItem('id')
-          toast.error('Token expired navigate to login')
+          toast.error('Token expired, navigate to login')
           navigate('/login')
         } else {
-          console.error('Error fetching ponds:', error.response?.status, error.message)
+          console.error('Error fetching blogs:', error.response?.status, error.message)
         }
       } else {
         console.error('An unexpected error occurred:', error)
       }
     }
   }
+  const getProfile = async (creatorId) => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) throw new Error('No token found')
 
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/profile/${creatorId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setProfiles((prevProfiles) => ({ ...prevProfiles, [creatorId]: res.data.data.avatar }))
+      console.log(`Avatar for user ${creatorId}:`, res.data.data.avatar)
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          console.error('Unauthorized access - Token expired or invalid. Logging out...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('id')
+          toast.error('Token expired, navigate to login')
+          navigate('/login')
+        } else {
+          console.error('Error fetching profile:', error.response?.status, error.message)
+        }
+      } else {
+        console.error('An unexpected error occurred:', error)
+      }
+    }
+  }
+  useEffect(() => {
+    getProfile()
+  }, [])
   const searchBlog = blogs.filter((blog) => blog.blogTitle.toLowerCase().includes(search.toLowerCase()))
 
   const sortBlog = (name, sort) => {
@@ -222,8 +253,9 @@ function News() {
                             style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
                           />
                           <img
-                            src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
+                            src={profiles[blog.user.id] || 'default-avatar.png'}
                             className='w-12 h-12 absolute -bottom-[20px] left-8 rounded-full border border-gray-300'
+                            alt="Author's Avatar"
                           />
                         </div>
                         <div className='flex justify-center items-center'>

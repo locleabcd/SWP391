@@ -8,43 +8,52 @@ import { useDarkMode } from '../../../../hooks/DarkModeContext'
 function Order() {
   const { isDarkMode } = useDarkMode()
   const [orders, setOrders] = useState([])
-  const [payment, setPayment] = useState([])
+  const [paymentUrl, setPaymentUrl] = useState([])
 
   const getOrders = async () => {
     try {
       const token = localStorage.getItem('token')
-      const userId = localStorage.getItem('userId')
+      const userId = localStorage.getItem('id')
 
-      const response = await axios.get(`/orders/user/${userId}/order`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/orders/user/${userId}/order`, {
         headers: { Authorization: `Bearer ${token}` }
       })
-      setOrders(response.data.data)
-      console.log(response.data.data)
+      setOrders(res.data.data)
+      console.log(res.data.data)
     } catch (error) {
       console.error(error)
-      toast.error('Failed to fetch orders')
+      toast.error('Failed to get orders')
     }
   }
 
-  const createPayment = async (orderId, totalAmount) => {
+  const createPayment = async (orderId) => {
     try {
       const token = localStorage.getItem('token')
-      const userId = localStorage.getItem('userId')
+      const userId = localStorage.getItem('id')
 
-      const res = await axios.get('/payment/vn-pay/order', {
-        headers: { Authorization: `Bearer ${token}` },
-        params: {
+      const selectedOrder = orders.find((order) => order.id === orderId)
+      if (!selectedOrder) {
+        toast.error('Order not found')
+        return
+      }
+
+      const totalAmount = selectedOrder.totalAmount
+
+      const res = await axios.post(
+        'https://koicaresystemv2.azurewebsites.net/api/payment/vn-pay/order',
+        {
           amount: totalAmount,
-          userId,
-          orderId
+          userId: userId
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` }
         }
-      })
+      )
 
-      setPayment(res.data.data)
-      toast.success('Payment created successfully')
+      setPaymentUrl(res.data.data.paymentUrl)
     } catch (err) {
       console.error(err)
-      toast.error('Payment failed')
+      toast.error('Failed to create payment')
     }
   }
 
@@ -53,36 +62,62 @@ function Order() {
   }, [])
 
   return (
-    <div>
-      <div className='h-screen flex'>
-        <LeftSideBar />
-        <div
-          className={`relative ${
-            isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-          } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
-        >
-          <Header />
-          <div className='p-4'>
-            <h1 className='text-2xl font-bold'>Your Orders</h1>
-            {orders?.length > 0 ? (
-              <ul>
-                {orders.map((order) => (
-                  <li key={order.id} className='border-b py-2'>
-                    <p>Order ID: {order.id}</p>
-                    <p>Total Amount: ${order.totalAmount}</p>
-                    <button
-                      onClick={() => createPayment(order.id, order.totalAmount)}
-                      className='mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600'
-                    >
-                      Pay Now
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No orders found.</p>
-            )}
-          </div>
+    <div className='h-screen flex'>
+      <LeftSideBar />
+      <div
+        className={`relative ${
+          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+        } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
+      >
+        <Header />
+        <div className='p-6 rounded-lg shadow-md'>
+          <h1 className='text-2xl font-bold mb-4 text-center'>Order Summary</h1>
+          {orders?.length > 0 ? (
+            <div className='space-y-4'>
+              {orders.map((order) => (
+                <div key={order.id} className='border rounded-lg p-4 shadow-md'>
+                  <h2 className='text-xl font-semibold'>Order ID: {order.id}</h2>
+                  <div className='my-2'>
+                    <p className='text-gray-400'>
+                      <strong>Recipient:</strong> {order.recipientName}
+                    </p>
+                    <p className='text-gray-400'>
+                      <strong>Phone:</strong> {order.phone}
+                    </p>
+                    <p className='text-gray-400'>
+                      <strong>Address:</strong> {order.address}
+                    </p>
+                    <p className='text-gray-400'>
+                      <strong>Note:</strong> {order.note}
+                    </p>
+                    <p className='text-gray-400'>
+                      <strong>Order Date:</strong> {new Date(order.orderDate).toLocaleString()}
+                    </p>
+                    <p className='text-gray-400'>
+                      <strong>Status:</strong> {order.status}
+                    </p>
+                  </div>
+
+                  <h3 className='text-lg font-bold mt-2'>Items:</h3>
+                  <ul className='list-disc list-inside'>
+                    {order.items.map((item, index) => (
+                      <li key={index} className='flex justify-between py-1'>
+                        <span>{item.productName}</span>
+                        <span>{item.price.toLocaleString()}đ</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className='flex justify-between font-bold mt-2 border-t pt-2'>
+                    <span>Total Amount:</span>
+                    <span>{order.totalAmount.toLocaleString()}đ</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className='text-center text-gray-500'>No orders found.</p>
+          )}
         </div>
       </div>
     </div>
