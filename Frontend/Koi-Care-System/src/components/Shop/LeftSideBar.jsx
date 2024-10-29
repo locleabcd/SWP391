@@ -495,7 +495,7 @@ function LeftSideBar() {
             ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
         >
           <div
-            className={`flex p-4 rounded-lg items-center justify-between w-full ${isDarkMode ? 'bg-custom-layout-dark' : 'bg-white'}`}
+            className={`flex p-4 rounded-lg items-center justify-between w-full ${isDarkMode ? 'bg-custom-dark ' : 'bg-white'}`}
           >
             <div className='card-content flex items-center '>
               <img

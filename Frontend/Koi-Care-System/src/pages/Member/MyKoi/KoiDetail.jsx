@@ -616,7 +616,7 @@ function KoiDetails() {
                     <div className='flex justify-between gap-4 bg-gray-400 rounded-2xl p-3'>
                       <div className='text-center lg:text-lg text-xs'>
                         <h1 className='text-red-500 font-semibold lg:text-lg text-xs'>Age</h1>{' '}
-                        <p className='text-sm'>{koi.age ? `${koi.age} years` : 'N/A'}</p>
+                        <p className='text-sm'>{koi.age} years</p>
                       </div>
                       <div className='text-center lg:text-lg text-xs'>
                         <h1 className='text-red-500 font-semibold'>Length</h1>

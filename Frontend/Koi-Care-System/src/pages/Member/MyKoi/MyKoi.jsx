@@ -155,12 +155,13 @@ function MyKoi() {
           Authorization: `Bearer ${token}`
         }
       })
-      const koiCount = res.data.data.length
+      const sortedKois = res.data.data.sort((a, b) => a.id - b.id)
+      const koiCount = sortedKois.length
       setKoiCounts((prevCounts) => ({
         ...prevCounts,
         [id]: koiCount
       }))
-      setKois(res.data.data)
+      setKois(sortedKois)
     } catch (error) {
       console.error('Error fetching koi:', error)
     }

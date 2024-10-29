@@ -93,8 +93,7 @@ function WaterParameters() {
           }
         }
       )
-      console.log(res.data.data)
-
+      console.log('current parameter', res.data.data)
       const sortedData = res.data.data.sort((a, b) => new Date(b.createDateTime) - new Date(a.createDateTime))
       setParameters(sortedData)
     } catch (error) {
@@ -171,13 +170,13 @@ function WaterParameters() {
   const updateParameter = async (data, waterId) => {
     setIsLoading(true)
     setIsSubmitting(true)
-    console.log(data)
+
     try {
       const token = localStorage.getItem('token')
       if (!token) {
         throw new Error('No token found')
       }
-      console.log(data)
+
       const res = await axios.put(
         `https://koicaresystemv2.azurewebsites.net/api/water-parameters/update/${waterId}`,
         {
@@ -217,6 +216,7 @@ function WaterParameters() {
     }
   }
   const deleteParameter = async (waterId) => {
+    console.log('Water ID cần xóa:', waterId)
     setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
@@ -239,7 +239,6 @@ function WaterParameters() {
     }
   }
   const onSubmit = async (data) => {
-    console.log('Form Data:', data) // Check if all fields are being populated
     if (currentParameter) {
       updateParameter(data, currentParameter.id)
     } else {
@@ -255,10 +254,25 @@ function WaterParameters() {
   } = useForm()
   const toggleAddFormVisibility = () => {
     setIsAddFormVisible((prev) => !prev)
-    setIsEditFormVisible(false) // Đảm bảo form edit bị ẩn
+    setIsEditFormVisible(false) // Đảm bảo form chỉnh sửa bị ẩn
     setCurrentParameter(null)
-    reset()
-    console.log('Add Form Visibility:', !isAddFormVisible) // Kiểm tra trạng thái
+
+    if (!isAddFormVisible) {
+      // Chỉ reset khi form thêm được mở
+      reset({})
+      setNitriteStyle({})
+      setNitrateStyle({})
+      setPhosphateStyle({})
+      setAmmoniumStyle({})
+      setHardnessStyle({})
+      setOxygenStyle({})
+      setTemperatureStyle({})
+      setPhValueStyle({})
+      setCarbonHardnessStyle({})
+      setCarbonDioxideStyle({})
+      setSaltStyle({})
+      setTotalChlorineStyle({})
+    }
   }
   const toggleCloseForm = () => {
     setIsEditFormVisible(!isEditFormVisible)
@@ -309,7 +323,6 @@ function WaterParameters() {
 
   useEffect(() => {
     reset()
-    console.log('Current parameters:', parameters)
   }, [parameters])
   const getStyleBasedOnValue = (value, type) => {
     let newStyle = { border: '1px solid black', color: 'black' } // Giá trị mặc định
@@ -1095,7 +1108,11 @@ function WaterParameters() {
 
           {isAddFormVisible && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 '>
-              <div className='bg-white lg:min-w-[70vh] mb-auto mt-auto p-6 rounded-lg shadow-lg lg:max-h-[75vh] max-h-[70vh] overflow-y-auto no-scroll-bar '>
+              <div
+                className={` ${
+                  isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                }  lg:min-w-[70vh] mb-auto mt-auto p-6 rounded-lg shadow-lg lg:max-h-[75vh] max-h-[70vh] overflow-y-auto no-scroll-bar`}
+              >
                 <form onSubmit={handleSubmit(createParameter)} noValidate>
                   <div className='flex justify-between mb-5'>
                     <svg
@@ -1136,14 +1153,18 @@ function WaterParameters() {
                   <div className='text-black grid grid-cols-2 grid-rows-4 lg:gap-8 gap-6'>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='pondId'
                       >
                         Pond Name:
                       </label>
                       <select
                         id='pondId'
-                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full p-3 border ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white'
+                        }  border-black rounded-md shadow-sm`}
                         {...register('pondId', { required: 'Please select a pond' })}
                       >
                         <option value=''>Select a pond</option>
@@ -1159,7 +1180,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1 '>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='createDateTime'
                       >
                         Date & time
@@ -1167,7 +1190,9 @@ function WaterParameters() {
                       <input
                         type='datetime-local'
                         id='createDateTime'
-                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full p-3 border ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white'
+                        }  border-black rounded-md shadow-sm`}
                         max={new Date().toISOString().slice(0, 16)}
                         {...register('createDateTime', { required: 'Date Time is required' })}
                       />
@@ -1181,7 +1206,9 @@ function WaterParameters() {
                     <div className='relative col-span-1'>
                       <label
                         htmlFor='nitrate'
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark   ' : 'bg-white '
+                        }`}
                       >
                         Nitrate(NO₃):
                       </label>
@@ -1214,7 +1241,9 @@ function WaterParameters() {
                         id='nitrate'
                         step='0.001'
                         placeholder='mg/l'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('nitrate', {
                           required: 'Nitrate is required',
                           min: { value: 0, message: 'Nitrate value cannot be below 0 mg/l' },
@@ -1231,7 +1260,9 @@ function WaterParameters() {
                     <div className='relative col-span-1'>
                       <label
                         htmlFor='nitrite'
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                       >
                         Nitrite(NO₂):
                       </label>
@@ -1268,7 +1299,9 @@ function WaterParameters() {
                         id='nitrite'
                         step='0.01'
                         placeholder='mg/l'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('nitrite', {
                           required: 'Nitrite is required',
                           min: { value: 0, message: 'Nitrite value cannot be below 0 mg/l' },
@@ -1284,7 +1317,9 @@ function WaterParameters() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='phosphate'
                       >
                         Phosphate(PO₄):
@@ -1320,7 +1355,9 @@ function WaterParameters() {
                         id='phosphate'
                         step='0.001'
                         placeholder='mg/l'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('phosphate', {
                           required: 'Phosphate is required',
                           min: { value: 0, message: 'Phosphate value cannot be below 0 mg/l' },
@@ -1336,7 +1373,9 @@ function WaterParameters() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='ammonium'
                       >
                         Ammonium(NH₄):
@@ -1373,7 +1412,9 @@ function WaterParameters() {
                         min={0}
                         max={50}
                         placeholder='mg/l'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('ammonium', {
                           required: 'Ammonium is required',
                           min: { value: 0, message: 'Ammonium value cannot be below 0 mg/l' },
@@ -1389,7 +1430,9 @@ function WaterParameters() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='hardness'
                       >
                         Hardness(GH):
@@ -1424,7 +1467,9 @@ function WaterParameters() {
                         id='hardness'
                         step='0.1'
                         placeholder='°dH'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('hardness', {
                           required: 'Hardness is required',
                           min: { value: 0, message: 'Hardness value cannot be below 0 °dH' },
@@ -1440,7 +1485,9 @@ function WaterParameters() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='oxygen'
                       >
                         Oxygen(O₂):
@@ -1474,7 +1521,9 @@ function WaterParameters() {
                         id='oxygen'
                         placeholder='mg/l'
                         step='0.001'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('oxygen', {
                           required: 'Oxygen is required',
                           min: { value: 0, message: 'Oxygen value cannot be below 0 mg/l' },
@@ -1489,7 +1538,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='temperature'
                       >
                         Temperature:
@@ -1526,7 +1577,9 @@ function WaterParameters() {
                         min={0}
                         max={100}
                         id='temperature'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('temperature', {
                           required: 'Temperature is required',
                           min: { value: 0, message: 'Temperature value cannot be below 0 °C' },
@@ -1542,7 +1595,9 @@ function WaterParameters() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='phValue'
                       >
                         pH Value:
@@ -1577,7 +1632,9 @@ function WaterParameters() {
                         step='0.01'
                         min={0}
                         max={14}
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('phValue', {
                           required: 'pH Value is required',
                           min: { value: 0, message: 'pH Value cannot be below 0' },
@@ -1592,7 +1649,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='carbonHardness'
                       >
                         Carbon Hardness (KH):
@@ -1629,7 +1688,9 @@ function WaterParameters() {
                         type='number'
                         placeholder='°dH'
                         id='carbonHardness'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('carbonHardness', {
                           required: 'Carbon Hardness is required',
                           min: { value: 0, message: 'Carbon Hardness cannot be below 0 °dH' },
@@ -1646,7 +1707,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='carbonDioxide'
                       >
                         CO₂:
@@ -1684,7 +1747,9 @@ function WaterParameters() {
                         placeholder='mg/l'
                         id='carbonDioxide'
                         step='0.001'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('carbonDioxide', {
                           required: 'Carbon Dioxide is required',
                           min: { value: 0, message: 'CO₂ value cannot be below 0 mg/l' },
@@ -1701,7 +1766,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='salt'
                       >
                         Salt:
@@ -1738,7 +1805,9 @@ function WaterParameters() {
                         placeholder='%'
                         id='salt'
                         step='0.001'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('salt', {
                           required: 'Salt is required',
                           min: { value: 0, message: 'Salt value cannot be below 0%' },
@@ -1754,7 +1823,9 @@ function WaterParameters() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='totalChlorine'
                       >
                         Total Chlorine:
@@ -1790,7 +1861,9 @@ function WaterParameters() {
                         placeholder='mg/l'
                         id='totalChlorine'
                         step='0.001'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('totalChlorine', {
                           required: 'Total Chlorine is required',
                           min: { value: 0, message: 'Total Chlorine value cannot be below 0 mg/l' },
@@ -1807,7 +1880,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='temp'
                       >
                         Outdoor temp.:
@@ -1842,7 +1917,9 @@ function WaterParameters() {
                         placeholder='°C'
                         id='temp'
                         step='0.01'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black text-white' : 'bg-white border-black '
+                        }`}
                         {...register('temp', {
                           required: 'Temp is required',
                           min: {
@@ -1861,7 +1938,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='amountFed'
                       >
                         Amount fed:
@@ -1895,7 +1974,9 @@ function WaterParameters() {
                         type='number'
                         placeholder='g'
                         id='amountFed'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black text-white' : 'bg-white border-black '
+                        }`}
                         {...register('amountFed', {
                           required: 'Amount Fed is required',
                           min: {
@@ -1914,7 +1995,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-2  '>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white '
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='note'
                       >
                         Note:
@@ -1922,7 +2005,9 @@ function WaterParameters() {
                       <textarea
                         rows='3'
                         id='note'
-                        className='mt-1 block w-full p-2 border border-black outline-none rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black text-white' : 'bg-white border-black '
+                        }`}
                         {...register('note')}
                       />
                     </div>
@@ -1934,8 +2019,9 @@ function WaterParameters() {
           {isEditFormVisible && currentParameter && (
             <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-50 '>
               <div
-                className='bg-white lg:min-w-[70vh] mb-auto mt-auto p-6 rounded-lg shadow-lg lg:max-h-[75vh] 
-              max-h-[70vh] overflow-y-auto no-scroll-bar'
+                className={` ${
+                  isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                }  lg:min-w-[70vh] mb-auto mt-auto p-6 rounded-lg shadow-lg lg:max-h-[75vh] max-h-[70vh] overflow-y-auto no-scroll-bar`}
               >
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
                   <div className='flex justify-between mb-5'>
@@ -1977,14 +2063,18 @@ function WaterParameters() {
                   <div className='text-black grid grid-cols-2 grid-rows-4 gap-4'>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='pondId'
                       >
                         Pond Name:
                       </label>
                       <select
                         id='pondId'
-                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full p-3 border ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white'
+                        }  border-black rounded-md shadow-sm`}
                         {...register('pondId', { required: 'Please select a pond' })}
                       >
                         <option value='' disabled>
@@ -2002,7 +2092,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='createDateTime'
                       >
                         Date & time
@@ -2010,7 +2102,9 @@ function WaterParameters() {
                       <input
                         type='datetime-local'
                         id='createDateTime'
-                        className='mt-1 block w-full p-3 border border-black rounded-md shadow-sm'
+                        className={`mt-1 block w-full p-3 border ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white'
+                        }  border-black rounded-md shadow-sm`}
                         max={new Date().toISOString().slice(0, 16)}
                         {...register('createDateTime', { required: 'Date Time is required' })}
                       />
@@ -2024,7 +2118,9 @@ function WaterParameters() {
                     <div className='relative col-span-1'>
                       <label
                         htmlFor='nitrate'
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                       >
                         Nitrate(NO₃):
                       </label>
@@ -2057,7 +2153,9 @@ function WaterParameters() {
                         id='nitrate'
                         step='0.001'
                         placeholder='mg/l'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('nitrate', {
                           required: 'Nitrate is required',
                           min: { value: 0, message: 'Nitrate value cannot be below 0 mg/l' },
@@ -2073,7 +2171,9 @@ function WaterParameters() {
                     <div className='relative col-span-1'>
                       <label
                         htmlFor='nitrite'
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                       >
                         Nitrite(NO₂):
                       </label>
@@ -2110,7 +2210,9 @@ function WaterParameters() {
                         id='nitrite'
                         step='0.01'
                         placeholder='mg/l'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('nitrite', {
                           required: 'Nitrite is required',
                           min: { value: 0, message: 'Nitrite value cannot be below 0 mg/l' },
@@ -2126,7 +2228,9 @@ function WaterParameters() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='phosphate'
                       >
                         Phosphate(PO₄):
@@ -2162,7 +2266,9 @@ function WaterParameters() {
                         id='phosphate'
                         step='0.001'
                         placeholder='mg/l'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('phosphate', {
                           required: 'Phosphate is required',
                           min: { value: 0, message: 'Phosphate value cannot be below 0 mg/l' },
@@ -2178,7 +2284,9 @@ function WaterParameters() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='ammonium'
                       >
                         Ammonium(NH₄):
@@ -2215,7 +2323,9 @@ function WaterParameters() {
                         min={0}
                         max={50}
                         placeholder='mg/l'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('ammonium', {
                           required: 'Ammonium is required',
                           min: { value: 0, message: 'Ammonium value cannot be below 0 mg/l' },
@@ -2230,7 +2340,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='hardness'
                       >
                         Hardness(GH):
@@ -2265,7 +2377,9 @@ function WaterParameters() {
                         id='hardness'
                         step='0.1'
                         placeholder='°dH'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('hardness', {
                           required: 'Hardness is required',
                           min: { value: 0, message: 'Hardness value cannot be below 0 °dH' },
@@ -2281,7 +2395,9 @@ function WaterParameters() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='oxygen'
                       >
                         Oxygen(O₂):
@@ -2315,7 +2431,9 @@ function WaterParameters() {
                         id='oxygen'
                         placeholder='mg/l'
                         step='0.001'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('oxygen', {
                           required: 'Oxygen is required',
                           min: { value: 0, message: 'Oxygen value cannot be below 0 mg/l' },
@@ -2331,7 +2449,9 @@ function WaterParameters() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='temperature'
                       >
                         Temperature:
@@ -2368,7 +2488,9 @@ function WaterParameters() {
                         min={0}
                         max={100}
                         id='temperature'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('temperature', {
                           required: 'Temperature is required',
                           min: { value: 0, message: 'Temperature value cannot be below 0 °C' },
@@ -2384,7 +2506,9 @@ function WaterParameters() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='phValue'
                       >
                         pH Value:
@@ -2419,7 +2543,9 @@ function WaterParameters() {
                         step='0.01'
                         min={0}
                         max={14}
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('phValue', {
                           required: 'pH Value is required',
                           min: { value: 0, message: 'pH Value cannot be below 0' },
@@ -2434,7 +2560,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='carbonHardness'
                       >
                         Carbon Hardness (KH):
@@ -2471,7 +2599,9 @@ function WaterParameters() {
                         type='number'
                         placeholder='°dH'
                         id='carbonHardness'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('carbonHardness', {
                           required: 'Carbon Hardness is required',
                           min: { value: 0, message: 'Carbon Hardness cannot be below 0 °dH' },
@@ -2488,7 +2618,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='carbonDioxide'
                       >
                         CO₂:
@@ -2526,7 +2658,9 @@ function WaterParameters() {
                         placeholder='mg/l'
                         id='carbonDioxide'
                         step='0.001'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('carbonDioxide', {
                           required: 'Carbon Dioxide is required',
                           min: { value: 0, message: 'CO₂ value cannot be below 0 mg/l' },
@@ -2543,7 +2677,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='salt'
                       >
                         Salt:
@@ -2580,7 +2716,9 @@ function WaterParameters() {
                         placeholder='%'
                         id='salt'
                         step='0.001'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('salt', {
                           required: 'Salt is required',
                           min: { value: 0, message: 'Salt value cannot be below 0%' },
@@ -2598,7 +2736,9 @@ function WaterParameters() {
 
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='totalChlorine'
                       >
                         Total Chlorine:
@@ -2634,7 +2774,9 @@ function WaterParameters() {
                         placeholder='mg/l'
                         id='totalChlorine'
                         step='0.001'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
+                        }`}
                         {...register('totalChlorine', {
                           required: 'Total Chlorine is required',
                           min: { value: 0, message: 'Total Chlorine value cannot be below 0 mg/l' },
@@ -2651,7 +2793,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='temp'
                       >
                         Outdoor temp.:
@@ -2686,7 +2830,9 @@ function WaterParameters() {
                         placeholder='°C'
                         id='temp'
                         step='0.01'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black text-white' : 'bg-white border-black '
+                        }`}
                         {...register('temp', {
                           required: 'Temp is required',
                           min: {
@@ -2707,7 +2853,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-1'>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white'
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='amountFed'
                       >
                         Amount fed:
@@ -2741,7 +2889,9 @@ function WaterParameters() {
                         type='number'
                         placeholder='g'
                         id='amountFed'
-                        className='mt-1 block border border-black outline-none w-full p-3 pr-10 rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black text-white' : 'bg-white border-black '
+                        }`}
                         {...register('amountFed', {
                           required: 'Amount Fed is required',
                           min: {
@@ -2762,7 +2912,9 @@ function WaterParameters() {
                     </div>
                     <div className='relative col-span-2  '>
                       <label
-                        className='absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 bg-white '
+                        className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark ' : 'bg-white '
+                        }`}
                         htmlFor='note'
                       >
                         Note:
@@ -2770,7 +2922,9 @@ function WaterParameters() {
                       <textarea
                         rows='3'
                         id='note'
-                        className='mt-1 block w-full p-2 border border-black outline-none rounded-md shadow-sm'
+                        className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
+                          isDarkMode ? 'bg-custom-dark border-black text-white' : 'bg-white border-black '
+                        }`}
                         {...register('note')}
                       />
                     </div>
@@ -2781,7 +2935,7 @@ function WaterParameters() {
                     className='mx-auto'
                     onClick={() => {
                       if (window.confirm('Are you sure you want to delete this parameter?')) {
-                        deleteParameter(parameters.id)
+                        deleteParameter(currentParameter.id)
                       }
                     }}
                   >
