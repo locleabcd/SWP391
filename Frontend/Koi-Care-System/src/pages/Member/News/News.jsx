@@ -306,7 +306,7 @@ function News() {
                       </a>
 
                       <div className='flex gap-2'>
-                        <a className='cursor-pointer flex items-center justify-center p-2 bg-slate-200 flex-none text-blue w-10 h-10 rounded-full'>
+                        <a className='cursor-pointer flex items-center justify-center p-2 bg-slate-200 text-black flex-none text-blue w-10 h-10 rounded-full'>
                           <svg
                             xmlns='http://www.w3.org/2000/svg'
                             fill='none'
