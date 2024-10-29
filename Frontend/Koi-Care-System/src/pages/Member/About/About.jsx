@@ -11,27 +11,27 @@ function About() {
     {
       name: 'The Vinh',
       role: 'Frontend Developer',
-      img: 'https://koicareimagev2.blob.core.windows.net/koicarestorage/Vinh.jpg'
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Vinh.jpg'
     },
     {
       name: 'Duc Loc',
       role: 'Leader-Backend Developer',
-      img: 'https://koicareimagev2.blob.core.windows.net/koicarestorage/Loc.jpg'
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Loc.jpg'
     },
     {
       name: 'Trung Kien',
       role: 'Frontend Developer',
-      img: 'https://koicareimagev2.blob.core.windows.net/koicarestorage/Kien.jpg'
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Kien.jpg'
     },
     {
       name: 'Minh Thoai',
       role: 'Frontend Developer',
-      img: 'https://koicareimagev2.blob.core.windows.net/koicarestorage/Thoai.jpg'
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Thoai.jpg'
     },
     {
       name: 'An Phuoc',
       role: 'Backend Developer',
-      img: 'https://koicareimagev2.blob.core.windows.net/koicarestorage/Phuoc.jpg'
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Phuoc.jpg'
     }
   ]
 

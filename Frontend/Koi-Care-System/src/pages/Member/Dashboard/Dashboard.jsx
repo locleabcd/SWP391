@@ -230,7 +230,7 @@ function Dashboard() {
             <div className='grid lg:grid-cols-5 md:grid-cols-3 grid-cols-1 mt-10 px-2 gap-10'>
               <div className='flex flex-col rounded-lg items-center py-8 justify-center bg-yellow-100'>
                 <GiAquarium
-                  className={`size-20 p-5 rounded-full ${isDarkMode ? 'text-black' : 'text-white'} bg-yellow-500`}
+                  className={`size-20 p-5 rounded-full ${isDarkMode ? 'text-white' : 'text-white'} bg-yellow-500`}
                 />
                 <div className={`${isDarkMode ? 'text-black' : ''} text-2xl mt-3`}>Ponds</div>
                 <div className={`text-2xl mt-1 ${isDarkMode ? 'text-black' : ''}`}>{ponds.length}</div>
