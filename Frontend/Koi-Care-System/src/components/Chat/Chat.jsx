@@ -222,7 +222,7 @@ const Chat = () => {
                   alt='Chat Button'
                   data-src='https://bot.mygpt.vn/mygpt-chat-icon.png'
                   className='chat-button lazyloaded size-28 relative'
-                  src='https://bot.mygpt.vn/mygpt-chat-icon.png'
+                  src={ima}
                   loading='lazy'
                 />
               </button>
