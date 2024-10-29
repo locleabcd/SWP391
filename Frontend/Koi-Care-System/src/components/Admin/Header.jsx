@@ -15,6 +15,7 @@ import { FaMoneyBill } from 'react-icons/fa'
 import { AiFillShop } from 'react-icons/ai'
 import adminPathInfor from '../../constants/adminPathInfor'
 import { FaRegNewspaper } from 'react-icons/fa'
+import { RiCoupon2Fill } from 'react-icons/ri'
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -251,7 +252,7 @@ function Header() {
                   viewBox='0 0 24 24'
                   strokeWidth='1.5'
                   stroke='currentColor'
-                  className='w-7 mr-3'
+                  className='w-7 h-7 mr-3'
                 >
                   <path
                     strokeLinecap='round'
@@ -270,11 +271,11 @@ function Header() {
                 const active = isActive
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                return `${active} min-w-full  p-4 cursor-pointer rounded-lg flex justify-between items-center`
               }}
             >
               <div className='flex items-center'>
-                <div className='w-6 h-6 mr-3'>
+                <div className='w-7 h-7 mr-3'>
                   <FaRegNewspaper className='w-full h-full' />
                 </div>
                 <span className='font-semibold'>News</span>
@@ -316,10 +317,10 @@ function Header() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center`
+                        return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center`
                       }}
                     >
-                      <div className='flex items-center'>
+                      <div className='pl-2 flex items-center'>
                         <div className='w-6 h-6 mr-3'>
                           <FaBoxArchive className='w-full h-full' />
                         </div>
@@ -335,24 +336,13 @@ function Header() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center `
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center `
                       }}
                     >
-                      <div className='flex items-center'>
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          strokeWidth='1.5'
-                          stroke='currentColor'
-                          className='w-7 mr-3'
-                        >
-                          <path
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                            d='M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z'
-                          />
-                        </svg>
+                      <div className='pl-2 flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
+                          <RiCoupon2Fill className='w-full h-full' />
+                        </div>
                         <span className='font-semibold'>Promotion</span>
                       </div>
                     </NavLink>
@@ -364,10 +354,10 @@ function Header() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center `
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center `
                       }}
                     >
-                      <div className='flex items-center'>
+                      <div className='pl-2 flex items-center'>
                         <div className='w-6 h-6 mr-3'>
                           <FaBox className='w-full h-full' />
                         </div>
@@ -415,11 +405,11 @@ function Header() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center $`
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center $`
                       }}
                     >
-                      <div className='flex items-center'>
-                        <div className='w-7 h-7 mr-3'>
+                      <div className='pl-2 flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
                           <PiNewspaperClipping className='w-full h-full' />
                         </div>
                         <span className='font-semibold'>Shop</span>
@@ -433,11 +423,11 @@ function Header() {
                         const active = isActive
                           ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                           : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                        return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center `
+                        return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center `
                       }}
                     >
-                      <div className='flex items-center'>
-                        <div className='w-7 h-7 mr-3'>
+                      <div className='pl-2 flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
                           <FaTags className='w-full h-full' />
                         </div>
                         <span className='font-semibold'>Customer</span>
@@ -484,11 +474,11 @@ function Header() {
                           const active = isActive
                             ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                             : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                          return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center `
+                          return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center `
                         }}
                       >
-                        <div className='flex items-center'>
-                          <div className='w-7 h-7 mr-3'>
+                        <div className='pl-2 flex items-center'>
+                          <div className='w-6 h-6 mr-3'>
                             <FaCartShopping className='w-full h-full' />
                           </div>
                           <span className='font-semibold'>Manage Order</span>
@@ -504,11 +494,11 @@ function Header() {
                           const active = isActive
                             ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                             : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
-                          return `${active} min-w-full p-4 cursor-pointer rounded-lg flex justify-between items-center `
+                          return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center `
                         }}
                       >
-                        <div className='flex items-center'>
-                          <div className='w-7 h-7 mr-3'>
+                        <div className='pl-2 flex items-center'>
+                          <div className='w-6 h-6 mr-3'>
                             <FaMoneyBill className='w-full h-full' />
                           </div>
                           <span className='font-semibold'>Manage Payment</span>
