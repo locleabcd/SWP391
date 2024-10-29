@@ -573,24 +573,44 @@ function Statistics() {
                 className='py-5 px-2 rounded-lg border border-gray-200 shadow-lg'
               >
                 <div className='text-xl mb-4 text-center'>CO₂ - O₂ - Total Chlorine (mg/l)</div>
-                <ResponsiveContainer width='100%' height={300}>
+                <ResponsiveContainer width='100%' height={320}>
                   <AreaChart
                     data={sortedWaterData}
                     className='w-full mx-auto'
-                    margin={{
-                      top: 10,
-                      right: 60,
-                      left: 0,
-                      bottom: 0
-                    }}
+                    margin={{ top: 20, right: 30, left: 10, bottom: 10 }}
                   >
-                    <CartesianGrid strokeDasharray='3 3' />
-                    <XAxis dataKey='name' />
-                    <YAxis />
-                    <Tooltip formatter={(value) => formatTooltipValue(value)} />
-                    <Area type='monotone' dataKey='nitrate' stackId='1' stroke='#ff7300' fill='#ff7300' />
-                    <Area type='monotone' dataKey='carbonDioxide' stackId='1' stroke='#7CF0FF' fill='#7CF0FF' />
-                    <Area type='monotone' dataKey='oxygen' stackId='1' stroke='#4570EA' fill='#4570EA' />
+                    <defs>
+                      <linearGradient id='nitrateColor' x1='0' y1='0' x2='0' y2='1'>
+                        <stop offset='5%' stopColor='#ff7300' stopOpacity={0.6} />
+                        <stop offset='95%' stopColor='#ff7300' stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id='carbonDioxideColor' x1='0' y1='0' x2='0' y2='1'>
+                        <stop offset='5%' stopColor='#7CF0FF' stopOpacity={0.6} />
+                        <stop offset='95%' stopColor='#7CF0FF' stopOpacity={0} />
+                      </linearGradient>
+                      <linearGradient id='oxygenColor' x1='0' y1='0' x2='0' y2='1'>
+                        <stop offset='5%' stopColor='#4570EA' stopOpacity={0.6} />
+                        <stop offset='95%' stopColor='#4570EA' stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+
+                    <CartesianGrid strokeDasharray='3 3' opacity={0.3} />
+                    <XAxis dataKey='name' tick={{ fill: '#555' }} />
+                    <YAxis tick={{ fill: '#555' }} />
+                    <Tooltip
+                      formatter={(value) => `${formatTooltipValue(value)} mg/l`}
+                      contentStyle={{ backgroundColor: '#f4f4f4', borderColor: '#ddd' }}
+                      labelStyle={{ fontWeight: 'bold' }}
+                    />
+                    <Area type='monotone' dataKey='nitrate' stackId='1' stroke='#ff7300' fill='url(#nitrateColor)' />
+                    <Area
+                      type='monotone'
+                      dataKey='carbonDioxide'
+                      stackId='1'
+                      stroke='#7CF0FF'
+                      fill='url(#carbonDioxideColor)'
+                    />
+                    <Area type='monotone' dataKey='oxygen' stackId='1' stroke='#4570EA' fill='url(#oxygenColor)' />
                   </AreaChart>
                 </ResponsiveContainer>
               </motion.div>
