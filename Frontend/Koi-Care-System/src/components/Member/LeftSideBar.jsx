@@ -407,19 +407,23 @@ function LeftSideBar() {
           </div>
 
           <div
-            className={`mt-auto w-full p-2 flex justify-between items-center 
+            className={`mt-auto sticky bottom-0 z-50 w-full p-2 flex justify-between items-center 
             ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
           >
-            <div className='bg-white flex p-4 rounded-lg items-center justify-between w-full'>
+            <div
+              className={`flex p-4 rounded-lg items-center justify-between w-full ${isDarkMode ? 'bg-custom-dark ' : 'bg-white'}`}
+            >
               <div className='card-content flex items-center '>
                 <img
-                  src={avt}
+                  src={user.avatar || 'default-avatar.png'}
                   alt='User Avatar'
                   className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
                 />
                 <div className='ml-3'>
-                  <p className='font-semibold text-lg text-black'>{name || 'User Name'}</p>
-                  <p className='text-sm text-gray-500'>{role || 'User Role'}</p>
+                  <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'textblack'}`}>
+                    {user.name || 'User Name'}
+                  </p>
+                  <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
                 </div>
               </div>
               <Link onClick={handleLogout} to='/login'>

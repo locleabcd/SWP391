@@ -5,6 +5,7 @@ import backgroundVideo from '../../assets/0917(1).mp4'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import { TextField } from '@mui/material'
 
 function Email() {
   const [loading, setLoading] = useState(false)
@@ -29,13 +30,14 @@ function Email() {
         <h2 className='text-black text-3xl font-bold mb-6 text-center'>Forgot Password</h2>
 
         <div className='mb-4 relative'>
-          <div className='absolute -top-[12px] left-3 font-semibold bg-custom-Beige'>Email</div>
-          <input
+          <TextField
+            id='email'
             onChange={(e) => setEmail(e.target.value)}
             type='email'
-            id='username'
-            placeholder='abcd@gmail.com'
-            className='w-full p-3 bg-gray-700 bg-transparent border border-gray-500 placeholder-gray-500 rounded-lg focus:outline-none transition-colors duration-200'
+            label='Email'
+            placeholder='acd@gmail.com'
+            variant='outlined'
+            className='w-full p-3 bg-gray-700 bg-transparent'
           />
         </div>
 
