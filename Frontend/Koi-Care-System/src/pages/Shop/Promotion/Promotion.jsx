@@ -284,7 +284,7 @@ function Promotion() {
               }`}
             >
               <div
-                className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] overflow-auto ${
+                className={`p-4 border rounded-lg max-h-[80vh] max-w-[100vw] w-[80vh] overflow-auto ${
                   isDarkMode ? 'bg-gray-800 border-gray-700' : 'bg-white'
                 }`}
               >
