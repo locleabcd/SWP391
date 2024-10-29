@@ -82,6 +82,10 @@ function LeftSideBar() {
     localStorage.setItem('isShopOpen', JSON.stringify(isShopOpen))
   }, [isShopOpen])
 
+  const avt = localStorage.getItem('avt')
+  const name = localStorage.getItem('name')
+  const role = localStorage.getItem('role')
+
   return (
     <div>
       {/* open close button  */}
@@ -495,13 +499,13 @@ function LeftSideBar() {
           >
             <div className='card-content flex items-center '>
               <img
-                src={user.avatar || 'default-avatar.png'}
+                src={avt}
                 alt='User Avatar'
                 className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
               />
               <div className='ml-3'>
-                <p className='font-semibold text-lg text-black'>{user.name || 'User Name'}</p>
-                <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
+                <p className='font-semibold text-lg text-black'>{name || 'User Name'}</p>
+                <p className='text-sm text-gray-500'>{role || 'User Role'}</p>
               </div>
             </div>
             <Link onClick={handleLogout} to='/login'>
