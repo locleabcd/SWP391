@@ -195,16 +195,19 @@ const Chat = () => {
     console.log('Chat session closed.')
   }
 
-  const messageList = ['Tôi là chat box của Koi Care System', 'Tôi sẽ trả lời các câu hỏi về dịch vụ']
+  const messageList = [
+    'I can help you find information about fish ponds, Contact me if you have any questions!',
+    'Do you need help with Koi care? I will provide detailed information about pond maintenance services.'
+  ]
 
   useEffect(() => {
     messageList.forEach((message, index) => {
       setTimeout(() => {
         setMessages((prevMessages) => [...prevMessages, message])
-      }, index * 3000)
+      }, index * 5000)
     })
 
-    const totalTime = messageList.length * 3000
+    const totalTime = messageList.length * 6000
     const clearMessagesTimeout = setTimeout(() => {
       setMessages([])
     }, totalTime)
@@ -257,7 +260,7 @@ const Chat = () => {
                 {messages.map((msg, index) => (
                   <div
                     key={index}
-                    className='chat absolute text-white rounded-r-full shadow-xl text-xl top-2 w-80 px-16 left-24 py-4 bg-blue-300'
+                    className='chat absolute text-white rounded-r-full shadow-xl text-xl top-0 w-96 px-10 left-24 py-4 bg-blue-300'
                   >
                     {msg}
                   </div>
