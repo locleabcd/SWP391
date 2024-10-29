@@ -365,7 +365,6 @@ function MyKoi() {
             className={` ${
               isDarkMode ? 'bg-custom-dark' : 'bg-white'
             }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
-            data-aos='fade-up'
           >
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className='flex justify-between mb-5'>

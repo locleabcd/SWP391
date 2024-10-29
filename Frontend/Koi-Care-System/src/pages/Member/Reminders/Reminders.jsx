@@ -169,7 +169,7 @@ function Reminders() {
                 viewBox='0 0 24 24'
                 strokeWidth={1.5}
                 stroke='currentColor'
-                className='fixed z-20 bottom-5 left-[275px] text-lg text-white outline-none rounded-full bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
+                className='fixed z-20 bottom-5 right-[40px] text-lg text-white outline-none rounded-full bg-custom-left-bar shadow-lg size-12 lg:size-16 lg:p-2 cursor-pointer'
                 onClick={() => {
                   setIsAddFormVisible(true)
                 }}
