@@ -7,6 +7,7 @@ import Draggable from 'react-draggable'
 import '../../index.css'
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import ima from '../../assets/3x/Asset 1@3x.png'
+import EmojiPicker from 'emoji-picker-react'
 
 var stompClient = null
 const Chat = () => {
@@ -21,6 +22,12 @@ const Chat = () => {
   const [hasUpdated, setHasUpdated] = useState(false)
   const chatAreaRef = useRef(null)
   const [messages, setMessages] = useState([])
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+
+  const handleEmojiClick = (emoji) => {
+    setMessageInput((prevInput) => prevInput + emoji.emoji)
+    setShowEmojiPicker(false)
+  }
   const baseUrl = 'https://koicaresystemv2.azurewebsites.net/api'
   const initValue = () => {
     setNickname(localStorage.getItem('name'))
@@ -418,7 +425,7 @@ const Chat = () => {
                 </div>
 
                 {selectedUserId && (
-                  <form onSubmit={sendMessage} className='message-form flex'>
+                  <form onSubmit={sendMessage} className='message-form flex relative'>
                     <input
                       type='text'
                       id='message'
@@ -428,7 +435,21 @@ const Chat = () => {
                       placeholder='Aa'
                       required
                     />
-                    <button className='bg-gray-50 border-r text-black px-2 py-2'>
+                    <button
+                      type='button'
+                      className='bg-gray-50 border-r text-black px-2 py-2'
+                      onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                    >
+                      😊
+                    </button>
+
+                    {showEmojiPicker && (
+                      <div className='absolute bottom-12 right-0'>
+                        <EmojiPicker onEmojiClick={handleEmojiClick} />
+                      </div>
+                    )}
+
+                    <button type='submit' className='bg-gray-50 border-r text-black px-2 py-2'>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
