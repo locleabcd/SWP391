@@ -16,21 +16,7 @@ function CustomerAD() {
   const { isDarkMode } = useDarkMode()
   const [users, setUsers] = useState([])
   const fallbackImage = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAkFBMVEX///8WFhgAAAD...'
-  const lightTheme = createTheme({
-    palette: {
-      mode: 'light'
-    }
-  })
 
-  const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-      background: {
-        default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
-        paper: 'rgb(36 48 63 / var(--tw-bg-opacity))'
-      }
-    }
-  })
   const getUser = async () => {
     try {
       const token = localStorage.getItem('token')

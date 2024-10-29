@@ -414,7 +414,7 @@ function Dashboard() {
           {/* row 2 */}
           <div className='grid grid-cols-1 lg:grid-cols-8 gap-10'>
             {/* areachart  */}
-            <div className='col-span-5 flex flex-col  mt-6 border rounded-md'>
+            <div className='lg:col-span-5 flex flex-col  mt-6 border rounded-md'>
               <div className='my-4 px-6 flex justify-between items-center'>
                 <h1 className='text-2xl font-bold'>Orders and Payments Analytics</h1>
                 <select
@@ -466,7 +466,7 @@ function Dashboard() {
               </ResponsiveContainer>
             </div>
 
-            <div className='col-span-3 grid grid-cols-1 lg:grid-cols-1 gap-10'>
+            <div className='lg:col-span-3 grid grid-cols-1 lg:grid-cols-1 gap-10'>
               {/* pie chart  */}
               <div className='p-6 shadow border rounded-lg mt-6'>
                 <h2 className='text-2xl font-semibold mb-4'>Earning by Category</h2>

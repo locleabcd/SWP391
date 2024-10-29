@@ -240,7 +240,7 @@ function LeftSideBar() {
                         }`
                       }}
                     >
-                      <div className='flex items-center'>
+                      <div className='pl-2 flex items-center'>
                         <div className='w-7 h-7 mr-3'>
                           <PiNewspaperClipping className='w-full h-full' />
                         </div>
@@ -259,7 +259,7 @@ function LeftSideBar() {
                         }`
                       }}
                     >
-                      <div className='flex items-center'>
+                      <div className='pl-2 flex items-center'>
                         <div className='w-7 h-7 mr-3'>
                           <FaTags className='w-full h-full' />
                         </div>
@@ -315,7 +315,7 @@ function LeftSideBar() {
                           }`
                         }}
                       >
-                        <div className='flex items-center'>
+                        <div className='pl-2 flex items-center'>
                           <div className='w-6 h-6 mr-3'>
                             <FaBoxArchive className='w-full h-full' />
                           </div>
@@ -336,7 +336,7 @@ function LeftSideBar() {
                           }`
                         }}
                       >
-                        <div className='flex items-center'>
+                        <div className='pl-2 flex items-center'>
                           <div className='w-6 h-6 mr-3'>
                             <RiCoupon2Fill className='w-full h-full' />
                           </div>
@@ -357,7 +357,7 @@ function LeftSideBar() {
                           }`
                         }}
                       >
-                        <div className='flex items-center'>
+                        <div className='pl-2 flex items-center'>
                           <div className='w-6 h-6 mr-3'>
                             <BiSolidCategory className='w-full h-full' />
                           </div>
@@ -378,7 +378,7 @@ function LeftSideBar() {
                           }`
                         }}
                       >
-                        <div className='flex items-center'>
+                        <div className='pl-2 flex items-center'>
                           <div className='w-6 h-6 mr-3'>
                             <FaImage className='w-full h-full' />
                           </div>
@@ -399,7 +399,7 @@ function LeftSideBar() {
                           }`
                         }}
                       >
-                        <div className='flex items-center'>
+                        <div className='pl-2 flex items-center'>
                           <div className='w-6 h-6 mr-3'>
                             <FaBox className='w-full h-full' />
                           </div>
@@ -454,7 +454,7 @@ function LeftSideBar() {
                         }`
                       }}
                     >
-                      <div className='flex items-center'>
+                      <div className='pl-2 flex items-center'>
                         <div className='w-7 h-7 mr-3'>
                           <FaCartShopping className='w-full h-full' />
                         </div>
@@ -473,7 +473,7 @@ function LeftSideBar() {
                         }`
                       }}
                     >
-                      <div className='flex items-center'>
+                      <div className='pl-2 flex items-center'>
                         <div className='w-7 h-7 mr-3'>
                           <FaMoneyBill className='w-full h-full' />
                         </div>

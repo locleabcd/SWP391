@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
@@ -23,22 +24,6 @@ function ShopAD() {
   const [email, setEmail] = useState('') // Optional email
   const [isFormOpen, setIsFormOpen] = useState(false)
   const navigate = useNavigate()
-
-  const lightTheme = createTheme({
-    palette: {
-      mode: 'light'
-    }
-  })
-
-  const darkTheme = createTheme({
-    palette: {
-      mode: 'dark',
-      background: {
-        default: 'rgb(36 48 63 / var(--tw-bg-opacity))',
-        paper: 'rgb(36 48 63 / var(--tw-bg-opacity))'
-      }
-    }
-  })
 
   const getUsers = async () => {
     try {
