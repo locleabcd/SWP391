@@ -154,7 +154,7 @@ function WaterParameters() {
           }
         }
       )
-
+      toast.success('Create Parameter successfully')
       setIsAddFormVisible(false) // Đóng form sau khi tạo thành công
       const userId = localStorage.getItem('id')
       getParameter(userId)
@@ -162,6 +162,7 @@ function WaterParameters() {
       reset() // Đặt lại form
     } catch (error) {
       console.error('Error during parameter creation: ', error)
+      toast.error('Error during parameter creation')
     } finally {
       setIsSubmitting(false)
       setIsLoading(false)
@@ -204,11 +205,13 @@ function WaterParameters() {
           }
         }
       )
+      toast.success('Update Parameter successfully')
       setIsEditFormVisible(false) // Đóng form sau khi cập nhật thành công
       const userId = localStorage.getItem('id')
       getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
       reset()
     } catch (error) {
+      toast.error('Update Parameter error')
       console.log(error)
     } finally {
       setIsSubmitting(false)
@@ -228,12 +231,14 @@ function WaterParameters() {
           Authorization: `Bearer ${token}`
         }
       })
-      setIsEditFormVisible(false) // Đóng form sau khi cập nhật thành công
+      setIsEditFormVisible(false)
+      toast.success('Parameter deleted successfully')
       const userId = localStorage.getItem('id')
       getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
       reset()
     } catch (error) {
       console.error('Error deleting paramter:', error)
+      toast.error('Error deleting paramter')
     } finally {
       setIsLoading(false)
     }
