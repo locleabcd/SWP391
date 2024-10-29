@@ -253,7 +253,7 @@ function News() {
                             style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
                           />
                           <img
-                            src={profiles[blog.user.id] || 'default-avatar.png'}
+                            src={blog.avatar}
                             className='w-12 h-12 absolute -bottom-[20px] left-8 rounded-full border border-gray-300'
                             alt="Author's Avatar"
                           />
