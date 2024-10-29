@@ -200,7 +200,7 @@ const Chat = () => {
     messageList.forEach((message, index) => {
       setTimeout(() => {
         setMessages((prevMessages) => [...prevMessages, message])
-      }, index * 4000)
+      }, index * 3000)
     })
   }, [])
 
@@ -224,19 +224,6 @@ const Chat = () => {
                   src='https://bot.mygpt.vn/mygpt-chat-icon.png'
                   loading='lazy'
                 />
-
-                {messages.map((msg, index) => (
-                  <div
-                    key={index}
-                    className='chat absolute text-white rounded-r-full shadow-xl text-xl top-8 w-96 px-10 left-28 py-4 bg-orange-500'
-                  >
-                    {msg}
-                  </div>
-                ))}
-
-                {/* <div className='chat absolute opacity-0 hover:opacity-100 text-white rounded-r-full shadow-xl text-xl top-8 w-64 px-10 left-28 py-4 bg-orange-500'>
-       Bạn cần tư vấn gì ?
-     </div> */}
               </button>
             </form>
           </div>
