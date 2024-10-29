@@ -792,7 +792,6 @@ function KoiDetails() {
                 className={` ${
                   isDarkMode ? 'bg-custom-dark' : 'bg-white'
                 }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
-                data-aos='fade-up'
               >
                 {/* Form for editing koi */}
                 <form onSubmit={handleSubmit(onSubmit)} noValidate>
@@ -1126,7 +1125,6 @@ function KoiDetails() {
                 className={` ${
                   isDarkMode ? 'bg-custom-dark' : 'bg-white'
                 }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
-                data-aos='fade-up'
               >
                 <form onSubmit={handleSubmit(onSubmitGrowth)} noValidate>
                   <div className='flex justify-between mb-5'>
@@ -1331,7 +1329,6 @@ function KoiDetails() {
                 className={` ${
                   isDarkMode ? 'bg-custom-dark' : 'bg-white'
                 }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
-                data-aos='fade-up'
               >
                 <form onSubmit={handleSubmit(onSubmitGrowth)} noValidate>
                   <div className='flex justify-between mb-5'>
@@ -1530,7 +1527,6 @@ function KoiDetails() {
                 className={` ${
                   isDarkMode ? 'bg-custom-dark' : 'bg-white'
                 }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
-                data-aos='fade-up'
               >
                 {/* Form for adding growth record */}
                 <form onSubmit={handleSubmit(onSubmitRemark)} noValidate>
@@ -1634,7 +1630,6 @@ function KoiDetails() {
                 className={` ${
                   isDarkMode ? 'bg-custom-dark' : 'bg-white'
                 }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
-                data-aos='fade-up'
               >
                 {/* Form for adding growth record */}
                 <form onSubmit={handleSubmit(onSubmitRemark)} noValidate>
