@@ -5,9 +5,11 @@ import Stomp from 'stompjs'
 import axios from 'axios'
 import Draggable from 'react-draggable'
 import '../../index.css'
+import { useDarkMode } from '../../hooks/DarkModeContext'
 
 var stompClient = null
 const Chat = () => {
+  const { isDarkMode } = useDarkMode()
   const [nickname, setNickname] = useState('')
   const [selectedUserId, setSelectedUserId] = useState(null)
   const [connectedUsers, setConnectedUsers] = useState([])
@@ -17,6 +19,7 @@ const Chat = () => {
   const [userRole, setUserRole] = useState('')
   const [hasUpdated, setHasUpdated] = useState(false)
   const chatAreaRef = useRef(null)
+  const [messages, setMessages] = useState([])
   const baseUrl = 'https://koicaresystemv2.azurewebsites.net/api'
   const initValue = () => {
     setNickname(localStorage.getItem('name'))
@@ -71,7 +74,6 @@ const Chat = () => {
 
   const userItemClick = (userId) => {
     setSelectedUserId(userId)
-    fetchAndDisplayUserChat(userId)
   }
 
   const fetchAndDisplayUserChat = async () => {
@@ -95,6 +97,7 @@ const Chat = () => {
   const staffItemClick = (userId) => {
     setSelectedUserId(userId)
     localStorage.setItem('selectedUserId', userId)
+    updateRecipientChat(userId)
     if (!hasUpdated) {
       updateRecipientChat(userId)
       setHasUpdated(true)
@@ -181,50 +184,102 @@ const Chat = () => {
   const onLogout = () => {
     if (stompClient) {
       stompClient.send('/app/user.disconnectUser', {}, JSON.stringify({ nickname: nickname, status: 'OFFLINE' }))
-      window.location.reload()
+      stompClient.disconnect()
     }
+
+    setSelectedUserId(null)
+    setChatMessages([])
+    setConnectedUsers([])
+    setIsJoined(false)
+    console.log('Chat session closed.')
   }
+
+  const messageList = ['Tôi là chat box của Koi Care System', 'Tôi sẽ trả lời các câu hỏi về dịch vụ']
+
+  useEffect(() => {
+    messageList.forEach((message, index) => {
+      setTimeout(() => {
+        setMessages((prevMessages) => [...prevMessages, message])
+      }, index * 4000)
+    })
+  }, [])
 
   return (
     <Draggable>
       <div className='fixed bottom-4 left-1/5 z-50'>
-        <div className={`${isJoined ? 'opacity-0' : 'opacity-100'}`}>
-          <form onSubmit={connect} className='space-y-4'>
-            <button
-              type='submit'
-              className='text-white px-3 py-3 rounded-full'
-              onClick={() => {
-                setIsJoined(true)
-                userItemClick('a')
-              }}
-            >
-              {/* <svg
-                xmlns='http://www.w3.org/2000/svg'
-                fill='none'
-                viewBox='0 0 24 24'
-                strokeWidth={1.5}
-                stroke='currentColor'
-                className='size-10'
+        {userRole === 'SHOP' ? (
+          <div className={`${isJoined ? 'opacity-0' : 'opacity-100'}`}>
+            <form onSubmit={connect} className='space-y-4'>
+              <button
+                type='submit'
+                className='text-white px-3 py-3 rounded-full'
+                onClick={() => {
+                  setIsJoined(true)
+                }}
               >
-                <path
-                  strokeLinecap='round'
-                  strokeLinejoin='round'
-                  d='M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z'
+                <img
+                  alt='Chat Button'
+                  data-src='https://bot.mygpt.vn/mygpt-chat-icon.png'
+                  className='chat-button lazyloaded size-28 relative'
+                  src='https://bot.mygpt.vn/mygpt-chat-icon.png'
+                  loading='lazy'
                 />
-              </svg> */}
-              <img
-                alt='Chat Button'
-                data-src='https://bot.mygpt.vn/mygpt-chat-icon.png'
-                className='chat-button lazyloaded size-28'
-                src='https://bot.mygpt.vn/mygpt-chat-icon.png'
-                loading='lazy'
-              />
-            </button>
-          </form>
-        </div>
+
+                {messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className='chat absolute text-white rounded-r-full shadow-xl text-xl top-8 w-96 px-10 left-28 py-4 bg-orange-500'
+                  >
+                    {msg}
+                  </div>
+                ))}
+
+                {/* <div className='chat absolute opacity-0 hover:opacity-100 text-white rounded-r-full shadow-xl text-xl top-8 w-64 px-10 left-28 py-4 bg-orange-500'>
+       Bạn cần tư vấn gì ?
+     </div> */}
+              </button>
+            </form>
+          </div>
+        ) : (
+          <div className={`${isJoined ? 'opacity-0' : 'opacity-100'}`}>
+            <form onSubmit={connect} className='space-y-4'>
+              <button
+                type='submit'
+                className='text-white px-3 py-3 rounded-full'
+                onClick={() => {
+                  setIsJoined(true)
+                  userItemClick('Support Service')
+                }}
+              >
+                <img
+                  alt='Chat Button'
+                  data-src='https://bot.mygpt.vn/mygpt-chat-icon.png'
+                  className='chat-button lazyloaded size-28 relative'
+                  src='https://bot.mygpt.vn/mygpt-chat-icon.png'
+                  loading='lazy'
+                />
+
+                {messages.map((msg, index) => (
+                  <div
+                    key={index}
+                    className='chat absolute text-white rounded-r-full shadow-xl text-xl top-8 w-96 px-10 left-28 py-4 bg-orange-500'
+                  >
+                    {msg}
+                  </div>
+                ))}
+
+                {/* <div className='chat absolute opacity-0 hover:opacity-100 text-white rounded-r-full shadow-xl text-xl top-8 w-64 px-10 left-28 py-4 bg-orange-500'>
+                Bạn cần tư vấn gì ?
+              </div> */}
+              </button>
+            </form>
+          </div>
+        )}
 
         {isJoined && (
-          <div className={`chat-container rounded-xl ${nickname ? '' : 'hidden'}`}>
+          <div
+            className={`chat-container rounded-xl ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} ${nickname ? '' : 'hidden'}`}
+          >
             {userRole === 'SHOP' ? (
               <div className='users-list flex border border-gray-100'>
                 <ul className=' px-4 py-2 bg-gray-50'>{connectedUsers.map((user) => appendUserElement(user))}</ul>
@@ -238,20 +293,6 @@ const Chat = () => {
                       <div className=''>{selectedUserId}</div>
                     </div>
                     <div className='flex gap-2'>
-                      <button>
-                        <svg
-                          xmlns='http://www.w3.org/2000/svg'
-                          fill='none'
-                          viewBox='0 0 24 24'
-                          strokeWidth={1.5}
-                          stroke='currentColor'
-                          className='size-7'
-                          onClick={() => setIsJoined(false)}
-                        >
-                          <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
-                        </svg>
-                      </button>
-
                       <button onClick={onLogout}>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
@@ -269,10 +310,6 @@ const Chat = () => {
 
                   <div
                     ref={chatAreaRef}
-                    onClick={() => {
-                      setIsJoined(true)
-                      userItemClick('SupportService')
-                    }}
                     className='chat-messages p-4 h-[430px] w-[430px] overflow-y-auto border bg-gray-50'
                   >
                     {chatMessages.map((message, index) => (
@@ -297,10 +334,6 @@ const Chat = () => {
                         id='message'
                         className='flex-grow border-x p-4 outline-none bg-gray-50'
                         value={messageInput}
-                        onClick={() => {
-                          setIsJoined(true)
-                          userItemClick('SupportService')
-                        }}
                         onChange={(e) => setMessageInput(e.target.value)}
                         placeholder='Aa'
                         required
@@ -332,7 +365,7 @@ const Chat = () => {
                     <div className='text-xl text-white'>Koi Care System Chat Box</div>
                   </div>
                   <div className='text-white'>
-                    <button onClick={() => setIsJoined(false)}>
+                    <button onClick={onLogout}>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'

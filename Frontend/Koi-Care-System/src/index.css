@@ -175,3 +175,18 @@ input:checked + .slider:before {
 .chat-button:hover {
   animation: pulse 0.6s infinite;
 }
+
+.chat-button:hover .chat {
+}
+
+.chat::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -26px;
+  transform: translateY(-50%);
+  border-width: 13px;
+  border-style: solid;
+  border-color: transparent #f45a0cf0 transparent transparent;
+  opacity: 1;
+}

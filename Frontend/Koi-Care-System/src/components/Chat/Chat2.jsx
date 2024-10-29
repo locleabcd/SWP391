@@ -86,7 +86,7 @@ const Chat2 = () => {
         onClick={() => staffItemClick(user.nickname)}
       >
         <img
-          src='https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultProfile.jpg'
+          src='https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultProfile.jpg'
           alt={user.nickname}
           className='w-8 h-8 rounded-full mr-2'
         />
