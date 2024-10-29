@@ -650,7 +650,7 @@ function Header() {
         </div>
 
         <div
-          className={`mt-auto w-full p-2 flex justify-between items-center 
+          className={`mt-auto w-full  p-2 flex justify-between items-center 
             ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
         >
           <div
