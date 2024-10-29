@@ -4,6 +4,8 @@ import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 import axios from 'axios'
 import Draggable from 'react-draggable'
+import '../../index.css'
+
 var stompClient = null
 const Chat = () => {
   const [nickname, setNickname] = useState('')
@@ -185,18 +187,18 @@ const Chat = () => {
 
   return (
     <Draggable>
-      <div className='fixed bottom-4 right-8 z-50'>
+      <div className='fixed bottom-4 left-1/5 z-50'>
         <div className={`${isJoined ? 'opacity-0' : 'opacity-100'}`}>
           <form onSubmit={connect} className='space-y-4'>
             <button
               type='submit'
-              className='bg-blue-500 text-white px-3 py-3 rounded-full'
+              className='text-white px-3 py-3 rounded-full'
               onClick={() => {
                 setIsJoined(true)
                 userItemClick('a')
               }}
             >
-              <svg
+              {/* <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
                 viewBox='0 0 24 24'
@@ -209,7 +211,14 @@ const Chat = () => {
                   strokeLinejoin='round'
                   d='M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z'
                 />
-              </svg>
+              </svg> */}
+              <img
+                alt='Chat Button'
+                data-src='https://bot.mygpt.vn/mygpt-chat-icon.png'
+                className='chat-button lazyloaded size-28'
+                src='https://bot.mygpt.vn/mygpt-chat-icon.png'
+                loading='lazy'
+              />
             </button>
           </form>
         </div>
@@ -318,30 +327,12 @@ const Chat = () => {
               </div>
             ) : (
               <div className='chat-area col-span-3'>
-                <div className='w-full flex gap-4 justify-between items-center px-2 py-2 border bg-gray-50'>
-                  <div className='flex gap-3 items-center'>
-                    <img
-                      src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
-                      className='lg:size-11 size-8 rounded-full border border-gray-300'
-                    />
-                    <div className=''>Shop staff</div>
+                <div className='w-full flex gap-4 justify-between items-center px-2 py-2 border bg-blue-500 rounded-t-xl'>
+                  <div className='py-2'>
+                    <div className='text-xl text-white'>Koi Care System Chat Box</div>
                   </div>
-                  <div className='flex gap-2'>
-                    <button>
-                      <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        fill='none'
-                        viewBox='0 0 24 24'
-                        strokeWidth={1.5}
-                        stroke='currentColor'
-                        className='size-7'
-                        onClick={() => setIsJoined(false)}
-                      >
-                        <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
-                      </svg>
-                    </button>
-
-                    <button onClick={onLogout}>
+                  <div className='text-white'>
+                    <button onClick={() => setIsJoined(false)}>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
