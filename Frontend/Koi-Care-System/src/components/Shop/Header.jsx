@@ -196,8 +196,11 @@ function Header() {
           <div className='my-account'>
             <button onClick={toggleList} className='flex items-center p-2 rounded-md space-x-2'>
               <div className='flex flex-col'>
-                <p className='text-sm font-medium'>{name}</p>
-                <p className='text-xs text-gray-500'>{role}</p>
+                <p className='text-sm font-medium'>{user.name}</p>
+                <p className='text-xs text-gray-500'>{user.name}</p>
+              </div>
+              <div className='ml-auto flex items-center space-x-1'>
+                <img src={user.avatar} className='w-12 h-12 rounded-full object-cover' />
               </div>
               <div className='ml-auto flex items-center space-x-1'>
                 <div>
