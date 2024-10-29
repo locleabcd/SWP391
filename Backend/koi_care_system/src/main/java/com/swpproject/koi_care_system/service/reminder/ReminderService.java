@@ -5,8 +5,10 @@ import com.swpproject.koi_care_system.enums.ErrorCode;
 import com.swpproject.koi_care_system.exceptions.AppException;
 import com.swpproject.koi_care_system.mapper.ReminderMapper;
 import com.swpproject.koi_care_system.models.Reminder;
+import com.swpproject.koi_care_system.models.ReminderMongo;
 import com.swpproject.koi_care_system.models.User;
 import com.swpproject.koi_care_system.payload.request.ReminderRequest;
+import com.swpproject.koi_care_system.repository.ReminderMongoRepo;
 import com.swpproject.koi_care_system.repository.ReminderRepository;
 import com.swpproject.koi_care_system.repository.UserRepository;
 import com.swpproject.koi_care_system.service.notification.INotificationService;
@@ -24,6 +26,8 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @EnableAsync
@@ -38,26 +42,41 @@ public class ReminderService implements IReminderService {
     SimpMessagingTemplate messagingTemplate;
     INotificationService notificationService;
     SimpUserRegistry userRegistry;
+    ReminderMongoRepo reminderMongoRepo;
 
     @Override
     public ReminderDto createReminder(ReminderRequest request, Principal connectedUser) {
-        User user = userRepository.findByUsername(connectedUser.getName()).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        User user = userRepository.findByUsername(connectedUser.getName())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         Reminder reminder = reminderMapper.mapToReminders(request);
         reminder.setUser(user);
-        return reminderMapper.mapToReminderDto(reminderRepository.save(reminder));
+        reminder = reminderRepository.save(reminder);
+
+        ReminderMongo reminderMongo = reminderMapper.mapToReminderMongo(reminder);
+        reminderMongoRepo.save(reminderMongo);
+        log.info("Reminder created: {}", reminder.getDateTime());
+        return reminderMapper.mapToReminderDto(reminder);
     }
 
     @Override
     public ReminderDto updateReminder(Long id, ReminderRequest request) {
         Reminder reminder = reminderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Reminder not found"));
-        reminderMapper.updateReminderFromRequest(request, reminder);
-        return reminderMapper.mapToReminderDto(reminderRepository.save(reminder));
+        reminderMapper.updateReminderFromRequest(reminder, request);
+        reminder = reminderRepository.save(reminder);
+
+        ReminderMongo reminderMongo = reminderMongoRepo.findById(id).orElse(null);
+        if (reminderMongo != null) {
+            reminderMapper.updateReminderMongo(reminderMongo, reminder);
+            reminderMongoRepo.save(reminderMapper.mapToReminderMongo(reminder));
+        }
+        return reminderMapper.mapToReminderDto(reminder);
     }
 
     @Override
     public void deleteReminder(Long id) {
         Reminder reminder = reminderRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Reminder not found"));
         reminderRepository.delete(reminder);
+        reminderMongoRepo.deleteById(id);
     }
 
     @Override
@@ -68,37 +87,59 @@ public class ReminderService implements IReminderService {
 
     @Async
     @Scheduled(fixedRate = 60000)
-    @Override// Check every minute
+    @Override
     public void checkReminders() {
-        List<Reminder> reminders = reminderRepository.findAll();
-        LocalDateTime now = LocalDateTime.now();
-        log.info("Checking reminders at {}", now);
-        reminders.forEach(reminder -> processReminder(reminder, now));
+        LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+        LocalDateTime startTime = now.withSecond(0).withNano(0);
+        LocalDateTime endTime = startTime.plusMinutes(1);
+
+        // Convert LocalDateTime to ISO 8601 String
+        String startDateTime = startTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String endDateTime = endTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+
+        log.info("Checking reminders between {} and {}", startDateTime, endDateTime);
+
+        List<ReminderMongo> reminders = reminderMongoRepo.findByDateTimeBetween(startDateTime, endDateTime);
+        log.info("Found {} reminders due at {}", reminders.size(), now);
+
+        reminders.forEach(reminder -> {
+            processReminder(reminder, now);
+        });
     }
 
-    private void processReminder(Reminder reminder, LocalDateTime now) {
+    private LocalDateTime convertToLocalDateTime(String dateTimeString) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        return LocalDateTime.parse(dateTimeString, formatter).atZone(ZoneId.of("Asia/Ho_Chi_Minh")).toLocalDateTime();
+    }
+
+
+    private void processReminder(ReminderMongo reminder, LocalDateTime now) {
+        // Convert the stored string date to LocalDateTime
+        LocalDateTime reminderTime = convertToLocalDateTime(reminder.getDateTime());
+        log.info("PROCRSSREMINDER reminderTIME: {}", reminderTime);
         switch (reminder.getRepeatInterval()) {
             case ONE_TIME:
-                if (isReminderDue(reminder, now)) {
+                if (isReminderDue(reminderTime, now)) {
                     sendReminderNotification(reminder);
                 }
                 break;
             case DAILY:
-                if (isTimeMatching(reminder.getDateTime(), now)) {
+                if (isTimeMatching(reminderTime, now)) {
                     sendReminderNotification(reminder);
                 }
                 break;
             case WEEKLY:
-                if (reminder.getDateTime().getDayOfWeek() == now.getDayOfWeek() && isTimeMatching(reminder.getDateTime(), now)) {
+                if (reminderTime.getDayOfWeek() == now.getDayOfWeek() && isTimeMatching(reminderTime, now)) {
                     sendReminderNotification(reminder);
                 }
                 break;
         }
     }
 
-    private boolean isReminderDue(Reminder reminder, LocalDateTime now) {
-        return reminder.getDateTime().getHour() == now.getHour() &&
-                reminder.getDateTime().getMinute() == now.getMinute();
+
+    private boolean isReminderDue(LocalDateTime reminderTime, LocalDateTime now) {
+        return reminderTime.getHour() == now.getHour() &&
+                reminderTime.getMinute() == now.getMinute();
     }
 
     private boolean isTimeMatching(LocalDateTime reminderTime, LocalDateTime now) {
@@ -107,27 +148,26 @@ public class ReminderService implements IReminderService {
     }
 
 
-    private void sendReminderNotification(Reminder reminder) {
-        User user = reminder.getUser();
+    private void sendReminderNotification(ReminderMongo reminder) {
+        String username = reminder.getUsername();
         String message = "Reminder: " + reminder.getTitle() + " is due at " + reminder.getDateTime() + "!";
         boolean isDelivered = false;
-        if (isConnection(user)) {
+        if (isConnection(username)) {
             try {
-                messagingTemplate.convertAndSendToUser(user.getUsername(), "/notifications", message);
+                messagingTemplate.convertAndSendToUser(username, "/notifications", message);
                 isDelivered = true;
             } catch (MessagingException e) {
                 isDelivered = false;
             }
         }
         notificationService.createNotification(reminderMapper.mapToNotificationRequest(reminder, isDelivered));
-        log.info("user connected: {}", isConnection(user));
-        log.info("That user: {}", user.getUsername());
+        log.info("user connected: {}", isConnection(username));
+        log.info("That user: {}", username);
         log.info("Notification sent for reminder '{}'.", reminder.getTitle());
     }
 
-    private boolean isConnection(User user) {
-        return userRegistry.getUser(user.getUsername()) != null;
+    private boolean isConnection(String username) {
+        return userRegistry.getUser(username) != null;
     }
-    //TODO: store in database info that I missed the reminder
 }
 

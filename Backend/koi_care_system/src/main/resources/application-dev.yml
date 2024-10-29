@@ -2,8 +2,13 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USERNAME}
-    url: ${DB_URL}
+    url: ${DB_URL}?serverTimezone=Asia/Ho_Chi_Minh
     password: ${DB_PASSWORD}
+  data:
+    mongodb:
+      uri: mongodb+srv://phuocdcase180581:lAPxgFTsLNzxCd47@cluster0.8ivzr.mongodb.net/?retryWrites=true&w=majority
+      database: myDatabase
+
   jpa:
     hibernate:
       ddl-auto: update

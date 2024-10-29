@@ -131,6 +131,7 @@ public class ProductService implements IProductService {
 
         // Fetch available products with pagination.
         Page<Product> productsPage = productRepository.findAllAvailable(pageable);
+        //TODO:check quantity and status to get ALl
 
         // Update product ratings and filter out ended promotions.
         List<Product> products = productsPage.stream().peek(product -> {
