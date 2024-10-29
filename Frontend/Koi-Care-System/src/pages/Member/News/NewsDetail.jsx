@@ -29,7 +29,7 @@ function NewsDetail() {
 
       setNewsDetail(res.data.data)
       console.log('data', res.data.data)
-      console.log('data', res.data.data.user.username)
+      console.log('userName', res.data.data.user.username)
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
