@@ -264,7 +264,7 @@ function MyPondLog() {
                     className={` ${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
                     }  lg:min-w-[80vh] m-auto p-6 lg:rounded-lg`}
-                    // data-aos='fade-up'
+                    //
                   >
                     <div className='flex justify-between mb-5'>
                       <svg
@@ -420,7 +420,6 @@ function MyPondLog() {
                     className={`${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
                     }  lg:min-w-[80vh] my-auto p-6 rounded-lg shadow-lg`}
-                    data-aos='fade-up'
                   >
                     <div className='flex justify-between mb-5'>
                       <svg

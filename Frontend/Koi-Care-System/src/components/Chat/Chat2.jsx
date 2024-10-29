@@ -4,7 +4,7 @@ import SockJS from 'sockjs-client'
 import Stomp from 'stompjs'
 import axios from 'axios'
 var stompClient = null
-const Chat = () => {
+const Chat2 = () => {
   const [nickname, setNickname] = useState('')
   const [selectedUserId, setSelectedUserId] = useState(null)
   const [connectedUsers, setConnectedUsers] = useState([])
@@ -86,7 +86,7 @@ const Chat = () => {
         onClick={() => staffItemClick(user.nickname)}
       >
         <img
-          src='https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultProfile.jpg'
+          src='https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultProfile.jpg'
           alt={user.nickname}
           className='w-8 h-8 rounded-full mr-2'
         />
@@ -247,4 +247,4 @@ const Chat = () => {
   )
 }
 
-export default Chat
+export default Chat2

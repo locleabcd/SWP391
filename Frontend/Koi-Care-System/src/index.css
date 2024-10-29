@@ -143,3 +143,47 @@ input:checked + .slider:before {
     filter: drop-shadow(5px 5px 10px rgba(0, 0, 0, 0.4));
   }
 }
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.chat-button {
+  cursor: pointer;
+  transition: transform 0.3s;
+  animation: bounce 1.5s infinite;
+}
+
+.chat-button:hover {
+  animation: pulse 0.6s infinite;
+}
+
+.chat::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: -26px;
+  transform: translateY(-50%);
+  border-width: 13px;
+  border-style: solid;
+  border-color: transparent #93c5fd transparent transparent;
+  opacity: 1;
+}

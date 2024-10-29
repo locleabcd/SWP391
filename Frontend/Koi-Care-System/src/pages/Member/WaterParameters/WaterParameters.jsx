@@ -16,6 +16,7 @@ import { motion } from 'framer-motion'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import 'aos/dist/aos.css'
 import Chat from '../../../components/Chat/Chat'
+import { FaSpinner } from 'react-icons/fa'
 
 function WaterParameters() {
   const { isDarkMode } = useDarkMode()
@@ -92,8 +93,10 @@ function WaterParameters() {
           }
         }
       )
-      setParameters(res.data.data)
       console.log(res.data.data)
+
+      const sortedData = res.data.data.sort((a, b) => new Date(b.createDateTime) - new Date(a.createDateTime))
+      setParameters(sortedData)
     } catch (error) {
       console.error('Error fetching water parameters:', error)
     } finally {
@@ -155,9 +158,7 @@ function WaterParameters() {
 
       setIsAddFormVisible(false) // Đóng form sau khi tạo thành công
       const userId = localStorage.getItem('id')
-      await getParameter(userId) // Cập nhật dữ liệu mới
-
-      // Sắp xếp lại dữ liệu với trạng thái sắp xếp hiện tại
+      getParameter(userId)
       sortParameter(sortOption.order, sortOption.field)
       reset() // Đặt lại form
     } catch (error) {
@@ -825,7 +826,7 @@ function WaterParameters() {
               viewBox='0 0 24 24'
               strokeWidth={1.5}
               stroke='currentColor'
-              className='fixed z-20 bottom-5 left-[275px] text-lg text-white outline-none rounded-full bg-custom-left-bar shadow-lg size-8 lg:size-16 lg:p-2 cursor-pointer'
+              className='fixed z-20 bottom-5 right-[40px] text-lg text-white outline-none rounded-full bg-custom-left-bar shadow-lg size-12 lg:size-16 lg:p-2 cursor-pointer'
               onClick={() => {
                 toggleAddFormVisibility()
                 reset()
@@ -2803,6 +2804,11 @@ function WaterParameters() {
                   <p className='text-center font-semibold'>Delete this parameter</p>
                 </div>
               </div>
+            </div>
+          )}
+          {isLoading && (
+            <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+              <FaSpinner className='animate-spin text-green-500 text-6xl' />
             </div>
           )}
         </div>

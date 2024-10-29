@@ -11,27 +11,27 @@ function About() {
     {
       name: 'The Vinh',
       role: 'Frontend Developer',
-      img: 'https://koicareimage.blob.core.windows.net/koicarestorage/Vinh.jpg'
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Vinh.jpg'
     },
     {
       name: 'Duc Loc',
       role: 'Leader-Backend Developer',
-      img: 'https://koicareimage.blob.core.windows.net/koicarestorage/Loc.jpg'
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Loc.jpg'
     },
     {
       name: 'Trung Kien',
       role: 'Frontend Developer',
-      img: 'https://koicareimage.blob.core.windows.net/koicarestorage/Kien.jpg'
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Kien.jpg'
     },
     {
       name: 'Minh Thoai',
       role: 'Frontend Developer',
-      img: 'https://koicareimage.blob.core.windows.net/koicarestorage/Thoai.jpg'
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Thoai.jpg'
     },
     {
       name: 'An Phuoc',
       role: 'Backend Developer',
-      img: 'https://koicareimage.blob.core.windows.net/koicarestorage/Phuoc.jpg'
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Phuoc.jpg'
     }
   ]
 
@@ -45,7 +45,7 @@ function About() {
         <Header />
 
         <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
-          <TopLayout text='About' links='member/about'/>
+          <TopLayout text='About' links='member/about' />
 
           {/* Team Members Section */}
           <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 mt-8'>
