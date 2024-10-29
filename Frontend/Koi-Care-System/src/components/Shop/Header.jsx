@@ -196,26 +196,11 @@ function Header() {
           <div className='my-account'>
             <button onClick={toggleList} className='flex items-center p-2 rounded-md space-x-2'>
               <div className='flex flex-col'>
-                <p className='text-sm font-medium'>{name}</p>
-                <p className='text-xs text-gray-500'>{role}</p>
+                <p className='text-sm font-medium'>{user.name}</p>
+                <p className='text-xs text-gray-500'>{user.name}</p>
               </div>
               <div className='ml-auto flex items-center space-x-1'>
-                <div>
-                  <svg
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill='none'
-                    viewBox='0 0 24 24'
-                    strokeWidth='1.5'
-                    stroke='currentColor'
-                    className='size-12'
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z'
-                    />
-                  </svg>
-                </div>
+                <img src={user.avatar} className='w-12 h-12 rounded-full object-cover' />
               </div>
             </button>
             {isOpen && (
@@ -378,8 +363,8 @@ function Header() {
                         return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
                       }}
                     >
-                      <div className='flex items-center'>
-                        <div className='w-7 h-7 mr-3'>
+                      <div className='pl-2 flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
                           <PiNewspaperClipping className='w-full h-full' />
                         </div>
                         <span className='font-semibold'>News</span>
@@ -395,8 +380,8 @@ function Header() {
                         return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
                       }}
                     >
-                      <div className='flex items-center'>
-                        <div className='w-7 h-7 mr-3'>
+                      <div className='pl-2 flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
                           <FaTags className='w-full h-full' />
                         </div>
                         <span className='font-semibold'>Tag</span>
@@ -446,7 +431,7 @@ function Header() {
                           return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
                         }}
                       >
-                        <div className='flex items-center'>
+                        <div className='pl-2 flex items-center'>
                           <div className='w-6 h-6 mr-3'>
                             <FaBoxArchive className='w-full h-full' />
                           </div>
@@ -465,7 +450,7 @@ function Header() {
                           return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center `
                         }}
                       >
-                        <div className='flex items-center'>
+                        <div className='pl-2 flex items-center'>
                           <div className='w-6 h-6 mr-3'>
                             <RiCoupon2Fill className='w-full h-full' />
                           </div>
@@ -484,7 +469,7 @@ function Header() {
                           return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center `
                         }}
                       >
-                        <div className='flex items-center'>
+                        <div className='pl-2 flex items-center'>
                           <div className='w-6 h-6 mr-3'>
                             <BiSolidCategory className='w-full h-full' />
                           </div>
@@ -503,7 +488,7 @@ function Header() {
                           return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
                         }}
                       >
-                        <div className='flex items-center'>
+                        <div className='pl-2 flex items-center'>
                           <div className='w-6 h-6 mr-3'>
                             <FaImage className='w-full h-full' />
                           </div>
@@ -522,7 +507,7 @@ function Header() {
                           return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
                         }}
                       >
-                        <div className='flex items-center'>
+                        <div className='pl-2 flex items-center'>
                           <div className='w-6 h-6 mr-3'>
                             <FaBox className='w-full h-full' />
                           </div>
@@ -572,8 +557,8 @@ function Header() {
                         return `${active} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center `
                       }}
                     >
-                      <div className='flex items-center'>
-                        <div className='w-7 h-7 mr-3'>
+                      <div className='pl-2 flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
                           <FaCartShopping className='w-full h-full' />
                         </div>
                         <span className='font-semibold'>Manage Order</span>
@@ -589,8 +574,8 @@ function Header() {
                         return `${active} min-w-full mt-2 p-4 cursor-pointer rounded-lg flex justify-between items-center`
                       }}
                     >
-                      <div className='flex items-center'>
-                        <div className='w-7 h-7 mr-3'>
+                      <div className='pl-2 flex items-center'>
+                        <div className='w-6 h-6 mr-3'>
                           <FaMoneyBill className='w-full h-full' />
                         </div>
                         <span className='font-semibold'>Manage Payment</span>

@@ -101,13 +101,13 @@ function CustomerAD() {
       )
     },
     { field: 'name', headerName: 'Name', width: 120 },
-    { field: 'email', headerName: 'Email', width: 200 },
+    { field: 'email', headerName: 'Email', width: 250 },
     { field: 'phone', headerName: 'Phone', width: 110 },
-    { field: 'address', headerName: 'Address', width: 120 },
+    { field: 'address', headerName: 'Address', flex: 1 },
     { field: 'createdDate', headerName: 'Create Date', width: 120 },
     { field: 'dateOfBirth', headerName: 'Date of Birth', width: 120 },
-
     { field: 'role', headerName: 'Role', width: 80 },
+
     {
       field: 'status',
       headerName: 'Status',
@@ -130,11 +130,28 @@ function CustomerAD() {
         </div>
       )
     },
+    {
+      field: 'duration',
+      headerName: 'Duration',
+      width: 180,
+      renderCell: (params) => (
+        <select
+          value={selectedPeriod[params.row.id] || ''}
+          onChange={(e) => handleSelectChange(params.row.id, e.target.value)}
+          className='bg-white border border-gray-300  text-black rounded px-2 py-1'
+        >
+          <option value=''>Select Duration</option>
+          <option value='1 MONTH'>1 Month</option>
+          <option value='6 MONTHS'>6 Months</option>
+          <option value='12 MONTHS'>12 Months</option>
+        </select>
+      )
+    },
 
     {
       field: 'action',
       headerName: 'Action',
-      flex: 1,
+
       renderCell: (params) => (
         <div className='flex h-full justify-center items-center gap-2'>
           <Link
@@ -146,16 +163,7 @@ function CustomerAD() {
               <path d='M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 0 1 3 20.625V9.375ZM6 12a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V12Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75ZM6 15a.75.75 0 0 1 .75-.75h.008a.75.75 0 0 1 .75.75v.008a.75.75 0 0 1-.75.75H6.75a.75.75 0 0 1-.75-.75V15Zm2.25 0a.75.75 0 0 1 .75-.75h3.75a.75.75 0 0 1 0 1.5H9a.75.75 0 0 1-.75-.75Z' />
             </svg>
           </Link>
-          <select
-            value={selectedPeriod[params.row.id] || ''}
-            onChange={(e) => handleSelectChange(params.row.id, e.target.value)}
-            className='bg-white border border-gray-300 rounded px-2 py-1'
-          >
-            <option value=''>Select Duration</option>
-            <option value='1 MONTH'>1 Month</option>
-            <option value='6 MONTHS'>6 Months</option>
-            <option value='12 MONTHS'>12 Months</option>
-          </select>
+
           <button
             onClick={() =>
               upgradeSubscription(

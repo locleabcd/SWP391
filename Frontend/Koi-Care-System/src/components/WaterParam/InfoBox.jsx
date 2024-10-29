@@ -27,7 +27,7 @@ const InfoBox = ({ title, content, showInfo, onClose }) => {
 }
 InfoBox.propTypes = {
   title: PropTypes.string.isRequired, // 'title' bắt buộc phải là chuỗi
-  content: PropTypes.string.isRequired, // 'content' bắt buộc phải là chuỗi
+  content: PropTypes.node.isRequired, // 'content' bắt buộc phải là chuỗi
   showInfo: PropTypes.bool.isRequired, // 'showInfo' bắt buộc phải là boolean
   onClose: PropTypes.func.isRequired // 'onClose' bắt buộc phải là hàm
 }

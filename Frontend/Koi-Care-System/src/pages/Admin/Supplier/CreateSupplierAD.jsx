@@ -64,7 +64,7 @@ function CreateSupplierAD() {
         } overflow-y-auto flex-1 flex-col  overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
-        <div className='py-5 pb-0 px-[30px] mx-auto'>
+        <div className='py-5 pb-0 px-[30px] mx-auto max-w-[1750px]'>
           <TopLayout text='Supplier' textName='Create Supplier' links='admin/supplier' />
           <div className='p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>

@@ -9,6 +9,7 @@ import TopLayout from '../../../layouts/TopLayoutAD'
 import { useNavigate, useParams } from 'react-router-dom'
 function NewsView() {
   const [newDetail, setNewsDetail] = useState([])
+  const [userProfile, setUserProfile] = useState(null)
   const { id } = useParams()
   const { isDarkMode } = useDarkMode()
   const navigate = useNavigate()
@@ -21,14 +22,14 @@ function NewsView() {
       }
 
       const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/blog/getID/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+        headers: { Authorization: `Bearer ${token}` }
       })
 
       setNewsDetail(res.data.data)
-      console.log('data', res.data.data)
-      console.log('data', res.data.data.user.username)
+      const userId = res.data.data.user.id // Lấy userId từ chi tiết bài viết
+
+      // Gọi hàm lấy thông tin profile với userId
+      getProfile(userId)
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
@@ -45,9 +46,38 @@ function NewsView() {
       }
     }
   }
+  const getProfile = async (userId) => {
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/profile/${userId}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      })
+
+      setUserProfile(res.data.data) // Lưu thông tin profile của user vào state
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 401) {
+          console.error('Unauthorized access - Token expired or invalid. Logging out...')
+          localStorage.removeItem('token')
+          localStorage.removeItem('id')
+          toast.error('Token expired navigate to login')
+          navigate('/login')
+        } else {
+          console.error('Error fetching profile:', error.response?.status, error.message)
+        }
+      } else {
+        console.error('An unexpected error occurred:', error)
+      }
+    }
+  }
 
   useEffect(() => {
     getBlogDetail()
+    getProfile()
   }, [])
 
   return (
@@ -169,7 +199,8 @@ function NewsView() {
 
               <div className='flex border-b py-4 border-gray-300 items-center gap-2 px-6'>
                 <img
-                  src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
+                  src={userProfile?.avatar || 'default-avatar.png'}
+                  alt='Author Avatar'
                   className='w-10 h-10 rounded-full border border-gray-300'
                 />
                 <div className='w-full'>

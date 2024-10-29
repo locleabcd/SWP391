@@ -41,7 +41,20 @@ function WaterParameters() {
   const [carbonDioxideStyle, setCarbonDioxideStyle] = useState({})
   const [saltStyle, setSaltStyle] = useState({})
   const [totalChlorineStyle, setTotalChlorineStyle] = useState({})
-  const [showInfo, setShowInfo] = useState({})
+  const [showInfo, setShowInfo] = useState({
+    nitrate: false,
+    nitrite: false,
+    phosphate: false,
+    ammonium: false,
+    hardness: false,
+    oxygen: false,
+    temperature: false,
+    phValue: false,
+    carbonDioxide: false,
+    carbonHardness: false,
+    salt: false,
+    totalChlorine: false
+  })
   const [sortOption, setSortOption] = useState({ order: 'asc', field: 'pondName' })
   const getPond = async () => {
     try {
@@ -97,6 +110,8 @@ function WaterParameters() {
     if (userId) {
       getParameter(userId)
     }
+    // Sắp xếp theo mặc định là ngày mới nhất
+    sortParameter('desc', 'createDateTime')
   }, [])
 
   const toggleButtons = () => {
@@ -106,8 +121,6 @@ function WaterParameters() {
   const createParameter = async (data) => {
     setIsLoading(true)
     setIsSubmitting(true)
-
-    console.log('Form Data:', data) // Kiểm tra dữ liệu form trước khi gửi
 
     try {
       const token = localStorage.getItem('token')
@@ -147,16 +160,14 @@ function WaterParameters() {
       const userId = localStorage.getItem('id')
       getParameter(userId)
       sortParameter(sortOption.order, sortOption.field)
-      reset() // Reset form
+      reset() // Đặt lại form
     } catch (error) {
       console.error('Error during parameter creation: ', error)
-      alert(`Error: ${error.message}`) // Hiển thị lỗi cho người dùng
     } finally {
       setIsSubmitting(false)
       setIsLoading(false)
     }
   }
-
   const updateParameter = async (data, waterId) => {
     setIsLoading(true)
     setIsSubmitting(true)
@@ -243,22 +254,11 @@ function WaterParameters() {
     clearErrors
   } = useForm()
   const toggleAddFormVisibility = () => {
-    setIsAddFormVisible(!isAddFormVisible)
-    setIsEditFormVisible(false)
+    setIsAddFormVisible((prev) => !prev)
+    setIsEditFormVisible(false) // Đảm bảo form edit bị ẩn
     setCurrentParameter(null)
     reset()
-    setNitriteStyle(null)
-    setNitrateStyle(null)
-    setAmmoniumStyle(null)
-    setCarbonDioxideStyle(null)
-    setCarbonHardnessStyle(null)
-    setHardnessStyle(null)
-    setOxygenStyle(null)
-    setPhValueStyle(null)
-    setPhosphateStyle(null)
-    setSaltStyle(null)
-    setTemperatureStyle(null)
-    setTotalChlorineStyle(null)
+    console.log('Add Form Visibility:', !isAddFormVisible) // Kiểm tra trạng thái
   }
   const toggleCloseForm = () => {
     setIsEditFormVisible(!isEditFormVisible)
@@ -803,7 +803,7 @@ function WaterParameters() {
   const toggleInfoBox = (inputName) => {
     setShowInfo((prevState) => ({
       ...prevState,
-      [inputName]: !prevState[inputName]
+      [inputName]: !prevState[inputName] // Đảo giá trị giữa true và false
     }))
   }
 
@@ -1206,7 +1206,7 @@ function WaterParameters() {
                             The nitrate value can be positively influenced by large water changes.
                           </>
                         }
-                        showInfo={showInfo['nitrate']}
+                        showInfo={showInfo['nitrate'] || false}
                         onClose={() => toggleInfoBox('nitrate')}
                       />
                       <input
@@ -1260,7 +1260,7 @@ function WaterParameters() {
                             0.3% to reduce the toxicity.
                           </>
                         }
-                        showInfo={showInfo['nitrite']}
+                        showInfo={showInfo['nitrite'] || false}
                         onClose={() => toggleInfoBox('nitrite')}
                       />
                       <input
@@ -1312,7 +1312,7 @@ function WaterParameters() {
                             volume daily) and reduce the amount of food.
                           </>
                         }
-                        showInfo={showInfo['phosphate']}
+                        showInfo={showInfo['phosphate'] || false}
                         onClose={() => toggleInfoBox('phosphate')}
                       />
                       <input
@@ -1363,7 +1363,7 @@ function WaterParameters() {
                             circulation rate of the pond water volume (0.5 - 1.0 times per hour) via the filter.
                           </>
                         }
-                        showInfo={showInfo['ammonium']}
+                        showInfo={showInfo['ammonium'] || false}
                         onClose={() => toggleInfoBox('ammonium')}
                       />
                       <input
@@ -1416,7 +1416,7 @@ function WaterParameters() {
                             importance for keeping koi.
                           </>
                         }
-                        showInfo={showInfo['hardness']}
+                        showInfo={showInfo['hardness'] || false}
                         onClose={() => toggleInfoBox('hardness')}
                       />
                       <input
@@ -1466,7 +1466,7 @@ function WaterParameters() {
                             An increase of the oxygen content is possible by means of aerator pumps.
                           </>
                         }
-                        showInfo={showInfo['oxygen']}
+                        showInfo={showInfo['oxygen'] || false}
                         onClose={() => toggleInfoBox('oxygen')}
                       />
                       <input
@@ -1516,7 +1516,7 @@ function WaterParameters() {
                             exceeds 29 °C, allow a permanent water inflow to stop further heating.
                           </>
                         }
-                        showInfo={showInfo['temperature']}
+                        showInfo={showInfo['temperature'] || false}
                         onClose={() => toggleInfoBox('temperature')}
                       />
                       <input
@@ -1568,7 +1568,7 @@ function WaterParameters() {
                             To stabilise the pH value, it is important to have a carbonate hardness of at least 4 °dH.
                           </>
                         }
-                        showInfo={showInfo['phValue']}
+                        showInfo={showInfo['phValue'] || false}
                         onClose={() => toggleInfoBox('phValue')}
                       />
                       <input
@@ -1622,7 +1622,7 @@ function WaterParameters() {
                             the filter bacteria to die. It is best to add the agent to the water at the pond return.
                           </>
                         }
-                        showInfo={showInfo['carbonHardness']}
+                        showInfo={showInfo['carbonHardness'] || false}
                         onClose={() => toggleInfoBox('carbonHardness')}
                       />
                       <input
@@ -1676,7 +1676,7 @@ function WaterParameters() {
                             strong water circulation) causes the pH value to increase.
                           </>
                         }
-                        showInfo={showInfo['carbonDioxide']}
+                        showInfo={showInfo['carbonDioxide'] || false}
                         onClose={() => toggleInfoBox('carbonDioxide')}
                       />
                       <input
@@ -1730,7 +1730,7 @@ function WaterParameters() {
                             applies to medicaments which contain formalin or potassium permanganate.
                           </>
                         }
-                        showInfo={showInfo['salt']}
+                        showInfo={showInfo['salt'] || false}
                         onClose={() => toggleInfoBox('salt')}
                       />
                       <input
@@ -1782,7 +1782,7 @@ function WaterParameters() {
                             chlorine, the water needs to be dechlorinated before being added to the pond.
                           </>
                         }
-                        showInfo={showInfo['totalChlorine']}
+                        showInfo={showInfo['totalChlorine'] || false}
                         onClose={() => toggleInfoBox('totalChlorine')}
                       />
                       <input
@@ -1834,7 +1834,7 @@ function WaterParameters() {
                             range.
                           </>
                         }
-                        showInfo={showInfo['temp']}
+                        showInfo={showInfo['temp'] || false}
                         onClose={() => toggleInfoBox('temp')}
                       />
                       <input
@@ -1888,7 +1888,7 @@ function WaterParameters() {
                             account to compute the recommended amount of food.
                           </>
                         }
-                        showInfo={showInfo['amountFed']}
+                        showInfo={showInfo['amountFed'] || false}
                         onClose={() => toggleInfoBox('amountFed')}
                       />
                       <input
@@ -2049,7 +2049,7 @@ function WaterParameters() {
                             The nitrate value can be positively influenced by large water changes.
                           </>
                         }
-                        showInfo={showInfo['nitrate']}
+                        showInfo={showInfo['nitrate'] || false}
                         onClose={() => toggleInfoBox('nitrate')}
                       />
                       <input
@@ -2102,7 +2102,7 @@ function WaterParameters() {
                             0.3% to reduce the toxicity.
                           </>
                         }
-                        showInfo={showInfo['nitrite']}
+                        showInfo={showInfo['nitrite'] || false}
                         onClose={() => toggleInfoBox('nitrite')}
                       />
                       <input
@@ -2154,7 +2154,7 @@ function WaterParameters() {
                             volume daily) and reduce the amount of food.
                           </>
                         }
-                        showInfo={showInfo['phosphate']}
+                        showInfo={showInfo['phosphate'] || false}
                         onClose={() => toggleInfoBox('phosphate')}
                       />
                       <input
@@ -2205,7 +2205,7 @@ function WaterParameters() {
                             circulation rate of the pond water volume (0.5 - 1.0 times per hour) via the filter.
                           </>
                         }
-                        showInfo={showInfo['ammonium']}
+                        showInfo={showInfo['ammonium'] || false}
                         onClose={() => toggleInfoBox('ammonium')}
                       />
                       <input
@@ -2257,7 +2257,7 @@ function WaterParameters() {
                             importance for keeping koi.
                           </>
                         }
-                        showInfo={showInfo['hardness']}
+                        showInfo={showInfo['hardness'] || false}
                         onClose={() => toggleInfoBox('hardness')}
                       />
                       <input
@@ -2307,7 +2307,7 @@ function WaterParameters() {
                             An increase of the oxygen content is possible by means of aerator pumps.
                           </>
                         }
-                        showInfo={showInfo['oxygen']}
+                        showInfo={showInfo['oxygen'] || false}
                         onClose={() => toggleInfoBox('oxygen')}
                       />
                       <input
@@ -2358,7 +2358,7 @@ function WaterParameters() {
                             exceeds 29 °C, allow a permanent water inflow to stop further heating.
                           </>
                         }
-                        showInfo={showInfo['temperature']}
+                        showInfo={showInfo['temperature'] || false}
                         onClose={() => toggleInfoBox('temperature')}
                       />
                       <input
@@ -2410,7 +2410,7 @@ function WaterParameters() {
                             To stabilise the pH value, it is important to have a carbonate hardness of at least 4 °dH.
                           </>
                         }
-                        showInfo={showInfo['phValue']}
+                        showInfo={showInfo['phValue'] || false}
                         onClose={() => toggleInfoBox('phValue')}
                       />
                       <input
@@ -2464,7 +2464,7 @@ function WaterParameters() {
                             the filter bacteria to die. It is best to add the agent to the water at the pond return.
                           </>
                         }
-                        showInfo={showInfo['carbonHardness']}
+                        showInfo={showInfo['carbonHardness'] || false}
                         onClose={() => toggleInfoBox('carbonHardness')}
                       />
                       <input
@@ -2518,7 +2518,7 @@ function WaterParameters() {
                             strong water circulation) causes the pH value to increase.
                           </>
                         }
-                        showInfo={showInfo['carbonDioxide']}
+                        showInfo={showInfo['carbonDioxide'] || false}
                         onClose={() => toggleInfoBox('carbonDioxide')}
                       />
                       <input
@@ -2572,7 +2572,7 @@ function WaterParameters() {
                             applies to medicaments which contain formalin or potassium permanganate.
                           </>
                         }
-                        showInfo={showInfo['salt']}
+                        showInfo={showInfo['salt'] || false}
                         onClose={() => toggleInfoBox('salt')}
                       />
                       <input
@@ -2626,7 +2626,7 @@ function WaterParameters() {
                             chlorine, the water needs to be dechlorinated before being added to the pond.
                           </>
                         }
-                        showInfo={showInfo['totalChlorine']}
+                        showInfo={showInfo['totalChlorine'] || false}
                         onClose={() => toggleInfoBox('totalChlorine')}
                       />
                       <input
@@ -2678,7 +2678,7 @@ function WaterParameters() {
                             range.
                           </>
                         }
-                        showInfo={showInfo['temp']}
+                        showInfo={showInfo['temp'] || false}
                         onClose={() => toggleInfoBox('temp')}
                       />
                       <input
@@ -2734,7 +2734,7 @@ function WaterParameters() {
                             account to compute the recommended amount of food.
                           </>
                         }
-                        showInfo={showInfo['amountFed']}
+                        showInfo={showInfo['amountFed'] || false}
                         onClose={() => toggleInfoBox('amountFed')}
                       />
                       <input
@@ -2780,7 +2780,7 @@ function WaterParameters() {
                   <button
                     className='mx-auto'
                     onClick={() => {
-                      if (window.confirm('Are you sure you want to delete this pond?')) {
+                      if (window.confirm('Are you sure you want to delete this parameter?')) {
                         deleteParameter(parameters.id)
                       }
                     }}
