@@ -248,7 +248,7 @@ const Chat = () => {
                 className='text-white px-3 py-3 rounded-full'
                 onClick={() => {
                   setIsJoined(true)
-                  userItemClick('Support Service')
+                  userItemClick('SupportService')
                 }}
               >
                 <img
