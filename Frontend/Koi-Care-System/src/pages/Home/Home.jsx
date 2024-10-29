@@ -85,7 +85,7 @@ function Home() {
           <About />
         </div>
 
-        <footer className='py-6 border-t bg-red-200 border-gray-200'>
+        <footer className='py-6 border-t bg-gradient-to-r from-purple-200 to-pink-200 border-gray-200'>
           <div className='container mx-auto text-center'>
             <p className='mb-2'>© 2024 Koi Care System.</p>
             <p className='mb-2'>Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh 700000</p>

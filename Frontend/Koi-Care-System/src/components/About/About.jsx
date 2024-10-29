@@ -1,59 +1,79 @@
 /* eslint-disable react/no-unescaped-entities */
-function About() {
-  return (
-    <div className='block'>
-      <div className=' justify-center  py-20 px-20  font-medium '>
-        <h className='text-3xl block  text-center font-bold py-8 bg-gradient-to-r from-pink-300 to-red-400'>About us</h>
 
-        <div className=' grid grid-flow-row-dense p-8 grid-cols-4'>
-          <p className='text-wrap text-xl font-bold  text-left pl-8'>Our Mission</p>
-          <p className='text-wrap col-span-3'>
-            At Koi Care System, our mission is to simplify the art of Koi fish care. We strive to provide Koi
-            enthusiasts with an innovative platform that allows for seamless management of their ponds, detailed
-            tracking of their fish’s growth, and maintenance of optimal living conditions. We are dedicated to making
-            Koi care more accessible and effective, ensuring the health and beauty of every fish and pond.
-          </p>
-        </div>
-        <div className=' grid grid-flow-row-dense p-8  grid-cols-4 '>
-          <p className='text-wrap text-xl font-bold text-left pl-8 '>Our Vision</p>
-          <p className='text-wrap col-span-3'>
-            Our vision is to be the leading resource for Koi fish care enthusiasts worldwide, transforming how people
-            manage and nurture their Koi. We aim to create a community where knowledge, technology, and passion come
-            together to enhance the well-being of Koi fish and their habitats. By continuously improving our platform
-            and expanding our services, we envision a future where every Koi owner has the tools they need to succeed.
-          </p>
-        </div>
-        <div className=' grid grid-flow-row-dense p-8 grid-cols-4 '>
-          <p className='text-wrap text-xl font-bold text-left pl-8'>Our Values</p>
-          <p className='text-wrap col-span-3'>
-            <p>
-              Innovation: We are committed to using cutting-edge technology to provide the best tools and features for
-              managing Koi care.
-            </p>
-            <p>
-              Expertise: Our team combines extensive knowledge and experience in Koi care to offer valuable insights and
-              solutions.
-            </p>
-            <p>
-              Community: We value the Koi enthusiast community and strive to foster connections and share knowledge
-              through our platform.
-            </p>
-            <p>
-              Sustainability: We are dedicated to promoting practices that ensure the long-term health and well-being of
-              Koi fish and their environments.
-            </p>
-            Customer Focus: We prioritize the needs and feedback of our users to continuously improve our platform and
-            services.
-          </p>
-        </div>
-        <div className=' grid grid-flow-row-dense p-8 grid-cols-4'>
-          <p className='text-wrap text-xl font-bold text-left pl-8'>Our Commitment</p>
-          <p className='text-wrap col-span-3'>
-            We are dedicated to supporting you on your journey of caring for your Koi fish. With Koi Care System, you
-            can confidently manage your pond and enhance your Koi's health and beauty, knowing that you have a trusted
-            partner by your side.
-          </p>
-        </div>
+function About() {
+  const teamMembers = [
+    {
+      name: 'The Vinh',
+      role: 'Frontend Developer',
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Vinh.jpg'
+    },
+    {
+      name: 'Duc Loc',
+      role: 'Leader-Backend Developer',
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Loc.jpg'
+    },
+    {
+      name: 'Trung Kien',
+      role: 'Frontend Developer',
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Kien.jpg'
+    },
+    {
+      name: 'Minh Thoai',
+      role: 'Frontend Developer',
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Thoai.jpg'
+    },
+    {
+      name: 'An Phuoc',
+      role: 'Backend Developer',
+      img: 'https://koicaresystemv3.blob.core.windows.net/koicarestorage/Phuoc.jpg'
+    }
+  ]
+
+  return (
+    <div className=' py-10 px-[30px] mx-auto h-[90vh] '>
+      <div className='text-black text-5xl justify-center text-center mb-20'>
+        <strong>About us</strong>
+      </div>
+      {/* Team Members Section */}
+      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 mt-8'>
+        {teamMembers.map((member, index) => (
+          <div key={index} className='flex flex-col items-center  p-6 rounded-lg shadow-md border'>
+            <img src={member.img} alt={member.name} className='w-40 h-40 rounded-full object-cover mb-4' />
+            <h3 className='text-xl font-semibold text-center'>{member.name}</h3>
+            <p className='text-lg text-gray-500'>{member.role}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* About Us Text Section */}
+      <div className='mt-12 rounded-lg p-6 shadow-xl border'>
+        <p className='font-dancing mb-6 text-xl'>Thank you for using our websites.</p>
+
+        <p className='font-dancing text-xl'>
+          Having kept and loved koi fish for several years, We came up with the idea of developing an app for koi owners
+          to make fish keeping easier. Our goal is to keep the app up-to-date and to provide assistance for every koi
+          owner.
+        </p>
+        <p className='mb-6 font-dancing text-xl'>
+          Our goal is to keep the app up-to-date and to provide assistance for every koi owner. A rating in the App
+          Store or sharing the app would therefore make us very happy and motivate us to continue developing additional
+          features.
+        </p>
+        <p className='mb-6 font-dancing text-xl '>
+          If you have any questions or suggestions for improvement, please send an e-mail to{' '}
+          <a href='#' className='text-blue-500 underline'>
+            feedback@koicaresystem.com
+          </a>
+          .
+        </p>
+        <p className='text-red-500 font-dancing'>The Koi Care Team</p>
+      </div>
+
+      {/* Social Media Links Section */}
+      <div className='mt-10 '>
+        <p className=' font-semibold text-center text-xl'>
+          Follow us on social media where we keep you posted about exciting new features!
+        </p>
       </div>
     </div>
   )
