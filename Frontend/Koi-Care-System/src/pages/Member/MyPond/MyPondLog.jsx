@@ -11,6 +11,7 @@ import { useNavigate } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import 'aos/dist/aos.css'
 import AOS from 'aos'
+import { FaSpinner } from 'react-icons/fa'
 
 function MyPondLog() {
   const { isDarkMode } = useDarkMode()
@@ -18,6 +19,7 @@ function MyPondLog() {
   const [isAddFormVisible, setIsAddFormVisible] = useState(false)
   const [isEditFormVisible, setIsEditFormVisible] = useState(false)
   const [currentLog, setCurrentLog] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
   const [ponds, setPonds] = useState([])
   const [title, setTitle] = useState('')
   const [dateTime, setDateTime] = useState('')
@@ -77,6 +79,7 @@ function MyPondLog() {
   }
 
   const deleteLog = async () => {
+    setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -89,10 +92,14 @@ function MyPondLog() {
           Authorization: `Bearer ${token}`
         }
       })
+      toast.success('Delete Pond Log Fail')
       pondLog()
       toggleCloseForm()
     } catch (error) {
+      toast.error('Delete Pond Log Fail')
       console.log('err', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -128,6 +135,7 @@ function MyPondLog() {
   }
 
   const createLog = async () => {
+    setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
 
@@ -146,14 +154,19 @@ function MyPondLog() {
           }
         }
       )
+      toast.success('Create Pond Log Successfully')
       pondLog()
       toggleAddFormVisibility(false)
     } catch (error) {
+      toast.error('Create Pond Log Fail')
       console.error('Error details:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
   const updateLog = async () => {
+    setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       const logId = localStorage.getItem('logId')
@@ -172,10 +185,14 @@ function MyPondLog() {
           }
         }
       )
+      toast.success('Update Pond Log Successfully')
       pondLog()
       toggleCloseForm()
     } catch (error) {
+      toast.error('Update Pond Log Fail')
       console.error('Error details:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -356,7 +373,9 @@ function MyPondLog() {
                         <select
                           id='pondId'
                           onChange={(e) => setCategory(e.target.value)}
-                          className='block w-full lg:text-lg text-sm lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
+                          className={`w-full lg:p-3 px-2 py-1 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg lg:text-lg text-sm focus:outline-none transition-colors duration-200`}
                         >
                           <option value='OTHER'>Other</option>
                           <option value='WATER_CHANGE'>Water Change</option>
@@ -380,7 +399,9 @@ function MyPondLog() {
                         <select
                           id='pondId'
                           onChange={(e) => setPond(e.target.value)}
-                          className='block w-full lg:text-lg text-sm lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
+                          className={`w-full lg:p-3 px-2 py-1 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg lg:text-lg text-sm focus:outline-none transition-colors duration-200`}
                         >
                           <option value=''>Select a pond</option>
                           {ponds.map((pond) => (
@@ -400,7 +421,7 @@ function MyPondLog() {
                       >
                         Note:
                       </label>
-                      <input
+                      <textarea
                         type='text'
                         onChange={(e) => setNote(e.target.value)}
                         id='drainCount'
@@ -512,7 +533,9 @@ function MyPondLog() {
                           id='pondId'
                           value={category}
                           onChange={(e) => setCategory(e.target.value)}
-                          className='block w-full lg:text-lg text-sm lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm'
+                          className={`w-full lg:p-3 px-2 py-1 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                         >
                           <option value='OTHER'>Other</option>
                           <option value='WATER_CHANGE'>Water Change</option>
@@ -537,7 +560,9 @@ function MyPondLog() {
                           id='pondId'
                           value={pond}
                           onChange={(e) => setPond(e.target.value)}
-                          className='block w-full lg:p-3 px-2 lg:text-lg text-sm py-1 border border-black rounded-md shadow-sm'
+                          className={`w-full lg:p-3 px-2 py-1 ${
+                            isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                          } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                         >
                           <option value=''>Select a pond</option>
                           {ponds.map((pond) => (
@@ -596,6 +621,11 @@ function MyPondLog() {
                       <p className='text-center font-semibold'>Delete this log</p>
                     </div>
                   </div>
+                </div>
+              )}
+              {isLoading && (
+                <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+                  <FaSpinner className='animate-spin text-green-500 text-6xl' />
                 </div>
               )}
             </div>

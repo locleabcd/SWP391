@@ -296,6 +296,7 @@ function KoiDetails() {
             'Content-Type': 'multipart/form-data'
           }
         })
+        toast.success('Growth History updated successfully!')
       } else {
         const formData = new FormData()
         formData.append('createDate', data.createDate)
@@ -312,6 +313,7 @@ function KoiDetails() {
             'Content-Type': 'multipart/form-data'
           }
         })
+        toast.success('Growth History create successfully!')
       }
 
       reset()
@@ -321,6 +323,7 @@ function KoiDetails() {
       setIsEditGrowthFormVisible(false)
     } catch (error) {
       console.log('Error creating/updating growth history:', error)
+      toast.error('Growth History creating/updating fail!')
     } finally {
       setIsSubmitting(false)
       setIsLoading(false)
@@ -392,11 +395,12 @@ function KoiDetails() {
           Authorization: `Bearer ${token}`
         }
       })
-      reset()
+      toast.success('Growth History delete successfully!')
       getGrowthHistory()
       getKoi()
       setIsEditGrowthFormVisible(false)
     } catch (error) {
+      toast.error('Growth History delete fail!')
       console.error('Error deleting growth history:', error)
     } finally {
       setIsLoading(false)
@@ -419,10 +423,12 @@ function KoiDetails() {
           Authorization: `Bearer ${token}`
         }
       })
+      toast.success('Remark delete successfully!')
       reset()
       getRemark()
       setIsEditRemarkFormVisible(false)
     } catch (error) {
+      toast.error('Remark delete fail!')
       console.error('Error deleting remark:', error)
     } finally {
       setIsLoading(false)
@@ -496,11 +502,12 @@ function KoiDetails() {
           }
         }
       )
-
+      toast.success('Update Koi Successfully')
       setIsEditFormVisible(false)
       reset()
       getKoi()
     } catch (error) {
+      toast.error('Update Koi Fail')
       console.log(error)
     } finally {
       setIsSubmitting(false)
@@ -524,11 +531,13 @@ function KoiDetails() {
           Authorization: `Bearer ${token}`
         }
       })
+      toast.success('Delete Koi Successfully')
       reset()
       getPond()
       setIsEditFormVisible(false)
       navigate('/member/myKoi')
     } catch (error) {
+      toast.error('Delete Koi Fail!')
       console.error('Error deleting koi:', error)
     } finally {
       setIsLoading(false)
@@ -1224,9 +1233,9 @@ function KoiDetails() {
                       )}
                     </div>
                     {/* Date input */}
-                    <div className='relative'>
+                    <div className='relative mb-4'>
                       <label
-                        htmlFor='growthDate'
+                        htmlFor='createDate'
                         className={`absolute font-medium lg:text-lg text-xs lg:-top-[12px] -top-[4px] left-3 text-red-500 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         }`}
@@ -1235,13 +1244,17 @@ function KoiDetails() {
                       </label>
                       <input
                         type='datetime-local'
-                        id='growthDate'
+                        id='createDate'
                         className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
                         }`}
-                        {...register('createDate')}
-                        defaultValue={koi.pondDate}
+                        {...register('createDate', { required: 'Date is required' })}
                       />
+                      {errors.createDate && (
+                        <p className='absolute -bottom-[8px] lg:-bottom-[20px] lg:left-3 left-3 text-red-500 text-sm'>
+                          {errors.createDate.message}
+                        </p>
+                      )}
                     </div>
 
                     {/* Physique input */}
@@ -1284,8 +1297,17 @@ function KoiDetails() {
                         className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
                         }`}
-                        {...register('length')}
+                        {...register('length', {
+                          required: 'Length is required',
+                          min: { value: 1, message: 'Length must greater than 0 cm' },
+                          max: { value: 150, message: 'Length must not exceed 150 cm' }
+                        })}
                       />
+                      {errors.length && (
+                        <p className='absolute -bottom-[8px] left-3 lg:-bottom-[20px] lg:left-3 text-red-500 text-sm'>
+                          {errors.length.message}
+                        </p>
+                      )}
                     </div>
 
                     {/* Weight input */}
@@ -1304,8 +1326,17 @@ function KoiDetails() {
                         className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
                         }`}
-                        {...register('weight')}
+                        {...register('weight', {
+                          required: 'Weight is required',
+                          min: { value: 0.0000000001, message: 'Weigth must greater than 0 g' },
+                          max: { value: 60000, message: 'Weigth must not exceed 60000 g' }
+                        })}
                       />
+                      {errors.weight && (
+                        <p className='absolute -bottom-[8px] lg:-bottom-[20px] lg:left-3 left-3 text-red-500 text-sm'>
+                          {errors.weight.message}
+                        </p>
+                      )}
                     </div>
 
                     <div className='relative'>

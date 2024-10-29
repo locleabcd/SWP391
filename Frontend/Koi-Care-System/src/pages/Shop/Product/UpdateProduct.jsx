@@ -48,7 +48,7 @@ function UpdateProduct() {
       setIssues(
         res.data.data.map((issue) => ({
           value: issue.id,
-          label: issue.parameterType
+          label: `${issue.parameterType} - ${issue.conditionType}`
         }))
       )
       console.log(res.data.data)

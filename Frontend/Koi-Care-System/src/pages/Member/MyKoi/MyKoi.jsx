@@ -573,6 +573,7 @@ function MyKoi() {
                     } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                     {...register('length', {
                       required: 'Length is required',
+                      min: { value: 1, message: 'Length must greater than 0 cm' },
                       max: { value: 150, message: 'Length must not exceed 150 cm' }
                     })}
                   />
@@ -601,6 +602,7 @@ function MyKoi() {
                     } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                     {...register('weight', {
                       required: 'Weight is required',
+                      min: { value: 0.0000000001, message: 'Weigth must greater than 0 g' },
                       max: { value: 60000, message: 'Weigth must not exceed 60000 g' }
                     })}
                   />
