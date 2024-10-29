@@ -251,7 +251,7 @@ Over 28°C is not a good temperature to feed at!`
         >
           <Header />
           <Chat />
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Food Calculator' />
             <div className='p-2 text-lg min-h-screen'>
               <div className='lg:text-lg text-sm flex lg:items-center lg:flex-row flex-col lg:gap-5 gap-3'>

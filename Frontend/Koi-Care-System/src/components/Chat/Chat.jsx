@@ -6,7 +6,7 @@ import axios from 'axios'
 import Draggable from 'react-draggable'
 import '../../index.css'
 import { useDarkMode } from '../../hooks/DarkModeContext'
-import ima from '../../assets/z5978611373804_665d93e0385a23cc592b004bdfae4025.jpg'
+import ima from '../../assets/3x/Asset 1@3x.png'
 
 var stompClient = null
 const Chat = () => {
@@ -203,6 +203,13 @@ const Chat = () => {
         setMessages((prevMessages) => [...prevMessages, message])
       }, index * 3000)
     })
+
+    const totalTime = messageList.length * 3000
+    const clearMessagesTimeout = setTimeout(() => {
+      setMessages([])
+    }, totalTime)
+
+    return () => clearTimeout(clearMessagesTimeout)
   }, [])
 
   return (
@@ -221,7 +228,7 @@ const Chat = () => {
                 <img
                   alt='Chat Button'
                   data-src='https://bot.mygpt.vn/mygpt-chat-icon.png'
-                  className='chat-button lazyloaded size-28 relative'
+                  className='chat-button lazyloaded w-[80px] relative'
                   src={ima}
                   loading='lazy'
                 />
@@ -255,10 +262,6 @@ const Chat = () => {
                     {msg}
                   </div>
                 ))}
-
-                {/* <div className='chat absolute opacity-0 hover:opacity-100 text-white rounded-r-full shadow-xl text-xl top-8 w-64 px-10 left-28 py-4 bg-orange-500'>
-                Bạn cần tư vấn gì ?
-              </div> */}
               </button>
             </form>
           </div>
@@ -281,19 +284,19 @@ const Chat = () => {
                       <div className=''>{selectedUserId}</div>
                     </div>
                     <div className='flex gap-2'>
+                      <button onClick={() => setIsJoined(false)}>
+                        <svg
+                          xmlns='http://www.w3.org/2000/svg'
+                          fill='none'
+                          viewBox='0 0 24 24'
+                          strokeWidth={1.5}
+                          stroke='currentColor'
+                          className='size-7'
+                        >
+                          <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
+                        </svg>
+                      </button>
                       <button onClick={onLogout}>
-                        <button onClick={() => setIsJoined(false)}>
-                          <svg
-                            xmlns='http://www.w3.org/2000/svg'
-                            fill='none'
-                            viewBox='0 0 24 24'
-                            strokeWidth={1.5}
-                            stroke='currentColor'
-                            className='size-7'
-                          >
-                            <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
-                          </svg>
-                        </button>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'

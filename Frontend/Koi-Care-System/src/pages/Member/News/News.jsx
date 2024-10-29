@@ -222,7 +222,7 @@ function News() {
                             style={{ objectFit: 'cover', filter: 'brightness(1.1) contrast(1.1)' }}
                           />
                           <img
-                            src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
+                            src={blog.avatar}
                             className='w-12 h-12 absolute -bottom-[20px] left-8 rounded-full border border-gray-300'
                           />
                         </div>

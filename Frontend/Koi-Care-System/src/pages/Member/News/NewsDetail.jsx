@@ -169,10 +169,7 @@ function NewsDetail() {
               </p>
 
               <div className='flex border-b py-4 border-gray-300 items-center gap-2 px-6'>
-                <img
-                  src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
-                  className='w-10 h-10 rounded-full border border-gray-300'
-                />
+                <img src={newDetail.avatar} className='w-10 h-10 rounded-full border border-gray-300' />
                 <div className='w-full'>
                   <div className='flex justify-between items-center'>
                     <div className='flex items-end'>
