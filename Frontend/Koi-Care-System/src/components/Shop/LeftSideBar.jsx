@@ -491,7 +491,7 @@ function LeftSideBar() {
             ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
         >
           <div
-            className={`flex p-4 rounded-lg items-center justify-between w-full ${isDarkMode ? 'bg-custom-layout-dark' : 'bg-white'}`}
+            className={`flex p-4 rounded-lg items-center justify-between w-full ${isDarkMode ? 'bg-custom-dark ' : 'bg-white'}`}
           >
             <div className='card-content flex items-center '>
               <img
@@ -500,7 +500,9 @@ function LeftSideBar() {
                 className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
               />
               <div className='ml-3'>
-                <p className='font-semibold text-lg text-black'>{user.name || 'User Name'}</p>
+                <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'textblack'}`}>
+                  {user.name || 'User Name'}
+                </p>
                 <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
               </div>
             </div>
