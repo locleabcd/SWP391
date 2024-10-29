@@ -94,7 +94,6 @@ function WaterParameters() {
         }
       )
       console.log(res.data.data)
-
       const sortedData = res.data.data.sort((a, b) => new Date(b.createDateTime) - new Date(a.createDateTime))
       setParameters(sortedData)
     } catch (error) {
@@ -255,10 +254,25 @@ function WaterParameters() {
   } = useForm()
   const toggleAddFormVisibility = () => {
     setIsAddFormVisible((prev) => !prev)
-    setIsEditFormVisible(false) // Đảm bảo form edit bị ẩn
+    setIsEditFormVisible(false) // Đảm bảo form chỉnh sửa bị ẩn
     setCurrentParameter(null)
-    reset()
-    console.log('Add Form Visibility:', !isAddFormVisible) // Kiểm tra trạng thái
+
+    if (!isAddFormVisible) {
+      // Chỉ reset khi form thêm được mở
+      reset({})
+      setNitriteStyle({})
+      setNitrateStyle({})
+      setPhosphateStyle({})
+      setAmmoniumStyle({})
+      setHardnessStyle({})
+      setOxygenStyle({})
+      setTemperatureStyle({})
+      setPhValueStyle({})
+      setCarbonHardnessStyle({})
+      setCarbonDioxideStyle({})
+      setSaltStyle({})
+      setTotalChlorineStyle({})
+    }
   }
   const toggleCloseForm = () => {
     setIsEditFormVisible(!isEditFormVisible)
