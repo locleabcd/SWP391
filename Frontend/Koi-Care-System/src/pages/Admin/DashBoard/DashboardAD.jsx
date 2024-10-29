@@ -541,7 +541,7 @@ function DashboardAD() {
         } overflow-y-auto flex-1 flex-col overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
-        <div className='py-5 px-[30px] mx-auto'>
+        <div className='py-5 px-[30px] max-w-[1750px] mx-auto'>
           <TopLayout text='Dashboard' />
           <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-4'>
             {/* Card 1: Order Today */}

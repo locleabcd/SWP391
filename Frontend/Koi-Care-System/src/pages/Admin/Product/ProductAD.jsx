@@ -176,7 +176,7 @@ function ProductAD() {
         }`}
       >
         <Header />
-        <div className='py-5 px-8 mx-auto'>
+        <div className='py-5 px-8  max-w-[1750px] mx-auto'>
           <TopLayout text='Products' />
           <div className='w-full flex justify-between items-center relative'>
             <div className='cursor-pointer'>

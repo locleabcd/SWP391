@@ -70,6 +70,7 @@ function SupplierAD() {
     { field: 'name', headerName: 'Name', width: 200 },
     { field: 'phone', headerName: 'Phone', width: 200 },
     { field: 'address', headerName: 'Address', flex: 1 },
+
     {
       field: 'action',
       headerName: 'Action',

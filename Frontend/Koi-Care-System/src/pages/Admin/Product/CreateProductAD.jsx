@@ -141,7 +141,7 @@ export default function CreateProductAD() {
         className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} flex-1 overflow-y-auto`}
       >
         <Header />
-        <div className='py-5 pb-0 px-[30px] mx-auto'>
+        <div className='py-5 pb-0 px-[30px] max-w-[1750px] mx-auto'>
           <TopLayout text='Product' textName='Create Product' links='admin/product' />
           <div className=' p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>

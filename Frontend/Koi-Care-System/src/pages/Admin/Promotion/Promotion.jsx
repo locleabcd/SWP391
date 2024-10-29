@@ -255,7 +255,7 @@ function Promotion() {
           className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} overflow-y-auto flex-1 flex-col overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
-          <div className='py-5 px-[30px] mx-auto'>
+          <div className='py-5 px-[30px] max-w-[1750px] mx-auto'>
             <TopLayout text='Promotion' />
             <div className='w-full flex justify-between items-center relative mb-4'>
               <div className='cursor-pointer'>

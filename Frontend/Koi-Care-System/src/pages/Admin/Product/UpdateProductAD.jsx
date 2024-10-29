@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
@@ -156,7 +157,7 @@ function UpdateProductAD() {
         className={`relative ${isDarkMode ? 'bg-custom-light text-white' : 'bg-white text-black'} overflow-y-auto flex-1 flex-col  overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
-        <div className='py-5 pb-0 px-[30px] mx-auto'>
+        <div className='py-5 pb-0 px-[30px] max-w-[1750px] mx-auto'>
           <TopLayout text='Product' textName='Update Product' links='admin/product' />
           <div className='p-6 rounded-md border'>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
