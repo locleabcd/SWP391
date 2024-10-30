@@ -83,7 +83,7 @@ function UpdateUserAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.put(`https://koicaresystemv2.azurewebsites.net/api/users/update/${id}`, updatedData, {
+      const res = await axios.put(`https://koicaresystemv2.azurewebsites.net/api/users/update /${id}`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`
         }
