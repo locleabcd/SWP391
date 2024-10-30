@@ -21,6 +21,7 @@ function Dashboard() {
   const [orders, setOrders] = useState([])
   const [report, setReport] = useState([])
   const [payment, setPayment] = useState([])
+  const [orderUser, setOrderUser] = useState([])
   const [selectedorder, setSelectedOrder] = useState(null)
 
   const getPayments = async () => {
@@ -115,6 +116,29 @@ function Dashboard() {
 
   useEffect(() => {
     getOrders()
+  }, [])
+
+  const getOrderUserId = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+      if (!token) {
+        throw new Error('No token found')
+      }
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/orders/user/${userId}/order`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setOrderUser(res.data.data)
+      console.log(res.data.data)
+    } catch (error) {
+      console.error('Error fetching water parameters:', error)
+    }
+  }
+
+  useEffect(() => {
+    getOrderUserId()
   }, [])
 
   const getParameter = async () => {
@@ -254,7 +278,7 @@ function Dashboard() {
               <div className='flex flex-col rounded-lg border border-gray-200 bg-green-100 items-center py-8 justify-center'>
                 <MdOutlinePayments className='size-20 rounded-full text-white bg-green-500 p-5' />
                 <div className={`${isDarkMode ? 'text-black' : ''} text-2xl mt-3`}>Orders</div>
-                <div className={`text-2xl mt-1 ${isDarkMode ? 'text-black' : ''}`}>{orders?.length}</div>
+                <div className={`text-2xl mt-1 ${isDarkMode ? 'text-black' : ''}`}>{orderUser?.length}</div>
               </div>
             </div>
 

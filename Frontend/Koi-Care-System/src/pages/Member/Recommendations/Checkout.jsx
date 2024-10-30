@@ -20,7 +20,9 @@ function Checkout() {
   const [phuong, setPhuong] = useState([])
   const [selectedPhuong, setSelectedPhuong] = useState('0')
   const [destination, setDestination] = useState('')
-  const [errorMessage, setErrorMessage] = useState('')
+  const [addressError, setAddressError] = useState('')
+  const [phoneError, setPhoneError] = useState('')
+  const [nameError, setNameError] = useState('')
 
   const navigate = useNavigate()
 
@@ -40,12 +42,25 @@ function Checkout() {
       const userId = localStorage.getItem('id')
 
       if (!destination || destination.trim() === '') {
-        throw new Error('Address cannot be empty')
+        setAddressError('Address cannot be empty')
+        return
+      } else {
+        setAddressError('')
+      }
+
+      if (!name || name.trim() === '') {
+        setNameError('Name cannot be empty')
+        return
+      } else {
+        setNameError('')
       }
 
       const phoneRegex = /^0\d{8,9}$/
       if (!phoneRegex.test(phone)) {
-        throw new Error('Phone number must be 9 or 10 digits and start with 0')
+        setPhoneError('Phone number must be 9 or 10 digits and start with 0')
+        return
+      } else {
+        setPhoneError('')
       }
 
       await axios.post(
@@ -67,7 +82,8 @@ function Checkout() {
       setAddress('')
       setPhone('')
       setName('')
-      setErrorMessage('')
+      setAddressError('')
+      setPhoneError('')
     } catch (error) {
       console.log(error)
     }
@@ -201,7 +217,7 @@ function Checkout() {
                       placeholder='Name'
                       className='border lg:px-4 px-3 lg:mt-3 lg:text-lg text-base mt-5 rounded-lg lg:py-3 py-1 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
                     ></input>
-                    {errorMessage && <div className='error-message text-2xl'>{errorMessage}</div>}
+                    {nameError && <p className='text-red-500 lg:text-base text-xs mt-3'>{nameError}</p>}
                   </div>
                   <div className='flex flex-col w-full'>
                     <input
@@ -210,6 +226,7 @@ function Checkout() {
                       placeholder='Phone'
                       className='border lg:px-4 px-3 lg:mt-3 lg:text-lg text-base mt-5 rounded-lg lg:py-3 py-1 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
                     ></input>
+                    {phoneError && <p className='text-red-500 lg:text-base text-xs'>{phoneError}</p>}
                   </div>
                 </div>
                 <div className='flex flex-col lg:flex-row lg:gap-7 gap-2 lg:mt-7 mt-5'>
@@ -270,6 +287,7 @@ function Checkout() {
                     placeholder='Address'
                     className='border lg:px-4 px-4 py-1 lg:mt-3 rounded-lg lg:text-lg text-base lg:py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
                   ></input>
+                  {addressError && <p className='text-red-500 lg:text-base text-xs'>{addressError}</p>}
                 </div>
                 <div className='flex flex-col w-full lg:mt-7 mt-5 text-xl'>
                   <textarea

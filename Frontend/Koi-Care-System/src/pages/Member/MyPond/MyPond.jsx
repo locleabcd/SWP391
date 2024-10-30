@@ -240,6 +240,8 @@ function MyPond() {
       toast.success('Delete success!!')
       setIsEditFormVisible(false)
     } catch (error) {
+      toast.error('Your Pond are having koi fish. Please move koi to another pond!')
+      setIsEditFormVisible(false)
       console.error('Error deleting pond:', error)
     } finally {
       setIsLoading(false)
