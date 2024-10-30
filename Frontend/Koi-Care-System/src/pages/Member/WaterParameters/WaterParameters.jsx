@@ -155,7 +155,9 @@ function WaterParameters() {
         }
       )
 
-      setIsAddFormVisible(false) // Đóng form sau khi tạo thành công
+      setIsAddFormVisible(false)
+      toast.success('Create success!!')
+      // Đóng form sau khi tạo thành công
       const userId = localStorage.getItem('id')
       getParameter(userId)
       sortParameter(sortOption.order, sortOption.field)
@@ -204,7 +206,9 @@ function WaterParameters() {
           }
         }
       )
-      setIsEditFormVisible(false) // Đóng form sau khi cập nhật thành công
+      setIsEditFormVisible(false)
+      toast.success('Update success!!')
+      // Đóng form sau khi cập nhật thành công
       const userId = localStorage.getItem('id')
       getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
       reset()
@@ -228,7 +232,9 @@ function WaterParameters() {
           Authorization: `Bearer ${token}`
         }
       })
-      setIsEditFormVisible(false) // Đóng form sau khi cập nhật thành công
+      setIsEditFormVisible(false)
+      toast.success('Delete success!!')
+      // Đóng form sau khi cập nhật thành công
       const userId = localStorage.getItem('id')
       getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
       reset()
