@@ -368,7 +368,7 @@ function Dashboard() {
                         </th>
                       </tr>
                     </thead>
-                    <tbody className='bg-white divide-y divide-gray-200'>
+                    <tbody className={`${isDarkMode ? 'bg-custom-dark' : 'bg-white'} divide-y divide-gray-200`}>
                       {orders.map((order) => (
                         <tr className='' key={order.productId}>
                           <td className='px-6 py-4 text-center whitespace-nowrap flex gap-5'>

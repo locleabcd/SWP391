@@ -4,6 +4,7 @@ import LeftSideBar from '../../../components/Member/LeftSideBar'
 import TopLayout from '../../../layouts/TopLayout'
 import gif from '../../../assets/payment-complete.gif'
 import { Link } from 'react-router-dom'
+import PaymentErr from '../../../assets/PaymentError.webp'
 
 function PaymentError() {
   const { isDarkMode } = useDarkMode()
@@ -85,14 +86,14 @@ function PaymentError() {
               </ol>
 
               <div className='flex flex-col justify-center items-center'>
-                <div className='text-3xl font-semibold mb-4'>Thank you for your purchase!</div>
+                <div className='text-3xl font-semibold mb-4'>Payment Fail!</div>
                 <img
                   alt='payment'
                   loading='lazy'
                   width={400}
                   decoding='async'
                   data-nimg={1}
-                  src={gif}
+                  src={PaymentErr}
                   style={{ color: 'transparent' }}
                 />
               </div>
