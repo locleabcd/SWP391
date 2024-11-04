@@ -16,6 +16,7 @@ const CartList = () => {
   const dispatch = useDispatch()
 
   const subTotal = cart.reduce((acc, item) => acc + item.totalPrice, 0)
+  const promotionTotal = cart.reduce((acc, item) => acc + item.promotionPrice, 0)
 
   const increment = async (itemId) => {
     const updatedCart = cart.map((item) => {
@@ -23,7 +24,8 @@ const CartList = () => {
         return {
           ...item,
           quantity: item.quantity + 1,
-          totalPrice: (item.quantity + 1) * item.product.price
+          totalPrice: (item.quantity + 1) * item.product.price,
+          promotionPrice: (item.quantity + 1) * item.unitPrice
         }
       }
       return item
@@ -58,7 +60,8 @@ const CartList = () => {
         return {
           ...item,
           quantity: item.quantity - 1,
-          totalPrice: (item.quantity - 1) * item.product.price
+          totalPrice: (item.quantity - 1) * item.product.price,
+          promotionPrice: (item.quantity - 1) * item.unitPrice
         }
       }
       return item
@@ -88,6 +91,7 @@ const CartList = () => {
   }
 
   localStorage.setItem('totalPrice', subTotal)
+  localStorage.setItem('promotionTotal', promotionTotal)
 
   const getCartId = async () => {
     try {
@@ -104,7 +108,8 @@ const CartList = () => {
       })
       const updatedCart = response.data.data.items.map((item) => ({
         ...item,
-        totalPrice: item.quantity * item.product.price
+        totalPrice: item.quantity * item.product.price,
+        promotionPrice: item.quantity * item.unitPrice
       }))
 
       setCart(updatedCart)
@@ -274,8 +279,28 @@ const CartList = () => {
                         </td>
 
                         <td className='px-6 py-4 text-start whitespace-nowrap'>
-                          {' '}
-                          {item.totalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                          {item.unitPrice != item.totalPrice ? (
+                            <div className='flex gap-2'>
+                              <div className='line-through opacity-50'>
+                                {(item?.totalPrice ?? 0).toLocaleString('vi-VN', {
+                                  style: 'currency',
+                                  currency: 'VND'
+                                })}
+                              </div>
+                              <div className=''>
+                                {' '}
+                                {(item?.promotionPrice ?? 0).toLocaleString('vi-VN', {
+                                  style: 'currency',
+                                  currency: 'VND'
+                                })}
+                              </div>
+                            </div>
+                          ) : (
+                            <div className=''>
+                              {' '}
+                              {(item?.totalPrice ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                            </div>
+                          )}
                         </td>
                       </tr>
                     ))}
@@ -293,7 +318,9 @@ const CartList = () => {
 
                 <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div>Discount</div>
-                  <div>{(0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
+                  <div>
+                    {(subTotal - promotionTotal).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                  </div>
                 </div>
 
                 <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
@@ -303,13 +330,16 @@ const CartList = () => {
 
                 <div className='flex  mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className='font-medium'>Total</div>
-                  <div>{subTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
+                  <div>{promotionTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
                 </div>
 
                 <div className='flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between mt-8'>
-                  <button className='w-full lg:w-auto px-6 py-3 bg-gray-300 hover:bg-gray-400 text-white rounded-lg cursor-pointer'>
+                  <Link
+                    to={-1}
+                    className='w-full lg:w-auto px-6 py-3 bg-gray-300 text-center hover:bg-gray-400 text-white rounded-lg cursor-pointer'
+                  >
                     Back
-                  </button>
+                  </Link>
                   <Link
                     to='/member/checkout'
                     className='w-full lg:w-auto px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg text-center cursor-pointer'

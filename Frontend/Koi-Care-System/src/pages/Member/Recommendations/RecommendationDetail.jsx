@@ -347,10 +347,28 @@ function Recommendations() {
                   </div>
                   <div className='lg:text-3xl md:text-2xl text-xl font-semibold mt-5'>{productId.name}</div>
                   <div className='lg:text-xl md:text-xl text-lg text-justify mt-5'>{productId.description}</div>
-                  <div className='lg:text-3xl md:text-2xl text-xl lg:mt-5 mt-2 font-semibold'>
-                    {' '}
-                    {(productId?.price ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-                  </div>
+                  {productId?.promotions?.length > 0 ? (
+                    <div className='flex gap-2'>
+                      <div className='line-through opacity-50 lg:text-3xl md:text-2xl text-xl lg:mt-5 mt-2'>
+                        {productId.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                      </div>
+                      <div className='lg:text-3xl md:text-2xl text-xl lg:mt-5 mt-2 font-semibold'>
+                        {(
+                          ((productId?.price ?? 0) *
+                            (100 - productId.promotions[productId.promotions.length - 1]?.discountRate)) /
+                          100
+                        ).toLocaleString('vi-VN', {
+                          style: 'currency',
+                          currency: 'VND'
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className='lg:text-3xl md:text-2xl text-xl lg:mt-5 mt-2 font-semibold'>
+                      {' '}
+                      {(productId?.price ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                    </div>
+                  )}
                   <div className='flex lg:mt-5 mt-2 gap-3 items-center'>
                     <div className='flex'>
                       {[...Array(5)].map((_, index) => {
