@@ -696,7 +696,7 @@ function DashboardAD() {
           {/* row 2 */}
           <div className='grid grid-cols-1 lg:grid-cols-8 gap-10'>
             {/* areachart  */}
-            <div className='col-span-5 flex flex-col  mt-6 border rounded-md'>
+            <div className='lg:col-span-5 flex flex-col  mt-6 border rounded-md'>
               <div className='my-4 px-6 flex justify-between items-center'>
                 <h1 className='text-2xl font-bold'>Orders and Payments Analytics</h1>
                 <select
@@ -748,7 +748,7 @@ function DashboardAD() {
               </ResponsiveContainer>
             </div>
 
-            <div className='col-span-3 grid grid-cols-1 lg:grid-cols-1 gap-10'>
+            <div className='lg:col-span-3 grid grid-cols-1 lg:grid-cols-1 gap-10'>
               {/* pie chart  */}
               <div className='p-6 shadow border rounded-lg mt-6'>
                 <h2 className='text-2xl font-semibold mb-4'>Earning by Category</h2>
@@ -760,11 +760,11 @@ function DashboardAD() {
                       nameKey='categoryName'
                       cx='50%'
                       cy='50%'
-                      outerRadius={150} // Larger outer radius for a bigger pie
-                      innerRadius={80} // Add inner radius for a donut chart effect
+                      outerRadius={150}
+                      innerRadius={80}
                       fill='#8884d8'
                       label={renderCustomizedLabel}
-                      labelLine={false} // Remove label lines
+                      labelLine={false}
                     >
                       {categories.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={ColorsCategory[index % ColorsCategory.length]} />

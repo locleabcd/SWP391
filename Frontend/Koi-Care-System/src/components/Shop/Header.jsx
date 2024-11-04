@@ -594,7 +594,7 @@ function Header() {
             ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
         >
           <div
-            className={`flex p-4 rounded-lg items-center justify-between w-full ${isDarkMode ? 'bg-custom-dark ' : 'bg-white'}`}
+            className={`flex p-4 rounded-lg items-center justify-between w-full ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
           >
             <div className='card-content flex items-center '>
               <img
@@ -606,7 +606,7 @@ function Header() {
                 <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'textblack'}`}>
                   {user.name || 'User Name'}
                 </p>
-                <p className='text-sm text-gray-500'>{role}</p>
+                <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
               </div>
             </div>
             <Link onClick={handleLogout} to='/login'>
