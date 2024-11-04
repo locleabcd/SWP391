@@ -189,11 +189,11 @@ function Recommendations() {
         case 'all':
           matchesPricing = true
           break
-        case '0 - 50':
-          matchesPricing = products.price >= 0 && products.price <= 50
+        case '0 - 300000':
+          matchesPricing = products.price >= 0 && products.price <= 300000
           break
-        case '50 - 100':
-          matchesPricing = products.price > 50 && products.price <= 100
+        case '300000 - 1000000':
+          matchesPricing = products.price > 300000 && products.price <= 1000000
           break
         default:
           matchesPricing = true
@@ -381,7 +381,7 @@ function Recommendations() {
                 <div className='px-4 py-5 border-b border-gray-200'>
                   <div className='font-semibold text-xl'>By Pricing</div>
                   <div className='flex flex-col border-b-gray-200 mt-2'>
-                    {['all', '0 - 50', '50 - 100'].map((range) => (
+                    {['all', '0 - 300000', '300000 - 1000000'].map((range) => (
                       <div
                         key={range}
                         onClick={() => handlePricingChange(range)}
@@ -405,7 +405,7 @@ function Recommendations() {
                 <div className='px-4 py-5 border-b border-gray-200'>
                   <div className='font-semibold text-xl'>By Star</div>
                   <div className='flex flex-col border-b-gray-200 mt-2'>
-                    {[1, 2, 3, 4, 5].map((stars) => (
+                    {['1', '2', '3', '4', '5'].map((stars) => (
                       <div
                         key={stars}
                         onClick={() => handleRatingChange(stars)}
@@ -584,10 +584,28 @@ function Recommendations() {
                           <div className='px-7 py-5 lg:text-xl text-lg mt-5 font-medium'>
                             <div className='line-clamp-1'>{products.name}</div>
                             <div className='flex justify-between items-center lg:mt-3 mt-1'>
-                              <div className=''>
-                                {' '}
-                                {products.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-                              </div>
+                              {products.promotions.length > 0 ? (
+                                <div className='flex gap-2'>
+                                  <div className='line-through opacity-50'>
+                                    {products.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                                  </div>
+                                  <div className=''>
+                                    {(
+                                      (products.price *
+                                        (100 - products.promotions[products.promotions.length - 1].discountRate)) /
+                                      100
+                                    ).toLocaleString('vi-VN', {
+                                      style: 'currency',
+                                      currency: 'VND'
+                                    })}
+                                  </div>
+                                </div>
+                              ) : (
+                                <div className=''>
+                                  {' '}
+                                  {products.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                                </div>
+                              )}
                               <div className='flex'>
                                 {[...Array(5)].map((_, index) => {
                                   const fullStar = index < Math.floor(products.rating)

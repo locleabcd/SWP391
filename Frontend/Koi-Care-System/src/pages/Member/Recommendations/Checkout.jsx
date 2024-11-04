@@ -152,6 +152,9 @@ function Checkout() {
     }
   }, [selectedQuan])
 
+  const subTotal = Number(localStorage.getItem('totalPrice') || 0)
+  const promotionTotal = Number(localStorage.getItem('promotionTotal') || 0)
+
   return (
     <div>
       <div className='h-screen flex'>
@@ -303,14 +306,15 @@ function Checkout() {
                 <div className='lg:text-2xl text-xl font-semibold'>Order Summary</div>
                 <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className=''>Sub Total</div>
-                  <div className=''>
-                    {(cart?.totalAmount ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-                  </div>
+                  <div className=''>{subTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
                 </div>
 
                 <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className=''>Discount</div>
-                  <div className=''> {(0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
+                  <div className=''>
+                    {' '}
+                    {(subTotal - promotionTotal).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                  </div>
                 </div>
 
                 <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
@@ -327,9 +331,12 @@ function Checkout() {
               </div>
 
               <div className='flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between mt-8'>
-                <button className='w-full lg:w-auto px-6 py-3 bg-gray-300 hover:bg-gray-400 text-white rounded-lg cursor-pointer'>
+                <Link
+                  to={-1}
+                  className='w-full lg:w-auto px-6 py-3 bg-gray-300 hover:bg-gray-400 text-white text-center rounded-lg cursor-pointer'
+                >
                   Back
-                </button>
+                </Link>
                 <Link
                   onClick={() => addAddress()}
                   className='w-full lg:w-auto px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg text-center cursor-pointer'
