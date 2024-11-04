@@ -32,7 +32,29 @@ function FoodCalculator() {
           Authorization: `Bearer ${token}`
         }
       })
-      setPonds(res.data.data)
+      const ponds = res.data.data
+
+      // Lấy thông tin salt của từng hồ koi từ API thứ hai
+      const pondsWithTemp = await Promise.all(
+        ponds.map(async (pond) => {
+          const tempRes = await axios.get(
+            `https://koicaresystemv2.azurewebsites.net/api/water-parameters/getLatestByKoiPondId/${pond.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
+          )
+          return {
+            ...pond,
+            temperature: tempRes.data.data?.temperature // lấy thông tin salt nếu có
+          }
+        })
+      )
+
+      // Lưu danh sách hồ koi kèm thông tin salt vào state
+      setPonds(pondsWithTemp)
+      console.log(pondsWithTemp)
     } catch (error) {
       console.error('Error fetching ponds:', error)
     }
@@ -286,6 +308,12 @@ Over 28°C is not a good temperature to feed at!`
                 )}
               </div>
 
+              {selectedPond && (
+                <div className='mt-4'>
+                  <strong>Tempurate:</strong>{' '}
+                  {selectedPond.temperature ? `${selectedPond.temperature}°C` : 'No data available'}
+                </div>
+              )}
               {selectedPond && (
                 <div>
                   <div className='mt-4 lg:p-4 grid lg:grid-cols-3 grid-cols-1 space-x-2'>

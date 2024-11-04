@@ -98,7 +98,6 @@ function WaterParameters() {
           }
         }
       )
-      console.log('current parameter', res.data.data)
       const sortedData = res.data.data.sort((a, b) => new Date(b.createDateTime) - new Date(a.createDateTime))
       setParameters(sortedData)
     } catch (error) {
@@ -235,6 +234,7 @@ function WaterParameters() {
           Authorization: `Bearer ${token}`
         }
       })
+      setIsDialogOpen(false)
       setIsEditFormVisible(false)
       toast.success('Parameter deleted successfully')
       const userId = localStorage.getItem('id')

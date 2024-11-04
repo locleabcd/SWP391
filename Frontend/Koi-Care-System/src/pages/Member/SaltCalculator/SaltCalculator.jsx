@@ -27,17 +27,40 @@ function SaltCalculator() {
       if (!token) {
         throw new Error('No token found')
       }
+
+      // Lấy danh sách các hồ koi từ API đầu tiên
       const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/koiponds/user/${id}/koiponds`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
-      setPonds(res.data.data)
+      const ponds = res.data.data
+
+      // Lấy thông tin salt của từng hồ koi từ API thứ hai
+      const pondsWithSalt = await Promise.all(
+        ponds.map(async (pond) => {
+          const saltRes = await axios.get(
+            `https://koicaresystemv2.azurewebsites.net/api/water-parameters/getLatestByKoiPondId/${pond.id}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            }
+          )
+          return {
+            ...pond,
+            salt: saltRes.data.data?.salt // lấy thông tin salt nếu có
+          }
+        })
+      )
+
+      // Lưu danh sách hồ koi kèm thông tin salt vào state
+      setPonds(pondsWithSalt)
+      console.log(pondsWithSalt)
     } catch (error) {
       console.error('Error fetching ponds:', error)
     }
   }
-
   useEffect(() => {
     getPond()
   }, [])
@@ -128,6 +151,11 @@ function SaltCalculator() {
                   )}
                 </select>
               </div>
+              {selectedPond && (
+                <div className='mt-4'>
+                  <strong>Salt Level:</strong> {selectedPond.salt ? `${selectedPond.salt}%` : 'No data available'}
+                </div>
+              )}
               <div className='grid grid-cols-4 p-4 text-lg'>
                 <div className='lg:col-span-2 col-span-4'>
                   {selectedPond ? (

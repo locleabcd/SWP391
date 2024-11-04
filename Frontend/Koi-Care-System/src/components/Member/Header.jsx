@@ -43,7 +43,6 @@ function Header() {
       })
       setCart(response.data.data.items)
       dispatch(loadCart())
-      console.log(response.data.data.items)
     } catch (error) {
       console.log(error)
     }
@@ -82,7 +81,6 @@ function Header() {
       })
       setUser(res.data.data)
       localStorage.setItem('avt', res.data.data.avatar)
-      console.log(res.data.data)
     } catch (error) {
       console.error('Error fetching users:', error)
     }
