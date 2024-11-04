@@ -14,6 +14,7 @@ import { IoIosWater } from 'react-icons/io'
 import { GiAquarium } from 'react-icons/gi'
 import logo from '../../assets/logo.png'
 import memberPathInfor from '../../constants/memberPathInfor'
+import ReminderMB from '../../pages/Member/Reminders/ReminderMB'
 
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
@@ -43,7 +44,6 @@ function Header() {
       })
       setCart(response.data.data.items)
       dispatch(loadCart())
-      console.log(response.data.data.items)
     } catch (error) {
       console.log(error)
     }
@@ -82,7 +82,6 @@ function Header() {
       })
       setUser(res.data.data)
       localStorage.setItem('avt', res.data.data.avatar)
-      console.log(res.data.data)
     } catch (error) {
       console.error('Error fetching users:', error)
     }
@@ -143,6 +142,7 @@ function Header() {
           : 'bg-white text-black border-b border-gray-200'
       } sticky top-0 lg:p-3 py-3 lg:justify-end justify-between z-20 flex w-full duration-200 ease-linear`}
     >
+      <ReminderMB />
       <button className='ml-2 lg:hidden inline-block cursor-pointer'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
@@ -651,7 +651,7 @@ function Header() {
         </div>
 
         <div
-          className={`mt-auto sticky bottom-0 z-50 w-full p-2 flex justify-between items-center 
+          className={`mt-auto w-full  p-2 flex justify-between items-center 
             ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
         >
           <div
@@ -664,8 +664,10 @@ function Header() {
                 className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
               />
               <div className='ml-3'>
-                <p className='font-semibold text-lg text-black'>{name || 'User Name'}</p>
-                <p className='text-sm text-gray-500'>{role || 'User Role'}</p>
+                <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'textblack'}`}>
+                  {user.name || 'User Name'}
+                </p>
+                <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
               </div>
             </div>
             <Link onClick={handleLogout} to='/login'>

@@ -23,7 +23,8 @@ function CreatePromotion() {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
+    watch
   } = useForm()
 
   const onSubmit = async (data) => {
@@ -203,7 +204,8 @@ function CreatePromotion() {
                   {...register('startDate', {
                     required: 'Start Date is required'
                   })}
-                  min={new Date().toISOString().split('T')[0]} // Prevent selecting past dates
+                  min={new Date().toISOString().split('T')[0]} // Ngăn chọn ngày quá khứ
+                  max={watch('endDate') ? new Date(watch('endDate')).toISOString().split('T')[0] : undefined}
                 />
                 {errors.startDate && <p className='text-red-500 text-xs mt-1'>{errors.startDate.message}</p>}
               </div>
@@ -221,7 +223,7 @@ function CreatePromotion() {
                   {...register('endDate', {
                     required: 'End Date is required'
                   })}
-                  min={new Date().toISOString().split('T')[0]} // Prevent selecting past dates
+                  min={watch('startDate') ? new Date(watch('startDate')).toISOString().split('T')[0] : undefined}
                 />
                 {errors.endDate && <p className='text-red-500 text-xs mt-1'>{errors.endDate.message}</p>}
               </div>

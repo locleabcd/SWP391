@@ -161,7 +161,9 @@ function ProfileShop() {
 
   // Get today's date in yyyy-mm-dd format for date input max value
   const today = new Date().toISOString().split('T')[0]
-
+  const maxDate = new Date()
+  maxDate.setFullYear(maxDate.getFullYear() - 15)
+  const formattedMaxDate = maxDate.toISOString().split('T')[0]
   return (
     <div className='h-screen flex'>
       <LeftSideBar />
@@ -213,7 +215,9 @@ function ProfileShop() {
                       type='text'
                       {...register('name')}
                       disabled
-                      className='border rounded p-2 w-full  cursor-not-allowed'
+                      className={`border rounded p-2 w-full  cursor-not-allowed ${
+                        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                      }`}
                     />
                   </div>
                   <div>
@@ -222,7 +226,9 @@ function ProfileShop() {
                       type='text'
                       {...register('email')}
                       disabled
-                      className='border rounded p-2 w-full  cursor-not-allowed'
+                      className={`border rounded p-2 w-full  cursor-not-allowed ${
+                        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                      }`}
                     />
                   </div>
                   <div>
@@ -236,7 +242,9 @@ function ProfileShop() {
                         }
                       })}
                       disabled={!isEditing}
-                      className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
+                      className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}, ${
+                        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                      }`}
                     />
                     {errors.phone && <span className='text-red-500'>{errors.phone.message}</span>}
                   </div>
@@ -245,7 +253,10 @@ function ProfileShop() {
                     <select
                       {...register('gender')}
                       disabled={!isEditing}
-                      className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
+                      className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}, ${
+                        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                      }
+                      `}
                     >
                       <option value='male'>Male</option>
                       <option value='female'>Female</option>
@@ -260,7 +271,9 @@ function ProfileShop() {
                       {...register('dateOfBirth')}
                       disabled={!isEditing}
                       max={today}
-                      className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
+                      className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}, ${
+                        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                      }`}
                     />
                   </div>
                   <div>
@@ -269,7 +282,9 @@ function ProfileShop() {
                       type='text'
                       value={new Date(users.createdDate).toLocaleDateString()}
                       disabled
-                      className='border rounded p-2 w-full bg-white'
+                      className={`border rounded p-2 w-full  cursor-not-allowed ${
+                        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                      }`}
                     />
                   </div>
 
@@ -279,7 +294,9 @@ function ProfileShop() {
                       type='text'
                       {...register('address')}
                       disabled={!isEditing}
-                      className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
+                      className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}, ${
+                        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                      }`}
                     />
                   </div>
                   <div className='col-span-2'>
@@ -287,7 +304,9 @@ function ProfileShop() {
                     <textarea
                       {...register('bio')}
                       disabled={!isEditing}
-                      className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
+                      className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}, ${
+                        isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                      }`}
                     />
                   </div>
                 </div>
@@ -336,7 +355,7 @@ function ProfileShop() {
                       type='password'
                       value={currentPassword}
                       onChange={(e) => setCurrentPassword(e.target.value)}
-                      className='border rounded p-2 w-full'
+                      className={`border rounded p-2 w-full ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                     />
                   </div>
                   <div>
@@ -345,7 +364,7 @@ function ProfileShop() {
                       type='password'
                       value={newPassword}
                       onChange={(e) => setNewPassword(e.target.value)}
-                      className='border rounded p-2 w-full'
+                      className={`border rounded p-2 w-full ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                     />
                   </div>
                   <div>
@@ -354,7 +373,7 @@ function ProfileShop() {
                       type='password'
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
-                      className='border rounded p-2 w-full'
+                      className={`border rounded p-2 w-full ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                     />
                   </div>
                 </div>
