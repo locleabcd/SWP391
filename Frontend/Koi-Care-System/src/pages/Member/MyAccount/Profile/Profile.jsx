@@ -150,7 +150,7 @@ function Profile() {
   // Get today's date in yyyy-mm-dd format for date input max value
   const today = new Date().toISOString().split('T')[0]
   const maxDate = new Date()
-  maxDate.setFullYear(maxDate.getFullYear() - 3)
+  maxDate.setFullYear(maxDate.getFullYear() - 15)
   const formattedMaxDate = maxDate.toISOString().split('T')[0]
 
   return (
@@ -345,7 +345,7 @@ function Profile() {
                         type='password'
                         value={currentPassword}
                         onChange={(e) => setCurrentPassword(e.target.value)}
-                        className='border rounded p-2 w-full'
+                        className={`border rounded p-2 w-full ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                       />
                     </div>
                     <div>
@@ -354,7 +354,7 @@ function Profile() {
                         type='password'
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
-                        className='border rounded p-2 w-full'
+                        className={`border rounded p-2 w-full ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                       />
                     </div>
                     <div>
@@ -363,7 +363,7 @@ function Profile() {
                         type='password'
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
-                        className='border rounded p-2 w-full'
+                        className={`border rounded p-2 w-full ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                       />
                     </div>
                   </div>

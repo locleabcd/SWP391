@@ -500,7 +500,7 @@ function LeftSideBar() {
                 className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
               />
               <div className='ml-3'>
-                <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'textblack'}`}>
+                <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'tex-black'}`}>
                   {user.name || 'User Name'}
                 </p>
                 <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
@@ -508,7 +508,7 @@ function LeftSideBar() {
             </div>
             <Link onClick={handleLogout} to='/login'>
               <IoPowerOutline
-                className='text-2xl text-gray-500 hover:text-red-500 transition-colors duration-200 cursor-pointer'
+                className={`text-2xl ${isDarkMode ? 'text-white' : 'text-gray-500'}  hover:text-red-500 transition-colors duration-200 cursor-pointer`}
                 title='Logout'
               />
             </Link>
