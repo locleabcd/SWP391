@@ -299,7 +299,7 @@ function Dashboard() {
             </div>
 
             <div className='mt-10 grid lg:grid-cols-7 grid-cols-1 gap-14'>
-              <div className='lg:col-span-3 border border-gray-200 px-6 py-6'>
+              <div className='lg:col-span-3 border border-gray-200 px-6 py-6 max-h-[580px]'>
                 <div className='lg:text-2xl text-lg font-semibold mb-3'>Recent Transaction</div>
                 <div className='flex justify-center flex-col lg:px-10 px-5'>
                   {payment.map((payments, index) => (
@@ -356,7 +356,7 @@ function Dashboard() {
 
                         <th
                           scope='col'
-                          className='lg:inline-block hidden px-6 py-3 text-start text-xl font-bold text-gray-500 uppercase tracking-wider'
+                          className='lg:inline-block hidden px-6 pr-5 text-start text-xl font-bold text-gray-500 uppercase tracking-wider'
                         >
                           Quantity
                         </th>
@@ -388,12 +388,12 @@ function Dashboard() {
                           </td>
 
                           <td className='px-6 py-4 text-center whitespace-nowrap'>
-                            <div className='lg:flex hidden gap-5 items-center justify-start w-full'>
+                            <div className='lg:flex hidden gap-5 w-16'>
                               <div className='text-xl'>{order.quantity}</div>
                             </div>
                           </td>
 
-                          <td className='px-6 py-4 lg:flex hidden text-xl text-start whitespace-nowrap'>
+                          <td className='px-6 py-4 lg:flex hidden text-xl whitespace-nowrap'>
                             {order.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                           </td>
                         </tr>

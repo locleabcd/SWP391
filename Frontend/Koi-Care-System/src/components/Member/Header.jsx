@@ -14,6 +14,7 @@ import { IoIosWater } from 'react-icons/io'
 import { GiAquarium } from 'react-icons/gi'
 import logo from '../../assets/logo.png'
 import memberPathInfor from '../../constants/memberPathInfor'
+import ReminderMB from '../../pages/Member/Reminders/ReminderMB'
 
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
@@ -43,7 +44,6 @@ function Header() {
       })
       setCart(response.data.data.items)
       dispatch(loadCart())
-      console.log(response.data.data.items)
     } catch (error) {
       console.log(error)
     }
@@ -82,7 +82,6 @@ function Header() {
       })
       setUser(res.data.data)
       localStorage.setItem('avt', res.data.data.avatar)
-      console.log(res.data.data)
     } catch (error) {
       console.error('Error fetching users:', error)
     }
@@ -143,6 +142,7 @@ function Header() {
           : 'bg-white text-black border-b border-gray-200'
       } sticky top-0 lg:p-3 py-3 lg:justify-end justify-between z-20 flex w-full duration-200 ease-linear`}
     >
+      <ReminderMB />
       <button className='ml-2 lg:hidden inline-block cursor-pointer'>
         <svg
           xmlns='http://www.w3.org/2000/svg'
