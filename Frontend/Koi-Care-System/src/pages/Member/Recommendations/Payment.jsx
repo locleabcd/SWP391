@@ -11,10 +11,11 @@ function Payment() {
 
   const [payment, SetPayment] = useState([])
   const [cart, setCart] = useState([])
-  const [selectedPayment, setSelectedPayment] = useState('paypal')
+  const [selectedPayment, setSelectedPayment] = useState('')
 
   const handlePaymentChange = (e) => {
     setSelectedPayment(e.target.value)
+    console.log(selectedPayment)
   }
 
   const getCartId = async () => {
@@ -55,7 +56,8 @@ function Payment() {
         },
         params: {
           amount: totalPrice,
-          userId: id
+          userId: id,
+          bankCode: selectedPayment
         }
       })
       SetPayment(res.data)
@@ -65,8 +67,14 @@ function Payment() {
   }
 
   useEffect(() => {
-    createPayment()
-  }, [])
+    if (selectedPayment) {
+      createPayment()
+      console.log('Selected Payment:', selectedPayment)
+    }
+  }, [selectedPayment])
+
+  const subTotal = Number(localStorage.getItem('totalPrice') || 0)
+  const promotionTotal = Number(localStorage.getItem('promotionTotal') || 0)
 
   return (
     <div>
@@ -143,56 +151,225 @@ function Payment() {
                         <div className='flex items-center gap-5'>
                           <input
                             type='radio'
-                            id='paypal'
                             name='payment-method'
-                            value='paypal'
-                            checked={selectedPayment === 'paypal'}
+                            id='intcard'
+                            value='INTCARD'
+                            checked={selectedPayment === 'INTCARD'}
                             onChange={handlePaymentChange}
                             className='mr-2 size-6'
                           />
-                          <label htmlFor='paypal'>
-                            <h6 className='lg:text-lg text-sm font-semibold'>Pay with Paypal</h6>
+                          <label htmlFor='intcard'>
+                            <h6 className='lg:text-lg text-sm font-semibold'>INTCARD Card Payment</h6>
                             <p className='lg:text-lg text-sm mt-3 lg:mt-0 text-gray-600'>
-                              You will be redirected to PayPal website to complete your purchase securely.
+                              We support payments through INTCARD, enabling you to make secure and convenient
+                              transactions.
                             </p>
                           </label>
                         </div>
                         <div>
                           <svg
-                            width='800px'
-                            height='800px'
-                            viewBox='0 -140 780 780'
-                            enableBackground='new 0 0 780 500'
-                            version='1.1'
-                            xmlSpace='preserve'
                             xmlns='http://www.w3.org/2000/svg'
+                            xmlnsXlink='http://www.w3.org/1999/xlink'
+                            version='1.1'
                             className='size-16'
+                            viewBox='0 0 256 256'
+                            xmlSpace='preserve'
                           >
-                            <rect width={780} height={500} fill='#FFF' />
-                            <path
-                              d='m168.38 169.85c-8.399-5.774-19.359-8.668-32.88-8.668h-52.346c-4.145 0-6.435 2.073-6.87 6.214l-21.265 133.48c-0.221 1.311 0.107 2.51 0.981 3.6 0.869 1.093 1.962 1.636 3.271 1.636h24.864c4.361 0 6.758-2.068 7.198-6.216l5.888-35.985c0.215-1.744 0.982-3.162 2.291-4.254 1.308-1.09 2.944-1.804 4.907-2.13 1.963-0.324 3.814-0.487 5.562-0.487 1.743 0 3.814 0.11 6.217 0.327 2.397 0.218 3.925 0.324 4.58 0.324 18.756 0 33.478-5.285 44.167-15.866 10.684-10.577 16.032-25.244 16.032-44.004 0-12.868-4.202-22.192-12.597-27.975zm-26.99 40.08c-1.094 7.635-3.926 12.649-8.506 15.049-4.581 2.403-11.124 3.597-19.629 3.597l-10.797 0.328 5.563-35.007c0.434-2.397 1.851-3.597 4.252-3.597h6.218c8.72 0 15.049 1.257 18.975 3.761 3.924 2.51 5.233 7.802 3.924 15.869z'
-                              fill='#003087'
-                            />
-                            <path
-                              d='m720.79 161.18h-24.208c-2.405 0-3.821 1.2-4.253 3.599l-21.267 136.1-0.328 0.654c0 1.096 0.437 2.127 1.311 3.109 0.868 0.979 1.963 1.471 3.271 1.471h21.595c4.138 0 6.429-2.068 6.871-6.215l21.265-133.81v-0.325c-2e-3 -3.053-1.424-4.58-4.257-4.58z'
-                              fill='#009CDE'
-                            />
-                            <path
-                              d='m428.31 213.86c0-1.088-0.438-2.126-1.306-3.106-0.875-0.981-1.857-1.474-2.945-1.474h-25.191c-2.404 0-4.366 1.096-5.89 3.271l-34.679 51.04-14.394-49.075c-1.096-3.488-3.493-5.236-7.198-5.236h-24.54c-1.093 0-2.075 0.492-2.942 1.474-0.875 0.98-1.309 2.019-1.309 3.106 0 0.44 2.127 6.871 6.379 19.303 4.252 12.434 8.833 25.848 13.741 40.244 4.908 14.394 7.468 22.031 7.688 22.898-17.886 24.43-26.826 37.518-26.826 39.26 0 2.838 1.417 4.254 4.253 4.254h25.191c2.399 0 4.361-1.088 5.89-3.271l83.427-120.4c0.433-0.433 0.651-1.193 0.651-2.289z'
-                              fill='#003087'
-                            />
-                            <path
-                              d='m662.89 209.28h-24.865c-3.056 0-4.904 3.599-5.559 10.797-5.677-8.72-16.031-13.088-31.083-13.088-15.704 0-29.065 5.89-40.077 17.668-11.016 11.779-16.521 25.631-16.521 41.551 0 12.871 3.761 23.121 11.285 30.752 7.524 7.639 17.611 11.451 30.266 11.451 6.323 0 12.757-1.311 19.3-3.926 6.544-2.617 11.665-6.105 15.379-10.469 0 0.219-0.222 1.198-0.654 2.942-0.44 1.748-0.655 3.06-0.655 3.926 0 3.494 1.414 5.234 4.254 5.234h22.576c4.138 0 6.541-2.068 7.193-6.216l13.415-85.389c0.215-1.309-0.111-2.507-0.981-3.599-0.876-1.087-1.964-1.634-3.273-1.634zm-42.694 64.452c-5.562 5.453-12.269 8.179-20.12 8.179-6.328 0-11.449-1.742-15.377-5.234-3.928-3.483-5.891-8.282-5.891-14.396 0-8.064 2.727-14.884 8.181-20.446 5.446-5.562 12.214-8.343 20.284-8.343 6.102 0 11.174 1.8 15.212 5.397 4.032 3.599 6.055 8.563 6.055 14.888-1e-3 7.851-2.783 14.505-8.344 19.955z'
-                              fill='#009CDE'
-                            />
-                            <path
-                              d='m291.23 209.28h-24.864c-3.058 0-4.908 3.599-5.563 10.797-5.889-8.72-16.25-13.088-31.081-13.088-15.704 0-29.065 5.89-40.078 17.668-11.016 11.779-16.521 25.631-16.521 41.551 0 12.871 3.763 23.121 11.288 30.752 7.525 7.639 17.61 11.451 30.262 11.451 6.104 0 12.433-1.311 18.975-3.926 6.543-2.617 11.778-6.105 15.704-10.469-0.875 2.616-1.309 4.907-1.309 6.868 0 3.494 1.417 5.234 4.253 5.234h22.574c4.141 0 6.543-2.068 7.198-6.216l13.413-85.389c0.215-1.309-0.112-2.507-0.981-3.599-0.873-1.087-1.962-1.634-3.27-1.634zm-42.695 64.614c-5.563 5.351-12.382 8.017-20.447 8.017-6.329 0-11.4-1.742-15.214-5.234-3.819-3.483-5.726-8.282-5.726-14.396 0-8.064 2.725-14.884 8.18-20.446 5.449-5.562 12.211-8.343 20.284-8.343 6.104 0 11.175 1.8 15.214 5.398 4.032 3.599 6.052 8.563 6.052 14.888 0 8.069-2.781 14.778-8.343 20.116z'
-                              fill='#003087'
-                            />
-                            <path
-                              d='m540.04 169.85c-8.398-5.774-19.356-8.668-32.879-8.668h-52.02c-4.364 0-6.765 2.073-7.197 6.214l-21.266 133.48c-0.221 1.312 0.106 2.511 0.981 3.601 0.865 1.092 1.962 1.635 3.271 1.635h26.826c2.617 0 4.361-1.416 5.235-4.252l5.89-37.949c0.216-1.744 0.98-3.162 2.29-4.254 1.309-1.09 2.943-1.803 4.908-2.13 1.962-0.324 3.812-0.487 5.562-0.487 1.743 0 3.814 0.11 6.214 0.327 2.399 0.218 3.931 0.324 4.58 0.324 18.76 0 33.479-5.285 44.168-15.866 10.688-10.577 16.031-25.244 16.031-44.004 2e-3 -12.867-4.199-22.191-12.594-27.974zm-33.534 53.82c-4.799 3.271-11.997 4.906-21.592 4.906l-10.47 0.328 5.562-35.007c0.432-2.397 1.849-3.597 4.252-3.597h5.887c4.798 0 8.614 0.218 11.454 0.653 2.831 0.44 5.562 1.799 8.179 4.089 2.618 2.291 3.926 5.618 3.926 9.98 0 9.16-2.402 15.375-7.198 18.648z'
-                              fill='#009CDE'
-                            />
+                            <defs />
+                            <g
+                              style={{
+                                stroke: 'none',
+                                strokeWidth: 0,
+                                strokeDasharray: 'none',
+                                strokeLinecap: 'butt',
+                                strokeLinejoin: 'miter',
+                                strokeMiterlimit: 10,
+                                fill: 'none',
+                                fillRule: 'nonzero',
+                                opacity: 1
+                              }}
+                              transform='translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)'
+                            >
+                              <path
+                                d='M 84.259 16.068 H 5.741 C 2.57 16.068 0 18.638 0 21.809 v 8.131 h 90 v -8.131 C 90 18.638 87.43 16.068 84.259 16.068 z'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(27,77,162)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                                strokeLinecap='round'
+                              />
+                              <path
+                                d='M 0 60.06 v 8.131 c 0 3.171 2.57 5.741 5.741 5.741 h 78.518 c 3.171 0 5.741 -2.57 5.741 -5.741 V 60.06 H 0 z'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(244,169,41)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                                strokeLinecap='round'
+                              />
+                              <rect
+                                x={0}
+                                y='27.94'
+                                rx={0}
+                                ry={0}
+                                width={90}
+                                height='34.12'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(240,240,240)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <path
+                                d='M 9.259 34.213 c 0.96 -0.494 2.058 -0.295 3.089 -0.314 c 2.362 0.062 4.728 -0.057 7.09 0.048 c 1.064 -0.005 1.977 0.879 2.124 1.91 c 0.741 3.592 1.421 7.199 2.148 10.801 c -1.202 -4.22 -4.376 -7.665 -8.107 -9.855 C 13.631 35.619 11.43 34.93 9.259 34.213 z'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(244,169,41)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                                strokeLinecap='round'
+                              />
+                              <path
+                                d='M 29.806 33.909 c 2.048 0.024 4.091 0.014 6.135 0 c -3.108 7.427 -6.006 14.94 -9.181 22.339 c -1.996 -0.062 -3.992 -0.033 -5.987 -0.033 c -1.768 -6.458 -3.417 -12.949 -5.17 -19.411 c 3.73 2.191 6.904 5.636 8.107 9.855 c 0.181 0.817 0.309 1.654 0.466 2.48 C 26.038 44.059 27.924 38.984 29.806 33.909 z'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(27,77,162)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                                strokeLinecap='round'
+                              />
+                              <path
+                                d='M 38.236 33.899 c 1.925 0.014 3.849 0.014 5.774 0 c -1.183 7.441 -2.428 14.873 -3.583 22.32 c -1.915 0.005 -3.83 0.005 -5.75 0 C 35.779 48.768 37.076 41.345 38.236 33.899 z'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(27,77,162)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                                strokeLinecap='round'
+                              />
+                              <path
+                                d='M 49.483 35.301 c 3.45 -2.267 7.959 -2.2 11.775 -0.946 c -0.176 1.649 -0.451 3.284 -0.737 4.913 c -2.029 -0.974 -4.395 -1.407 -6.6 -0.841 c -1.041 0.247 -2.067 1.54 -1.202 2.509 c 1.777 1.82 4.576 2.233 6.249 4.215 c 1.939 1.896 1.867 5.089 0.546 7.308 c -1.397 2.343 -4.087 3.569 -6.705 3.92 c -2.96 0.309 -6.044 0.124 -8.819 -1.022 c 0.295 -1.663 0.542 -3.336 0.841 -4.999 c 2.4 1.24 5.184 1.863 7.86 1.269 c 0.908 -0.304 1.844 -1.05 1.763 -2.115 c -0.299 -1.269 -1.625 -1.81 -2.656 -2.385 c -2.001 -0.984 -4.153 -2.191 -5.051 -4.353 C 45.63 40.043 47.107 36.845 49.483 35.301 z'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(27,77,162)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                                strokeLinecap='round'
+                              />
+                              <path
+                                d='M 76.07 33.928 c -1.768 0.033 -3.545 -0.071 -5.313 0.052 c -1.202 0.062 -1.963 1.178 -2.347 2.205 c -2.78 6.691 -5.593 13.367 -8.378 20.053 c 2.015 -0.005 4.03 -0.005 6.044 -0.005 c 0.423 -1.117 0.832 -2.243 1.226 -3.369 c 2.461 0.014 4.923 0.01 7.389 0.01 c 0.228 1.126 0.466 2.248 0.718 3.364 c 1.777 -0.005 3.554 -0.005 5.332 -0.01 C 79.183 48.796 77.652 41.36 76.07 33.928 z M 68.98 48.273 c 1.074 -2.761 1.953 -5.602 3.155 -8.311 c 0.356 2.804 1.055 5.55 1.63 8.316 C 72.169 48.278 70.577 48.278 68.98 48.273 z'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(27,77,162)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                                strokeLinecap='round'
+                              />
+                              <path
+                                d='M 4 68.191 V 62.06 H 0 v 6.131 c 0 3.171 2.57 5.741 5.741 5.741 h 4 C 6.57 73.932 4 71.362 4 68.191 z'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(215,149,36)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                                strokeLinecap='round'
+                              />
+                              <path
+                                d='M 4 21.809 c 0 -3.171 2.57 -5.741 5.741 -5.741 h -4 C 2.57 16.068 0 18.638 0 21.809 v 6.131 h 4 V 21.809 z'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(20,62,132)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                                strokeLinecap='round'
+                              />
+                              <polygon
+                                points='4,60.06 4,29.94 4,27.94 0,27.94 0,62.06 4,62.06 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(212,212,212)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                            </g>
                           </svg>
                         </div>
                       </div>
@@ -203,17 +380,17 @@ function Payment() {
                         <div className='flex items-center gap-5'>
                           <input
                             type='radio'
-                            id='credit_card'
                             name='payment-method'
-                            value='credit_card'
-                            checked={selectedPayment === 'credit_card'}
+                            value='VNBANK'
+                            checked={selectedPayment === 'VNBANK'}
                             onChange={handlePaymentChange}
                             className='mr-2 size-6'
                           />
-                          <label htmlFor='credit_card'>
-                            <h6 className='lg:text-lg text-sm font-semibold'>Credit / Debit Card</h6>
+                          <label htmlFor='credit_card' className='pr-12'>
+                            <h6 className='lg:text-lg text-sm font-semibold'>Domestic Bank Transfer</h6>
                             <p className='lg:text-lg text-sm text-gray-600'>
-                              We support Mastercard, Visa, Discover, and Stripe.
+                              We support payments through major domestic banks: Vietcombank, BIDV, Techcombank,
+                              Agribank, ACB, NCB
                             </p>
                           </label>
                         </div>
@@ -257,19 +434,668 @@ function Payment() {
                         <div className='flex items-center gap-5'>
                           <input
                             type='radio'
-                            id='cash'
-                            name='payment-method'
-                            value='cash'
-                            checked={selectedPayment === 'cash'}
+                            value='VnMart'
+                            checked={selectedPayment === 'VnMart'}
                             onChange={handlePaymentChange}
                             className='mr-2  size-6'
                           />
-                          <label htmlFor='cash'>
-                            <h6 className='lg:text-lg text-sm font-semibold'>Cash on Delivery</h6>
+                          <label>
+                            <h6 className='lg:text-lg text-sm font-semibold'>VNPAY QR Payment</h6>
                             <p className='lg:text-lg text-sm text-gray-600'>
-                              Pay with cash when your order is delivered.
+                              We support payments through VNPAY QR, allowing you to make quick and secure transactions
+                              using your mobile device.
                             </p>
                           </label>
+                        </div>
+                        <div className='pl-32'>
+                          <svg
+                            xmlns='http://www.w3.org/2000/svg'
+                            xmlnsXlink='http://www.w3.org/1999/xlink'
+                            version='1.1'
+                            className='size-16'
+                            viewBox='0 0 256 256'
+                            xmlSpace='preserve'
+                          >
+                            <defs></defs>
+                            <g
+                              style={{
+                                stroke: 'none',
+                                strokeWidth: 0,
+                                strokeDasharray: 'none',
+                                strokeLinecap: 'butt',
+                                strokeLinejoin: 'miter',
+                                strokeMiterlimit: 10,
+                                fill: 'none',
+                                fillRule: 'nonzero',
+                                opacity: 1
+                              }}
+                              transform='translate(1.4065934065934016 1.4065934065934016) scale(2.81 2.81)'
+                            >
+                              <rect
+                                x={0}
+                                y={0}
+                                rx={0}
+                                ry={0}
+                                width={90}
+                                height={90}
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(41,204,87)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='46.39,81.91 38.47,81.91 38.47,78.91 43.39,78.91 43.39,73.69 36.61,73.69 36.61,58.03 39.61,58.03 39.61,70.69 46.39,70.69 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='8.09'
+                                y='36.47'
+                                rx={0}
+                                ry={0}
+                                width={3}
+                                height='15.41'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='9.59'
+                                y='42.68'
+                                rx={0}
+                                ry={0}
+                                width='14.85'
+                                height={3}
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='31.95,53.84 18.3,53.84 18.3,50.84 28.95,50.84 28.95,42.68 38.98,42.68 38.98,45.68 31.95,45.68 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='52.59,66.39 45.03,66.39 45.03,44.53 48.03,44.53 48.03,63.39 52.59,63.39 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='25.95'
+                                y='36.47'
+                                rx={0}
+                                ry={0}
+                                width={3}
+                                height='3.03'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='36.51'
+                                y='50.83'
+                                rx={0}
+                                ry={0}
+                                width={3}
+                                height='3.03'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='15.88'
+                                y='36.47'
+                                rx={0}
+                                ry={0}
+                                width={3}
+                                height='3.03'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='52.97,20.37 49.97,20.37 49.97,11.09 40.68,11.09 40.68,8.09 52.97,8.09 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='45.52,32.65 38.47,32.65 38.47,29.64 42.52,29.64 42.52,18.48 36.47,18.48 36.47,15.48 45.52,15.48 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='36.51'
+                                y='22.04'
+                                rx={0}
+                                ry={0}
+                                width={3}
+                                height='3.03'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='81.91,81.91 65.24,81.91 65.24,78.91 78.91,78.91 78.91,66.73 70.16,66.73 70.16,63.73 81.91,63.73 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='70.2'
+                                y='71.79'
+                                rx={0}
+                                ry={0}
+                                width={3}
+                                height='3.03'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='60.2,47.91 54.15,47.91 54.15,44.91 57.2,44.91 57.2,39.49 36.01,39.49 36.01,36.49 60.2,36.49 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='57.2'
+                                y='52.48'
+                                rx={0}
+                                ry={0}
+                                width={3}
+                                height='14.15'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='58.7'
+                                y='58.09'
+                                rx={0}
+                                ry={0}
+                                width='7.9'
+                                height={3}
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='78.91'
+                                y='36.47'
+                                rx={0}
+                                ry={0}
+                                width={3}
+                                height='9.63'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='81.91,60.23 78.91,60.23 78.91,52.33 65.04,52.33 65.04,49.33 81.91,49.33 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='74.11,50.83 71.11,50.83 71.11,39.62 65.04,39.62 65.04,36.62 74.11,36.62 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='50.65'
+                                y='71.8'
+                                rx={0}
+                                ry={0}
+                                width='13.82'
+                                height={3}
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='56.06'
+                                y='73.3'
+                                rx={0}
+                                ry={0}
+                                width={3}
+                                height='8.12'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='71.02'
+                                y='56.14'
+                                rx={0}
+                                ry={0}
+                                width={3}
+                                height='3.03'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='49.97'
+                                y='25.33'
+                                rx={0}
+                                ry={0}
+                                width={3}
+                                height='5.81'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <rect
+                                x='46.53'
+                                y='52.98'
+                                rx={0}
+                                ry={0}
+                                width='4.65'
+                                height={3}
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <path
+                                d='M 32.576 32.645 H 8.093 V 8.093 h 24.482 V 32.645 z M 11.093 29.645 h 18.482 V 11.093 H 11.093 V 29.645 z'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                                strokeLinecap='round'
+                              />
+                              <rect
+                                x='18.69'
+                                y='18.72'
+                                rx={0}
+                                ry={0}
+                                width='3.28'
+                                height='3.29'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <path
+                                d='M 32.576 81.907 H 8.093 V 57.354 h 24.482 V 81.907 z M 11.093 78.907 h 18.482 V 60.354 H 11.093 V 78.907 z'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                                strokeLinecap='round'
+                              />
+                              <rect
+                                x='18.69'
+                                y='67.98'
+                                rx={0}
+                                ry={0}
+                                width='3.28'
+                                height='3.29'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <path
+                                d='M 81.907 32.645 H 57.424 V 8.093 h 24.483 V 32.645 z M 60.424 29.645 h 18.483 V 11.093 H 60.424 V 29.645 z'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                                strokeLinecap='round'
+                              />
+                              <rect
+                                x='68.02'
+                                y='18.72'
+                                rx={0}
+                                ry={0}
+                                width='3.28'
+                                height='3.29'
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform=' matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='3,31.14 0,31.14 0,0 31.14,0 31.14,3 3,3 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='90,31.14 87,31.14 87,3 58.85,3 58.85,0 90,0 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='31.14,90 0,90 0,58.85 3,58.85 3,87 31.14,87 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                              <polygon
+                                points='90,90 58.85,90 58.85,87 87,87 87,58.85 90,58.85 '
+                                style={{
+                                  stroke: 'none',
+                                  strokeWidth: 1,
+                                  strokeDasharray: 'none',
+                                  strokeLinecap: 'butt',
+                                  strokeLinejoin: 'miter',
+                                  strokeMiterlimit: 10,
+                                  fill: 'rgb(0,0,0)',
+                                  fillRule: 'nonzero',
+                                  opacity: 1
+                                }}
+                                transform='  matrix(1 0 0 1 0 0) '
+                              />
+                            </g>
+                          </svg>
                         </div>
                       </div>
                     </div>
@@ -296,7 +1122,10 @@ function Payment() {
 
                 <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className=''>Discount</div>
-                  <div className=''> {(0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
+                  <div className=''>
+                    {' '}
+                    {(subTotal - promotionTotal).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                  </div>
                 </div>
 
                 <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
@@ -313,9 +1142,12 @@ function Payment() {
               </div>
 
               <div className='flex flex-col lg:flex-row gap-4 lg:gap-0 justify-between mt-8'>
-                <button className='w-full lg:w-auto px-6 py-3 bg-gray-300 hover:bg-gray-400 text-white rounded-lg cursor-pointer'>
+                <Link
+                  to={-1}
+                  className='w-full text-center lg:w-auto px-6 py-3 bg-gray-300 hover:bg-gray-400 text-white rounded-lg cursor-pointer'
+                >
                   Back
-                </button>
+                </Link>
                 <Link
                   to={payment.paymentUrl}
                   className='w-full lg:w-auto px-6 py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg text-center cursor-pointer'

@@ -7,6 +7,7 @@ import Draggable from 'react-draggable'
 import '../../index.css'
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import ima from '../../assets/3x/Asset 1@3x.png'
+import EmojiPicker from 'emoji-picker-react'
 
 var stompClient = null
 const Chat = () => {
@@ -21,6 +22,12 @@ const Chat = () => {
   const [hasUpdated, setHasUpdated] = useState(false)
   const chatAreaRef = useRef(null)
   const [messages, setMessages] = useState([])
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false)
+
+  const handleEmojiClick = (emoji) => {
+    setMessageInput((prevInput) => prevInput + emoji.emoji)
+    setShowEmojiPicker(false)
+  }
   const baseUrl = 'https://koicaresystemv2.azurewebsites.net/api'
   const initValue = () => {
     setNickname(localStorage.getItem('name'))
@@ -195,16 +202,19 @@ const Chat = () => {
     console.log('Chat session closed.')
   }
 
-  const messageList = ['Tôi là chat box của Koi Care System', 'Tôi sẽ trả lời các câu hỏi về dịch vụ']
+  const messageList = [
+    'I can help you find information about fish ponds, Contact me if you have any questions!',
+    'Do you need help with Koi care? I will provide detailed information about pond maintenance services.'
+  ]
 
   useEffect(() => {
     messageList.forEach((message, index) => {
       setTimeout(() => {
         setMessages((prevMessages) => [...prevMessages, message])
-      }, index * 3000)
+      }, index * 5000)
     })
 
-    const totalTime = messageList.length * 3000
+    const totalTime = messageList.length * 6000
     const clearMessagesTimeout = setTimeout(() => {
       setMessages([])
     }, totalTime)
@@ -257,7 +267,7 @@ const Chat = () => {
                 {messages.map((msg, index) => (
                   <div
                     key={index}
-                    className='chat absolute text-white rounded-r-full shadow-xl text-xl top-2 w-80 px-16 left-24 py-4 bg-blue-300'
+                    className='chat absolute text-white rounded-r-full shadow-xl text-xl top-0 w-96 px-10 left-24 py-4 bg-blue-300'
                   >
                     {msg}
                   </div>
@@ -415,7 +425,7 @@ const Chat = () => {
                 </div>
 
                 {selectedUserId && (
-                  <form onSubmit={sendMessage} className='message-form flex'>
+                  <form onSubmit={sendMessage} className='message-form flex relative'>
                     <input
                       type='text'
                       id='message'
@@ -425,7 +435,21 @@ const Chat = () => {
                       placeholder='Aa'
                       required
                     />
-                    <button className='bg-gray-50 border-r text-black px-2 py-2'>
+                    <button
+                      type='button'
+                      className='bg-gray-50 border-r text-black px-2 py-2'
+                      onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                    >
+                      😊
+                    </button>
+
+                    {showEmojiPicker && (
+                      <div className='absolute bottom-12 right-0'>
+                        <EmojiPicker onEmojiClick={handleEmojiClick} />
+                      </div>
+                    )}
+
+                    <button type='submit' className='bg-gray-50 border-r text-black px-2 py-2'>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'

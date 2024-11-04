@@ -346,11 +346,32 @@ function Recommendations() {
                     <div>{productId.category?.name || 'No category available'}</div>
                   </div>
                   <div className='lg:text-3xl md:text-2xl text-xl font-semibold mt-5'>{productId.name}</div>
-                  <div className='lg:text-xl md:text-xl text-lg text-justify mt-5'>{productId.description}</div>
-                  <div className='lg:text-3xl md:text-2xl text-xl lg:mt-5 mt-2 font-semibold'>
-                    {' '}
-                    {(productId?.price ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                  <div className='lg:text-xl md:text-xl text-lg text-justify mt-5 text-gray-600'>
+                    Number of products : {productId.inventory || 'No inventory'}
                   </div>
+                  <div className='lg:text-xl md:text-xl text-lg text-justify mt-5'>{productId.description}</div>
+                  {productId?.promotions?.length > 0 ? (
+                    <div className='flex gap-2'>
+                      <div className='line-through opacity-50 lg:text-3xl md:text-2xl text-xl lg:mt-5 mt-2'>
+                        {productId.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                      </div>
+                      <div className='lg:text-3xl md:text-2xl text-xl lg:mt-5 mt-2 font-semibold'>
+                        {(
+                          ((productId?.price ?? 0) *
+                            (100 - productId.promotions[productId.promotions.length - 1]?.discountRate)) /
+                          100
+                        ).toLocaleString('vi-VN', {
+                          style: 'currency',
+                          currency: 'VND'
+                        })}
+                      </div>
+                    </div>
+                  ) : (
+                    <div className='lg:text-3xl md:text-2xl text-xl lg:mt-5 mt-2 font-semibold'>
+                      {' '}
+                      {(productId?.price ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                    </div>
+                  )}
                   <div className='flex lg:mt-5 mt-2 gap-3 items-center'>
                     <div className='flex'>
                       {[...Array(5)].map((_, index) => {
@@ -387,36 +408,51 @@ function Recommendations() {
                 </div>
 
                 <div className='flex mt-5 gap-5 items-center border-b border-gray-200 pb-10 pt-5'>
-                  <div className='lg:text-3x md:text-3xl text-xl font-semibold'>Quantity:</div>
-                  <div className='flex border border-blue-400 gap-5 rounded-lg'>
-                    <button className='border-blue-400 border-r rounded-lg p-2' onClick={decrement}>
+                  <div className='lg:text-3xl md:text-3xl text-xl font-semibold'>Quantity:</div>
+                  <div className='flex border border-blue-400 gap-1 rounded-lg'>
+                    {/* Decrement Button */}
+                    <button
+                      className='border-blue-400 border-r rounded-l-lg p-2 hover:bg-blue-100'
+                      onClick={decrement}
+                      aria-label='Decrease quantity'
+                    >
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
                         viewBox='0 0 24 24'
                         strokeWidth={1.5}
                         stroke='currentColor'
-                        className='lg:size-8 md:size-8 size-5 text-blue-400'
+                        className='lg:w-8 md:w-8 w-5 text-blue-400'
                       >
                         <path strokeLinecap='round' strokeLinejoin='round' d='M5 12h14' />
                       </svg>
                     </button>
+
+                    {/* Quantity Input */}
                     <input
-                      type='text'
+                      type='number'
                       value={count}
-                      readOnly
-                      className={`outline-none lg:w-10 md:w-10 w-4 text-center text-xl text-blue-400 ${
+                      onChange={(e) => setCount(Number(e.target.value))}
+                      className={`outline-none lg:w-12 md:w-10 w-8 text-center text-xl text-blue-400 ${
                         isDarkMode ? 'bg-custom-dark' : ''
                       }`}
+                      min='0'
+                      aria-label='Quantity input'
                     />
-                    <button className='border-l border-blue-400 p-2' onClick={increment}>
+
+                    {/* Increment Button */}
+                    <button
+                      className='border-l border-blue-400 p-2 rounded-r-lg hover:bg-blue-100'
+                      onClick={increment}
+                      aria-label='Increase quantity'
+                    >
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
                         viewBox='0 0 24 24'
                         strokeWidth={1.5}
                         stroke='currentColor'
-                        className='lg:size-8 md:size-8 size-5 text-blue-400'
+                        className='lg:w-8 md:w-8 w-5 text-blue-400'
                       >
                         <path strokeLinecap='round' strokeLinejoin='round' d='M12 4.5v15m7.5-7.5h-15' />
                       </svg>

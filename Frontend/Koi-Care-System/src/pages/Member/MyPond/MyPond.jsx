@@ -230,6 +230,13 @@ function MyPond() {
       if (!token) {
         throw new Error('No token found')
       }
+      getKoi(id)
+
+      if (koiCounts[id] > 0) {
+        toast.error('Your Pond has koi fish. Please move them to another pond before deletion!')
+        setIsLoading(false)
+        return
+      }
       await axios.delete(`https://koicaresystemv2.azurewebsites.net/api/koiponds/koipond/${id}/delete`, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -240,6 +247,8 @@ function MyPond() {
       toast.success('Delete success!!')
       setIsEditFormVisible(false)
     } catch (error) {
+      toast.error('Delete Pond Fail')
+      setIsEditFormVisible(false)
       console.error('Error deleting pond:', error)
     } finally {
       setIsLoading(false)

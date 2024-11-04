@@ -370,7 +370,7 @@ function Statistics() {
         >
           <Header />
           <Chat />
-          <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
+          <div className='py-5 px-[30px] mx-auto max-w-[2000px]'>
             <TopLayout text='Statistics' links='member/statistics' />
             <div className='pb-6 lg:text-lg text-sm flex justify-between items-center'>
               <select
