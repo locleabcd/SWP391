@@ -20,7 +20,6 @@ import org.springframework.messaging.MessagingException;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.user.SimpUserRegistry;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +29,7 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-@EnableAsync
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -85,9 +84,10 @@ public class ReminderService implements IReminderService {
         return reminders.stream().map(reminderMapper::mapToReminderDto).toList();
     }
 
-    @Async
+
     @Scheduled(fixedRate = 60000)
     @Override
+    @Async
     public void checkReminders() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
         LocalDateTime startTime = now.withSecond(0).withNano(0);

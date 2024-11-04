@@ -95,6 +95,7 @@ public class WaterParameterService implements IWaterParametersService {
     @Override
     public WaterParameterDto getLatestWaterParametersByKoiPondId(Long koiPondId) {
         WaterParameters lastestWaterParameters = waterParametersRepository.findTopByKoiPondId(koiPondId);
+        issueService.detectIssues(lastestWaterParameters);//check issue
         return waterParameterMapper.mapToWaterParameterDto(lastestWaterParameters);
     }
 }

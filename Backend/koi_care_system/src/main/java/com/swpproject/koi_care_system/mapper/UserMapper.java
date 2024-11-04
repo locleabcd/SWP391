@@ -45,6 +45,10 @@ public interface UserMapper {
     @Mapping(target = "blogs", ignore = true)
     User maptoUserGoogle(String email, String username);
 
+    @Mapping(target = "reminders", ignore = true)
+    @Mapping(target = "provider", ignore = true)
+    @Mapping(target = "notifications", ignore = true)
+    @Mapping(target = "cart", ignore = true)
     @Mapping(target = "userProfile", ignore = true)
     @Mapping(target = "orders", ignore = true)
     @Mapping(target = "koiPondList", ignore = true)

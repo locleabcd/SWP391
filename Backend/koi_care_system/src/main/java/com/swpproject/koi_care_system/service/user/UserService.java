@@ -71,7 +71,9 @@ public class UserService implements IUserService {
     public UserDTO updateUserByID(Long id, UpdateUserRequest request) {
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        request.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (!request.getPassword().isEmpty()) {
+            request.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
         userMapper.updateUser(user, request);
         return userMapper.maptoUserDTO(userRepo.save(user));
     }

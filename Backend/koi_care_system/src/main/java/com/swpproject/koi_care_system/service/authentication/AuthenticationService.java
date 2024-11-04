@@ -43,8 +43,10 @@ public class AuthenticationService implements IAuthenticationService {
             throw new AppException(ErrorCode.INVALID_CREDENTIALS);
         }
         var token = jwtUtils.generateToken(user);
-        if (user.getRole().equals(Role.GUEST) && !user.isStatus()) {
-            emailService.send(user.getUsername(), user.getEmail(), "Resend Verify Email", token);
+        if (!user.isStatus()) {
+            if (user.getRole().equals(Role.GUEST)) {
+                emailService.send(user.getUsername(), user.getEmail(), "Resend Verify Email", token);
+            }
             throw new AppException(ErrorCode.UNAUTHENTICATED);
         }
 
