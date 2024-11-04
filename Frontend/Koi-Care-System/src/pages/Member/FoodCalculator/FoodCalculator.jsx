@@ -288,7 +288,7 @@ Over 28°C is not a good temperature to feed at!`
 
               {selectedPond && (
                 <div>
-                  <div className='mt-4 lg:p-4 grid lg:grid-cols-3 grid-cols-1'>
+                  <div className='mt-4 lg:p-4 grid lg:grid-cols-3 grid-cols-1 space-x-2'>
                     <div className='col-span-1'>
                       <div className='mt-4'>
                         <button
@@ -399,12 +399,14 @@ Over 28°C is not a good temperature to feed at!`
                   </div>
                 </div>
               )}
+              {!selectedPond && (
+                <div className='mt-4  text-lg'>
+                  <p>
+                    <strong>Please select a pond.</strong>
+                  </p>
+                </div>
+              )}
             </div>
-            {!selectedPond && (
-              <div className='mt-4 pl-4 text-lg'>
-                <p>Please select a pond.</p>
-              </div>
-            )}
           </div>
         </div>
       </div>

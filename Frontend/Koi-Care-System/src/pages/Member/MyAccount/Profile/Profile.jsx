@@ -149,6 +149,9 @@ function Profile() {
 
   // Get today's date in yyyy-mm-dd format for date input max value
   const today = new Date().toISOString().split('T')[0]
+  const maxDate = new Date()
+  maxDate.setFullYear(maxDate.getFullYear() - 3)
+  const formattedMaxDate = maxDate.toISOString().split('T')[0]
 
   return (
     <div>
@@ -203,7 +206,9 @@ function Profile() {
                         type='text'
                         {...register('name')}
                         disabled
-                        className='border rounded p-2 w-full  cursor-not-allowed'
+                        className={`border rounded p-2 w-full  cursor-not-allowed ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        }`}
                       />
                     </div>
                     <div>
@@ -212,7 +217,9 @@ function Profile() {
                         type='text'
                         {...register('email')}
                         disabled
-                        className='border rounded p-2 w-full  cursor-not-allowed'
+                        className={`border rounded p-2 w-full  cursor-not-allowed ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        }`}
                       />
                     </div>
                     <div>
@@ -226,7 +233,9 @@ function Profile() {
                           }
                         })}
                         disabled={!isEditing}
-                        className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
+                        className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}, ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        }`}
                       />
                       {errors.phone && <span className='text-red-500'>{errors.phone.message}</span>}
                     </div>
@@ -235,22 +244,26 @@ function Profile() {
                       <select
                         {...register('gender')}
                         disabled={!isEditing}
-                        className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
+                        className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}, ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        }
+                        `}
                       >
                         <option value='male'>Male</option>
                         <option value='female'>Female</option>
                         <option value='other'>Other</option>
                       </select>
                     </div>
-
                     <div>
                       <label className='block'>Date of Birth:</label>
                       <input
                         type='date'
                         {...register('dateOfBirth')}
                         disabled={!isEditing}
-                        max={today}
-                        className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
+                        max={formattedMaxDate} // Ràng buộc ngày sinh tối đa là 3 năm trước
+                        className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}, ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        }`}
                       />
                     </div>
                     <div>
@@ -259,7 +272,9 @@ function Profile() {
                         type='text'
                         value={new Date(users.createdDate).toLocaleDateString()}
                         disabled
-                        className='border rounded p-2 w-full bg-white'
+                        className={`border rounded p-2 w-full  cursor-not-allowed ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        }`}
                       />
                     </div>
 
@@ -269,7 +284,9 @@ function Profile() {
                         type='text'
                         {...register('address')}
                         disabled={!isEditing}
-                        className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
+                        className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}, ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        }`}
                       />
                     </div>
                     <div className='col-span-2'>
@@ -277,7 +294,9 @@ function Profile() {
                       <textarea
                         {...register('bio')}
                         disabled={!isEditing}
-                        className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}`}
+                        className={`border rounded p-2 w-full ${isEditing ? 'border' : 'bg-white'}, ${
+                          isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
+                        }`}
                       />
                     </div>
                   </div>

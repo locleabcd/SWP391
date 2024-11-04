@@ -138,7 +138,9 @@ function SaltCalculator() {
                     </div>
                   ) : (
                     <div className='p-4'>
-                      <p>Please select a pond.</p>
+                      <p>
+                        <strong>Please select a pond.</strong>
+                      </p>
                     </div>
                   )}
 
