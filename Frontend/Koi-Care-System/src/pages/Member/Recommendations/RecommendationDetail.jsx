@@ -402,9 +402,9 @@ function Recommendations() {
                       </svg>
                     </button>
                     <input
-                      type='text'
+                      type='number'
                       value={count}
-                      readOnly
+                      defaultValue={count}
                       className={`outline-none lg:w-10 md:w-10 w-4 text-center text-xl text-blue-400 ${
                         isDarkMode ? 'bg-custom-dark' : ''
                       }`}
