@@ -28,12 +28,11 @@ export default {
     function ({ addUtilities }) {
       addUtilities({
         '.no-scroll-bar': {
-          /* Ẩn thanh cuộn nhưng vẫn có thể cuộn */
-          'scrollbar-width': 'none' /* Firefox */,
-          '-ms-overflow-style': 'none' /* IE and Edge */
+          'scrollbar-width': 'none',
+          '-ms-overflow-style': 'none'
         },
         '.no-scroll-bar::-webkit-scrollbar': {
-          display: 'none' /* Safari and Chrome */
+          display: 'none'
         }
       })
     }
