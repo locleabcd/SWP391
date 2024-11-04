@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Admin/Header'
@@ -12,6 +10,7 @@ import TopLayout from '../../../layouts/TopLayoutShop'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
+import Switch from '@mui/material/Switch' // Import Switch từ MUI
 
 function UpdateUserAD() {
   const { isDarkMode } = useDarkMode()
@@ -20,6 +19,7 @@ function UpdateUserAD() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [users, setUsers] = useState({})
+  const [status, setStatus] = useState(true) // Thêm trạng thái cho switch
   const navigate = useNavigate()
 
   const {
@@ -41,11 +41,12 @@ function UpdateUserAD() {
           Authorization: `Bearer ${token}`
         }
       })
-      setUsers(res.data.data) // Set user data from response
+      setUsers(res.data.data) // Set user data từ response
+      setStatus(res.data.data.status) // Set trạng thái status
       reset({
         username: res.data.data.username,
         email: res.data.data.email,
-        password: '' // Password is set to an empty string or null
+        password: '' // Đặt password là chuỗi trống
       })
       console.log(res.data.data)
     } catch (error) {
@@ -65,14 +66,14 @@ function UpdateUserAD() {
     setIsLoading(true)
     setIsSubmitting(true)
 
-    // Prepare the data to send
+    // Chuẩn bị dữ liệu để gửi
     const updatedData = {
       username: data.username,
       role: data.role,
-      status: data.status
+      status: status // Truyền giá trị status từ switch
     }
 
-    // Only include password if it's not empty
+    // Chỉ thêm password nếu người dùng nhập
     if (data.password) {
       updatedData.password = data.password
     }
@@ -92,7 +93,7 @@ function UpdateUserAD() {
       toast.success('User updated successfully!')
       navigate('/admin/shop')
     } catch (error) {
-      console.log(error.response?.data) // Log the detailed error response
+      console.log(error.response?.data) // Log lỗi chi tiết
       toast.error('Failed to update user.')
     } finally {
       setIsSubmitting(false)
@@ -115,7 +116,7 @@ function UpdateUserAD() {
         <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
           <TopLayout text='Shop' textName='Update Shop' links='admin/shop' />
           <div className=' p-6 rounded-md border'>
-            {/* Form for updating user */}
+            {/* Form để cập nhật user */}
             <form onSubmit={handleSubmit(onSubmit)}>
               {/* Username Input */}
               <div className='mb-4'>
@@ -133,8 +134,6 @@ function UpdateUserAD() {
                 {errors.username && <p className='text-red-500 text-xs italic'>Please enter a username.</p>}
               </div>
 
-              {/* Email Input */}
-
               {/* Password Input (optional) */}
               <div className='mb-4'>
                 <label className='block  text-sm font-bold mb-2' htmlFor='password'>
@@ -150,9 +149,19 @@ function UpdateUserAD() {
                 />
               </div>
 
-              {/* Hidden Fields for Role and Status */}
+              {/* Status Switch */}
+              <div className='mb-4 flex items-center'>
+                <label className='text-sm font-bold mr-4'>Status</label>
+                <Switch
+                  checked={status}
+                  onChange={(e) => setStatus(e.target.checked)} // Thay đổi trạng thái
+                  color='primary'
+                />
+                <span>{status ? 'Active' : 'Inactive'}</span>
+              </div>
+
+              {/* Hidden Field for Role */}
               <input type='hidden' value='SHOP' {...register('role')} />
-              <input type='hidden' value={true} {...register('status')} />
 
               {/* Submit Button */}
               <div className='flex items-center justify-between'>

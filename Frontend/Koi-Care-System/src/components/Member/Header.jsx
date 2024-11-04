@@ -14,6 +14,7 @@ import { IoIosWater } from 'react-icons/io'
 import { GiAquarium } from 'react-icons/gi'
 import logo from '../../assets/logo.png'
 import memberPathInfor from '../../constants/memberPathInfor'
+import ReminderMB from '../../pages/Member/Reminders/ReminderMB'
 
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
@@ -43,7 +44,6 @@ function Header() {
       })
       setCart(response.data.data.items)
       dispatch(loadCart())
-      console.log(response.data.data.items)
     } catch (error) {
       console.log(error)
     }
@@ -82,7 +82,6 @@ function Header() {
       })
       setUser(res.data.data)
       localStorage.setItem('avt', res.data.data.avatar)
-      console.log(res.data.data)
     } catch (error) {
       console.error('Error fetching users:', error)
     }
@@ -156,9 +155,11 @@ function Header() {
           <path strokeLinecap='round' strokeLinejoin='round' d='M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5' />
         </svg>
       </button>
+      <ReminderMB />
       <div className='flex items-center justify-end ml-4'>
         <div className='mr-4 flex justify-center items-center gap-2'>
           <button
+            onClick={toggleSearch}
             className={`${
               isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
             } lg:p-[16px] p-[12px] rounded-full`}
@@ -170,7 +171,6 @@ function Header() {
               height={16}
               viewBox='0 0 16 16'
               xmlns='http://www.w3.org/2000/svg'
-              onClick={toggleSearch}
             >
               <path d='M7 14c-3.86 0-7-3.14-7-7s3.14-7 7-7 7 3.14 7 7-3.14 7-7 7ZM7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5Z' />
               <path d='m13.314 11.9 2.393 2.393a.999.999 0 1 1-1.414 1.414L11.9 13.314a8.019 8.019 0 0 0 1.414-1.414Z' />
@@ -651,7 +651,7 @@ function Header() {
         </div>
 
         <div
-          className={`mt-auto sticky bottom-0 z-50 w-full p-2 flex justify-between items-center 
+          className={`mt-auto w-full  p-2 flex justify-between items-center 
             ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
         >
           <div
@@ -664,8 +664,10 @@ function Header() {
                 className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
               />
               <div className='ml-3'>
-                <p className='font-semibold text-lg text-black'>{name || 'User Name'}</p>
-                <p className='text-sm text-gray-500'>{role || 'User Role'}</p>
+                <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'textblack'}`}>
+                  {user.name || 'User Name'}
+                </p>
+                <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
               </div>
             </div>
             <Link onClick={handleLogout} to='/login'>

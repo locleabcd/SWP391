@@ -15,38 +15,37 @@ function Reminders() {
   const { isDarkMode } = useDarkMode()
   const [reminder, setReminder] = useState([])
   const [isAddFormVisible, setIsAddFormVisible] = useState(false)
-  const [dateTime, setDateTime] = useState('')
-  const [title, setTitle] = useState('')
-  const [interval, setInterval] = useState('')
   const [isEditFormVisible, setIsEditFormVisible] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [currentLog, setCurrentLog] = useState(null)
-  const [reminderId, setReminderId] = useState(null)
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm()
 
   const openEditForm = (reminder) => {
-    setTitle(reminder.title)
-    setDateTime(reminder.dateTime)
-    setInterval(reminder.interval)
     localStorage.setItem('reminderId', reminder.id)
-    setReminderId(reminder.id)
+    reset({
+      title: reminder.title,
+      dateTime: reminder.dateTime,
+      interval: reminder.repeatInterval
+    })
     toggleEditFormVisibility(true)
   }
 
   const toggleCloseForm = () => {
     setIsEditFormVisible(false)
-    setTitle('')
-    setDateTime('')
-    setInterval('')
-    setReminderId(null)
-    setCurrentLog(null)
+    reset({
+      title: '',
+      dateTime: '',
+      interval: reminder.repeatInterval
+    })
   }
 
-  const toggleEditFormVisibility = (reminders) => {
-    if (reminders) {
-      setCurrentLog(reminders)
-      setIsEditFormVisible(true)
-      setIsAddFormVisible(false)
-    }
+  const toggleEditFormVisibility = () => {
+    setIsEditFormVisible(true)
   }
 
   const getReminder = async () => {
@@ -57,8 +56,15 @@ function Reminders() {
           Authorization: `Bearer ${token}`
         }
       })
-      setReminder(res.data.data)
-      console.log(res.data.data)
+      const reminders = res.data.data.map((reminder) => {
+        let [date, time] = reminder.dateTime.split('T')
+        date = new Date(date).toISOString().split('T')[0]
+        time = time ? time.split('.')[0] : ''
+        return { ...reminder, date, time }
+      })
+
+      setReminder(reminders)
+      console.log(reminders)
     } catch (err) {
       console.log(err)
     }
@@ -68,16 +74,16 @@ function Reminders() {
     getReminder()
   }, [])
 
-  const createReminder = async () => {
+  const createReminder = async (data) => {
     setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       await axios.post(
         'https://koicaresystemv2.azurewebsites.net/api/reminders/create',
         {
-          title: title,
-          dateTime: dateTime,
-          repeatInterval: interval
+          title: data.title,
+          dateTime: data.dateTime + ':20',
+          repeatInterval: data.interval
         },
         {
           headers: {
@@ -85,29 +91,28 @@ function Reminders() {
           }
         }
       )
-      console.log(interval)
+      console.log(data.dateTime)
       getReminder()
       setIsAddFormVisible(false)
+      reset()
     } catch (err) {
-      console.log(interval)
       console.log(err)
     } finally {
       setIsLoading(false)
     }
   }
 
-  const updateReminder = async () => {
+  const updateReminders = async (data) => {
     setIsLoading(true)
-    if (!reminderId) return
     try {
       const token = localStorage.getItem('token')
       const id = localStorage.getItem('reminderId')
       await axios.put(
         `https://koicaresystemv2.azurewebsites.net/api/reminders/update/${id}`,
         {
-          title: title,
-          dateTime: dateTime,
-          repeatInterval: interval
+          title: data.title,
+          dateTime: data.dateTime,
+          repeatInterval: data.interval
         },
         {
           headers: {
@@ -118,7 +123,6 @@ function Reminders() {
       getReminder()
       toggleCloseForm()
     } catch (err) {
-      console.log(interval)
       console.log(err)
     } finally {
       setIsLoading(false)
@@ -162,7 +166,7 @@ function Reminders() {
           <Chat />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] max-h-[800px]'>
             <TopLayout text='Reminders' links='/member/reminders' />
-            <div className='grid grid-cols-3 gap-32 mt-10'>
+            <div className='grid grid-cols-3 gap-10 mt-10'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
@@ -188,7 +192,7 @@ function Reminders() {
                   className='border border-gray-200 rounded-3xl shadow-xl px-8 py-6 flex justify-between items-center'
                 >
                   <div className='flex flex-col gap-4'>
-                    <div className='text-3xl'>{reminders.title}</div>
+                    <div className='text-2xl'>{reminders.title}</div>
                     <div className='flex gap-8'>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
@@ -205,7 +209,7 @@ function Reminders() {
                         />
                       </svg>
 
-                      <div className='text-2xl'></div>
+                      <div className='text-xl font-semibold'>{reminders.date}</div>
                     </div>
                     <div className='flex gap-8 items-center'>
                       <svg
@@ -222,7 +226,7 @@ function Reminders() {
                           d='M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z'
                         />
                       </svg>
-                      <div className='text-2xl items-center'>{reminders.dateTime}</div>
+                      <div className='text-xl font-semibold items-center'>{reminders.time}</div>
                     </div>
                     <div className='flex gap-5 items-center'>
                       <div className='size-10'>
@@ -247,7 +251,7 @@ function Reminders() {
                           />
                         </svg>
                       </div>
-                      <div className='text-2xl'>{reminders.repeatInterval}</div>
+                      <div className='text-xl font-semibold'>{reminders.repeatInterval}</div>
                     </div>
                   </div>
                   <FormControlLabel
@@ -268,7 +272,10 @@ function Reminders() {
             </div>
 
             {isAddFormVisible && (
-              <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
+              <form
+                onSubmit={handleSubmit(createReminder)}
+                className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'
+              >
                 <div
                   className={` ${
                     isDarkMode ? 'bg-custom-dark' : 'bg-white'
@@ -293,7 +300,7 @@ function Reminders() {
                       />
                     </svg>
 
-                    <button onClick={() => createReminder()}>
+                    <button type='submit'>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
@@ -326,8 +333,11 @@ function Reminders() {
                         className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                        onChange={(e) => setTitle(e.target.value)}
+                        {...register('title', { required: 'Title is required' })}
                       />
+                      {errors.title && (
+                        <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.title.message}</p>
+                      )}
                     </div>
 
                     <div className='relative col-span-1'>
@@ -340,15 +350,17 @@ function Reminders() {
                       </label>
                       <input
                         type='datetime-local'
-                        placeholder='Enter depth in meters'
                         className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                        onChange={(e) => setDateTime(e.target.value)}
+                        {...register('dateTime', { required: 'DateTime is required' })}
                       />
+                      {errors.dateTime && (
+                        <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.dateTime.message}</p>
+                      )}
                     </div>
 
-                    <div className='relative col-span-1'>
+                    <div className='relative col-span-1 lg:mt-4'>
                       <label
                         htmlFor='drainCount'
                         className={`absolute -top-[12px] lg:text-lg text-sm left-3 text-red-500 ${
@@ -361,9 +373,8 @@ function Reminders() {
                         className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                        onChange={(e) => setInterval(e.target.value)}
+                        {...register('interval', { required: 'Interval is required' })}
                       >
-                        <option value='Select'>Select</option>
                         <option value='ONE_TIME'>ONE_TIME</option>
                         <option value='DAILY'>DAILY</option>
                         <option value='WEEKLY'>WEEKLY</option>
@@ -372,11 +383,14 @@ function Reminders() {
                     </div>
                   </div>
                 </div>
-              </div>
+              </form>
             )}
 
             {isEditFormVisible && (
-              <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
+              <form
+                onSubmit={handleSubmit(updateReminders)}
+                className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'
+              >
                 <div
                   className={` ${
                     isDarkMode ? 'bg-custom-dark' : 'bg-white'
@@ -401,7 +415,7 @@ function Reminders() {
                       />
                     </svg>
 
-                    <button onClick={() => updateReminder()}>
+                    <button type='submit'>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
@@ -434,8 +448,11 @@ function Reminders() {
                         className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                        onChange={(e) => setTitle(e.target.value)}
+                        {...register('title', { required: 'Title is required' })}
                       />
+                      {errors.title && (
+                        <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.title.message}</p>
+                      )}
                     </div>
 
                     <div className='relative col-span-1'>
@@ -448,12 +465,14 @@ function Reminders() {
                       </label>
                       <input
                         type='datetime-local'
-                        placeholder='Enter depth in meters'
                         className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                        onChange={(e) => setDateTime(e.target.value)}
+                        {...register('dateTime', { required: 'DateTime is required' })}
                       />
+                      {errors.dateTime && (
+                        <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.dateTime.message}</p>
+                      )}
                     </div>
 
                     <div className='relative col-span-1'>
@@ -469,7 +488,7 @@ function Reminders() {
                         className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                        onChange={(e) => setInterval(e.target.value)}
+                        {...register('interval', { required: 'Interval is required' })}
                       >
                         <option value='ONE_TIME'>ONE_TIME</option>
                         <option value='DAILY'>DAILY</option>
@@ -506,7 +525,7 @@ function Reminders() {
                     <p className='text-center font-semibold'>Delete this log</p>
                   </div>
                 </div>
-              </div>
+              </form>
             )}
 
             {isLoading && (
