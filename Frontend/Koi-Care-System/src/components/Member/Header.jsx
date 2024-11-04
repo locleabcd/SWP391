@@ -467,23 +467,25 @@ function Header() {
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
 
-                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed bg-white' : ''
+                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed ' : ''
 
-                return `${active} ${memberStyles} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex-wrap flex justify-between items-center`
+                return `${active} ${memberStyles} min-w-full p-4 mt-2 cursor-pointer rounded-lg flex-wrap flex justify-between items-center 
+                    `
               }}
             >
               <div className='flex items-center'>
                 <div className='w-7 h-7 mr-3'>
                   <IoIosWater className='w-full h-full' />
                 </div>
-                <span className='font-semibold'>Water Parameters</span>
-              </div>
-              {isMember ? (
-                <div className='flex gap-5 w-full items-center justify-start mt-2 p-2 bg-yellow-200 text-yellow-700'>
-                  <FaCrown className='w-4 h-4' />
-                  <div>PREMIUM</div>
+                <div className='flex items-center'>
+                  <span className='font-semibold'>Water Parameters</span>
+                  {isMember ? (
+                    <div className='text-yellow-500'>
+                      <FaCrown className='ml-3 w-6 h-6' />
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
+              </div>
             </NavLink>
 
             <NavLink
@@ -493,23 +495,25 @@ function Header() {
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
 
-                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed bg-white' : ''
+                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed ' : ''
 
-                return `${active} ${memberStyles} min-w-full p-4 mt-2 flex-wrap cursor-pointer rounded-lg flex justify-between items-center`
+                return `${active} ${memberStyles} min-w-full p-4 mt-2 flex-wrap cursor-pointer rounded-lg flex justify-between items-center
+                    `
               }}
             >
               <div className='flex items-center'>
                 <div className='w-7 h-7 mr-3'>
                   <LuAlarmClock className='w-full h-full' />
                 </div>
-                <span className='font-semibold'>Reminders</span>
-              </div>
-              {isMember ? (
-                <div className='flex gap-5 items-center w-full justify-start mt-2 p-2 bg-yellow-200 text-yellow-700'>
-                  <FaCrown className='w-4 h-4' />
-                  <div>PREMIUM</div>
+                <div className='flex items-center'>
+                  <span className='font-semibold'>Reminders</span>
+                  {isMember ? (
+                    <div className='text-yellow-500'>
+                      <FaCrown className='ml-3 w-6 h-6' />
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
+              </div>
             </NavLink>
 
             <NavLink
@@ -536,24 +540,24 @@ function Header() {
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
 
-                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed bg-white' : ''
+                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed ' : ''
 
-                return `${active} ${memberStyles} min-w-full p-4 flex-wrap mt-2 cursor-pointer rounded-lg flex justify-between items-center`
+                return `${active} ${memberStyles} min-w-full p-4 flex-wrap mt-2 cursor-pointer rounded-lg flex justify-between items-center `
               }}
             >
               <div className='flex items-center'>
                 <div className='w-7 h-7 mr-3'>
                   <CgCalculator className='w-full h-full' />
                 </div>
-                <span className='font-semibold'>Food Calculator</span>
-              </div>
-
-              {isMember ? (
-                <div className='flex gap-5 items-center w-full justify-start mt-2 p-2 bg-yellow-200 text-yellow-700'>
-                  <FaCrown className='w-4 h-4' />
-                  <div>PREMIUM</div>
+                <div className='flex items-center'>
+                  <span className='font-semibold'>Food Calculator</span>
+                  {isMember ? (
+                    <div className='text-yellow-500'>
+                      <FaCrown className='ml-3 w-6 h-6' />
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
+              </div>
             </NavLink>
 
             <NavLink
@@ -563,24 +567,25 @@ function Header() {
                   ? `${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'}`
                   : `${isDarkMode ? 'hover:bg-custom-layout-dark' : 'hover:bg-custom-layout-light'}`
 
-                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed bg-white' : ''
+                const memberStyles = isMember ? 'opacity-80 cursor-not-allowed ' : ''
 
-                return `${active} ${memberStyles} min-w-full flex-wrap p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center`
+                return `${active} ${memberStyles} min-w-full flex-wrap p-4 mt-2 cursor-pointer rounded-lg flex justify-between items-center 
+                  `
               }}
             >
               <div className='flex items-center'>
                 <div className='w-7 h-7 mr-3'>
                   <CgCalculator className='w-full h-full' />
                 </div>
-                <span className='font-semibold'>Salt Calculator</span>
-              </div>
-
-              {isMember ? (
-                <div className='flex gap-5 items-center w-full justify-start mt-2 p-2 bg-yellow-200 text-yellow-700'>
-                  <FaCrown className='w-4 h-4' />
-                  <div>PREMIUM</div>
+                <div className='flex items-center'>
+                  <span className='font-semibold'>Salt Calculator</span>
+                  {isMember ? (
+                    <div className='text-yellow-500'>
+                      <FaCrown className='ml-3 w-6 h-6' />
+                    </div>
+                  ) : null}
                 </div>
-              ) : null}
+              </div>
             </NavLink>
 
             <NavLink
@@ -651,7 +656,7 @@ function Header() {
         </div>
 
         <div
-          className={`mt-auto w-full  p-2 flex justify-between items-center 
+          className={`mt-auto sticky bottom-0 z-50 w-full p-2 flex justify-between items-center 
             ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
         >
           <div

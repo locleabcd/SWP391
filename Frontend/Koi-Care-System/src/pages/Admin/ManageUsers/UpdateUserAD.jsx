@@ -70,7 +70,8 @@ function UpdateUserAD() {
     const updatedData = {
       username: data.username,
       role: data.role,
-      status: status // Truyền giá trị status từ switch
+      status: status,
+      password: '' // Truyền giá trị status từ switch
     }
 
     // Chỉ thêm password nếu người dùng nhập
