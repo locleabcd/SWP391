@@ -917,7 +917,7 @@ function KoiDetails() {
                           required: 'Name is required',
                           maxLength: {
                             value: 20,
-                            message: 'Name must be at most 50 characters long'
+                            message: 'Name must be at most 20 characters long'
                           }
                         })}
                       />

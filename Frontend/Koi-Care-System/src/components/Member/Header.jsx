@@ -651,7 +651,11 @@ function Header() {
         </div>
 
         <div
+<<<<<<< HEAD
           className={`mt-auto w-full  p-2 flex justify-between items-center 
+=======
+          className={`mt-auto sticky bottom-0 z-50 w-full p-2 flex justify-between items-center 
+>>>>>>> thoai
             ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} neon-border`}
         >
           <div
@@ -664,10 +668,15 @@ function Header() {
                 className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
               />
               <div className='ml-3'>
+<<<<<<< HEAD
                 <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'textblack'}`}>
                   {user.name || 'User Name'}
                 </p>
                 <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
+=======
+                <p className='font-semibold text-lg text-black'>{name || 'User Name'}</p>
+                <p className='text-sm text-gray-500'>{role || 'User Role'}</p>
+>>>>>>> thoai
               </div>
             </div>
             <Link onClick={handleLogout} to='/login'>

@@ -274,7 +274,7 @@ function Dashboard() {
             statusClasses += ' border-red-500 text-red-500'
             break
           default:
-            statusClasses += ' border-gray-500 text-gray-500' // Default case for unexpected status
+            statusClasses += ' border-gray-500 text-gray-500'
         }
 
         return (

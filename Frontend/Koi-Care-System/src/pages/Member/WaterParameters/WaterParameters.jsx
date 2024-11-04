@@ -18,6 +18,7 @@ import 'aos/dist/aos.css'
 import Chat from '../../../components/Chat/Chat'
 import { FaSpinner } from 'react-icons/fa'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material'
+import * as XLSX from 'xlsx'
 function WaterParameters() {
   const { isDarkMode } = useDarkMode()
   const [ponds, setPonds] = useState([])
@@ -828,7 +829,34 @@ function WaterParameters() {
       [inputName]: !prevState[inputName] // Đảo giá trị giữa true và false
     }))
   }
+  const exportWaterParametersToExcel = (waterParameters) => {
+    const worksheet = XLSX.utils.json_to_sheet(
+      waterParameters.map((parameter) => ({
+        'Pond Name': parameter.koiPondName,
+        Date: parameter.createDateTime,
+        'Nitrite (NO₂)': parameter.nitrite,
+        'Nitrate (NO₃)': parameter.nitrate,
+        'Phosphate (PO₄)': parameter.phosphate,
+        'Ammonium (NH₄)': parameter.ammonium,
+        'Hardness (GH)': parameter.hardness,
+        'Oxygen (O₂)': parameter.oxygen,
+        'Temperature (°C)': parameter.temperature,
+        'pH Value': parameter.phValue,
+        'Carbon Hardness (KH)': parameter.carbonHardness,
+        'Carbon Dioxide (CO₂)': parameter.carbonDioxide,
+        'Salt (%)': parameter.salt,
+        'Total Chlorine': parameter.totalChlorine,
+        'Outdoor Temperature': parameter.temp,
+        'Amount Fed (g)': parameter.amountFed,
+        Note: parameter.note
+      }))
+    )
 
+    const workbook = XLSX.utils.book_new()
+    XLSX.utils.book_append_sheet(workbook, worksheet, 'Water Parameters')
+
+    XLSX.writeFile(workbook, 'Water_Parameters.xlsx')
+  }
   return (
     <div>
       <div className='h-screen flex'>
@@ -863,6 +891,14 @@ function WaterParameters() {
           </div>
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Water Parameters' links='/member/waterParameters' />
+            <div className='cursor-pointer'>
+              <button
+                onClick={exportWaterParametersToExcel}
+                className='mb-4 ml-3 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md'
+              >
+                Download Excel
+              </button>
+            </div>
             <div className='w-full flex justify-end relative'>
               <div className='cursor-pointer' onClick={toggleButtons}>
                 <svg
