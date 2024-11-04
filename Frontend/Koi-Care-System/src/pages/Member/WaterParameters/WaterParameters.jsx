@@ -17,7 +17,6 @@ import { useDarkMode } from '../../../hooks/DarkModeContext'
 import 'aos/dist/aos.css'
 import Chat from '../../../components/Chat/Chat'
 import { FaSpinner } from 'react-icons/fa'
-
 function WaterParameters() {
   const { isDarkMode } = useDarkMode()
   const [ponds, setPonds] = useState([])
@@ -933,7 +932,7 @@ function WaterParameters() {
               }}
               className='py-4 w-full z-0'
             >
-              <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:gap-6 gap-4'>
+              <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 lg:gap-6 gap-4'>
                 {parameters.map((parameter, index) => {
                   // Đếm số lượng các giá trị vượt ngưỡng (màu đỏ)
                   const getRedCount = (parameter) => {
@@ -954,7 +953,7 @@ function WaterParameters() {
                   }
 
                   const redCount = getRedCount(parameter)
-                  const borderColor = redCount >= 2 ? 'red' : 'green' // Chuyển màu `border` dựa trên số lượng `h3` màu đỏ
+                  const borderColor = redCount > 2 ? 'red' : 'green' // Chuyển màu `border` dựa trên số lượng `h3` màu đỏ
 
                   return (
                     <motion.div
@@ -970,137 +969,210 @@ function WaterParameters() {
                         reset(parameter)
                       }}
                     >
-                      <div className='text-lg'>
+                      <div className='text-lg mb-4'>
                         <div className='grid grid-cols-4 w-full'>
-                          <h3 className='lg:text-lg text-xs col-span-2'> {parameter.koiPondName}</h3>
-                          <h3 className='lg:text-lg text-xs col-span-2'>
+                          <h3 className='lg:text-lg text-xs col-span-2 justify-center text-center'>
+                            {' '}
+                            {parameter.koiPondName}
+                          </h3>
+                          <h3 className='lg:text-lg text-xs col-span-2 justify-center text-center'>
                             {parameter.createDateTime.replace('T', ' ')}
                           </h3>
                         </div>
-                        <div className='grid grid-cols-4 w-full'>
-                          <h3
-                            className='lg:text-lg text-xs col-span-2'
-                            style={{
-                              color: parameter.nitrite <= 0.1 ? 'green' : parameter.nitrite <= 0.3 ? 'orange' : 'red'
-                            }}
-                          >
-                            Nitrite(NO₂): {parameter.nitrite} mg/l
-                          </h3>
-                          <h3
-                            className='lg:text-lg text-xs col-span-2'
-                            style={{
-                              color: parameter.nitrate <= 20 ? 'green' : parameter.nitrate <= 80 ? 'orange' : 'red'
-                            }}
-                          >
-                            Nitrate(NO₃): {parameter.nitrate} mg/l
-                          </h3>
-                        </div>
-                        <div className='grid grid-cols-4 w-full'>
-                          <h3
-                            className='lg:text-lg text-xs col-span-2'
-                            style={{
-                              color:
-                                parameter.phosphate <= 0.035 ? 'green' : parameter.phosphate <= 1 ? 'orange' : 'red'
-                            }}
-                          >
-                            Phosphate(PO₄): {parameter.phosphate} mg/l
-                          </h3>
-                          <h3
-                            className='lg:text-lg text-xs col-span-2'
-                            style={{
-                              color: parameter.ammonium <= 0.1 ? 'green' : parameter.ammonium <= 1 ? 'orange' : 'red'
-                            }}
-                          >
-                            Ammonium(NH₄): {parameter.ammonium} mg/l
-                          </h3>
-                        </div>
-                        <div className='grid grid-cols-4 w-full'>
-                          <h3
-                            className='lg:text-lg text-xs col-span-2'
-                            style={{
-                              color: parameter.hardness <= 21 ? 'green' : parameter.hardness <= 50 ? 'orange' : 'red'
-                            }}
-                          >
-                            Hardness(GH): {parameter.hardness} °dH
-                          </h3>
-                          <h3
-                            className='lg:text-lg text-xs col-span-2'
-                            style={{
-                              color: parameter.oxygen > 6.5 ? 'green' : parameter.oxygen > 6 ? 'orange' : 'red'
-                            }}
-                          >
-                            Oxygen (O₂): {parameter.oxygen} mg/l
-                          </h3>
-                        </div>
-                        <div className='grid grid-cols-4 w-full'>
-                          <h3
-                            className='lg:text-lg text-xs col-span-2'
-                            style={{
-                              color: parameter.temperature >= 4 && parameter.temperature <= 26 ? 'green' : 'red'
-                            }}
-                          >
-                            Temperature: {parameter.temperature} °C
-                          </h3>
-                          <h3
-                            className='lg:text-lg text-xs col-span-2'
-                            style={{
-                              color: parameter.phValue >= 6.9 && parameter.phValue <= 8 ? 'green' : 'red'
-                            }}
-                          >
-                            phValue: {parameter.phValue}
-                          </h3>
-                        </div>
-                        <div className='grid grid-cols-4 w-full'>
-                          <h3
-                            className='lg:text-lg text-xs col-span-2'
-                            style={{
-                              color:
-                                parameter.carbonHardness >= 4
-                                  ? 'green'
-                                  : parameter.carbonHardness >= 1
-                                    ? 'orange'
-                                    : 'red'
-                            }}
-                          >
-                            KH: {parameter.carbonHardness} mg/l
-                          </h3>
-                          <h3
-                            className='lg:text-lg text-xs col-span-2'
-                            style={{
-                              color: parameter.carbonDioxide >= 4 && parameter.carbonDioxide <= 35 ? 'green' : 'red'
-                            }}
-                          >
-                            CO₂: {parameter.carbonDioxide} mg/l
-                          </h3>
-                        </div>
-                        <div className='grid grid-cols-4 w-full'>
-                          <h3
-                            className='lg:text-lg text-xs col-span-2'
-                            style={{
-                              color: parameter.salt <= 0.1 ? 'green' : parameter.salt <= 0.6 ? 'orange' : 'red'
-                            }}
-                          >
-                            Salt: {parameter.salt}%
-                          </h3>
-                          <h3
-                            className='lg:text-lg text-xs col-span-2'
-                            style={{
-                              color:
-                                parameter.totalChlorine <= 0.001
-                                  ? 'green'
-                                  : parameter.totalChlorine <= 0.02
-                                    ? 'orange'
-                                    : 'red'
-                            }}
-                          >
-                            Total chlorines: {parameter.totalChlorine} mg/l
-                          </h3>
-                        </div>
-                        <div className='grid grid-cols-4 w-full'>
-                          <h3 className='lg:text-lg text-xs col-span-2'>Outdoor temp.: {parameter.temp} °C</h3>
-                          <h3 className='lg:text-lg text-xs col-span-2'>Amount fed: {parameter.amountFed} g</h3>
-                        </div>
-                        <div className='flex'>
+                        <table className='table-auto w-full'>
+                          <thead>
+                            <tr>
+                              <th className='px-4 py-2'>Name</th>
+                              <th className='px-4 py-2'>Value</th>
+                              <th className='px-4 py-2'>Reference Value</th>
+                              <th className='px-4 py-2'>Unit</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td className='border px-4 py-2'>Nitrite(NO₂)</td>
+                              <td
+                                className='border px-4 py-2'
+                                style={{
+                                  color:
+                                    parameter.nitrite <= 0.1 ? 'green' : parameter.nitrite <= 0.3 ? 'orange' : 'red'
+                                }}
+                              >
+                                {parameter.nitrite}
+                              </td>
+                              <td className='border px-4 py-2'>0.1 - 0.3</td>
+                              <td className='border px-4 py-2'>mg/l</td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'>Nitrate(NO₃)</td>
+                              <td
+                                className='border px-4 py-2'
+                                style={{
+                                  color: parameter.nitrate <= 20 ? 'green' : parameter.nitrate <= 80 ? 'orange' : 'red'
+                                }}
+                              >
+                                {parameter.nitrate}
+                              </td>
+                              <td className='border px-4 py-2'>0 - 20</td>
+                              <td className='border px-4 py-2'>mg/l</td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'>Phosphate(PO₄)</td>
+                              <td
+                                className='border px-4 py-2'
+                                style={{
+                                  color:
+                                    parameter.phosphate <= 0.035 ? 'green' : parameter.phosphate <= 1 ? 'orange' : 'red'
+                                }}
+                              >
+                                {parameter.phosphate}
+                              </td>
+                              <td className='border px-4 py-2'>0 - 0.035</td>
+                              <td className='border px-4 py-2'>mg/l</td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'>Ammonium(NH₄)</td>
+                              <td
+                                className='border px-4 py-2'
+                                style={{
+                                  color:
+                                    parameter.ammonium <= 0.1 ? 'green' : parameter.ammonium <= 1 ? 'orange' : 'red'
+                                }}
+                              >
+                                {parameter.ammonium}
+                              </td>
+                              <td className='border px-4 py-2'>0 - 0.1</td>
+                              <td className='border px-4 py-2'>mg/l</td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'>Hardness(GH)</td>
+                              <td
+                                className='border px-4 py-2'
+                                style={{
+                                  color:
+                                    parameter.hardness <= 21 ? 'green' : parameter.hardness <= 50 ? 'orange' : 'red'
+                                }}
+                              >
+                                {parameter.hardness}
+                              </td>
+                              <td className='border px-4 py-2'>0 - 21</td>
+                              <td className='border px-4 py-2'>°dH</td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'>Oxygen (O₂)</td>
+                              <td
+                                className='border px-4 py-2'
+                                style={{
+                                  color: parameter.oxygen > 6.5 ? 'green' : parameter.oxygen > 6 ? 'orange' : 'red'
+                                }}
+                              >
+                                {parameter.oxygen}
+                              </td>
+                              <td className='border px-4 py-2'>&gt; 6.5</td>
+                              <td className='border px-4 py-2'>mg/l</td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'>Temperature</td>
+                              <td
+                                className='border px-4 py-2'
+                                style={{
+                                  color: parameter.temperature >= 4 && parameter.temperature <= 26 ? 'green' : 'red'
+                                }}
+                              >
+                                {parameter.temperature}
+                              </td>
+                              <td className='border px-4 py-2'>5 - 26</td>
+                              <td className='border px-4 py-2'>°C</td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'>pH Value</td>
+                              <td
+                                className='border px-4 py-2'
+                                style={{ color: parameter.phValue >= 6.9 && parameter.phValue <= 8 ? 'green' : 'red' }}
+                              >
+                                {parameter.phValue}
+                              </td>
+                              <td className='border px-4 py-2'>6.9 - 8</td>
+                              <td className='border px-4 py-2'></td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'>KH</td>
+                              <td
+                                className='border px-4 py-2'
+                                style={{
+                                  color:
+                                    parameter.carbonHardness >= 4
+                                      ? 'green'
+                                      : parameter.carbonHardness >= 1
+                                        ? 'orange'
+                                        : 'red'
+                                }}
+                              >
+                                {parameter.carbonHardness}
+                              </td>
+                              <td className='border px-4 py-2'>&gt;= 40</td>
+                              <td className='border px-4 py-2'>mg/l</td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'>CO₂</td>
+                              <td
+                                className='border px-4 py-2'
+                                style={{
+                                  color: parameter.carbonDioxide >= 4 && parameter.carbonDioxide <= 35 ? 'green' : 'red'
+                                }}
+                              >
+                                {parameter.carbonDioxide}
+                              </td>
+                              <td className='border px-4 py-2'>5 - 35</td>
+                              <td className='border px-4 py-2'>mg/l</td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'>Salt</td>
+                              <td
+                                className='border px-4 py-2'
+                                style={{
+                                  color: parameter.salt <= 0.1 ? 'green' : parameter.salt <= 0.6 ? 'orange' : 'red'
+                                }}
+                              >
+                                {parameter.salt}
+                              </td>
+                              <td className='border px-4 py-2'>0 - 0.1</td>
+                              <td className='border px-4 py-2 '>%</td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'>Total chlorines</td>
+                              <td
+                                className='border px-4 py-2'
+                                style={{
+                                  color:
+                                    parameter.totalChlorine <= 0.001
+                                      ? 'green'
+                                      : parameter.totalChlorine <= 0.02
+                                        ? 'orange'
+                                        : 'red'
+                                }}
+                              >
+                                {parameter.totalChlorine}
+                              </td>
+                              <td className='border px-4 py-2'>0 - 0.001</td>
+                              <td className='border px-4 py-2'>mg/l</td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'> Outdoor temp.</td>
+                              <td className='border px-4 py-2'>{parameter.carbonHardness}</td>
+                              <td className='border px-4 py-2'>-40 - 40</td>
+                              <td className='border px-4 py-2'>°C</td>
+                            </tr>
+                            <tr>
+                              <td className='border px-4 py-2'> Amount Fed</td>
+                              <td className='border px-4 py-2'>{parameter.amountFed}</td>
+                              <td className='border px-4 py-2'></td>
+                              <td className='border px-4 py-2'>g</td>
+                            </tr>
+                          </tbody>
+                        </table>
+
+                        <div className='flex mt-4'>
                           <h3 className='lg:text-lg text-xs text-gray-500 font-semibold'>{parameter.note}</h3>
                         </div>
                       </div>
