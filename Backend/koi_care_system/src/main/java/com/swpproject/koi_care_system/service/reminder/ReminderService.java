@@ -11,6 +11,7 @@ import com.swpproject.koi_care_system.payload.request.ReminderRequest;
 import com.swpproject.koi_care_system.repository.ReminderMongoRepo;
 import com.swpproject.koi_care_system.repository.ReminderRepository;
 import com.swpproject.koi_care_system.repository.UserRepository;
+import com.swpproject.koi_care_system.service.email.IEmailService;
 import com.swpproject.koi_care_system.service.notification.INotificationService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,7 @@ public class ReminderService implements IReminderService {
     INotificationService notificationService;
     SimpUserRegistry userRegistry;
     ReminderMongoRepo reminderMongoRepo;
+    IEmailService emailService;
 
     @Override
     public ReminderDto createReminder(ReminderRequest request, Principal connectedUser) {
@@ -150,6 +152,7 @@ public class ReminderService implements IReminderService {
 
     private void sendReminderNotification(ReminderMongo reminder) {
         String username = reminder.getUsername();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         String message = "Reminder: " + reminder.getTitle() + " is due at " + reminder.getDateTime() + "!";
         boolean isDelivered = false;
         if (isConnection(username)) {
@@ -159,6 +162,10 @@ public class ReminderService implements IReminderService {
             } catch (MessagingException e) {
                 isDelivered = false;
             }
+        } else {
+            emailService.sendReminder(username, user.getEmail(), "Reminder: " + reminder.getTitle() + " is due!", reminderMapper.mapToReminderFromMongo(reminder));
+            log.info("Email sent to '{}'", user.getEmail());
+            log.info("reminder: {}", reminder.getTitle());
         }
         notificationService.createNotification(reminderMapper.mapToNotificationRequest(reminder, isDelivered));
         log.info("user connected: {}", isConnection(username));
