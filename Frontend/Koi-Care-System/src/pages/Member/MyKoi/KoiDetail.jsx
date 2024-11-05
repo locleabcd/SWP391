@@ -386,10 +386,6 @@ function KoiDetails() {
   }, [])
 
   const deleteGrowth = async (id) => {
-    const isConfirmed = window.confirm('Are you sure to delete growth history!')
-    if (!isConfirmed) {
-      return
-    }
     setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
@@ -405,6 +401,7 @@ function KoiDetails() {
       getGrowthHistory()
       getKoi()
       setIsEditGrowthFormVisible(false)
+      setIsDialogOpen(false)
     } catch (error) {
       toast.error('Growth History delete fail!')
       console.error('Error deleting growth history:', error)
@@ -414,10 +411,6 @@ function KoiDetails() {
   }
 
   const deleteRemark = async (id) => {
-    const isConfirmed = window.confirm('Are you sure to delete remark!')
-    if (!isConfirmed) {
-      return
-    }
     setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
@@ -433,6 +426,7 @@ function KoiDetails() {
       reset()
       getRemark()
       setIsEditRemarkFormVisible(false)
+      setIsDialogOpen(false)
     } catch (error) {
       toast.error('Remark delete fail!')
       console.error('Error deleting remark:', error)
@@ -541,6 +535,7 @@ function KoiDetails() {
       reset()
       getPond()
       setIsEditFormVisible(false)
+      setIsDialogOpen(false)
       navigate('/member/myKoi')
     } catch (error) {
       toast.error('Delete Koi Fail!')
@@ -1843,7 +1838,13 @@ function KoiDetails() {
                       <Button onClick={handleCloseDialog} color='primary'>
                         No
                       </Button>
-                      <Button onClick={() => deleteRemark(currentRemark.id)} color='error' disabled={isLoading}>
+                      <Button
+                        onClick={() => {
+                          deleteRemark(currentRemark.id)
+                        }}
+                        color='error'
+                        disabled={isLoading}
+                      >
                         Yes
                       </Button>
                     </DialogActions>

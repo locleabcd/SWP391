@@ -63,7 +63,7 @@ function LeftSideBar() {
 
   return (
     <div className=''>
-      {/* <Chat /> */}
+      <Chat />
       <div className='relative'>
         {isClosed ? (
           <button

@@ -29,6 +29,7 @@ function Recommendations() {
   const [currentPage, setCurrentPage] = useState(1)
   const [isSidebarOpen, setSidebarOpen] = useState(false)
   const sidebarRef = useRef(null)
+  const [count, setCount] = useState(0)
   const pageSize = 9
 
   useEffect(() => {
@@ -75,7 +76,12 @@ function Recommendations() {
   }
 
   const handleAddToCart = (product) => {
-    dispatch(addToCartList(product))
+    if (product.inventory === 0 || product.inventory === count) {
+      toast.warn('This product is out of stock')
+    } else {
+      dispatch(addToCartList(product))
+    }
+    console.log(count)
   }
 
   const navigate = useNavigate()
@@ -559,7 +565,10 @@ function Recommendations() {
                               </button>
 
                               <svg
-                                onClick={() => handleAddToCart(products)}
+                                onClick={() => {
+                                  handleAddToCart(products)
+                                  setCount(count + 1)
+                                }}
                                 xmlns='http://www.w3.org/2000/svg'
                                 fill='none'
                                 viewBox='0 0 24 24'

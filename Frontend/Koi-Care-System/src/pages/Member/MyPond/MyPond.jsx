@@ -111,6 +111,14 @@ function MyPond() {
     setIsEditFormVisible(false)
     setCurrentPond(null)
     setBaseImage(null)
+    reset({
+      name: '',
+      drainCount: '',
+      depth: '',
+      skimmer: '',
+      pumpCapacity: '',
+      volume: ''
+    })
   }
 
   const toggleEditFormVisibility = (pond) => {
@@ -198,7 +206,14 @@ function MyPond() {
       getPond()
       setIsAddFormVisible(false)
       setIsEditFormVisible(false)
-      reset()
+      reset({
+        name: '',
+        drainCount: '',
+        depth: '',
+        skimmer: '',
+        pumpCapacity: '',
+        volume: ''
+      })
     } catch (error) {
       console.log('Error creating/updating pond:', error)
     } finally {
@@ -250,6 +265,7 @@ function MyPond() {
       getPond()
       toast.success('Delete success!!')
       setIsEditFormVisible(false)
+      setIsDialogOpen(false)
     } catch (error) {
       toast.error('Delete Pond Fail')
       setIsEditFormVisible(false)
