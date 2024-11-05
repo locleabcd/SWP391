@@ -10,6 +10,7 @@ import { toast } from 'react-toastify'
 import { useEffect, useState } from 'react'
 import { addToCartList } from '../../../redux/store/cartList'
 import { useDispatch } from 'react-redux'
+import '../../../index.css'
 
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
@@ -43,12 +44,12 @@ function Recommendations() {
 
   const images = productId.images || []
 
-  const increment = () => {
-    setCount((prevCount) => prevCount + 1)
+  const decrement = () => {
+    setCount((prevCount) => Math.max(prevCount - 1, 0))
   }
 
-  const decrement = () => {
-    setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : prevCount))
+  const increment = () => {
+    setCount((prevCount) => Math.min(prevCount + 1, productId.inventory))
   }
 
   const nextImage = () => {
@@ -71,22 +72,9 @@ function Recommendations() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
       setProductId(res.data.data)
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          console.error('Unauthorized access - Token expired or invalid. Logging out...')
-          localStorage.removeItem('token')
-          localStorage.removeItem('id')
-          toast.error('Token expired navigate to login')
-          navigate('/login')
-        } else {
-          console.error('Error fetching ponds:', error.response?.status, error.message)
-        }
-      } else {
-        console.error('An unexpected error occurred:', error)
-      }
+      console.error('An unexpected error occurred:', error)
     }
   }
 
@@ -106,10 +94,6 @@ function Recommendations() {
           }
         }
       )
-      if (!cate) {
-        console.log('No category available')
-      }
-
       const filteredProducts = res.data.data.filter((products) => String(products.id) !== String(id))
       setProductRelate(filteredProducts)
     } catch (error) {
@@ -127,7 +111,6 @@ function Recommendations() {
         }
       })
 
-      console.log(res.data.data)
       setFeedback(res.data.data)
     } catch (error) {
       console.log(error)
@@ -237,6 +220,16 @@ function Recommendations() {
       getProductRelate()
     }
   }, [productId])
+
+  localStorage.setItem('totalPrice', productId?.price * count)
+  if (productId?.promotions?.length > 0) {
+    const promotionPrice =
+      ((productId?.price * (100 - productId.promotions[productId.promotions.length - 1]?.discountRate)) / 100) * count
+    localStorage.setItem('promotionTotal', promotionPrice)
+  } else {
+    const promotionPrice = productId?.price * count
+    localStorage.setItem('promotionTotal', promotionPrice)
+  }
 
   return (
     <div>
@@ -441,10 +434,13 @@ function Recommendations() {
                     </button>
 
                     <input
-                      type='text'
+                      type='number'
                       value={count}
-                      onChange={(e) => setCount(Number(e.target.value))}
-                      className={`outline-none lg:w-20 md:w-16 w-12 text-center text-xl text-blue-400 ${
+                      onChange={(e) => {
+                        const inputValue = Number(e.target.value)
+                        setCount(inputValue > productId.inventory ? productId.inventory : inputValue)
+                      }}
+                      className={`outline-none no-arrows lg:w-20 md:w-16 w-12 text-center text-xl text-blue-400 ${
                         isDarkMode ? 'bg-custom-dark' : ''
                       }`}
                       min='0'
@@ -475,8 +471,10 @@ function Recommendations() {
 
                 <div className='flex lg:flex-row flex-col mt-5 gap-5 items-center border-b border-gray-200 pb-10 pt-5'>
                   <Link
-                    to='/member/cartList'
-                    onClick={() => handleAddToCart(productId)}
+                    to='/member/checkout'
+                    onClick={() => {
+                      handleAddToCart(productId)
+                    }}
                     className='lg:text-xl lg:py-4 lg:px-10 text-lg w-full text-center py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg'
                   >
                     Buy Now
