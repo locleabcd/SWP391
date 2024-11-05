@@ -325,7 +325,7 @@ function Checkout() {
                 <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className='font-medium'>Total</div>
                   <div className=''>
-                    {(cart?.totalAmount ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                    {promotionTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                   </div>
                 </div>
               </div>
