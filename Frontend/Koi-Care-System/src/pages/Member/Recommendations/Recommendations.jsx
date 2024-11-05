@@ -29,7 +29,7 @@ function Recommendations() {
   const [currentPage, setCurrentPage] = useState(1)
   const [isSidebarOpen, setSidebarOpen] = useState(false)
   const sidebarRef = useRef(null)
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(1)
   const pageSize = 9
 
   useEffect(() => {
@@ -76,12 +76,7 @@ function Recommendations() {
   }
 
   const handleAddToCart = (product) => {
-    if (product.inventory === 0 || product.inventory === count) {
-      toast.warn('This product is out of stock')
-    } else {
-      dispatch(addToCartList(product))
-    }
-    console.log(count)
+    dispatch(addToCartList(product))
   }
 
   const navigate = useNavigate()
