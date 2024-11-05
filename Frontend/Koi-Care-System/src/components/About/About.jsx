@@ -30,15 +30,20 @@ function About() {
   ]
 
   return (
-    <div className=' py-10 px-[30px] mx-auto h-[90vh] '>
-      <div className='text-black text-5xl justify-center text-center mb-20'>
-        <strong>About us</strong>
+    <div className='py-10 px-4 sm:px-6 lg:px-8 mx-auto '>
+      <div className='text-black text-5xl text-center mb-20'>
+        <strong>About Us</strong>
       </div>
+
       {/* Team Members Section */}
-      <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-8 mt-8'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 mt-8'>
         {teamMembers.map((member, index) => (
-          <div key={index} className='flex flex-col items-center  p-6 rounded-lg shadow-md border'>
-            <img src={member.img} alt={member.name} className='w-40 h-40 rounded-full object-cover mb-4' />
+          <div key={index} className='flex flex-col items-center p-6 rounded-lg shadow-md border'>
+            <img
+              src={member.img}
+              alt={member.name}
+              className='w-32 h-32 md:w-40 md:h-40 rounded-full object-cover mb-4'
+            />
             <h3 className='text-xl font-semibold text-center'>{member.name}</h3>
             <p className='text-lg text-gray-500'>{member.role}</p>
           </div>
@@ -50,18 +55,17 @@ function About() {
         <p className='font-dancing mb-6 text-xl'>Thank you for using our websites.</p>
 
         <p className='font-dancing text-xl'>
-          Having kept and loved koi fish for several years, We came up with the idea of developing an app for koi owners
+          Having kept and loved koi fish for several years, we came up with the idea of developing an app for koi owners
           to make fish keeping easier. Our goal is to keep the app up-to-date and to provide assistance for every koi
           owner.
         </p>
         <p className='mb-6 font-dancing text-xl'>
-          Our goal is to keep the app up-to-date and to provide assistance for every koi owner. A rating in the App
-          Store or sharing the app would therefore make us very happy and motivate us to continue developing additional
-          features.
+          A rating in the App Store or sharing the app would therefore make us very happy and motivate us to continue
+          developing additional features.
         </p>
-        <p className='mb-6 font-dancing text-xl '>
+        <p className='mb-6 font-dancing text-xl'>
           If you have any questions or suggestions for improvement, please send an e-mail to{' '}
-          <a href='#' className='text-blue-500 underline'>
+          <a href='mailto:feedback@koicaresystem.com' className='text-blue-500 underline'>
             feedback@koicaresystem.com
           </a>
           .
@@ -70,8 +74,8 @@ function About() {
       </div>
 
       {/* Social Media Links Section */}
-      <div className='mt-10 '>
-        <p className=' font-semibold text-center text-xl'>
+      <div className='mt-10'>
+        <p className='font-semibold text-center text-xl'>
           Follow us on social media where we keep you posted about exciting new features!
         </p>
       </div>

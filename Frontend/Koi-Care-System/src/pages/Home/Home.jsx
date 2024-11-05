@@ -10,18 +10,17 @@ import { useEffect, useRef, useState } from 'react'
 import { FaBars } from 'react-icons/fa'
 
 function Home() {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false) // State to manage sidebar visibility
-  const sidebarRef = useRef(null) // Ref for the sidebar element
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const sidebarRef = useRef(null)
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen) // Toggle the sidebar state
+    setIsSidebarOpen(!isSidebarOpen)
   }
 
   const closeSidebar = () => {
-    setIsSidebarOpen(false) // Close the sidebar
+    setIsSidebarOpen(false)
   }
 
-  // Close sidebar when clicking outside of it
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
@@ -176,28 +175,30 @@ function Home() {
         </div>
 
         <footer className='py-6 border-t bg-gradient-to-r from-purple-200 to-pink-200 border-gray-200'>
-          <div className='container mx-auto text-center'>
-            <p className='mb-2'>© 2024 Koi Care System.</p>
-            <p className='mb-2'>Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh 700000</p>
-            <p className='mb-2'>
+          <div className='container mx-auto text-center px-4'>
+            <p className='mb-2 text-sm sm:text-base'>© 2024 Koi Care System.</p>
+            <p className='mb-2 text-sm sm:text-base'>
+              Lô E2a-7, Đường D1, Đ. D1, Long Thạnh Mỹ, Thành Phố Thủ Đức, Hồ Chí Minh 700000
+            </p>
+            <p className='mb-2 text-sm sm:text-base'>
               <a href='mailto:info@koicare.com' className='text-red-500 hover:underline'>
                 koicaresystem@gmail.com
               </a>
             </p>
 
-            <Link to='/policy' className='mb-2 px-3 underline'>
+            <Link to='/policy' className='mb-2 px-3 text-sm sm:text-base underline'>
               Policy
             </Link>
 
             <div className='flex justify-center items-center space-x-4 mt-4'>
               <a href='https://www.facebook.com' target='_blank' rel='noopener noreferrer'>
-                <FaFacebook className='w-6 h-6' />
+                <FaFacebook className='w-5 h-5 sm:w-6 sm:h-6' />
               </a>
               <a href='https://www.twitter.com' target='_blank' rel='noopener noreferrer'>
-                <FaTwitter className='w-6 h-6' />
+                <FaTwitter className='w-5 h-5 sm:w-6 sm:h-6' />
               </a>
               <a href='https://www.instagram.com' target='_blank' rel='noopener noreferrer'>
-                <FaInstagram className='w-6 h-6' />
+                <FaInstagram className='w-5 h-5 sm:w-6 sm:h-6' />
               </a>
             </div>
           </div>
