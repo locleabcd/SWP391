@@ -56,6 +56,7 @@ function FoodCalculator() {
       setPonds(pondsWithTemp)
       console.log(pondsWithTemp)
     } catch (error) {
+      console.error('Error fetching water parameters:', error.response ? error.response.data : error.message)
       console.error('Error fetching ponds:', error)
     }
   }
