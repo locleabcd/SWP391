@@ -238,8 +238,6 @@ function Dashboard() {
   return (
     <div>
       <div className='h-screen flex'>
-        <LeftSideBar />
-
         <div
           className={`relative ${
             isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
