@@ -1,6 +1,8 @@
 package com.swpproject.koi_care_system.service.waterparameter;
 
 import com.swpproject.koi_care_system.dto.WaterParameterDto;
+import com.swpproject.koi_care_system.enums.ErrorCode;
+import com.swpproject.koi_care_system.exceptions.AppException;
 import com.swpproject.koi_care_system.mapper.WaterParameterMapper;
 import com.swpproject.koi_care_system.models.KoiPond;
 import com.swpproject.koi_care_system.models.WaterParameters;
@@ -36,7 +38,7 @@ public class WaterParameterService implements IWaterParametersService {
 
     @Override
     public WaterParameterDto createWaterParameters(ParametersCreateRequest parametersCreateRequest) {
-        KoiPond koiPond = koiPondRepository.findById(parametersCreateRequest.getKoiPondId()).orElseThrow(() -> new RuntimeException("KoiPond not found"));
+        KoiPond koiPond = koiPondRepository.findById(parametersCreateRequest.getKoiPondId()).orElseThrow(() -> new AppException(ErrorCode.KOI_POND_NOT_FOUND));
         WaterParameters waterParameters = waterParameterMapper.mapToWaterParameters(parametersCreateRequest);
         waterParameters.setKoiPond(koiPond);
         waterParametersRepository.save(waterParameters);
@@ -46,8 +48,8 @@ public class WaterParameterService implements IWaterParametersService {
 
     @Override
     public WaterParameterDto updateWaterParameters(long id, ParametersUpdateRequest request) {
-        WaterParameters waterParameters = waterParametersRepository.findById(id).orElseThrow(() -> new RuntimeException("WaterParameters not found"));
-        KoiPond koiPond = koiPondRepository.findById(request.getKoiPondId()).orElseThrow(() -> new RuntimeException("KoiPond not found"));
+        WaterParameters waterParameters = waterParametersRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.WATER_NOT_FOUND));
+        KoiPond koiPond = koiPondRepository.findById(request.getKoiPondId()).orElseThrow(() -> new AppException(ErrorCode.KOI_POND_NOT_FOUND));
         waterParameterMapper.updateWaterParameters(waterParameters, request);
         waterParameters.setKoiPond(koiPond);
         waterParametersRepository.save(waterParameters);
@@ -57,7 +59,7 @@ public class WaterParameterService implements IWaterParametersService {
 
     @Override
     public void deleteWaterParameters(long id) {
-        WaterParameters waterParameters = waterParametersRepository.findById(id).orElseThrow(() -> new RuntimeException("WaterParameters not found"));
+        WaterParameters waterParameters = waterParametersRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.WATER_NOT_FOUND));
         waterParametersRepository.delete(waterParameters);
     }
 
@@ -74,7 +76,7 @@ public class WaterParameterService implements IWaterParametersService {
     public WaterParameterDto getWaterParametersById(long id) {
         return waterParametersRepository.findById(id)
                 .map(waterParameterMapper::mapToWaterParameterDto)
-                .orElseThrow(() -> new RuntimeException("WaterParameters not found"));
+                .orElseThrow(() -> new AppException(ErrorCode.WATER_NOT_FOUND));
     }
     @Override
     public List<WaterParameterDto> getAllWaterParametersByKoiPondId(Long koiPondId) {
@@ -95,7 +97,12 @@ public class WaterParameterService implements IWaterParametersService {
     @Override
     public WaterParameterDto getLatestWaterParametersByKoiPondId(Long koiPondId) {
         WaterParameters lastestWaterParameters = waterParametersRepository.findTopByKoiPondId(koiPondId);
-        issueService.detectIssues(lastestWaterParameters);//check issue
+        if (lastestWaterParameters == null) {
+            throw new AppException(ErrorCode.WATER_NOT_FOUND);
+        }
+        if (lastestWaterParameters.getIssueList() == null) {
+            issueService.detectIssues(lastestWaterParameters);
+        }
         return waterParameterMapper.mapToWaterParameterDto(lastestWaterParameters);
     }
 }
