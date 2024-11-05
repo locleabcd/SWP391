@@ -46,7 +46,7 @@ function Pricing() {
           <Header />
 
           <div className='px-[30px] mt-[120px]'>
-            <section className='grid grid-cols-3 gap-x-6'>
+            <section className='grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
               <div className='flex flex-col rounded-lg  p-6 shadow border border-gray-200 xl:p-8'>
                 <div className='flex-1'>
                   <h3 className='mb-4 text-2xl font-semibold '>Premium Bronze</h3>

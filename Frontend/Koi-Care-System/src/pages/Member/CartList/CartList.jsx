@@ -255,7 +255,6 @@ const CartList = () => {
                               <input
                                 type='text'
                                 value={item.quantity}
-                                readOnly
                                 className={`outline-none lg:w-10 w-5 text-center text-xl text-blue-400 ${isDarkMode} ? 'bg-custom-dark' : ''}`}
                               />
 
