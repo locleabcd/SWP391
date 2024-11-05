@@ -15,7 +15,6 @@ import InfoBox from '../../../components/WaterParam/InfoBox'
 import { motion } from 'framer-motion'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import 'aos/dist/aos.css'
-import Chat from '../../../components/Chat/Chat'
 import { FaSpinner } from 'react-icons/fa'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material'
 import * as XLSX from 'xlsx'
@@ -99,6 +98,7 @@ function WaterParameters() {
           }
         }
       )
+      console.log(res.data.data)
       const sortedData = res.data.data.sort((a, b) => new Date(b.createDateTime) - new Date(a.createDateTime))
       setParameters(sortedData)
     } catch (error) {
@@ -829,9 +829,12 @@ function WaterParameters() {
       [inputName]: !prevState[inputName] // Đảo giá trị giữa true và false
     }))
   }
-  const exportWaterParametersToExcel = (waterParameters) => {
+  const exportWaterParametersToExcel = () => {
+    // Ensure `parameters` is an array
+    const data = Array.isArray(parameters) ? parameters : []
+
     const worksheet = XLSX.utils.json_to_sheet(
-      waterParameters.map((parameter) => ({
+      data.map((parameter) => ({
         'Pond Name': parameter.koiPondName,
         Date: parameter.createDateTime,
         'Nitrite (NO₂)': parameter.nitrite,
@@ -868,7 +871,6 @@ function WaterParameters() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <Chat />
           <div className='w-full flex justify-end'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -891,15 +893,16 @@ function WaterParameters() {
           </div>
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Water Parameters' links='/member/waterParameters' />
-            <div className='cursor-pointer'>
-              <button
-                onClick={exportWaterParametersToExcel}
-                className='mb-4 ml-3 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md'
-              >
-                Download Excel
-              </button>
-            </div>
-            <div className='w-full flex justify-end relative'>
+
+            <div className='w-full flex justify-between items-center relative mb-4'>
+              <div className='cursor-pointer'>
+                <button
+                  onClick={exportWaterParametersToExcel}
+                  className='ml-3 p-2 bg-blue-500 text-white hover:bg-blue-700 rounded-md'
+                >
+                  Download Excel
+                </button>
+              </div>
               <div className='cursor-pointer' onClick={toggleButtons}>
                 <svg
                   xmlns='http://www.w3.org/2000/svg'
@@ -1012,12 +1015,11 @@ function WaterParameters() {
                     >
                       <div className='text-lg mb-4'>
                         <div className='grid grid-cols-4 w-full'>
-                          <h3 className='lg:text-lg text-xs col-span-2 justify-center text-center'>
-                            {' '}
-                            {parameter.koiPondName}
+                          <h3 className='lg:text-lg text-lg col-span-2 justify-center text-left'>
+                            <strong>Pond Name: {parameter.koiPondName}</strong>
                           </h3>
-                          <h3 className='lg:text-lg text-xs col-span-2 justify-center text-center'>
-                            {parameter.createDateTime.replace('T', ' ')}
+                          <h3 className='lg:text-lg text-lg col-span-2 justify-center text-center'>
+                            <strong>Date: {parameter.createDateTime.replace('T', ' ')}</strong>
                           </h3>
                         </div>
                         <table className='table-auto w-full'>
@@ -1214,7 +1216,7 @@ function WaterParameters() {
                         </table>
 
                         <div className='flex mt-4'>
-                          <h3 className='lg:text-lg text-xs text-gray-500 font-semibold'>{parameter.note}</h3>
+                          <h3 className='lg:text-lg text-xs text-gray-500 font-semibold'>Note: {parameter.note}</h3>
                         </div>
                       </div>
                     </motion.div>
@@ -3079,7 +3081,7 @@ function WaterParameters() {
                       }
                     }}
                   >
-                    <DialogTitle>Corfim delete this parameter</DialogTitle>
+                    <DialogTitle>Confirm delete this parameter</DialogTitle>
                     <DialogContent>
                       <DialogContentText>Are you sure you want to delete this parameter?</DialogContentText>
                     </DialogContent>

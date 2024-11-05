@@ -15,6 +15,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
 import { toast } from 'react-toastify'
 import * as XLSX from 'xlsx'
+import Swal from 'sweetalert2'
 
 function Promotion() {
   const { isDarkMode } = useDarkMode()
@@ -89,8 +90,19 @@ function Promotion() {
   }
 
   const deletePromotion = async (id) => {
-    const isConfirmed = window.confirm('Are you sure to delete promotion?')
-    if (!isConfirmed) return
+    const { isConfirmed } = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
+
+    if (!isConfirmed) {
+      return
+    }
 
     setIsLoading(true)
     try {
