@@ -238,13 +238,13 @@ function Dashboard() {
   return (
     <div>
       <div className='h-screen flex'>
+        <LeftSideBar />
         <div
           className={`relative ${
             isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <Chat />
 
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] '>
             <TopLayout text='Dashboard' links='member/dashboard' />
