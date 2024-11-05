@@ -12,7 +12,17 @@ import TopLayout from '../../../layouts/TopLayoutAD'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
 
-import { Modal, Button, TextField, Box } from '@mui/material'
+import {
+  Modal,
+  Button,
+  TextField,
+  Box,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle
+} from '@mui/material'
 import { FaUser, FaMoneyBillWave, FaEdit, FaTrash, FaInfoCircle, FaEye, FaCircle } from 'react-icons/fa'
 
 function ShopAD() {
@@ -23,6 +33,8 @@ function ShopAD() {
   const [password, setPassword] = useState('defaultpassword') // Set default password
   const [email, setEmail] = useState('') // Optional email
   const [isFormOpen, setIsFormOpen] = useState(false)
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false) // Dialog state
+  const [selectedUserId, setSelectedUserId] = useState(null) // Store ID for deletion
   const navigate = useNavigate()
 
   const getUsers = async () => {
@@ -38,7 +50,7 @@ function ShopAD() {
       })
       const shopUsers = res.data.data.filter((user) => user.role === 'SHOP')
       setManageShops(shopUsers)
-      console.log(shopUsers)
+      console.log('Updated shop users:', shopUsers)
     } catch (error) {
       console.log('Error fetching promotions:', error)
     }
@@ -47,29 +59,41 @@ function ShopAD() {
   useEffect(() => {
     getUsers()
   }, [])
-  const handleDeleteStaff = async (id) => {
-    try {
-      const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
+  const handleOpenDeleteDialog = (id) => {
+    setSelectedUserId(id)
+    setDeleteDialogOpen(true)
+  }
 
-      // API to update status to inactive (set to false)
-      await axios.put(
-        `https://koicaresystemv2.azurewebsites.net/api/users/delete/${id}`,
-        { status: false }, // Assuming the API accepts a status field to set active/inactive
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
+  const handleCloseDeleteDialog = () => {
+    setDeleteDialogOpen(false)
+    setSelectedUserId(null)
+  }
+
+  const handleConfirmDelete = async () => {
+    setDeleteDialogOpen(false)
+    if (selectedUserId) {
+      try {
+        const token = localStorage.getItem('token')
+        if (!token) {
+          throw new Error('No token found')
         }
-      )
-
-      toast.success('User deactivated successfully')
-      getUsers() // Refresh the user list after status update
-    } catch (error) {
-      console.error(error)
-      toast.error('Failed to deactivate user')
+        await axios.put(
+          `https://koicaresystemv2.azurewebsites.net/api/users/delete/${selectedUserId}`,
+          { status: false },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+        toast.success('User deactivated successfully')
+        await getUsers()
+      } catch (error) {
+        console.error(error)
+        toast.error('Failed to deactivate user')
+      } finally {
+        setSelectedUserId(null)
+      }
     }
   }
   const columns = [
@@ -122,7 +146,7 @@ function ShopAD() {
           {/* Icon Delete */}
           <button
             className='p-1 text-red-500 hover:bg-red-500 hover:text-white rounded-full'
-            onClick={() => handleDeleteStaff(params.row.id)}
+            onClick={() => handleOpenDeleteDialog(params.row.id)}
           >
             <FaTrash className='size-5' />
           </button>
@@ -229,7 +253,22 @@ function ShopAD() {
                 </div>
               </Box>
             </Modal>
-
+            <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
+              <DialogTitle>Confirm Deletion</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Are you sure you want to deactivate this user? This action cannot be undone.
+                </DialogContentText>
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseDeleteDialog} color='primary'>
+                  Cancel
+                </Button>
+                <Button onClick={handleConfirmDelete} color='error'>
+                  Confirm
+                </Button>
+              </DialogActions>
+            </Dialog>
             <Paper sx={{ height: 670 }}>
               <DataGrid
                 rows={manageShops}
