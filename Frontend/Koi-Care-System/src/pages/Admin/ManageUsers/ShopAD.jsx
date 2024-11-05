@@ -154,41 +154,42 @@ function ShopAD() {
       )
     }
   ]
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email)
+  }
+
   const handleCreateStaff = async () => {
-    console.log('onSubmit:', { username, email })
+    if (!username) {
+      toast.error('Username is required')
+      return
+    }
+
+    // Validate email only if it is provided
+    if (email && !isValidEmail(email)) {
+      toast.error('Please enter a valid email address')
+      return
+    }
+
     setIsSubmitting(true)
     try {
       const token = localStorage.getItem('token')
       if (!token) {
         throw new Error('No token found')
       }
-      if (!username) {
-        throw new Error('Username is required')
-      }
-      const requestBody = {
-        username: username,
-        password: 'defaultpassword' // Bổ sung lại mật khẩu mặc định nếu cần
-      }
+      const requestBody = { username, password: 'defaultpassword' }
       if (email) {
         requestBody.email = email
       }
-      const res = await axios.post(`https://koicaresystemv2.azurewebsites.net/api/users/register/staff`, requestBody, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+      await axios.post(`https://koicaresystemv2.azurewebsites.net/api/users/register/staff`, requestBody, {
+        headers: { Authorization: `Bearer ${token}` }
       })
       toast.success('Staff created successfully!')
       setIsFormOpen(false)
-
-      // Gọi lại danh sách user để cập nhật
       getUsers()
     } catch (error) {
       console.log(error)
-      if (error.response && error.response.data && error.response.data.message) {
-        toast.error(`Failed to create staff: ${error.response.data.message}`)
-      } else {
-        toast.error('Failed to create staff.')
-      }
+      toast.error('Failed to create staff.')
     } finally {
       setIsSubmitting(false)
     }
