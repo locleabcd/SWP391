@@ -15,7 +15,6 @@ import InfoBox from '../../../components/WaterParam/InfoBox'
 import { motion } from 'framer-motion'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import 'aos/dist/aos.css'
-import Chat from '../../../components/Chat/Chat'
 import { FaSpinner } from 'react-icons/fa'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material'
 import * as XLSX from 'xlsx'
@@ -872,7 +871,6 @@ function WaterParameters() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <Chat />
           <div className='w-full flex justify-end'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -3083,7 +3081,7 @@ function WaterParameters() {
                       }
                     }}
                   >
-                    <DialogTitle>Corfim delete this parameter</DialogTitle>
+                    <DialogTitle>Confirm delete this parameter</DialogTitle>
                     <DialogContent>
                       <DialogContentText>Are you sure you want to delete this parameter?</DialogContentText>
                     </DialogContent>

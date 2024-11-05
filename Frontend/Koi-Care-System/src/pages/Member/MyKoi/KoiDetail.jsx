@@ -18,6 +18,7 @@ import { IoMdFemale } from 'react-icons/io'
 import { FaQuestion } from 'react-icons/fa'
 import AOS from 'aos'
 import 'aos/dist/aos.css'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 
 function KoiDetails() {
   const { isDarkMode } = useDarkMode()
@@ -39,6 +40,11 @@ function KoiDetails() {
   const [isAddRemarkFormVisible, setIsAddRemarkFormVisible] = useState(false)
   const [isEditRemarkFormVisible, setIsEditRemarkFormVisible] = useState(false)
   const [isImagePopupOpen, setIsImagePopupOpen] = useState(false)
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
+  const handleOpenDialog = () => setIsDialogOpen(true)
+  const handleCloseDialog = () => setIsDialogOpen(false)
 
   const handleImageClick = () => {
     setIsImagePopupOpen(true)
@@ -380,10 +386,6 @@ function KoiDetails() {
   }, [])
 
   const deleteGrowth = async (id) => {
-    const isConfirmed = window.confirm('Are you sure to delete growth history!')
-    if (!isConfirmed) {
-      return
-    }
     setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
@@ -399,6 +401,7 @@ function KoiDetails() {
       getGrowthHistory()
       getKoi()
       setIsEditGrowthFormVisible(false)
+      setIsDialogOpen(false)
     } catch (error) {
       toast.error('Growth History delete fail!')
       console.error('Error deleting growth history:', error)
@@ -408,10 +411,6 @@ function KoiDetails() {
   }
 
   const deleteRemark = async (id) => {
-    const isConfirmed = window.confirm('Are you sure to delete remark!')
-    if (!isConfirmed) {
-      return
-    }
     setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
@@ -427,6 +426,7 @@ function KoiDetails() {
       reset()
       getRemark()
       setIsEditRemarkFormVisible(false)
+      setIsDialogOpen(false)
     } catch (error) {
       toast.error('Remark delete fail!')
       console.error('Error deleting remark:', error)
@@ -535,6 +535,7 @@ function KoiDetails() {
       reset()
       getPond()
       setIsEditFormVisible(false)
+      setIsDialogOpen(false)
       navigate('/member/myKoi')
     } catch (error) {
       toast.error('Delete Koi Fail!')
@@ -1107,7 +1108,7 @@ function KoiDetails() {
                   </div>
                 </form>
                 <div className='flex justify-center items-center'>
-                  <button className='mx-auto ' onClick={() => deleteKoi(koi.id)}>
+                  <button className='mx-auto' onClick={handleOpenDialog}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -1123,6 +1124,31 @@ function KoiDetails() {
                       />
                     </svg>
                   </button>
+                  <Dialog
+                    open={isDialogOpen}
+                    onClose={handleCloseDialog}
+                    className={isDarkMode ? 'dark-mode-dialog' : ''}
+                    sx={{
+                      '& .MuiDialog-paper': {
+                        backgroundColor: isDarkMode ? 'rgb(36,48,63)' : 'white',
+                        color: isDarkMode ? 'white' : 'black',
+                        boxShadow: isDarkMode ? '0px 4px 20px rgba(0, 0, 0, 0.5)' : '0px 4px 20px rgba(0, 0, 0, 0.1)'
+                      }
+                    }}
+                  >
+                    <DialogTitle>Confirm delete this koi</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>Are you sure you want to delete this koi?</DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleCloseDialog} color='primary'>
+                        No
+                      </Button>
+                      <Button onClick={() => deleteKoi(koi.id)} color='error' disabled={isLoading}>
+                        Yes
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </div>
               </div>
             </div>
@@ -1531,7 +1557,7 @@ function KoiDetails() {
                 </form>
 
                 <div className='flex justify-center items-center'>
-                  <button className='mx-auto' onClick={() => deleteGrowth(currentGrowth.id)}>
+                  <button className='mx-auto' onClick={handleOpenDialog}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -1547,6 +1573,31 @@ function KoiDetails() {
                       />
                     </svg>
                   </button>
+                  <Dialog
+                    open={isDialogOpen}
+                    onClose={handleCloseDialog}
+                    className={isDarkMode ? 'dark-mode-dialog' : ''}
+                    sx={{
+                      '& .MuiDialog-paper': {
+                        backgroundColor: isDarkMode ? 'rgb(36,48,63)' : 'white',
+                        color: isDarkMode ? 'white' : 'black',
+                        boxShadow: isDarkMode ? '0px 4px 20px rgba(0, 0, 0, 0.5)' : '0px 4px 20px rgba(0, 0, 0, 0.1)'
+                      }
+                    }}
+                  >
+                    <DialogTitle>Confirm delete this grow history</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>Are you sure you want to delete this grow history?</DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleCloseDialog} color='primary'>
+                        No
+                      </Button>
+                      <Button onClick={() => deleteGrowth(currentGrowth.id)} color='error' disabled={isLoading}>
+                        Yes
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </div>
               </div>
             </div>
@@ -1751,7 +1802,7 @@ function KoiDetails() {
                 </form>
 
                 <div className='flex justify-center items-center'>
-                  <button className='mx-auto' onClick={() => deleteRemark(currentRemark.id)}>
+                  <button className='mx-auto' onClick={handleOpenDialog}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -1767,6 +1818,37 @@ function KoiDetails() {
                       />
                     </svg>
                   </button>
+                  <Dialog
+                    open={isDialogOpen}
+                    onClose={handleCloseDialog}
+                    className={isDarkMode ? 'dark-mode-dialog' : ''}
+                    sx={{
+                      '& .MuiDialog-paper': {
+                        backgroundColor: isDarkMode ? 'rgb(36,48,63)' : 'white',
+                        color: isDarkMode ? 'white' : 'black',
+                        boxShadow: isDarkMode ? '0px 4px 20px rgba(0, 0, 0, 0.5)' : '0px 4px 20px rgba(0, 0, 0, 0.1)'
+                      }
+                    }}
+                  >
+                    <DialogTitle>Confirm delete this remarks</DialogTitle>
+                    <DialogContent>
+                      <DialogContentText>Are you sure you want to delete this remarks?</DialogContentText>
+                    </DialogContent>
+                    <DialogActions>
+                      <Button onClick={handleCloseDialog} color='primary'>
+                        No
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          deleteRemark(currentRemark.id)
+                        }}
+                        color='error'
+                        disabled={isLoading}
+                      >
+                        Yes
+                      </Button>
+                    </DialogActions>
+                  </Dialog>
                 </div>
               </div>
             </div>

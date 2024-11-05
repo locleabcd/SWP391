@@ -117,7 +117,6 @@ function Login() {
               variant='outlined'
               {...register('password', { required: 'Password is required' })}
               error={!!errors.password}
-              helperText={errors.password ? errors.password.message : ''}
               InputProps={{
                 endAdornment: (
                   <InputAdornment position='end'>

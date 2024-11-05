@@ -9,7 +9,6 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import { Switch } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { FaSpinner } from 'react-icons/fa'
-import Chat from '../../../components/Chat/Chat'
 
 function Reminders() {
   const { isDarkMode } = useDarkMode()
@@ -163,7 +162,6 @@ function Reminders() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <Chat />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] max-h-[800px]'>
             <TopLayout text='Reminders' links='/member/reminders' />
             <div className='grid grid-cols-3 gap-10 mt-10'>

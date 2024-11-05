@@ -187,3 +187,13 @@ input:checked + .slider:before {
   border-color: transparent #93c5fd transparent transparent;
   opacity: 1;
 }
+
+.no-arrows::-webkit-outer-spin-button,
+.no-arrows::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.no-arrows[type='number'] {
+  -moz-appearance: textfield;
+}
