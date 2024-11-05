@@ -47,14 +47,12 @@ function Payment() {
       const token = localStorage.getItem('token')
 
       const id = localStorage.getItem('id')
-      const totalPrice = localStorage.getItem('totalPrice')
-
       const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/payment/vn-pay', {
         headers: {
           Authorization: `Bearer ${token}`
         },
         params: {
-          amount: totalPrice,
+          amount: promotionTotal,
           userId: id,
           bankCode: selectedPayment
         }

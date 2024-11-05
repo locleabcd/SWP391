@@ -13,7 +13,6 @@ import { useDispatch } from 'react-redux'
 import { AddToWishlist, RemoveFromWishlist } from '../../../redux/store/wishList'
 import { addToCartList } from '../../../redux/store/cartList'
 import { motion } from 'framer-motion'
-import Chat from '../../../components/Chat/Chat'
 
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
@@ -30,6 +29,7 @@ function Recommendations() {
   const [currentPage, setCurrentPage] = useState(1)
   const [isSidebarOpen, setSidebarOpen] = useState(false)
   const sidebarRef = useRef(null)
+  const [count, setCount] = useState(1)
   const pageSize = 9
 
   useEffect(() => {
@@ -259,9 +259,6 @@ function Recommendations() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-
-          <Chat />
-
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='Recommendations' links='member/recommendations' />
 
@@ -563,7 +560,10 @@ function Recommendations() {
                               </button>
 
                               <svg
-                                onClick={() => handleAddToCart(products)}
+                                onClick={() => {
+                                  handleAddToCart(products)
+                                  setCount(count + 1)
+                                }}
                                 xmlns='http://www.w3.org/2000/svg'
                                 fill='none'
                                 viewBox='0 0 24 24'

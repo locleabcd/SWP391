@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import axios from 'axios'
+import { useState } from 'react'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
@@ -76,6 +77,7 @@ export const addToCartList = (product, quantity) => async (dispatch) => {
     )
   } catch (error) {
     console.log(error)
+    toast.warn('This product is out of stock')
   }
 }
 

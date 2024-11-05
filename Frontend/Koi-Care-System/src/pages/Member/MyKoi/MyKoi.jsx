@@ -12,7 +12,6 @@ import TopLayout from '../../../layouts/TopLayout'
 import { motion } from 'framer-motion'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import Chat from '../../../components/Chat/Chat'
 
 function MyKoi() {
   const { isDarkMode } = useDarkMode()
@@ -25,6 +24,7 @@ function MyKoi() {
   const [selectedFile, setSelectedFile] = useState(null)
   const [koiCounts, setKoiCounts] = useState({})
   const [showButtons, setShowButtons] = useState(false)
+
   const {
     register,
     handleSubmit,
@@ -107,7 +107,7 @@ function MyKoi() {
       }
 
       console.log(data)
-      const res = await axios.post(`https://koicaresystemv2.azurewebsites.net/api/koifishs/create`, formData, {
+      await axios.post(`https://koicaresystemv2.azurewebsites.net/api/koifishs/create`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -214,7 +214,6 @@ function MyKoi() {
            shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <Chat />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <div className=''>
               <svg
