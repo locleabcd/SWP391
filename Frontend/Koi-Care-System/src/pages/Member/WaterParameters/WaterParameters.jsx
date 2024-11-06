@@ -227,6 +227,11 @@ function WaterParameters() {
     }
   }
   const deleteParameter = async (waterId) => {
+    if (!waterId) {
+      console.error('waterId is undefined or null. Cannot delete.')
+      return
+    }
+
     setIsLoading(true)
     const { isConfirmed } = await Swal.fire({
       title: 'Are you sure?',
@@ -242,29 +247,39 @@ function WaterParameters() {
       setIsLoading(false)
       return
     }
+
     try {
       const token = localStorage.getItem('token')
       if (!token) {
-        throw new Error('no token found')
+        throw new Error('No token found')
       }
+
+      console.log('Deleting water parameter with ID:', waterId) // Kiểm tra waterId
       await axios.delete(`https://koicaresystemv2.azurewebsites.net/api/water-parameters/delete/${waterId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
-      setIsDialogOpen(false)
+
       setIsEditFormVisible(false)
       toast.success('Parameter deleted successfully')
+
       const userId = localStorage.getItem('id')
-      getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
+      if (userId) {
+        getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
+      } else {
+        console.error('User ID not found in localStorage.')
+      }
+
       reset()
     } catch (error) {
-      console.error('Error deleting paramter:', error)
-      toast.error('Error deleting paramter')
+      console.error('Error deleting parameter:', error)
+      toast.error('Error deleting parameter')
     } finally {
       setIsLoading(false)
     }
   }
+
   const onSubmit = async (data) => {
     if (currentParameter) {
       updateParameter(data, currentParameter.id)
@@ -888,7 +903,6 @@ function WaterParameters() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <Chat />
           <div className='w-full flex justify-end'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -3096,7 +3110,7 @@ function WaterParameters() {
                   </div>
                 </form>
                 <div className='w-full flex flex-col justify-center'>
-                  <button className='mx-auto' onClick={() => deleteParameter()}>
+                  <button className='mx-auto' onClick={() => deleteParameter(currentParameter.id)}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -3114,31 +3128,6 @@ function WaterParameters() {
                   </button>
 
                   <p className='text-center font-semibold'>Delete this parameter</p>
-                  <Dialog
-                    open={isDialogOpen}
-                    onClose={handleCloseDialog}
-                    className={isDarkMode ? 'dark-mode-dialog' : ''}
-                    sx={{
-                      '& .MuiDialog-paper': {
-                        backgroundColor: isDarkMode ? 'rgb(36,48,63)' : 'white',
-                        color: isDarkMode ? 'white' : 'black',
-                        boxShadow: isDarkMode ? '0px 4px 20px rgba(0, 0, 0, 0.5)' : '0px 4px 20px rgba(0, 0, 0, 0.1)'
-                      }
-                    }}
-                  >
-                    <DialogTitle>Corfim delete this parameter</DialogTitle>
-                    <DialogContent>
-                      <DialogContentText>Are you sure you want to delete this parameter?</DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={handleCloseDialog} color='primary'>
-                        No
-                      </Button>
-                      <Button onClick={() => deleteParameter(currentParameter.id)} color='error' disabled={isLoading}>
-                        Yes
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
                 </div>
               </div>
             </div>
