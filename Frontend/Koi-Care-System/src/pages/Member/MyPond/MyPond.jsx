@@ -20,7 +20,6 @@ import Swal from 'sweetalert2'
 function MyPond() {
   const { isDarkMode } = useDarkMode()
   const [ponds, setPonds] = useState([])
-  const [isSubmitting, setIsSubmitting] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isAddFormVisible, setIsAddFormVisible] = useState(false)
   const [isEditFormVisible, setIsEditFormVisible] = useState(false)
@@ -99,15 +98,6 @@ function MyPond() {
 
   const toggleAddFormVisibility = () => {
     setIsAddFormVisible(!isAddFormVisible)
-    setIsEditFormVisible(false)
-    setCurrentPond(null)
-  }
-
-  const toggleCloseForm = () => {
-    setIsEditFormVisible(!isEditFormVisible)
-    setIsEditFormVisible(false)
-    setCurrentPond(null)
-    setBaseImage(null)
     reset({
       name: '',
       drainCount: '',
@@ -116,14 +106,26 @@ function MyPond() {
       pumpCapacity: '',
       volume: ''
     })
+    setBaseImage(null)
+  }
+
+  const toggleCloseForm = () => {
+    setIsEditFormVisible(false)
+    setBaseImage(null)
   }
 
   const toggleEditFormVisibility = (pond) => {
-    if (pond) {
-      setCurrentPond(pond)
-      setIsEditFormVisible(true)
-      setIsAddFormVisible(false)
-    }
+    localStorage.setItem('pondId', pond.id)
+    setIsEditFormVisible(true)
+    reset({
+      name: pond.name,
+      drainCount: pond.drainCount,
+      depth: pond.depth,
+      skimmer: pond.skimmer,
+      pumpCapacity: pond.pumpCapacity,
+      volume: pond.volume,
+      file: baseImage
+    })
   }
 
   const getPond = async () => {
@@ -149,72 +151,38 @@ function MyPond() {
     getPond()
   }, [])
 
-  const upDatePond = async (data, id = null) => {
+  const updatePond = async (data) => {
     setIsLoading(true)
-    setIsSubmitting(true)
-
     try {
       const token = localStorage.getItem('token')
-      if (!token) {
-        throw new Error('No token found')
-      }
+      const id = localStorage.getItem('pondId')
 
-      if (id) {
-        const formData = new FormData()
-        formData.append('name', data.name)
-        formData.append('drainCount', data.drainCount)
-        formData.append('depth', data.depth)
-        formData.append('skimmer', data.skimmer)
-        formData.append('pumpCapacity', data.pumpCapacity)
-        formData.append('volume', data.volume)
-        if (selectedFile) {
-          formData.append('file', selectedFile)
-        }
-
-        await axios.put(`https://koicaresystemv2.azurewebsites.net/api/koiponds/koipond/${id}/update`, formData, {
+      await axios.put(
+        `https://koicaresystemv2.azurewebsites.net/api/koiponds/koipond/${id}/update`,
+        {
+          name: data.name,
+          createDate: data.date,
+          drainCount: data.drainCount,
+          depth: data.depth,
+          skimmer: data.skimmer,
+          pumpCapacity: data.pumpCapacity,
+          volume: data.volume,
+          file: selectedFile || ''
+        },
+        {
           headers: {
             Authorization: `Bearer ${token}`,
             'Content-Type': 'multipart/form-data'
           }
-        })
-        toast.success('Update Pond success!!')
-      } else {
-        const formData = new FormData()
-        formData.append('name', data.name)
-        formData.append('createDate', data.date)
-        formData.append('drainCount', data.drainCount)
-        formData.append('depth', data.depth)
-        formData.append('skimmer', data.skimmer)
-        formData.append('pumpCapacity', data.pumpCapacity)
-        formData.append('volume', data.volume)
-        if (selectedFile) {
-          formData.append('file', selectedFile)
         }
-        await axios.post('https://koicaresystemv2.azurewebsites.net/api/koiponds/create', formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        toast.success('Create Pond success!!')
-        console.log('date', data.date)
-      }
-
+      )
+      toast.success('Update Pond success!!')
       getPond()
       setIsAddFormVisible(false)
       setIsEditFormVisible(false)
-      reset({
-        name: '',
-        drainCount: '',
-        depth: '',
-        skimmer: '',
-        pumpCapacity: '',
-        volume: ''
-      })
     } catch (error) {
-      console.log('Error creating/updating pond:', error)
+      console.log('Error updating pond:', error)
     } finally {
-      setIsSubmitting(false)
       setIsLoading(false)
     }
   }
@@ -231,11 +199,36 @@ function MyPond() {
     }
   }
 
-  const onSubmit = async (data) => {
-    if (currentPond) {
-      upDatePond(data, currentPond.id)
-    } else {
-      upDatePond(data)
+  const createPond = async (data) => {
+    setIsLoading(true)
+    try {
+      const token = localStorage.getItem('token')
+      await axios.post(
+        'https://koicaresystemv2.azurewebsites.net/api/koiponds/create',
+        {
+          name: data.name,
+          createDate: data.date,
+          drainCount: data.drainCount,
+          depth: data.depth,
+          skimmer: data.skimmer,
+          pumpCapacity: data.pumpCapacity,
+          volume: data.volume,
+          file: selectedFile || ''
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            'Content-Type': 'multipart/form-data'
+          }
+        }
+      )
+      toast.success('Create Pond success!!')
+      getPond()
+      setIsAddFormVisible(false)
+    } catch (error) {
+      console.log('Error creating pond:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -257,6 +250,7 @@ function MyPond() {
     }
     try {
       const token = localStorage.getItem('token')
+      const id = localStorage.getItem('pondId')
       if (!token) {
         throw new Error('No token found')
       }
@@ -539,7 +533,7 @@ function MyPond() {
                     isDarkMode ? 'bg-custom-dark' : 'bg-white'
                   }  lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
                 >
-                  <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                  <form onSubmit={handleSubmit(createPond)} noValidate>
                     <div className='flex justify-between mb-5'>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
@@ -810,14 +804,14 @@ function MyPond() {
               </div>
             )}
 
-            {isEditFormVisible && currentPond && (
+            {isEditFormVisible && (
               <div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-end z-40'>
                 <div
                   className={`${
                     isDarkMode ? 'bg-custom-dark' : 'bg-white'
                   } lg:min-w-[80vh] m-auto p-6 rounded-lg shadow-lg`}
                 >
-                  <form onSubmit={handleSubmit(onSubmit)} noValidate>
+                  <form onSubmit={handleSubmit(updatePond)} noValidate>
                     <div className='flex justify-between mb-5'>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'

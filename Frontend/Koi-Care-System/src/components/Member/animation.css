@@ -16,8 +16,9 @@ html {
 .neon-border {
   position: relative;
   z-index: 1;
-  overflow: hidden;
-  border-radius: 12px; /* Bo tròn góc */
+  overflow: clip;
+  border-radius: 12px;
+  
 }
 
 .neon-border::before {
@@ -27,6 +28,7 @@ html {
   left: -2px;
   right: -2px;
   bottom: -2px;
+  
   border-radius: inherit;
   background: linear-gradient(45deg, #b0c4de, #4682b4, #87ceeb);
   background-size: 400% 400%;

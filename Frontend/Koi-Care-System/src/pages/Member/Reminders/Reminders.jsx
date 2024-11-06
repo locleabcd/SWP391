@@ -27,11 +27,7 @@ function Reminders() {
 
   const openEditForm = (reminder) => {
     localStorage.setItem('reminderId', reminder.id)
-    reset({
-      title: reminder.title,
-      dateTime: reminder.dateTime,
-      interval: reminder.repeatInterval
-    })
+    reset(reminder)
     toggleEditFormVisibility(true)
   }
 
@@ -51,7 +47,7 @@ function Reminders() {
   const getReminder = async () => {
     const token = localStorage.getItem('token')
     try {
-      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/reminders/list', {
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/reminders/list/user', {
         headers: {
           Authorization: `Bearer ${token}`
         }
@@ -270,6 +266,7 @@ function Reminders() {
                   <FormControlLabel
                     value='end'
                     control={<Switch color='primary' />}
+                    onClick={(e) => e.stopPropagation()}
                     sx={{
                       fontSize: '2rem',
                       '.MuiSwitch-root': {
@@ -376,7 +373,6 @@ function Reminders() {
 
                     <div className='relative col-span-1 lg:mt-4'>
                       <label
-                        htmlFor='drainCount'
                         className={`absolute -top-[12px] lg:text-lg text-sm left-3 text-red-500 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } font-semibold`}
@@ -393,7 +389,6 @@ function Reminders() {
                         <option value='DAILY'>DAILY</option>
                         <option value='WEEKLY'>WEEKLY</option>
                       </select>
-                      <input />
                     </div>
                   </div>
                 </div>

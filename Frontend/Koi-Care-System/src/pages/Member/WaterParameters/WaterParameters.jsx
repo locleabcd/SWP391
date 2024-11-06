@@ -15,6 +15,7 @@ import InfoBox from '../../../components/WaterParam/InfoBox'
 import { motion } from 'framer-motion'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import 'aos/dist/aos.css'
+import Chat from '../../../components/Chat/Chat'
 import { FaSpinner } from 'react-icons/fa'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material'
 import * as XLSX from 'xlsx'
@@ -59,6 +60,10 @@ function WaterParameters() {
     totalChlorine: false
   })
   const [sortOption, setSortOption] = useState({ order: 'asc', field: 'pondName' })
+  const [pageSize, setPageSize] = useState(2)
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPages = Math.ceil(parameters.length / pageSize)
+  const paginatedParameters = parameters.slice((currentPage - 1) * pageSize, currentPage * pageSize)
   const getPond = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -222,6 +227,11 @@ function WaterParameters() {
     }
   }
   const deleteParameter = async (waterId) => {
+    if (!waterId) {
+      console.error('waterId is undefined or null. Cannot delete.')
+      return
+    }
+
     setIsLoading(true)
     const { isConfirmed } = await Swal.fire({
       title: 'Are you sure?',
@@ -237,29 +247,39 @@ function WaterParameters() {
       setIsLoading(false)
       return
     }
+
     try {
       const token = localStorage.getItem('token')
       if (!token) {
-        throw new Error('no token found')
+        throw new Error('No token found')
       }
+
+      console.log('Deleting water parameter with ID:', waterId) // Kiểm tra waterId
       await axios.delete(`https://koicaresystemv2.azurewebsites.net/api/water-parameters/delete/${waterId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
-      setIsDialogOpen(false)
+
       setIsEditFormVisible(false)
       toast.success('Parameter deleted successfully')
+
       const userId = localStorage.getItem('id')
-      getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
+      if (userId) {
+        getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
+      } else {
+        console.error('User ID not found in localStorage.')
+      }
+
       reset()
     } catch (error) {
-      console.error('Error deleting paramter:', error)
-      toast.error('Error deleting paramter')
+      console.error('Error deleting parameter:', error)
+      toast.error('Error deleting parameter')
     } finally {
       setIsLoading(false)
     }
   }
+
   const onSubmit = async (data) => {
     if (currentParameter) {
       updateParameter(data, currentParameter.id)
@@ -988,8 +1008,24 @@ function WaterParameters() {
               }}
               className='py-4 w-full z-0'
             >
+              <div className='flex justify-end mb-4'>
+                <label htmlFor='pageSize' className='mr-2'>
+                  Items per page:
+                </label>
+                <select
+                  id='pageSize'
+                  value={pageSize}
+                  onChange={(e) => setPageSize(parseInt(e.target.value))}
+                  className='p-1 border rounded'
+                >
+                  <option value={2}>2</option>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div>
               <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 lg:gap-6 gap-4'>
-                {parameters.map((parameter, index) => {
+                {paginatedParameters.map((parameter, index) => {
                   // Đếm số lượng các giá trị vượt ngưỡng (màu đỏ)
                   const getRedCount = (parameter) => {
                     let count = 0
@@ -1234,6 +1270,17 @@ function WaterParameters() {
                     </motion.div>
                   )
                 })}
+              </div>
+              <div className='flex justify-center mt-4'>
+                {[...Array(totalPages).keys()].map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page + 1)}
+                    className={`mx-1 px-3 py-1 rounded ${currentPage === page + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
+                  >
+                    {page + 1}
+                  </button>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -3063,7 +3110,7 @@ function WaterParameters() {
                   </div>
                 </form>
                 <div className='w-full flex flex-col justify-center'>
-                  <button className='mx-auto' onClick={() => deleteParameter()}>
+                  <button className='mx-auto' onClick={() => deleteParameter(currentParameter.id)}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
