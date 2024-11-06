@@ -888,7 +888,6 @@ function WaterParameters() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <Chat />
           <div className='w-full flex justify-end'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -3096,7 +3095,7 @@ function WaterParameters() {
                   </div>
                 </form>
                 <div className='w-full flex flex-col justify-center'>
-                  <button className='mx-auto' onClick={() => deleteParameter()}>
+                  <button className='mx-auto' onClick={() => deleteParameter(currentParameter.id)}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -3114,31 +3113,6 @@ function WaterParameters() {
                   </button>
 
                   <p className='text-center font-semibold'>Delete this parameter</p>
-                  <Dialog
-                    open={isDialogOpen}
-                    onClose={handleCloseDialog}
-                    className={isDarkMode ? 'dark-mode-dialog' : ''}
-                    sx={{
-                      '& .MuiDialog-paper': {
-                        backgroundColor: isDarkMode ? 'rgb(36,48,63)' : 'white',
-                        color: isDarkMode ? 'white' : 'black',
-                        boxShadow: isDarkMode ? '0px 4px 20px rgba(0, 0, 0, 0.5)' : '0px 4px 20px rgba(0, 0, 0, 0.1)'
-                      }
-                    }}
-                  >
-                    <DialogTitle>Corfim delete this parameter</DialogTitle>
-                    <DialogContent>
-                      <DialogContentText>Are you sure you want to delete this parameter?</DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={handleCloseDialog} color='primary'>
-                        No
-                      </Button>
-                      <Button onClick={() => deleteParameter(currentParameter.id)} color='error' disabled={isLoading}>
-                        Yes
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
                 </div>
               </div>
             </div>
