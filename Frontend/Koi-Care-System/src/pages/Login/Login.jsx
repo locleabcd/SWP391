@@ -69,7 +69,7 @@ function Login() {
 
         switch (role) {
           case 'ADMIN':
-            navigate('/admin')
+            navigate('/admin/dashboard')
             break
           case 'SHOP':
             navigate('/shop/dashboard')
