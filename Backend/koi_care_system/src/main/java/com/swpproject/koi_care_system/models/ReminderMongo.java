@@ -18,7 +18,7 @@ public class ReminderMongo {
 
     @Id
     Long id;//String will auto-gene
-
+    String description;
     String title;
     String dateTime;
     ReminderRepeat repeatInterval;

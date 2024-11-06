@@ -44,4 +44,12 @@ public class ReminderController {
                 .data(reminderService.getListReminder())
                 .build());
     }
+
+    @GetMapping("/list/user")
+    public ResponseEntity<ApiResponse> getListReminderByUser(Principal connectedUser) {
+        return ResponseEntity.ok(ApiResponse.builder()
+                .message("List of reminders")
+                .data(reminderService.getListReminderByUser(connectedUser))
+                .build());
+    }
 }

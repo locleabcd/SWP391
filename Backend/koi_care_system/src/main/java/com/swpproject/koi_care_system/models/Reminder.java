@@ -19,6 +19,7 @@ public class Reminder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     String title;
+    String description;
     LocalDateTime dateTime;
     @Enumerated(EnumType.STRING)
     ReminderRepeat repeatInterval;

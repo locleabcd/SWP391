@@ -29,6 +29,7 @@ public interface UserMapper {
 
     UserDTO maptoUserDTO(User user);
 
+    @Mapping(target = "avatar", source = "user.userProfile.avatar")
     LoginResponse maptoLoginResponse(User user, String token);
 
     @Mapping(target = "reminders", ignore = true)

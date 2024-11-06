@@ -86,6 +86,14 @@ public class ReminderService implements IReminderService {
         return reminders.stream().map(reminderMapper::mapToReminderDto).toList();
     }
 
+    @Override
+    public List<ReminderDto> getListReminderByUser(Principal connectedUser) {
+        User user = userRepository.findByUsername(connectedUser.getName())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        List<Reminder> reminders = reminderRepository.findByUserId(user.getId());
+        return reminders.stream().map(reminderMapper::mapToReminderDto).toList();
+    }
+
 
     @Scheduled(fixedRate = 60000)
     @Override
@@ -93,15 +101,10 @@ public class ReminderService implements IReminderService {
     public void checkReminders() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
         LocalDateTime startTime = now.withSecond(0).withNano(0);
-        LocalDateTime endTime = startTime.plusMinutes(1);
 
-        // Convert LocalDateTime to ISO 8601 String
-        String startDateTime = startTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        String endDateTime = endTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String startDateTime = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
 
-        log.info("Checking reminders between {} and {}", startDateTime, endDateTime);
-
-        List<ReminderMongo> reminders = reminderMongoRepo.findByDateTimeBetween(startDateTime, endDateTime);
+        List<ReminderMongo> reminders = reminderMongoRepo.findDueRemindersBetween(startDateTime);
         log.info("Found {} reminders due at {}", reminders.size(), now);
 
         reminders.forEach(reminder -> {
@@ -153,7 +156,7 @@ public class ReminderService implements IReminderService {
     private void sendReminderNotification(ReminderMongo reminder) {
         String username = reminder.getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        String message = "Reminder: " + reminder.getTitle() + " is due at " + reminder.getDateTime() + "!";
+        String message = "Reminder: " + reminder.getDescription() + " is due at " + reminder.getDateTime() + "!";
         boolean isDelivered = false;
         if (isConnection(username)) {
             try {
