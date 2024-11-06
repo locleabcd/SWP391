@@ -278,7 +278,7 @@ const CartList = () => {
                         </td>
 
                         <td className='px-6 py-4 text-start whitespace-nowrap'>
-                          {item.unitPrice != item.totalPrice ? (
+                          {item.promotionPrice !== item.totalPrice ? (
                             <div className='flex gap-2'>
                               <div className='line-through opacity-50'>
                                 {(item?.totalPrice ?? 0).toLocaleString('vi-VN', {

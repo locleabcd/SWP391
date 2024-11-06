@@ -15,7 +15,7 @@ import TopLayout from '../../../layouts/TopLayout'
 import { motion } from 'framer-motion'
 import 'aos/dist/aos.css'
 import '../../../index.css'
-import Chat from '../../../components/Chat/Chat'
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
@@ -30,6 +30,10 @@ function MyPond() {
   const [selectedFile, setSelectedFile] = useState(null)
   const [issue, setIssue] = useState([])
   const [showButtons, setShowButtons] = useState(false)
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+
+  const handleOpenDialog = () => setIsDialogOpen(true)
+  const handleCloseDialog = () => setIsDialogOpen(false)
 
   const getIssue = async (koipondId) => {
     try {
@@ -107,6 +111,14 @@ function MyPond() {
     setIsEditFormVisible(false)
     setCurrentPond(null)
     setBaseImage(null)
+    reset({
+      name: '',
+      drainCount: '',
+      depth: '',
+      skimmer: '',
+      pumpCapacity: '',
+      volume: ''
+    })
   }
 
   const toggleEditFormVisibility = (pond) => {
@@ -194,7 +206,14 @@ function MyPond() {
       getPond()
       setIsAddFormVisible(false)
       setIsEditFormVisible(false)
-      reset()
+      reset({
+        name: '',
+        drainCount: '',
+        depth: '',
+        skimmer: '',
+        pumpCapacity: '',
+        volume: ''
+      })
     } catch (error) {
       console.log('Error creating/updating pond:', error)
     } finally {
@@ -246,6 +265,7 @@ function MyPond() {
       getPond()
       toast.success('Delete success!!')
       setIsEditFormVisible(false)
+      setIsDialogOpen(false)
     } catch (error) {
       toast.error('Delete Pond Fail')
       setIsEditFormVisible(false)
@@ -299,8 +319,6 @@ function MyPond() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
-          <Chat />
-
           <div className='w-full flex justify-end'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -1029,14 +1047,7 @@ function MyPond() {
                     </div>
                   </form>
                   <div className='w-full flex flex-col justify-center'>
-                    <button
-                      className='mx-auto'
-                      onClick={() => {
-                        if (window.confirm('Are you sure you want to delete this pond?')) {
-                          deletePond(currentPond.id)
-                        }
-                      }}
-                    >
+                    <button className='mx-auto' onClick={handleOpenDialog}>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
@@ -1054,6 +1065,31 @@ function MyPond() {
                     </button>
 
                     <p className='text-center font-semibold'>Delete this pond</p>
+                    <Dialog
+                      open={isDialogOpen}
+                      onClose={handleCloseDialog}
+                      className={isDarkMode ? 'dark-mode-dialog' : ''}
+                      sx={{
+                        '& .MuiDialog-paper': {
+                          backgroundColor: isDarkMode ? 'rgb(36,48,63)' : 'white',
+                          color: isDarkMode ? 'white' : 'black',
+                          boxShadow: isDarkMode ? '0px 4px 20px rgba(0, 0, 0, 0.5)' : '0px 4px 20px rgba(0, 0, 0, 0.1)'
+                        }
+                      }}
+                    >
+                      <DialogTitle>Confirm delete this pond</DialogTitle>
+                      <DialogContent>
+                        <DialogContentText>Are you sure you want to delete this pond?</DialogContentText>
+                      </DialogContent>
+                      <DialogActions>
+                        <Button onClick={handleCloseDialog} color='primary'>
+                          No
+                        </Button>
+                        <Button onClick={() => deletePond(currentPond.id)} color='error' disabled={isLoading}>
+                          Yes
+                        </Button>
+                      </DialogActions>
+                    </Dialog>
                   </div>
                 </div>
               </div>

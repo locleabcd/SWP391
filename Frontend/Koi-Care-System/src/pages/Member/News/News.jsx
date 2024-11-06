@@ -8,7 +8,6 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayout'
 import { motion } from 'framer-motion'
-import Chat from '../../../components/Chat/Chat'
 
 function News() {
   const { isDarkMode } = useDarkMode()
@@ -143,7 +142,6 @@ function News() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden duration-200 ease-linear`}
         >
           <Header />
-          <Chat />
 
           <div className='py-5 px-[30px] mx-auto max-w-[1750px]'>
             <TopLayout text='News' />

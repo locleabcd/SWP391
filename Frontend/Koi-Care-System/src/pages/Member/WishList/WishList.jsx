@@ -6,6 +6,7 @@ import { useDarkMode } from '../../../hooks/DarkModeContext'
 import TopLayout from '../../../layouts/TopLayout'
 import { useState } from 'react'
 import { addToCartList } from '../../../redux/store/cartList'
+import { toast } from 'react-toastify'
 
 const WishList = () => {
   const wishlist = useSelector((state) => state.name.wishlist)
@@ -15,7 +16,11 @@ const WishList = () => {
   const [count, setCount] = useState(1)
 
   const handleAddToCart = (product) => {
-    dispatch(addToCartList(product, count))
+    if (product.inventory < count) {
+      toast.warn('This product is out of stock')
+    } else {
+      dispatch(addToCartList(product, count))
+    }
   }
 
   const increment = () => {

@@ -10,13 +10,13 @@ import { toast } from 'react-toastify'
 import { useEffect, useState } from 'react'
 import { addToCartList } from '../../../redux/store/cartList'
 import { useDispatch } from 'react-redux'
+import '../../../index.css'
 
 function Recommendations() {
   const { isDarkMode } = useDarkMode()
   const { id } = useParams()
   const [productId, setProductId] = useState([])
   const [productRelate, setProductRelate] = useState([])
-  const navigate = useNavigate()
   const [currentIndex, setCurrentIndex] = useState(0)
   const [count, setCount] = useState(1)
   const [active, setActive] = useState('description')
@@ -27,10 +27,15 @@ function Recommendations() {
   const [comment, setComment] = useState('')
   const [editableFeedback, setEditableFeedback] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
+  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const handleAddToCart = (product) => {
-    dispatch(addToCartList(product, count))
+    if (productId.inventory < count) {
+      toast.warn('This product is out of stock')
+    } else {
+      dispatch(addToCartList(product, count))
+    }
   }
 
   const toggleHide = (id) => {
@@ -39,12 +44,12 @@ function Recommendations() {
 
   const images = productId.images || []
 
-  const increment = () => {
-    setCount((prevCount) => prevCount + 1)
+  const decrement = () => {
+    setCount((prevCount) => Math.max(prevCount - 1, 0))
   }
 
-  const decrement = () => {
-    setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : prevCount))
+  const increment = () => {
+    setCount((prevCount) => Math.min(prevCount + 1, productId.inventory))
   }
 
   const nextImage = () => {
@@ -67,22 +72,9 @@ function Recommendations() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
       setProductId(res.data.data)
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response?.status === 401) {
-          console.error('Unauthorized access - Token expired or invalid. Logging out...')
-          localStorage.removeItem('token')
-          localStorage.removeItem('id')
-          toast.error('Token expired navigate to login')
-          navigate('/login')
-        } else {
-          console.error('Error fetching ponds:', error.response?.status, error.message)
-        }
-      } else {
-        console.error('An unexpected error occurred:', error)
-      }
+      console.error('An unexpected error occurred:', error)
     }
   }
 
@@ -102,10 +94,6 @@ function Recommendations() {
           }
         }
       )
-      if (!cate) {
-        console.log('No category available')
-      }
-
       const filteredProducts = res.data.data.filter((products) => String(products.id) !== String(id))
       setProductRelate(filteredProducts)
     } catch (error) {
@@ -123,7 +111,6 @@ function Recommendations() {
         }
       })
 
-      console.log(res.data.data)
       setFeedback(res.data.data)
     } catch (error) {
       console.log(error)
@@ -234,6 +221,16 @@ function Recommendations() {
     }
   }, [productId])
 
+  localStorage.setItem('totalPrice', productId?.price * count)
+  if (productId?.promotions?.length > 0) {
+    const promotionPrice =
+      ((productId?.price * (100 - productId.promotions[productId.promotions.length - 1]?.discountRate)) / 100) * count
+    localStorage.setItem('promotionTotal', promotionPrice)
+  } else {
+    const promotionPrice = productId?.price * count
+    localStorage.setItem('promotionTotal', promotionPrice)
+  }
+
   return (
     <div>
       <div className='h-screen flex'>
@@ -338,17 +335,26 @@ function Recommendations() {
               <div className='col-span-4 lg:px-10 lg:py-8 py-5'>
                 <div className='border-b border-gray-200 pb-8'>
                   <div className='flex gap-5 items-center'>
-                    <div
-                      className={`p-2 rounded-2xl ${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'} `}
-                    >
-                      In Stock
-                    </div>
-                    <div>{productId.category?.name || 'No category available'}</div>
+                    {productId.inventory > 0 ? (
+                      <>
+                        <div
+                          className={`p-2 rounded-2xl ${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'} `}
+                        >
+                          In Stock
+                        </div>
+                        <div>{productId.category?.name || 'No category available'}</div>
+                      </>
+                    ) : (
+                      <>
+                        <div className={`p-2 rounded-2xl text-white ${isDarkMode ? 'bg-red-500' : 'bg-red-500'} `}>
+                          Out of Stock
+                        </div>
+                        <div>{productId.category?.name || 'No category available'}</div>
+                      </>
+                    )}
                   </div>
+
                   <div className='lg:text-3xl md:text-2xl text-xl font-semibold mt-5'>{productId.name}</div>
-                  <div className='lg:text-xl md:text-xl text-lg text-justify mt-5 text-gray-600'>
-                    Number of products : {productId.inventory || 'No inventory'}
-                  </div>
                   <div className='lg:text-xl md:text-xl text-lg text-justify mt-5'>{productId.description}</div>
                   {productId?.promotions?.length > 0 ? (
                     <div className='flex gap-2'>
@@ -410,7 +416,6 @@ function Recommendations() {
                 <div className='flex mt-5 gap-5 items-center border-b border-gray-200 pb-10 pt-5'>
                   <div className='lg:text-3xl md:text-3xl text-xl font-semibold'>Quantity:</div>
                   <div className='flex border border-blue-400 gap-1 rounded-lg'>
-                    {/* Decrement Button */}
                     <button
                       className='border-blue-400 border-r rounded-l-lg p-2 hover:bg-blue-100'
                       onClick={decrement}
@@ -428,19 +433,20 @@ function Recommendations() {
                       </svg>
                     </button>
 
-                    {/* Quantity Input */}
                     <input
                       type='number'
                       value={count}
-                      onChange={(e) => setCount(Number(e.target.value))}
-                      className={`outline-none lg:w-12 md:w-10 w-8 text-center text-xl text-blue-400 ${
+                      onChange={(e) => {
+                        const inputValue = Number(e.target.value)
+                        setCount(inputValue > productId.inventory ? productId.inventory : inputValue)
+                      }}
+                      className={`outline-none no-arrows lg:w-20 md:w-16 w-12 text-center text-xl text-blue-400 ${
                         isDarkMode ? 'bg-custom-dark' : ''
                       }`}
                       min='0'
                       aria-label='Quantity input'
                     />
 
-                    {/* Increment Button */}
                     <button
                       className='border-l border-blue-400 p-2 rounded-r-lg hover:bg-blue-100'
                       onClick={increment}
@@ -458,12 +464,17 @@ function Recommendations() {
                       </svg>
                     </button>
                   </div>
+                  <div className={`p-2 text-xl text-gray-500`}>
+                    {productId.inventory || 'No inventory'} items remaining
+                  </div>
                 </div>
 
                 <div className='flex lg:flex-row flex-col mt-5 gap-5 items-center border-b border-gray-200 pb-10 pt-5'>
                   <Link
                     to='/member/checkout'
-                    onClick={() => handleAddToCart(productId)}
+                    onClick={() => {
+                      handleAddToCart(productId)
+                    }}
                     className='lg:text-xl lg:py-4 lg:px-10 text-lg w-full text-center py-3 bg-blue-400 hover:bg-blue-500 text-white rounded-lg'
                   >
                     Buy Now

@@ -9,6 +9,7 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
+import Swal from 'sweetalert2'
 
 function ProductImage() {
   const { isDarkMode } = useDarkMode()
@@ -42,7 +43,16 @@ function ProductImage() {
   }, [])
 
   const deleteImage = async (id) => {
-    const isConfirmed = window.confirm('Are you sure to delete image ?')
+    const { isConfirmed } = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
+
     if (!isConfirmed) {
       return
     }
