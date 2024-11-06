@@ -12,7 +12,7 @@ import Paper from '@mui/material/Paper'
 import TopLayout from '../../../layouts/TopLayoutAD'
 import { Link } from 'react-router-dom'
 import * as XLSX from 'xlsx'
-
+import Swal from 'sweetalert2'
 const formatPrice = (price) => {
   return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' đ'
 }
@@ -47,7 +47,15 @@ function ProductAD() {
   }, [])
 
   const deleteProduct = async (id) => {
-    const isConfirmed = window.confirm('Are you sure you want to delete this product?')
+    const { isConfirmed } = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
     if (!isConfirmed) return
 
     setIsLoading(true)
