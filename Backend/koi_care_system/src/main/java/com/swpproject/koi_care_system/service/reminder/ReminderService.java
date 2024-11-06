@@ -85,14 +85,20 @@ public class ReminderService implements IReminderService {
         return reminders.stream().map(reminderMapper::mapToReminderDto).toList();
     }
 
+    @Override
+    public List<ReminderDto> getListReminderByUser(Principal connectedUser) {
+        User user = userRepository.findByUsername(connectedUser.getName())
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
+        List<Reminder> reminders = reminderRepository.findByUserId(user.getId());
+        return reminders.stream().map(reminderMapper::mapToReminderDto).toList();
+    }
+
     @Async
     @Scheduled(fixedRate = 60000)
     @Override
     public void checkReminders() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
         LocalDateTime startTime = now.withSecond(0).withNano(0);
-        LocalDateTime endTime = startTime.plusMinutes(1);
-
 
         String startDateTime = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
 
@@ -148,7 +154,7 @@ public class ReminderService implements IReminderService {
     private void sendReminderNotification(ReminderMongo reminder) {
         String username = reminder.getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
-        String message = "Reminder: " + reminder.getTitle() + " is due at " + reminder.getDateTime() + "!";
+        String message = "Reminder: " + reminder.getDescription() + " is due at " + reminder.getDateTime() + "!";
         boolean isDelivered = false;
         if (isConnection(username)) {
             try {

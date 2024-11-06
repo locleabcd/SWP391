@@ -34,10 +34,11 @@ public class IssueController {
     }
     @GetMapping("/latest/{koipondId}")
     public ResponseEntity<ApiResponse> getCurrentIssueByKoiPondId(@PathVariable Long koipondId){
-        return ResponseEntity.ok(ApiResponse.builder()
-                        .message("All current issue of koi pond")
-                        .data(issueService.getIssue(waterParameters.getLatestWaterParametersByKoiPondId(koipondId).getId()))
-                .build());
+            long waterId = waterParameters.getLatestWaterParametersByKoiPondId(koipondId).getId();
+            return ResponseEntity.ok(ApiResponse.builder()
+                    .message("All current issue of koi pond")
+                    .data(issueService.getIssue(waterId))
+                    .build());
     }
     @GetMapping("/issueType/all")
     public ResponseEntity<ApiResponse> getAllIssuesType(){

@@ -13,4 +13,6 @@ import java.util.List;
 public interface ReminderRepository extends JpaRepository<Reminder, Long> {
     @Query("SELECT r FROM Reminder r WHERE HOUR(r.dateTime) = HOUR(:currentTime) AND MINUTE(r.dateTime) = MINUTE(:currentTime)")
     List<Reminder> findDueRemindersAtTime(@Param("currentTime") LocalDateTime currentTime);
+
+    List<Reminder> findByUserId(Long userid);
 }

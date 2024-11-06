@@ -42,6 +42,7 @@ public interface UserMapper {
     @Mapping(target = "blogs", ignore = true)
     User maptoUserGoogle(String email, String username);
 
+    @Mapping(target = "avatar", source = "user.userProfile.avatar")
     LoginResponse maptoLoginResponse(User user, String token);
 
     @Mapping(target = "reminders", ignore = true)

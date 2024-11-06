@@ -20,6 +20,7 @@ public class Reminder {
     long id;
     String title;
     LocalDateTime dateTime;
+    String description;
     @Enumerated(EnumType.STRING)
     ReminderRepeat repeatInterval;
     @ManyToOne

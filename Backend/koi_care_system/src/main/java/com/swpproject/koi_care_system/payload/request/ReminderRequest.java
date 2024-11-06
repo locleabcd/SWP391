@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class ReminderRequest {
     private String title;
+    private String description;
     private LocalDateTime dateTime;
     private ReminderRepeat repeatInterval;
 

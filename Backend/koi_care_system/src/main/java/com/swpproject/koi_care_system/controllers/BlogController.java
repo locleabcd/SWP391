@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
@@ -51,13 +52,10 @@ public class BlogController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllBlogs(@RequestParam(defaultValue = "0") int pageNumber,
-                                                   @RequestParam(defaultValue = "10") int pageSize,
-                                                   @RequestParam(defaultValue = "blogDate") String sortBy,
-                                                   @RequestParam(defaultValue = "Asc") String sortDir) {
+    public ResponseEntity<ApiResponse> getAllBlogs() {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("List of blogs")
-                .data(blogService.getAllBlogs(pageNumber, pageSize, sortBy, sortDir))
+                .data(blogService.getAllBlogs())
                 .build());
     }
 

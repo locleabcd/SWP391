@@ -15,10 +15,6 @@ import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
@@ -111,11 +107,8 @@ public class BlogService implements IBlogService {
     }
 
     @Override
-    public List<BlogDto> getAllBlogs(int pageNumber, int pageSize, String sortBy, String sortDir) {
-        Sort sort = ("Asc".equalsIgnoreCase(sortDir)) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
-
-        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-        Page<Blog> blogs = blogRepository.findAll(pageable);
+    public List<BlogDto> getAllBlogs() {
+        List<Blog> blogs = blogRepository.findAll();
         return blogs.stream().map(blogMapper::mapToBlogDto).toList();
     }
 

@@ -95,7 +95,8 @@ public class EmailService implements IEmailService {
                     "url", "https://koi-care-system.vercel.app/member/reminders",
                     "title", reminderDetail.getTitle(),
                     "dateTime", reminderDetail.getDateTime().toString(),
-                    "repeatInterval", reminderDetail.getRepeatInterval()
+                    "repeatInterval", reminderDetail.getRepeatInterval(),
+                    "description", reminderDetail.getDescription()
             ));
             String text = templateEngine.process(REMINDER_TEMPLATE, context);
 

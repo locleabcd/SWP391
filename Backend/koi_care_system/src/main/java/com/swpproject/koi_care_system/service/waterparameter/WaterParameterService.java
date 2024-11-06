@@ -42,7 +42,6 @@ public class WaterParameterService implements IWaterParameters {
         WaterParameters waterParameters = waterParameterMapper.mapToWaterParameters(parametersCreateRequest);
         waterParameters.setKoiPond(koiPond);
         waterParametersRepository.save(waterParameters);
-        issueService.detectIssues(waterParameters);//check issue
         return waterParameterMapper.mapToWaterParameterDto(waterParameters);
     }
 
@@ -53,7 +52,6 @@ public class WaterParameterService implements IWaterParameters {
         waterParameterMapper.updateWaterParameters(waterParameters, request);
         waterParameters.setKoiPond(koiPond);
         waterParametersRepository.save(waterParameters);
-        issueService.detectIssues(waterParameters);//check issue
         return waterParameterMapper.mapToWaterParameterDto(waterParameters);
     }
 
@@ -108,7 +106,7 @@ public class WaterParameterService implements IWaterParameters {
         if (lastestWaterParameters == null) {
             throw new AppException(ErrorCode.WATER_NOT_FOUND);
         }
-        if (lastestWaterParameters.getIssueList() == null) {
+        if (lastestWaterParameters.getIssueList().isEmpty()) {
             issueService.detectIssues(lastestWaterParameters);
         }
         return waterParameterMapper.mapToWaterParameterDto(lastestWaterParameters);
