@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reminder App</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+<h1>Nhắc Nhở</h1>
+
+<form id="reminderForm">
+    <input type="text" id="title" placeholder="Tiêu đề" required/>
+    <input type="datetime-local" id="dateTime" required/>
+    <button type="submit">Tạo Nhắc Nhở</button>
+</form>
+
+<div id="notifications"></div>
+
+<script>
+    const stompClient = Stomp.over(new SockJS('/api/ws'));
+
+    stompClient.connect({}, function(frame) {
+        console.log('Connected: ' + frame);
+        stompClient.subscribe('/topic/notifications', function(notification) {
+            showNotification(notification.body);
+        });
+    });
+
+    function showNotification(message) {
+        const notificationsDiv = document.getElementById('notifications');
+        const newNotification = document.createElement('div');
+        newNotification.innerText = message;
+        notificationsDiv.appendChild(newNotification);
+    }
+
+    document.getElementById('reminderForm').onsubmit = function(event) {
+        event.preventDefault();
+        const title = document.getElementById('title').value;
+        const dateTime = document.getElementById('dateTime').value;
+
+        fetch('/reminders', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title, dateTime })
+        }).then(response => {
+            if (response.ok) {
+                alert('Nhắc nhở đã được tạo!');
+                document.getElementById('reminderForm').reset();
+            }
+        });
+    };
+</script>
+</body>
+</html>
