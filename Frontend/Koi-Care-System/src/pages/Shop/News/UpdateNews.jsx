@@ -11,6 +11,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
 const animatedComponents = makeAnimated()
 
@@ -23,6 +25,7 @@ function UpdateNews() {
   const [blogData, setBlogData] = useState(null)
   const [tags, setTags] = useState([])
   const [selectedTags, setSelectedTags] = useState([])
+  const [editorContent, setEditorContent] = useState('')
 
   const {
     register,
@@ -45,6 +48,7 @@ function UpdateNews() {
       setBlogData(res.data.data)
       reset(res.data.data)
       setSelectedTags(res.data.data.tags.map((tag) => ({ value: tag.tagId, label: tag.tagName })))
+      setEditorContent(res.data.data.blogContent)
     } catch (error) {
       console.error('Error fetching blog:', error)
       toast.error('Failed to fetch blog details.')
@@ -95,7 +99,7 @@ function UpdateNews() {
       }
       const formData = new FormData()
       formData.append('blogTitle', data.blogTitle)
-      formData.append('blogContent', data.blogContent)
+      formData.append('blogContent', editorContent)
       formData.append('blogDate', data.blogDate)
       selectedTags.forEach((tag) => {
         formData.append('tagIds', tag.value)
@@ -212,13 +216,20 @@ function UpdateNews() {
                 <label htmlFor='blogContent' className='block text-sm font-bold mb-2'>
                   Blog Content
                 </label>
-                <textarea
-                  id='blogContent'
-                  {...register('blogContent', { required: 'Blog content is required' })}
-                  className={`w-full p-2 border rounded-md ${
-                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.blogContent ? 'border-red-500' : 'border-gray-300'}`}
-                  rows='5'
+                <ReactQuill
+                  value={editorContent}
+                  onChange={setEditorContent}
+                  theme='snow'
+                  className={`w-full  rounded-md ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} ${errors.blogContent ? 'border-red-500' : 'border-gray-300'}`}
+                  modules={{
+                    toolbar: [
+                      [{ header: '1' }, { header: '2' }, { font: [] }],
+                      [{ list: 'ordered' }, { list: 'bullet' }],
+                      ['bold', 'italic', 'underline'],
+                      [{ align: [] }],
+                      ['link']
+                    ]
+                  }}
                 />
                 {errors.blogContent && <p className='text-red-500 text-sm'>{errors.blogContent.message}</p>}
               </div>
