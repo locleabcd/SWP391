@@ -16,7 +16,6 @@ import logo from '../../assets/logo.png'
 import memberPathInfor from '../../constants/memberPathInfor'
 import ReminderMB from '../../pages/Member/Reminders/ReminderMB'
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
 import Popover from '@mui/material/Popover'
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state'
 
@@ -87,7 +86,6 @@ function Header() {
         }
       })
       setUser(res.data.data)
-      localStorage.setItem('avt', res.data.data.avatar)
     } catch (error) {
       console.error('Error fetching users:', error)
     }
