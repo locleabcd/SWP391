@@ -287,12 +287,12 @@ function Header() {
             )}
           </Link>
 
-          <button
-            className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'} py-3 rounded-full`}
-          >
+          <button className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'}`}>
             <PopupState popupId='demo-popup-popover'>
               {(popupState) => (
-                <div>
+                <div
+                  className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'} py-4 rounded-full`}
+                >
                   <Button {...bindTrigger(popupState)}>
                     <svg
                       className='lg:size-6 size-5 text-black'
@@ -314,12 +314,13 @@ function Header() {
                       horizontal: 'center'
                     }}
                   >
-                    <Typography sx={{ p: 2 }}>
-                      <div className='max-h-64'>
-                        <div className='text-3xl font-semibold mb-3'>Notifications</div>
+                    <Typography sx={{ p: 1 }}>
+                      <div className='max-h-64 max-w-96'>
+                        <div className='text-3xl font-semibold mb-3 mt-3'>Notifications</div>
                         {notificationRead.map((notificationReads) => (
-                          <div className='' key={notificationReads.id}>
+                          <div className='p-2 hover:bg-gray-200' key={notificationReads.id}>
                             <div className=''>{notificationReads.title}</div>
+                            <div className=''>{notificationReads.dateTime}</div>
                           </div>
                         ))}
                       </div>

@@ -9,6 +9,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import { Switch } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { FaSpinner } from 'react-icons/fa'
+import Swal from 'sweetalert2'
 
 function Reminders() {
   const { isDarkMode } = useDarkMode()
@@ -130,6 +131,20 @@ function Reminders() {
 
   const deleteReminder = async () => {
     setIsLoading(true)
+    const { isConfirmed } = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
+
+    if (!isConfirmed) {
+      setIsLoading(false)
+      return
+    }
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -498,14 +513,7 @@ function Reminders() {
                     </div>
                   </div>
                   <div className='w-full flex flex-col justify-center'>
-                    <button
-                      className='mx-auto'
-                      onClick={() => {
-                        if (window.confirm('Are you sure you want to delete this pond log?')) {
-                          deleteReminder()
-                        }
-                      }}
-                    >
+                    <button className='mx-auto' onClick={() => deleteReminder()}>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
