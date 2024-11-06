@@ -1,0 +1,25 @@
+package com.swpproject.koi_care_system.service.waterparameter;
+
+import com.swpproject.koi_care_system.dto.WaterParameterDto;
+import com.swpproject.koi_care_system.payload.request.ParametersCreateRequest;
+import com.swpproject.koi_care_system.payload.request.ParametersUpdateRequest;
+
+import java.time.LocalDate;
+import java.util.List;
+
+public interface IWaterParameters {
+    WaterParameterDto createWaterParameters(ParametersCreateRequest parametersCreateRequest);
+
+    WaterParameterDto updateWaterParameters(long id, ParametersUpdateRequest request);
+
+    void deleteWaterParameters(long id);
+
+    List<WaterParameterDto> getAllWaterParameters(int pageNumber, int pageSize, String sortBy, String sortDir);
+
+    WaterParameterDto getWaterParametersById(long id);
+    List<WaterParameterDto> getAllWaterParametersByKoiPondId(Long koiPondId);
+
+    List<WaterParameterDto> getAllWaterParametersByUserId(Long userId);
+    List<WaterParameterDto> getAllWaterParametersByUserIdAndCurrentDate(Long userId, LocalDate date);
+    WaterParameterDto getLatestWaterParametersByKoiPondId(Long koiPondId);
+}

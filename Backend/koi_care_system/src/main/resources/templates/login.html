@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Login</title>
+</head>
+<body>
+<h1>Login</h1>
+
+<!-- Form for normal username/password login -->
+<form th:action="@{/login}" method="post">
+    <div>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+    </div>
+    <div>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+    </div>
+    <div>
+        <button type="submit">Login</button>
+    </div>
+</form>
+
+<!-- OAuth2 options (Google, GitHub) -->
+<div>
+    <h3>Or login with:</h3>
+    <a th:href="@{/oauth2/authorization/google}">Login with Google</a>
+    <a th:href="@{/oauth2/authorization/github}">Login with GitHub</a>
+</div>
+
+</body>
+</html>
