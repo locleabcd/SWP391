@@ -130,6 +130,8 @@ function SaltCalculator() {
       setRefillAmount(calculateWater) // Cập nhật lượng nước cần bổ sung
     }
   }, [selectedPond, desiredSalinity, currentSalinity, waterChangePercent])
+  const saltNeededForLowRange = selectedPond ? 0.001 * selectedPond.volume * 10 : 0
+  const saltNeededForHighRange = selectedPond ? 0.003 * selectedPond.volume * 10 : 0
   return (
     <div>
       <div className='h-screen flex'>
@@ -181,7 +183,7 @@ function SaltCalculator() {
                         <p>
                           <strong>Recommendation:</strong> The current salt concentration is too low. It is recommended
                           to add salt to bring the salinity up to the ideal range (0.1% - 0.3%). You need approximately{' '}
-                          {saltNeeded.toFixed(2)} grams of salt.
+                          {saltNeededForLowRange.toFixed(2)} - {saltNeededForHighRange.toFixed(2)} grams of salt.
                         </p>
                       ) : selectedPond.salt && parseFloat(selectedPond.salt) > 0.3 ? (
                         <p>
@@ -272,7 +274,7 @@ function SaltCalculator() {
                       Ideal salt concentration <strong>(0.1% - 0.3%)</strong>: to reduce stress and support fish health.
                     </li>
                     <li className='lg:text-lg text-sm text-justify'>
-                      Use higher concentrations <strong>(0.5% - 2%)</strong>: only in cases of severe illness, and only
+                      Use higher concentrations <strong>(0.4% - 2%)</strong>: only in cases of severe illness, and only
                       for short periods.
                     </li>
                     <li className='lg:text-lg text-sm text-justify'>
