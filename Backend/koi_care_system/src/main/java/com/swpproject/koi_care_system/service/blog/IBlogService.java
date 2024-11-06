@@ -14,7 +14,7 @@ public interface IBlogService {
 
     void deleteBlog(int id);
 
-    List<BlogDto> getAllBlogs(int pageNumber, int pageSize, String sortBy, String sortDir);
+    List<BlogDto> getAllBlogs();
 
     BlogDto getBlogById(int id);
 

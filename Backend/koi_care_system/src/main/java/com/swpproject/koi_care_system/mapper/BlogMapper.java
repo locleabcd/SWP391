@@ -16,7 +16,6 @@ public interface BlogMapper {
     @Mapping(target = "user", ignore = true)
     Blog mapToBlog(BlogCreateRequest request);
 
-    @Mapping(target = "avatar", source = "user.userProfile.avatar")
     BlogDto mapToBlogDto(Blog blog);
 
     @Mapping(target = "blogId", ignore = true)

@@ -18,5 +18,6 @@ public class LoginResponse {
     String email;
     String role;
     String token;
+    String avatar;
     boolean status;
 }

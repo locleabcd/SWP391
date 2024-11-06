@@ -55,13 +55,10 @@ public class BlogController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse> getAllBlogs(@RequestParam(defaultValue = "0") int pageNumber,
-                                                   @RequestParam(defaultValue = "10") int pageSize,
-                                                   @RequestParam(defaultValue = "blogDate") String sortBy,
-                                                   @RequestParam(defaultValue = "Asc") String sortDir) {
+    public ResponseEntity<ApiResponse> getAllBlogs() {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("List of blogs")
-                .data(blogService.getAllBlogs(pageNumber, pageSize, sortBy, sortDir))
+                .data(blogService.getAllBlogs())
                 .build());
     }
 
