@@ -60,6 +60,10 @@ function WaterParameters() {
     totalChlorine: false
   })
   const [sortOption, setSortOption] = useState({ order: 'asc', field: 'pondName' })
+  const [pageSize, setPageSize] = useState(2)
+  const [currentPage, setCurrentPage] = useState(1)
+  const totalPages = Math.ceil(parameters.length / pageSize)
+  const paginatedParameters = parameters.slice((currentPage - 1) * pageSize, currentPage * pageSize)
   const getPond = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -990,8 +994,24 @@ function WaterParameters() {
               }}
               className='py-4 w-full z-0'
             >
+              <div className='flex justify-end mb-4'>
+                <label htmlFor='pageSize' className='mr-2'>
+                  Items per page:
+                </label>
+                <select
+                  id='pageSize'
+                  value={pageSize}
+                  onChange={(e) => setPageSize(parseInt(e.target.value))}
+                  className='p-1 border rounded'
+                >
+                  <option value={2}>2</option>
+                  <option value={5}>5</option>
+                  <option value={10}>10</option>
+                  <option value={15}>15</option>
+                </select>
+              </div>
               <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 lg:gap-6 gap-4'>
-                {parameters.map((parameter, index) => {
+                {paginatedParameters.map((parameter, index) => {
                   // Đếm số lượng các giá trị vượt ngưỡng (màu đỏ)
                   const getRedCount = (parameter) => {
                     let count = 0
@@ -1236,6 +1256,17 @@ function WaterParameters() {
                     </motion.div>
                   )
                 })}
+              </div>
+              <div className='flex justify-center mt-4'>
+                {[...Array(totalPages).keys()].map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page + 1)}
+                    className={`mx-1 px-3 py-1 rounded ${currentPage === page + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
+                  >
+                    {page + 1}
+                  </button>
+                ))}
               </div>
             </motion.div>
           </div>
