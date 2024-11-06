@@ -903,7 +903,6 @@ function WaterParameters() {
           } shadow-xl flex-1 flex-col overflow-y-auto overflow-x-hidden`}
         >
           <Header />
-          <Chat />
           <div className='w-full flex justify-end'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
@@ -3111,7 +3110,7 @@ function WaterParameters() {
                   </div>
                 </form>
                 <div className='w-full flex flex-col justify-center'>
-                  <button className='mx-auto' onClick={() => deleteParameter()}>
+                  <button className='mx-auto' onClick={() => deleteParameter(currentParameter.id)}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -3127,6 +3126,8 @@ function WaterParameters() {
                       />
                     </svg>
                   </button>
+
+                  <p className='text-center font-semibold'>Delete this parameter</p>
                 </div>
               </div>
             </div>
