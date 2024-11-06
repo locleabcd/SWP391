@@ -76,11 +76,6 @@ function ViewNews() {
       }
     }
   }
-  const stripHtmlTags = (htmlContent) => {
-    const tempDiv = document.createElement('div')
-    tempDiv.innerHTML = htmlContent
-    return tempDiv.textContent || tempDiv.innerText || ''
-  }
 
   useEffect(() => {
     getBlogDetail()
