@@ -137,14 +137,7 @@ function FoodCalculator() {
 
       if (selectedSize === 'mid') {
         // Medium Fish
-        if (selectedTemperature === '6-8') {
-          minMultiplier = 0.002
-          maxMultiplier = 0.005
-        }
-        if (selectedTemperature === '9-12') {
-          minMultiplier = 0.005
-          maxMultiplier = 0.01
-        }
+
         if (selectedTemperature === '13-16') {
           minMultiplier = 0.01
           maxMultiplier = 0.02
@@ -161,14 +154,7 @@ function FoodCalculator() {
 
       if (selectedSize === 'high') {
         // Large Fish
-        if (selectedTemperature === '6-8') {
-          minMultiplier = 0.003
-          maxMultiplier = 0.005
-        }
-        if (selectedTemperature === '9-12') {
-          minMultiplier = 0.005
-          maxMultiplier = 0.01
-        }
+
         if (selectedTemperature === '13-16') {
           minMultiplier = 0.01
           maxMultiplier = 0.015
@@ -268,6 +254,29 @@ Over 28°C is not a good temperature to feed at!`
       getFishes(pond.id) // Gọi hàm để lấy cá cho hồ đầu tiên
     }
   }, [ponds])
+  const calculateFoodBasedOnTemperature = () => {
+    if (!selectedPond || !selectedPond.temperature) {
+      return 'No temperature data available'
+    }
+
+    let multiplier = 0 // Khởi tạo hệ số nhân
+
+    // Xác định hệ số nhân dựa trên nhiệt độ
+    if (selectedPond.temperature >= 13 && selectedPond.temperature <= 16) {
+      multiplier = 0.015 // Hệ số nhân cho 13-16°C
+    } else if (selectedPond.temperature >= 17 && selectedPond.temperature <= 20) {
+      multiplier = 0.02 // Hệ số nhân cho 17-20°C
+    } else if (selectedPond.temperature >= 21 && selectedPond.temperature <= 28) {
+      multiplier = 0.025 // Hệ số nhân cho 21-28°C
+    } else {
+      return 'Temperature out of range for recommendations'
+    }
+
+    // Tính toán lượng thức ăn dựa trên hệ số nhân và tổng trọng lượng cá
+    const calculatedFood = totalWeight * multiplier
+    return `${calculatedFood.toFixed(2)}g per day`
+  }
+
   return (
     <div>
       <div className='h-screen flex'>
@@ -315,8 +324,14 @@ Over 28°C is not a good temperature to feed at!`
 
               {selectedPond && (
                 <div className='mt-4'>
-                  <strong>Tempurate:</strong>{' '}
+                  <strong>Temperature:</strong>{' '}
                   {selectedPond.temperature ? `${selectedPond.temperature}°C` : 'No water parameters in pond'}
+                  {selectedPond.temperature && (
+                    <p>
+                      Follow on the current water parameters infomation We recommended the amount of food for their koi
+                      in pond {selectedPond.id}: <strong>{calculateFoodBasedOnTemperature()}</strong>
+                    </p>
+                  )}
                 </div>
               )}
 
