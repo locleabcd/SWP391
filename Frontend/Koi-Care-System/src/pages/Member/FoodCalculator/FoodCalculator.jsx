@@ -325,7 +325,7 @@ Over 28°C is not a good temperature to feed at!`
               {selectedPond && (
                 <div className='mt-4'>
                   <strong>Temperature:</strong>{' '}
-                  {selectedPond.temperature ? `${selectedPond.temperature}°C` : 'No water parameters in pond'}
+                  {selectedPond.temperature >= 0 ? `${selectedPond.temperature}°C` : 'No water parameters in pond'}
                   {selectedPond.temperature && (
                     <p>
                       Follow on the current water parameters infomation We recommended the amount of food for their koi

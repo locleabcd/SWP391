@@ -174,7 +174,7 @@ function SaltCalculator() {
                   {selectedPond && (
                     <div className='pl-4'>
                       <strong>Salt:</strong>
-                      {selectedPond.salt ? `${selectedPond.salt}%` : 'No water parameters in pond'}
+                      {selectedPond.salt >= 0 ? `${selectedPond.salt}%` : 'No water parameters in pond'}
                     </div>
                   )}
                   {selectedPond && (
