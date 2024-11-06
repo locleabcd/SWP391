@@ -17,17 +17,18 @@ function Recommendations() {
   const { id } = useParams()
   const [productId, setProductId] = useState([])
   const [productRelate, setProductRelate] = useState([])
+  const [bought, setBought] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [count, setCount] = useState(1)
   const [active, setActive] = useState('description')
   const [feedback, setFeedback] = useState([])
+  const [feedbackUser, setFeedbackUser] = useState([])
   const [visibleId, setVisibleId] = useState(null)
   const [rating, setRating] = useState(0)
   const [hoveredRating, setHoveredRating] = useState(0)
   const [comment, setComment] = useState('')
   const [editableFeedback, setEditableFeedback] = useState(null)
   const [isEditing, setIsEditing] = useState(false)
-  const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const handleAddToCart = (product) => {
@@ -60,6 +61,31 @@ function Recommendations() {
     setCurrentIndex((prevIndex) => (prevIndex === 0 ? images.length - 1 : prevIndex - 1))
   }
 
+  const getFeedbackUser = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+      const productId = id
+
+      const res = await axios.get(
+        `https://koicaresystemv2.azurewebsites.net/api/feedbacks/user/${userId}/product/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      setFeedbackUser(res.data.data)
+      console.log(res.data.data)
+    } catch (error) {
+      console.error('An unexpected error occurred:', error)
+    }
+  }
+
+  useEffect(() => {
+    getFeedbackUser()
+  }, [])
+
   const getProductId = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -77,6 +103,32 @@ function Recommendations() {
       console.error('An unexpected error occurred:', error)
     }
   }
+
+  const getProductBought = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+      const productId = id
+
+      const res = await axios.get(
+        `https://koicaresystemv2.azurewebsites.net/api/orders/isBought/user/${userId}/product/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      const buy = res.data.data.split('T')
+      setBought(buy)
+      console.log(buy)
+    } catch (error) {
+      console.error('An unexpected error occurred:', error)
+    }
+  }
+
+  useEffect(() => {
+    getProductBought()
+  }, [])
 
   const getProductRelate = async () => {
     try {
@@ -112,6 +164,7 @@ function Recommendations() {
       })
 
       setFeedback(res.data.data)
+      console.log(res.data.data)
     } catch (error) {
       console.log(error)
     }
@@ -230,6 +283,8 @@ function Recommendations() {
     const promotionPrice = productId?.price * count
     localStorage.setItem('promotionTotal', promotionPrice)
   }
+
+  const userId = localStorage.getItem('id')
 
   return (
     <div>
@@ -412,7 +467,6 @@ function Recommendations() {
                     <div className='lg:text-xl md:text-xl text-lg text-blue-300'>({feedback.length} reviews)</div>
                   </div>
                 </div>
-
                 <div className='flex mt-5 gap-5 items-center border-b border-gray-200 pb-10 pt-5'>
                   <div className='lg:text-3xl md:text-3xl text-xl font-semibold'>Quantity:</div>
                   <div className='flex border border-blue-400 gap-1 rounded-lg'>
@@ -489,56 +543,60 @@ function Recommendations() {
               </div>
             </div>
 
-            <div className='lg:mt-20 mt-10 lg:border lg:border-gray-200 rounded-xl lg:px-10 lg:py-5'>
-              <div className='lg:text-3xl text-xl'>Post Reviews</div>
-              <div className='flex items-center lg:mt-10 mt-3'>
-                {[...Array(5)].map((_, index) => (
-                  <svg
-                    key={index}
-                    xmlns='http://www.w3.org/2000/svg'
-                    fill={index < (hoveredRating || rating) ? 'gold' : 'none'}
-                    viewBox='0 0 24 24'
-                    strokeWidth={1.5}
-                    stroke='currentColor'
-                    className='lg:size-8 size-6 cursor-pointer hover:scale-110 text-yellow-400 transition-transform duration-200'
-                    onMouseEnter={() => setHoveredRating(index + 1)}
-                    onMouseLeave={() => setHoveredRating(0)}
-                    onClick={() => setRating(index + 1)}
-                  >
-                    <path
-                      strokeLinecap='round'
-                      strokeLinejoin='round'
-                      d='M12 3.5l2.715 5.451 6.027.488-4.373 3.751 1.331 5.551L12 15.902l-5.7 3.839 1.331-5.551-4.373-3.751 6.027-.488L12 3.5z'
-                    />
-                  </svg>
-                ))}
-              </div>
-              <textarea
-                type='text'
-                value={comment}
-                onChange={(e) => setComment(e.target.value)}
-                className={`mt-5 rounded-xl w-full lg:h-32 h-20 text-black px-5 py-2 focus:border ${
-                  isDarkMode ? 'bg-custom-dark text-white' : ''
-                } focus:border-blue-400 text-start flex outline-none border border-gray-200`}
-              />
-              <button
-                type='submit'
-                className='mt-5 lg:px-5 lg:py-3 py-2 px-3 lg:text-base text-sm bg-blue-400 hover:bg-blue-500 rounded-lg text-white'
-                onClick={editableFeedback ? updateFeedback : createFeedback}
-              >
-                {editableFeedback ? 'Edit Review' : 'Post Review'}
-              </button>
-
-              {isEditing && (
+            {bought[0] !== '0001-01-01' ? (
+              <div className='lg:mt-20 mt-10 lg:border lg:border-gray-200 rounded-xl lg:px-10 lg:py-5'>
+                <div className='lg:text-3xl text-xl'>Post Reviews</div>
+                <div className='flex items-center lg:mt-6 mt-3'>
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill={index < (hoveredRating || rating) ? 'gold' : 'none'}
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='lg:size-8 size-6 cursor-pointer hover:scale-110 text-yellow-400 transition-transform duration-200'
+                      onMouseEnter={() => setHoveredRating(index + 1)}
+                      onMouseLeave={() => setHoveredRating(0)}
+                      onClick={() => setRating(index + 1)}
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M12 3.5l2.715 5.451 6.027.488-4.373 3.751 1.331 5.551L12 15.902l-5.7 3.839 1.331-5.551-4.373-3.751 6.027-.488L12 3.5z'
+                      />
+                    </svg>
+                  ))}
+                </div>
+                <textarea
+                  type='text'
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  className={`mt-5 rounded-xl w-full lg:h-32 h-20 text-black px-5 py-2 focus:border ${
+                    isDarkMode ? 'bg-custom-dark text-white' : ''
+                  } focus:border-blue-400 text-start flex outline-none border border-gray-200`}
+                />
                 <button
-                  type='button'
-                  className='lg:px-5 lg:py-3 py-2 px-3 lg:text-base text-sm bg-red-400 hover:bg-red-500 rounded-lg ml-5 text-white'
-                  onClick={handleCancelEdit}
+                  type='submit'
+                  className='mt-5 lg:px-5 lg:py-3 py-2 px-3 lg:text-base text-sm bg-blue-400 hover:bg-blue-500 rounded-lg text-white'
+                  onClick={editableFeedback ? updateFeedback : createFeedback}
                 >
-                  Cancel
+                  {editableFeedback ? 'Edit Review' : 'Post Review'}
                 </button>
-              )}
-            </div>
+
+                {isEditing && (
+                  <button
+                    type='button'
+                    className='lg:px-5 lg:py-3 py-2 px-3 lg:text-base text-sm bg-red-400 hover:bg-red-500 rounded-lg ml-5 text-white'
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+            ) : (
+              ''
+            )}
 
             <div className='lg:mt-20 mt-10 lg:border rounded-xl lg:border-gray-200 lg:px-10 lg:py-5'>
               <div className='flex gap-2'>
@@ -616,11 +674,11 @@ function Recommendations() {
                           <div className=''>
                             <div className='flex gap-5 items-center'>
                               <img
-                                src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPzWqYhEAvpn3JMQViAxdbz4ZAM9wW1AfQMQ&s'
+                                src={feedbacks.imageUrl}
                                 className='lg:size-12 size-8 rounded-full border border-gray-300'
                               />
                               <div className=''>
-                                <div className='lg:text-lg text-base'>{feedbacks.username}</div>
+                                <div className='lg:text-base text-base'>{feedbacks.username}</div>
                                 <div className='flex'>
                                   {[...Array(5)].map((_, index) => {
                                     const fullStar = index < Math.floor(feedbacks.star)
@@ -651,45 +709,50 @@ function Recommendations() {
                                     )
                                   })}
                                 </div>
+                                <div className='lg:text-base text-base'>{bought[0]}</div>
                               </div>
                             </div>
                             <div className='mt-5 lg:text-lg text-base'>{feedbacks.comment}</div>
                           </div>
-                          <div
-                            className='flex flex-col justify-center items-center'
-                            onClick={() => toggleHide(feedbacks.id)}
-                          >
-                            <svg
-                              xmlns='http://www.w3.org/2000/svg'
-                              fill='none'
-                              viewBox='0 0 24 24'
-                              strokeWidth={1.5}
-                              stroke='currentColor'
-                              className='lg:size-6 size-5 cursor-pointer relative top-12 lg:-right-4 -right-0'
-                            >
-                              <path
-                                strokeLinecap='round'
-                                strokeLinejoin='round'
-                                d='M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z'
-                              />
-                            </svg>
-
+                          {feedbacks.userId == userId ? (
                             <div
-                              className={`flex flex-col border relative top-12 -right-4  border-gray-300 transition-all duration-300 overflow-hidden${
-                                visibleId === feedbacks.id ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                              }`}
+                              className='flex flex-col justify-center items-center'
+                              onClick={() => toggleHide(feedbacks.id)}
                             >
-                              <button className='py-2 px-4 hover:bg-gray-200' onClick={() => handleEdit(feedbacks)}>
-                                Edit
-                              </button>
-                              <button
-                                className='py-2 px-4 hover:bg-gray-200'
-                                onClick={() => deleteFeedback(feedbacks.id)}
+                              <svg
+                                xmlns='http://www.w3.org/2000/svg'
+                                fill='none'
+                                viewBox='0 0 24 24'
+                                strokeWidth={1.5}
+                                stroke='currentColor'
+                                className='lg:size-6 size-5 cursor-pointer relative top-12 lg:-right-4 -right-0'
                               >
-                                Remove
-                              </button>
+                                <path
+                                  strokeLinecap='round'
+                                  strokeLinejoin='round'
+                                  d='M12 6.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 12.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5ZM12 18.75a.75.75 0 1 1 0-1.5.75.75 0 0 1 0 1.5Z'
+                                />
+                              </svg>
+
+                              <div
+                                className={`flex flex-col border relative top-12 -right-4  border-gray-300 transition-all duration-300 overflow-hidden${
+                                  visibleId === feedbacks.id ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                                }`}
+                              >
+                                <button className='py-2 px-4 hover:bg-gray-200' onClick={() => handleEdit(feedbacks)}>
+                                  Edit
+                                </button>
+                                <button
+                                  className='py-2 px-4 hover:bg-gray-200'
+                                  onClick={() => deleteFeedback(feedbacks.id)}
+                                >
+                                  Remove
+                                </button>
+                              </div>
                             </div>
-                          </div>
+                          ) : (
+                            ''
+                          )}
                         </div>
                       ))}
                     </div>
