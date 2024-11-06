@@ -40,6 +40,25 @@ public class ChatRoomService {
                     repository.save(chatRoom);
                 });
     }
+
+    public void backDefaultChatRoom(String userId,String defaultShop){
+        repository.findBySenderId(userId)
+                .ifPresent(chatRoom -> {
+                    repository.findBySenderIdAndRecipientId(chatRoom.getRecipientId(),userId)
+                            .ifPresent(chatRooms -> {
+                                chatRooms.setSenderId(defaultShop);
+                                chatRooms.setChatId(String.format("%s_%s",userId,defaultShop));
+                                repository.save(chatRooms);
+                            });
+                    chatRoom.setRecipientId(defaultShop);
+                    chatRoom.setChatId(String.format("%s_%s",userId,defaultShop));
+                    repository.save(chatRoom);
+                });
+    }
+
+
+
+
     public Optional<String> getChatRoomIdBySenderId(
             String senderId,
             boolean createNewRoomIfNotExists

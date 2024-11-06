@@ -78,6 +78,13 @@ public class OrderController {
     }
 
 
+    @GetMapping("/isBought/user/{userId}/product/{productId}")
+    public ResponseEntity<ApiResponse> isBought(@PathVariable Long userId, @PathVariable Long productId){
+        return ResponseEntity.ok(ApiResponse.builder()
+                        .message("Get result successs")
+                        .data(orderService.isBoughtProduct(userId,productId))
+                .build());
+    }
     @PutMapping("/{orderId}/order/delivery")
     public ResponseEntity<ApiResponse> updateDelivered(@PathVariable Long orderId) {
         try {

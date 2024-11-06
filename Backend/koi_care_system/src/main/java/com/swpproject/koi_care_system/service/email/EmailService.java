@@ -2,6 +2,7 @@ package com.swpproject.koi_care_system.service.email;
 
 import com.swpproject.koi_care_system.enums.ErrorCode;
 import com.swpproject.koi_care_system.exceptions.AppException;
+import com.swpproject.koi_care_system.models.Reminder;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -18,13 +18,13 @@ import java.util.Map;
 
 import static com.swpproject.koi_care_system.utils.EmailUtils.getVerificationUrl;
 
-@EnableAsync
 @Service
 @RequiredArgsConstructor
 public class EmailService implements IEmailService {
 
     private static final String EMAIL_TEMPLATE = "emailtemplate";
     private static final String OTP_TEMPLATE = "otptemplate";
+    private static final String REMINDER_TEMPLATE = "reminderstemplate";
     private final JavaMailSender mailSender;
     private final TemplateEngine templateEngine;
 
@@ -58,13 +58,46 @@ public class EmailService implements IEmailService {
         }
     }
 
-    @Async
+
     @Override
+    @Async
     public void sendOtp(String name, String to, String subject, String otp) {
         try {
             Context context = new Context();
             context.setVariables(Map.of("name", name, "otp", otp));
             String text = templateEngine.process(OTP_TEMPLATE, context);
+
+            // Create a MIME message
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+
+            // Use MimeMessageHelper to handle multipart and encoding
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED, "UTF-8");
+            helper.setFrom(FROM_EMAIL); // From email
+            helper.setTo(to);           // Recipient
+            helper.setSubject(subject); // Email subject
+            helper.setText(text, true); // HTML content
+
+            // Send the email
+            mailSender.send(mimeMessage);
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            throw new AppException(ErrorCode.SENDMAIL_FAILED);
+        }
+    }
+
+    @Override
+    @Async
+    public void sendReminder(String name, String to, String subject, Reminder reminderDetail) {
+        try {
+            Context context = new Context();
+            context.setVariables(Map.of("name", name,
+                    "url", "https://koi-care-system.vercel.app/member/reminders",
+                    "title", reminderDetail.getTitle(),
+                    "dateTime", reminderDetail.getDateTime().toString(),
+                    "repeatInterval", reminderDetail.getRepeatInterval()
+            ));
+            String text = templateEngine.process(REMINDER_TEMPLATE, context);
 
             // Create a MIME message
             MimeMessage mimeMessage = mailSender.createMimeMessage();

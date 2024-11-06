@@ -5,6 +5,7 @@ import com.swpproject.koi_care_system.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,16 +18,14 @@ public class ChatMessageService {
         String chatId="";
         if(chatMessage.getRecipientId().equals("SupportService") && !repository.findChatMessageBySenderId(chatMessage.getSenderId()).isEmpty()){
             chatId =chatRoomService.getChatRoomIdBySenderId(chatMessage.getSenderId(),false).orElseThrow();
-            System.out.println("Access to already update service" + chatId +"   " + chatMessage.getSenderId() + "    " + chatMessage.getRecipientId());
             if(!chatId.isEmpty())
                 chatMessage.setRecipientId(chatId.substring(chatId.indexOf('_')+1));
         }else {
             chatId = chatRoomService.getChatRoomId(
                     chatMessage.getSenderId(), chatMessage.getRecipientId(), true).orElseThrow();
-            System.out.println("Access to bad response" + chatId +"   " + chatMessage.getSenderId() + "    " + chatMessage.getRecipientId());
-
         }
         chatMessage.setChatId(chatId);
+        chatMessage.setTimestamp(LocalDateTime.now().toString());
         return repository.save(chatMessage);
     }
     public List<ChatMessage> findChatMessage(String senderId, String recipientId){
@@ -42,11 +41,29 @@ public class ChatMessageService {
         chatRoomService.updateChatRoom(userId,shopId,"SupportService");
         chatId.map(repository::findByChatId).ifPresent((chatMessages -> {
              chatMessages.forEach(chatMessage -> {
-                 chatMessage.setRecipientId(shopId);
+                 if(chatMessage.getRecipientId().equals("SupportService"))
+                     chatMessage.setRecipientId(shopId);
+                 else if(chatMessage.getSenderId().equals("SupportService"))
+                     chatMessage.setSenderId(shopId);
                  chatMessage.setChatId(String.format("%s_%s",userId,shopId));
              });
              repository.saveAll(chatMessages);
          }));
         return;
+    }
+
+    public void backRecipientInChat(String userId){
+        var chatId = chatRoomService.getChatRoomIdBySenderId(userId,false);
+        chatRoomService.backDefaultChatRoom(userId,"SupportService");
+        chatId.map(repository::findByChatId).ifPresent((chatMessages -> {
+            chatMessages.forEach(chatMessage -> {
+                if(!chatMessage.getRecipientId().equals(userId))
+                    chatMessage.setRecipientId("SupportService");
+                else
+                    chatMessage.setSenderId("SupportService");
+                chatMessage.setChatId(String.format("%s_%s",userId,"SupportService"));
+            });
+            repository.saveAll(chatMessages);
+        }));
     }
 }

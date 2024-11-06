@@ -44,6 +44,9 @@ public interface UserMapper {
 
     LoginResponse maptoLoginResponse(User user, String token);
 
+    @Mapping(target = "reminders", ignore = true)
+    @Mapping(target = "provider", ignore = true)
+    @Mapping(target = "notifications", ignore = true)
     @Mapping(target = "userProfile", ignore = true)
     @Mapping(target = "orders", ignore = true)
     @Mapping(target = "koiPondList", ignore = true)

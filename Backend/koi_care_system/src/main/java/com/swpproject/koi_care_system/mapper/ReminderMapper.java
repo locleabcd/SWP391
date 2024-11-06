@@ -2,6 +2,7 @@ package com.swpproject.koi_care_system.mapper;
 
 import com.swpproject.koi_care_system.dto.ReminderDto;
 import com.swpproject.koi_care_system.models.Reminder;
+import com.swpproject.koi_care_system.models.ReminderMongo;
 import com.swpproject.koi_care_system.payload.request.NotificationRequest;
 import com.swpproject.koi_care_system.payload.request.ReminderRequest;
 import org.mapstruct.Mapper;
@@ -17,10 +18,20 @@ public interface ReminderMapper {
 
     ReminderDto mapToReminderDto(Reminder reminder);
 
-    void updateReminderFromRequest(@MappingTarget ReminderRequest request, Reminder reminder);
+    @Mapping(target = "username", source = "user.username")
+    ReminderMongo mapToReminderMongo(Reminder reminder);
 
-    @Mapping(target = "userId", source = "reminder.user.id")
+    @Mapping(target = "user", ignore = true)
+    @Mapping(target = "id", ignore = true)
+    void updateReminderFromRequest(@MappingTarget Reminder reminder, ReminderRequest request);
+
+    @Mapping(target = "username", ignore = true)
+    void updateReminderMongo(@MappingTarget ReminderMongo reminderMongo, Reminder reminder);
+
     @Mapping(target = "message", source = "reminder.title")
     @Mapping(target = "delivered", source = "isDelivered")
-    NotificationRequest mapToNotificationRequest(Reminder reminder, boolean isDelivered);
+    NotificationRequest mapToNotificationRequest(ReminderMongo reminder, boolean isDelivered);
+
+    @Mapping(target = "user", ignore = true)
+    Reminder mapToReminderFromMongo(ReminderMongo reminder);
 }

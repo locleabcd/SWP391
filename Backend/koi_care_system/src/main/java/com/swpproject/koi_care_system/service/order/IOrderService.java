@@ -5,6 +5,7 @@ import com.swpproject.koi_care_system.models.Order;
 import com.swpproject.koi_care_system.payload.request.PlaceOrderRequest;
 import com.swpproject.koi_care_system.payload.request.PlacePremiumOrderRequest;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface IOrderService {
@@ -17,6 +18,8 @@ public interface IOrderService {
     List<OrderDto> getAllOrders();
 
     List<OrderDto> getOrdersInOneMonth();
+
+    LocalDateTime isBoughtProduct(Long userId, Long productId);
 
     void updateDeliveredStatus(Long orderId);
 

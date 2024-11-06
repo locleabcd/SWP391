@@ -1,9 +1,7 @@
 package com.swpproject.koi_care_system.service.order;
 
-import com.azure.core.exception.ResourceExistsException;
-import com.azure.core.http.HttpResponse;
 import com.swpproject.koi_care_system.dto.OrderDto;
-import com.swpproject.koi_care_system.dto.UserProfileDto;
+import com.swpproject.koi_care_system.dto.OrderItemDto;
 import com.swpproject.koi_care_system.enums.OrderStatus;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.mapper.OrderMapper;
@@ -13,24 +11,19 @@ import com.swpproject.koi_care_system.payload.request.PlacePremiumOrderRequest;
 import com.swpproject.koi_care_system.repository.OrderRepository;
 import com.swpproject.koi_care_system.repository.ProductRepository;
 import com.swpproject.koi_care_system.repository.UserProfileRepository;
-import com.swpproject.koi_care_system.repository.UserRepository;
 import com.swpproject.koi_care_system.service.cart.CartItemService;
 import com.swpproject.koi_care_system.service.cart.CartService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 @RequiredArgsConstructor
@@ -136,8 +129,19 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<OrderDto> getAllOrders() {
-        return orderRepository.findAll().stream().map(orderMapper::toDto).toList();
+        List<Order> orders = orderRepository.findAll();
+        orders.forEach(order -> {
+            if (order.getOrderStatus().equals(OrderStatus.PENDING) && order.getOrderDate().isBefore(LocalDateTime.now().minusDays(1))) {
+                order.setOrderStatus(OrderStatus.CANCELLED);
+                returnQuantityIntoInventory(order.getOrderId());
+                orderRepository.save(order);
+            }
+        });
+        return orders.stream()
+                .map(orderMapper::toDto)
+                .toList();
     }
+
 
     @Override
     public List<OrderDto> getOrdersInOneMonth() {
@@ -145,6 +149,25 @@ public class OrderService implements IOrderService {
                 .map(orderMapper::toDto)
                 .filter(order -> order.getOrderDate().isAfter(LocalDateTime.now().minusMonths(1))&& (order.getStatus().equals(OrderStatus.DELIVERED.toString())||order.getStatus().equals(OrderStatus.PROCESSING.toString())))
                 .toList();
+    }
+
+    @Override
+    public LocalDateTime isBoughtProduct(Long userId, Long productId) {
+        List<OrderDto> orders = this.getUserOrders(userId);
+        List<OrderDto> sortedDeliveredOrders = orders.stream()
+                .filter(orderDto -> orderDto.getStatus().equals(OrderStatus.DELIVERED.toString()))
+                .sorted(Comparator.comparing(OrderDto::getOrderDate))
+                .toList();
+
+        LocalDateTime defaultDateTime = LocalDateTime.of(1, 1, 1, 0, 0, 0);
+        for (OrderDto orderDto : sortedDeliveredOrders) {
+            for (OrderItemDto orderItemDto : orderDto.getItems()) {
+                if (orderItemDto.getProductId().equals(productId)) {
+                    return orderDto.getOrderDate();
+                }
+            }
+        }
+        return defaultDateTime;
     }
 
     @Override

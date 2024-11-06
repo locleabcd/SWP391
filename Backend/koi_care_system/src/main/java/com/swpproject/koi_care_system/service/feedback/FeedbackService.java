@@ -63,6 +63,13 @@ public class FeedbackService implements IFeedbackService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Boolean isPushedFeedback(Long productId, Long userId) {
+        return !this.findFeedbackByProductId(productId).stream().filter(feedbackDto -> feedbackDto.getUserId().equals(userId)).toList().isEmpty();
+    }
+
+
     @Override
     public void deleteFeedback(Long feedbackId) {
         feedbackRepository.findById(feedbackId).ifPresentOrElse(feedbackRepository::delete,()->{
@@ -82,6 +89,7 @@ public class FeedbackService implements IFeedbackService {
         dto.setStar(feedback.getStar());
         dto.setComment(feedback.getComment());
         dto.setUsername(feedback.getUser().getUsername());
+        dto.setImageUrl(feedback.getUser().getUserProfile().getAvatar());
         dto.setProduct_id(feedback.getProduct().getId());
         dto.setUserId(feedback.getUser().getId());
         return dto;

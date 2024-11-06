@@ -68,7 +68,9 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         if (!user.getUsername().equals(request.getUsername()))
             throw new AppException(ErrorCode.USER_EXISTED);
-        request.setPassword(passwordEncoder.encode(request.getPassword()));
+        if (!request.getPassword().isEmpty()) {
+            request.setPassword(passwordEncoder.encode(request.getPassword()));
+        }
         userMapper.updateUser(user, request);
         return userMapper.maptoUserDTO(userRepo.save(user));
     }

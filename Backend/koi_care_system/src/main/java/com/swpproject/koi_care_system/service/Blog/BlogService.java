@@ -46,7 +46,7 @@ public class BlogService implements IBlogService {
         if(blogCreateRequest.getFile()!=null)
             blog.setBlogImage(!blogCreateRequest.getFile().isEmpty() ? imageStorage.uploadImage(blogCreateRequest.getFile()) : "https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultBlog.png");
         else
-            blog.setBlogImage("https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultBlog.png");
+            blog.setBlogImage("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultBlog.png");
         if (blogCreateRequest.getTagIds() == null || blogCreateRequest.getTagIds().isEmpty()) {
             throw new RuntimeException("Tags cannot be null");
         }
@@ -73,7 +73,7 @@ public class BlogService implements IBlogService {
         if(blogUpdateRequest.getFile()!=null)
             if(!blogUpdateRequest.getFile().isEmpty()){
                 try{
-                    if (!blog.getBlogImage().equals("https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultBlog.png"))
+                    if (!blog.getBlogImage().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultBlog.png"))
                         imageStorage.deleteImage(blog.getBlogImage());
                     blog.setBlogImage(imageStorage.uploadImage(blogUpdateRequest.getFile()));
                 }catch (Exception e){
@@ -97,7 +97,7 @@ public class BlogService implements IBlogService {
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deleteBlog(int id) {
         blogRepository.findById(id).ifPresentOrElse(blog -> {
-            if (!blog.getBlogImage().equals("https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultBlog.png")) {
+            if (!blog.getBlogImage().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultBlog.png")) {
                 try {
                     imageStorage.deleteImage(blog.getBlogImage());
                 }catch (Exception e) {

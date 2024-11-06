@@ -5,14 +5,15 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
+@Document
 public class ChatUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String nickname;
     @Enumerated(EnumType.STRING)
     private ChatUserStatus status;

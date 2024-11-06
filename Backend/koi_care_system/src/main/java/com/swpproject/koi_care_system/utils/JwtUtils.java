@@ -79,6 +79,15 @@ public class JwtUtils {
         return false;
     }
 
+    public String getUsernameFromToken(String token) {
+        try {
+            SignedJWT signedJWT = SignedJWT.parse(token);
+            return signedJWT.getJWTClaimsSet().getSubject();
+        } catch (ParseException e) {
+            throw new AppException(ErrorCode.INVALID_TOKEN);
+        }
+    }
+
     private Role buildScope(User user) {
         if (user.getRole() == null) {
             throw new AppException(ErrorCode.NO_ROLES);

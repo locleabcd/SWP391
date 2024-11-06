@@ -42,7 +42,7 @@ public class KoiFishService implements IKoiFishService {
         if(addKoiFishRequest.getFile()!=null)
             koiFish.setImageUrl(imageStorage.uploadImage(addKoiFishRequest.getFile()));
         else
-            koiFish.setImageUrl("https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg");
+            koiFish.setImageUrl("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg");
         koiFish.setStatus("Alive");
         koiFish.setKoiPond(koiPondRepository.findKoiPondsById(addKoiFishRequest.getKoiPondId()));
         koiFish=koiFishRepository.save(koiFish);
@@ -104,7 +104,7 @@ public class KoiFishService implements IKoiFishService {
         if(koiFishUpdateRequest.getFile()!=null)
             if(!koiFishUpdateRequest.getFile().isEmpty()){
                 try {
-                    if (!oldKoiFish.getImageUrl().equals("https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg"))
+                    if (!oldKoiFish.getImageUrl().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultKoiFish.jpeg"))
                         imageStorage.deleteImage(oldKoiFish.getImageUrl());
                     oldKoiFish.setImageUrl(imageStorage.uploadImage(koiFishUpdateRequest.getFile()));
                 }catch (Exception e){

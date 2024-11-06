@@ -45,5 +45,10 @@ public class ChatController {
         chatMessageService.updateRecipientInchat(userId,shopId);
         return ResponseEntity.ok(ApiResponse.builder().message("Update success").build());
     }
+    @GetMapping("/messages/{userId}/defaultRoom")
+    public ResponseEntity<ApiResponse> backToDefault(@PathVariable("userId") String userId){
+        chatMessageService.backRecipientInChat(userId);
+        return ResponseEntity.ok(ApiResponse.builder().message("Update success").build());
+    }
 
 }

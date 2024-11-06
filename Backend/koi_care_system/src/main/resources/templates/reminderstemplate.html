@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Missed Reminder Notification</title>
+</head>
+<body style="margin: 0; padding: 20px; background-color: #1e1e1e; color: #f4f4f4; font-family: Arial, sans-serif;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0"
+       style="max-width: 600px; margin: 0 auto; background-color: #282828; border: 2px solid #c70000; border-radius: 8px; padding: 20px;">
+    <tr>
+        <td align="center" style="padding: 10px;">
+            <h1 style="font-size: 24px; color: #c70000; margin: 0;">
+                Missed Reminder Notification
+            </h1>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 20px; background-color: #333333; border-radius: 5px;">
+            <p style="font-size: 16px; color: #f4f4f4; margin: 0; padding: 5px 0;">
+                <strong style="color: #c70000;">Title:</strong> <span th:text="${title}">[Title]</span>
+            </p>
+            <p style="font-size: 16px; color: #f4f4f4; margin: 0; padding: 5px 0;">
+                <strong style="color: #c70000;">Date & Time:</strong> <span th:text="${dateTime}">[Date & Time]</span>
+            </p>
+            <p style="font-size: 16px; color: #f4f4f4; margin: 0; padding: 5px 0;">
+                <strong style="color: #c70000;">Repeat Interval:</strong> <span th:text="${repeatInterval}">[Repeat Interval]</span>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 20px;">
+            <p style="color: #c4c4c4; font-size: 14px;">
+                It seems like you missed this reminder. Please review your schedule to stay on track!
+            </p>
+            <a href="#" th:href="${url}"
+               style="display: inline-block; padding: 12px 25px; font-size: 16px; color: #fff; background-color: #c70000; text-align: center; text-decoration: none; border-radius: 5px; margin-top: 20px;">
+                View All Reminders
+            </a>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

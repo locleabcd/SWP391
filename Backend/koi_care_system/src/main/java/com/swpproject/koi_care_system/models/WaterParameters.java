@@ -39,7 +39,7 @@ public class WaterParameters {
     @JoinColumn(name = "koiPond_id")
     KoiPond koiPond;
 
-    @OneToMany(mappedBy = "waterParameters", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "waterParameters", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     List<Issue> issueList;
 
 }
