@@ -16,7 +16,6 @@ import logo from '../../assets/logo.png'
 import memberPathInfor from '../../constants/memberPathInfor'
 import ReminderMB from '../../pages/Member/Reminders/ReminderMB'
 import Typography from '@mui/material/Typography'
-import Button from '@mui/material/Button'
 import Popover from '@mui/material/Popover'
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state'
 
@@ -42,7 +41,6 @@ function Header() {
       if (!token) {
         throw new Error('No token found')
       }
-
       const response = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -74,28 +72,27 @@ function Header() {
     getCartId()
   }, [])
 
-  const getUser = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const id = localStorage.getItem('id')
-      if (!token) {
-        throw new Error('No token found')
-      }
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/profile/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      setUser(res.data.data)
-      localStorage.setItem('avt', res.data.data.avatar)
-    } catch (error) {
-      console.error('Error fetching users:', error)
-    }
-  }
+  // const getUser = async () => {
+  //   try {
+  //     const token = localStorage.getItem('token')
+  //     const id = localStorage.getItem('id')
+  //     if (!token) {
+  //       throw new Error('No token found')
+  //     }
+  //     const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/profile/${id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     })
+  //     setUser(res.data.data)
+  //   } catch (error) {
+  //     console.error('Error fetching users:', error)
+  //   }
+  // }
 
-  useEffect(() => {
-    getUser()
-  }, [])
+  // useEffect(() => {
+  //   getUser()
+  // }, [])
 
   const getNotificationRead = async () => {
     try {
@@ -109,8 +106,9 @@ function Header() {
           Authorization: `Bearer ${token}`
         }
       })
-      setNotificationRead(res.data.data)
-      console.log('abc', res.data.data)
+      const notificationSort = res.data.data.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
+      setNotificationRead(notificationSort)
+      console.log('abc', notificationSort)
     } catch (error) {
       console.error('Error fetching users:', error)
     }
@@ -132,8 +130,9 @@ function Header() {
           Authorization: `Bearer ${token}`
         }
       })
-      setNotificationUnRead(res.data.data)
-      console.log('abcd', res.data.data)
+      const notificationSort = res.data.data.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
+      setNotificationUnRead(notificationSort)
+      console.log('abcd', notificationSort)
     } catch (error) {
       console.error('Error fetching users:', error)
     }
@@ -173,6 +172,25 @@ function Header() {
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen)
+  }
+
+  function getRelativeTime(dateTime) {
+    const now = new Date()
+    const past = new Date(dateTime)
+    const diffInSeconds = Math.floor((now - past) / 1000)
+
+    if (diffInSeconds < 60) {
+      return `${diffInSeconds} seconds ago`
+    } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60)
+      return `${minutes} min${minutes > 1 ? 's' : ''} ago`
+    } else if (diffInSeconds < 86400) {
+      const hours = Math.floor(diffInSeconds / 3600)
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`
+    } else {
+      const days = Math.floor(diffInSeconds / 86400)
+      return `${days} day${days > 1 ? 's' : ''} ago`
+    }
   }
 
   const filteredPaths = memberPathInfor.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -233,7 +251,6 @@ function Header() {
               isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
             } lg:p-[12px] p-[10px] rounded-full relative`}
           >
-            <span className='sr-only'>View notifications</span>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -264,7 +281,6 @@ function Header() {
               isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
             } lg:p-[12px] p-[10px] rounded-full relative`}
           >
-            <span className='sr-only'>WishList</span>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -287,22 +303,23 @@ function Header() {
             )}
           </Link>
 
-          <button className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'}`}>
+          <button
+            className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'} lg:p-[12px] p-[10px] rounded-full`}
+          >
             <PopupState popupId='demo-popup-popover'>
               {(popupState) => (
                 <div
-                  className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'} py-4 rounded-full`}
+                  className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'}  rounded-full`}
                 >
-                  <Button {...bindTrigger(popupState)}>
-                    <svg
-                      className='lg:size-6 size-5 text-black'
-                      fill='currentColor'
-                      viewBox='0 0 20 20'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <path d='M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z' />
-                    </svg>{' '}
-                  </Button>
+                  <svg
+                    className='lg:size-6 size-5 text-black'
+                    fill='currentColor'
+                    viewBox='0 0 20 20'
+                    xmlns='http://www.w3.org/2000/svg'
+                    {...bindTrigger(popupState)}
+                  >
+                    <path d='M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z' />
+                  </svg>{' '}
                   <Popover
                     {...bindPopover(popupState)}
                     anchorOrigin={{
@@ -314,13 +331,20 @@ function Header() {
                       horizontal: 'center'
                     }}
                   >
-                    <Typography sx={{ p: 1 }}>
-                      <div className='max-h-64 max-w-96'>
-                        <div className='text-3xl font-semibold mb-3 mt-3'>Notifications</div>
+                    <Typography sx={{ p: 2 }}>
+                      <div className='max-h-[500px] max-w-96'>
+                        <div className='text-3xl font-semibold border-b border-gray-200 py-3 p-2'>Notifications</div>
                         {notificationRead.map((notificationReads) => (
                           <div className='p-2 hover:bg-gray-200' key={notificationReads.id}>
-                            <div className=''>{notificationReads.title}</div>
-                            <div className=''>{notificationReads.dateTime}</div>
+                            <div className='lg:text-lg text-base'>
+                              <span className='font-bold'>{notificationReads.title}</span> mentioned you in a comment in{' '}
+                              <span className='font-semibold'>{notificationReads.title}</span> ·{' '}
+                              <span className='italic'>{notificationReads.title}</span>. Please remember the reminder
+                              above.
+                            </div>
+                            <div className='lg:text-base text-sm text-gray-500'>
+                              {getRelativeTime(notificationReads.dateTime)}
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -372,11 +396,11 @@ function Header() {
           <div className='my-account'>
             <button onClick={toggleList} className='lg:flex lg:items-center lg:p-2 lg:rounded-md lg:space-x-2 hidden'>
               <div className='flex flex-col'>
-                <p className='text-sm font-medium'>{user.name}</p>
-                <p className='text-xs text-gray-500'>{user.role}</p>
+                <p className='text-sm font-medium'>{name}</p>
+                <p className='text-xs text-gray-500'>{role}</p>
               </div>
               <div className='ml-auto flex items-center space-x-1'>
-                <img src={user.avatar} className='w-12 h-12 rounded-full object-cover' />
+                <img src={avt} className='w-12 h-12 rounded-full object-cover' />
               </div>
             </button>
             {isOpen && (
@@ -679,7 +703,6 @@ function Header() {
               </div>
             </NavLink>
 
-            {/* sidebar items  */}
             <NavLink
               to={path.news}
               className={({ isActive }) => {
@@ -738,15 +761,13 @@ function Header() {
           >
             <div className='card-content flex items-center '>
               <img
-                src={avt || 'default-avatar.png'}
+                src={avt}
                 alt='User Avatar'
                 className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
               />
               <div className='ml-3'>
-                <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'text-black'}`}>
-                  {user.name || 'User Name'}
-                </p>
-                <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
+                <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'text-black'}`}>{name}</p>
+                <p className='text-sm text-gray-500'>{role}</p>
               </div>
             </div>
             <Link onClick={handleLogout} to='/login'>

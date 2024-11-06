@@ -12,49 +12,50 @@ import { motion } from 'framer-motion'
 import 'aos/dist/aos.css'
 import AOS from 'aos'
 import { FaSpinner } from 'react-icons/fa'
+import { useForm } from 'react-hook-form'
+import Swal from 'sweetalert2'
 
 function MyPondLog() {
   const { isDarkMode } = useDarkMode()
   const [log, setLog] = useState([])
   const [isAddFormVisible, setIsAddFormVisible] = useState(false)
   const [isEditFormVisible, setIsEditFormVisible] = useState(false)
-  const [currentLog, setCurrentLog] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [ponds, setPonds] = useState([])
-  const [title, setTitle] = useState('')
-  const [dateTime, setDateTime] = useState('')
-  const [category, setCategory] = useState('')
-  const [pond, setPond] = useState('')
-  const [note, setNote] = useState('')
-
   const navigate = useNavigate()
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset
+  } = useForm()
 
   const toggleAddFormVisibility = () => {
     setIsAddFormVisible(!isAddFormVisible)
+    reset({
+      logTitle: '',
+      logDate: '',
+      category: log.category,
+      note: '',
+      koiPondId: ''
+    })
   }
 
   const openEditForm = (log) => {
-    setTitle(log.logTitle)
-    setDateTime(log.logDate)
-    setCategory(log.category)
-    setNote(log.note)
-    setPond(log.koiPondName)
     localStorage.setItem('logId', log.logId)
-    toggleEditFormVisibility(true)
+    reset({
+      logTitle: log.logTitle,
+      logDate: log.logDate,
+      category: log.category,
+      note: log.note,
+      koiPondId: log.koiPondName
+    })
+    setIsEditFormVisible(true)
   }
 
   const toggleCloseForm = () => {
-    setIsEditFormVisible(!isEditFormVisible)
     setIsEditFormVisible(false)
-    setCurrentLog(null)
-  }
-
-  const toggleEditFormVisibility = (logs) => {
-    if (logs) {
-      setCurrentLog(logs)
-      setIsEditFormVisible(true)
-      setIsAddFormVisible(false)
-    }
   }
 
   const pondLog = async () => {
@@ -80,6 +81,21 @@ function MyPondLog() {
 
   const deleteLog = async () => {
     setIsLoading(true)
+    const { isConfirmed } = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
+
+    if (!isConfirmed) {
+      setIsLoading(false)
+      return
+    }
+
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -134,7 +150,7 @@ function MyPondLog() {
     }
   }
 
-  const createLog = async () => {
+  const createLog = async (data) => {
     setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
@@ -142,11 +158,11 @@ function MyPondLog() {
       await axios.post(
         'https://koicaresystemv2.azurewebsites.net/api/log/create',
         {
-          logTitle: title,
-          logDate: dateTime,
-          category: category.toUpperCase(),
-          note: note,
-          koiPondId: pond
+          logTitle: data.logTitle,
+          logDate: data.logDate,
+          category: data.category,
+          note: data.note,
+          koiPondId: data.koiPondName
         },
         {
           headers: {
@@ -157,15 +173,16 @@ function MyPondLog() {
       toast.success('Create Pond Log Successfully')
       pondLog()
       toggleAddFormVisibility(false)
+      reset()
     } catch (error) {
       toast.error('Create Pond Log Fail')
-      console.error('Error details:', error)
+      console.log(data.category)
     } finally {
       setIsLoading(false)
     }
   }
 
-  const updateLog = async () => {
+  const updateLog = async (data) => {
     setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
@@ -173,11 +190,11 @@ function MyPondLog() {
       await axios.put(
         `https://koicaresystemv2.azurewebsites.net/api/log/update/${logId}`,
         {
-          logTitle: title,
-          logDate: dateTime,
-          category: category.toUpperCase(),
-          note: note,
-          koiPondId: pond
+          logTitle: data.logTitle,
+          logDate: data.dateTime,
+          category: data.category,
+          note: data.note,
+          koiPondId: data.koiPondName
         },
         {
           headers: {
@@ -186,6 +203,7 @@ function MyPondLog() {
         }
       )
       toast.success('Update Pond Log Successfully')
+      reset()
       pondLog()
       toggleCloseForm()
     } catch (error) {
@@ -272,7 +290,10 @@ function MyPondLog() {
               ))}
 
               {isAddFormVisible && (
-                <div className='fixed inset-0 bg-black h-screen flex justify-center items-end bg-opacity-50 z-40'>
+                <form
+                  onSubmit={handleSubmit(createLog)}
+                  className='fixed inset-0 bg-black h-screen flex justify-center items-end bg-opacity-50 z-40'
+                >
                   <motion.div
                     variants={{
                       hidden: { opacity: 0, y: -100 },
@@ -281,7 +302,6 @@ function MyPondLog() {
                     className={` ${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
                     }  lg:min-w-[80vh] m-auto p-6 lg:rounded-lg`}
-                    //
                   >
                     <div className='flex justify-between mb-5'>
                       <svg
@@ -302,7 +322,7 @@ function MyPondLog() {
                         />
                       </svg>
 
-                      <button onClick={() => createLog()}>
+                      <button type='submit'>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'
@@ -321,7 +341,7 @@ function MyPondLog() {
                     </div>
                     <h3 className='mb-5 lg:text-2xl text-lg font-bold'>Add a Log</h3>
                     <div className='grid grid-cols-2 lg:grid-rows-2 gap-4'>
-                      <div className='relative col-span-1'>
+                      <div className='relative lg:mb-4 col-span-1'>
                         <label
                           htmlFor='name'
                           className={`absolute block -top-[12px] ${
@@ -334,16 +354,18 @@ function MyPondLog() {
                           type='text'
                           id='name'
                           placeholder='Enter title'
-                          onChange={(e) => setTitle(e.target.value)}
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black lg:text-lg text-sm rounded-lg focus:outline-none transition-colors duration-200`}
+                          {...register('logTitle', { required: 'Title is required' })}
                         />
+                        {errors.logTitle && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.logTitle.message}</p>
+                        )}
                       </div>
 
-                      <div className='relative col-span-1'>
+                      <div className='relative lg:mb-4 col-span-1'>
                         <label
-                          htmlFor='volume'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold lg:text-lg text-sm`}
@@ -352,18 +374,20 @@ function MyPondLog() {
                         </label>
                         <input
                           type='datetime-local'
-                          id='volume'
-                          placeholder='Enter volume'
-                          onChange={(e) => setDateTime(e.target.value)}
+                          min={new Date().toISOString().slice(0, 16)}
+                          placeholder='Enter date & time'
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg lg:text-lg text-sm focus:outline-none transition-colors duration-200`}
+                          {...register('logDate', { required: 'Date Time is required' })}
                         />
+                        {errors.logDate && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.logDate.message}</p>
+                        )}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
                         <label
-                          htmlFor='depth'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold lg:text-lg text-sm`}
@@ -372,24 +396,23 @@ function MyPondLog() {
                         </label>
                         <select
                           id='pondId'
-                          onChange={(e) => setCategory(e.target.value)}
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg lg:text-lg text-sm focus:outline-none transition-colors duration-200`}
+                          {...register('category', { required: 'Category is required' })}
                         >
-                          <option value='OTHER'>Other</option>
                           <option value='WATER_CHANGE'>Water Change</option>
                           <option value='KOI_TREATMENT'>Koi Treatment</option>
                           <option value='WATER_TREATMENT'>Water Treatment</option>
                           <option value='POPULATION_CHANGE'>Population Change</option>
                           <option value='EXPERIENCE'>Experience</option>
                           <option value='POND_MODIFICATION'>Pond Modification</option>
+                          <option value='OTHER'>Other</option>
                         </select>
                       </div>
 
                       <div className='mb-4 relative col-span-1'>
                         <label
-                          htmlFor='drainCount'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold lg:text-lg text-sm`}
@@ -398,12 +421,11 @@ function MyPondLog() {
                         </label>
                         <select
                           id='pondId'
-                          onChange={(e) => setPond(e.target.value)}
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg lg:text-lg text-sm focus:outline-none transition-colors duration-200`}
+                          {...register('koiPondName')}
                         >
-                          <option value=''>Select a pond</option>
                           {ponds.map((pond) => (
                             <option key={pond.id} value={pond.id}>
                               {pond.name}
@@ -414,7 +436,6 @@ function MyPondLog() {
                     </div>
                     <div className='relative w-full'>
                       <label
-                        htmlFor='drainCount'
                         className={`absolute -top-[12px] left-3 text-red-500 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } font-semibold lg:text-lg text-sm`}
@@ -423,20 +444,23 @@ function MyPondLog() {
                       </label>
                       <textarea
                         type='text'
-                        onChange={(e) => setNote(e.target.value)}
-                        id='drainCount'
                         placeholder='Note'
                         className={`w-full lg:h-32 h-24 p-3 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                        {...register('note', { required: 'Note is required' })}
                       />
+                      {errors.note && <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.note.message}</p>}
                     </div>
                   </motion.div>
-                </div>
+                </form>
               )}
 
               {isEditFormVisible && (
-                <div className='fixed inset-0 bg-black h-screen flex justify-center items-end bg-opacity-50 z-40'>
+                <form
+                  onSubmit={handleSubmit(updateLog)}
+                  className='fixed inset-0 bg-black h-screen flex justify-center items-end bg-opacity-50 z-40'
+                >
                   <div
                     className={`${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
@@ -461,7 +485,7 @@ function MyPondLog() {
                         />
                       </svg>
 
-                      <button onClick={() => updateLog()}>
+                      <button type='submit'>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'
                           fill='none'
@@ -491,18 +515,19 @@ function MyPondLog() {
                         </label>
                         <input
                           type='text'
-                          value={title}
-                          onChange={(e) => setTitle(e.target.value)}
                           placeholder='Enter title'
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                          {...register('logTitle', { required: 'Title is required' })}
                         />
+                        {errors.logTitle && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.logTitle.message}</p>
+                        )}
                       </div>
 
                       <div className='lg:mb-4 relative col-span-1'>
                         <label
-                          htmlFor='volume'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold lg:text-lg text-sm`}
@@ -511,18 +536,20 @@ function MyPondLog() {
                         </label>
                         <input
                           type='datetime-local'
-                          value={dateTime}
-                          onChange={(e) => setDateTime(e.target.value)}
+                          min={new Date().toISOString().slice(0, 16)}
                           placeholder='Enter Date Time'
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                          {...register('logDate', { required: 'Date Time is required' })}
                         />
+                        {errors.logDate && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.logDate.message}</p>
+                        )}
                       </div>
 
                       <div className='relative col-span-1'>
                         <label
-                          htmlFor='depth'
                           className={`absolute -top-[12px] left-3 text-red-500 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } font-semibold lg:text-lg text-sm`}
@@ -531,19 +558,18 @@ function MyPondLog() {
                         </label>
                         <select
                           id='pondId'
-                          value={category}
-                          onChange={(e) => setCategory(e.target.value)}
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                          {...register('category', { required: 'Category is required' })}
                         >
-                          <option value='OTHER'>Other</option>
                           <option value='WATER_CHANGE'>Water Change</option>
                           <option value='KOI_TREATMENT'>Koi Treatment</option>
                           <option value='WATER_TREATMENT'>Water Treatment</option>
                           <option value='POPULATION_CHANGE'>Population Change</option>
                           <option value='EXPERIENCE'>Experience</option>
                           <option value='POND_MODIFICATION'>Pond Modification</option>
+                          <option value='OTHER'>Other</option>
                         </select>
                       </div>
 
@@ -558,13 +584,11 @@ function MyPondLog() {
                         </label>
                         <select
                           id='pondId'
-                          value={pond}
-                          onChange={(e) => setPond(e.target.value)}
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                          {...register('koiPondName', { required: 'Pond is required' })}
                         >
-                          <option value=''>Select a pond</option>
                           {ponds.map((pond) => (
                             <option key={pond.id} value={pond.id}>
                               {pond.name}
@@ -575,7 +599,6 @@ function MyPondLog() {
                     </div>
                     <div className='lg:mt-4 relative w-full'>
                       <label
-                        htmlFor='drainCount'
                         className={`absolute -top-[12px] left-3 text-red-500 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } font-semibold lg:text-lg text-sm`}
@@ -584,22 +607,20 @@ function MyPondLog() {
                       </label>
                       <textarea
                         type='text'
-                        value={note}
-                        onChange={(e) => setNote(e.target.value)}
                         placeholder='Note'
                         className={`w-full lg:h-32 h-24 p-3 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                        {...register('note', { required: 'Note is required' })}
                       />
+                      {errors.note && <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.note.message}</p>}
                     </div>
 
                     <div className='w-full flex flex-col justify-center'>
                       <button
                         className='mx-auto'
                         onClick={() => {
-                          if (window.confirm('Are you sure you want to delete this pond log?')) {
-                            deleteLog()
-                          }
+                          deleteLog()
                         }}
                       >
                         <svg
@@ -621,7 +642,7 @@ function MyPondLog() {
                       <p className='text-center font-semibold'>Delete this log</p>
                     </div>
                   </div>
-                </div>
+                </form>
               )}
               {isLoading && (
                 <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>

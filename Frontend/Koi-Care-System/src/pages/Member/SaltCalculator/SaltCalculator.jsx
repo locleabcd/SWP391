@@ -38,17 +38,33 @@ function SaltCalculator() {
       // Lấy thông tin salt của từng hồ koi từ API thứ hai
       const pondsWithSalt = await Promise.all(
         ponds.map(async (pond) => {
-          const saltRes = await axios.get(
-            `https://koicaresystemv2.azurewebsites.net/api/water-parameters/getLatestByKoiPondId/${pond.id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`
+          try {
+            const saltRes = await axios.get(
+              `https://koicaresystemv2.azurewebsites.net/api/water-parameters/getLatestByKoiPondId/${pond.id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
+              }
+            )
+            return {
+              ...pond,
+              salt: saltRes.data.data?.salt // lấy thông tin salt nếu có
+            }
+          } catch (error) {
+            // Xử lý lỗi 404 ở đây
+            if (error.response && error.response.status === 404) {
+              return {
+                ...pond,
+                salt: null // Trả về null cho thông tin salt
               }
             }
-          )
-          return {
-            ...pond,
-            salt: saltRes.data.data?.salt // lấy thông tin salt nếu có
+            // Nếu có lỗi khác, bạn có thể log hoặc xử lý theo cách khác nếu cần
+            console.error(`Error fetching salt for pond ${pond.id}:`, error)
+            return {
+              ...pond,
+              salt: null // Hoặc bạn có thể giữ nguyên giá trị salt
+            }
           }
         })
       )
@@ -60,6 +76,7 @@ function SaltCalculator() {
       console.error('Error fetching ponds:', error)
     }
   }
+
   useEffect(() => {
     getPond()
   }, [])
@@ -113,6 +130,8 @@ function SaltCalculator() {
       setRefillAmount(calculateWater) // Cập nhật lượng nước cần bổ sung
     }
   }, [selectedPond, desiredSalinity, currentSalinity, waterChangePercent])
+  const saltNeededForLowRange = selectedPond ? 0.001 * selectedPond.volume * 10 : 0
+  const saltNeededForHighRange = selectedPond ? 0.003 * selectedPond.volume * 10 : 0
   return (
     <div>
       <div className='h-screen flex'>
@@ -149,13 +168,37 @@ function SaltCalculator() {
                   )}
                 </select>
               </div>
-              {selectedPond && (
-                <div className='mt-4'>
-                  <strong>Salt Level:</strong> {selectedPond.salt ? `${selectedPond.salt}%` : 'No data available'}
-                </div>
-              )}
+
               <div className='grid grid-cols-4 p-4 text-lg'>
                 <div className='lg:col-span-2 col-span-4'>
+                  {selectedPond && (
+                    <div className='pl-4'>
+                      <strong>Salt:</strong>
+                      {selectedPond.salt ? `${selectedPond.salt}%` : 'No water parameters in pond'}
+                    </div>
+                  )}
+                  {selectedPond && (
+                    <div className='pl-4'>
+                      {selectedPond.salt && parseFloat(selectedPond.salt) < 0.1 ? (
+                        <p>
+                          <strong>Recommendation:</strong> The current salt concentration is too low. It is recommended
+                          to add salt to bring the salinity up to the ideal range (0.1% - 0.3%). You need approximately{' '}
+                          {saltNeededForLowRange.toFixed(2)} - {saltNeededForHighRange.toFixed(2)} grams of salt.
+                        </p>
+                      ) : selectedPond.salt && parseFloat(selectedPond.salt) > 0.3 ? (
+                        <p>
+                          <strong>Recommendation:</strong> The current salt concentration is too high. Consider
+                          performing water changes to lower the salinity to the ideal range (0.1% - 0.3%). Follow the
+                          calculated water changes needed.
+                        </p>
+                      ) : (
+                        <p>
+                          <strong>Recommendation:</strong> The current salt concentration is within the ideal range
+                          (0.1% - 0.3%). Maintain this level for optimal Koi health.
+                        </p>
+                      )}
+                    </div>
+                  )}
                   {selectedPond ? (
                     <div className=' p-4'>
                       <p className='lg:text-lg text-sm'>
@@ -231,7 +274,7 @@ function SaltCalculator() {
                       Ideal salt concentration <strong>(0.1% - 0.3%)</strong>: to reduce stress and support fish health.
                     </li>
                     <li className='lg:text-lg text-sm text-justify'>
-                      Use higher concentrations <strong>(0.5% - 2%)</strong>: only in cases of severe illness, and only
+                      Use higher concentrations <strong>(0.4% - 2%)</strong>: only in cases of severe illness, and only
                       for short periods.
                     </li>
                     <li className='lg:text-lg text-sm text-justify'>
