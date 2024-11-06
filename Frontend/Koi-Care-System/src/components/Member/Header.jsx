@@ -15,6 +15,10 @@ import { GiAquarium } from 'react-icons/gi'
 import logo from '../../assets/logo.png'
 import memberPathInfor from '../../constants/memberPathInfor'
 import ReminderMB from '../../pages/Member/Reminders/ReminderMB'
+import Typography from '@mui/material/Typography'
+import Button from '@mui/material/Button'
+import Popover from '@mui/material/Popover'
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state'
 
 function Header() {
   const { isDarkMode, toggleDarkMode } = useDarkMode()
@@ -23,6 +27,8 @@ function Header() {
   const [cart, setCart] = useState([])
   const [cartId, setCartId] = useState([])
   const [user, setUser] = useState([])
+  const [notificationRead, setNotificationRead] = useState([])
+  const [notificationUnRead, setNotificationUnRead] = useState([])
   const dispatch = useDispatch()
   const [isSidebarOpen, setSidebarOpen] = useState(false)
   const sidebarRef = useRef(null)
@@ -91,21 +97,63 @@ function Header() {
     getUser()
   }, [])
 
-  const getCart = async () => {
+  const getNotificationRead = async () => {
     try {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('id')
       if (!token) {
         throw new Error('No token found')
       }
-
-      const response = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/carts/user/${userId}/cartId`, {
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/notifications/list/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
-      setCartId(response.data.data)
-      localStorage.setItem('cartId', response.data.data)
+      setNotificationRead(res.data.data)
+      console.log('abc', res.data.data)
+    } catch (error) {
+      console.error('Error fetching users:', error)
+    }
+  }
+
+  useEffect(() => {
+    getNotificationRead()
+  }, [])
+
+  const getNotificationUnRead = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+      if (!token) {
+        throw new Error('No token found')
+      }
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/notifications/list-unread/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setNotificationUnRead(res.data.data)
+      console.log('abcd', res.data.data)
+    } catch (error) {
+      console.error('Error fetching users:', error)
+    }
+  }
+
+  useEffect(() => {
+    getNotificationUnRead()
+  }, [])
+
+  const getCart = async () => {
+    try {
+      const token = localStorage.getItem('token')
+      const userId = localStorage.getItem('id')
+
+      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/carts/user/${userId}/cartId`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      setCartId(res.data.data)
     } catch (error) {
       console.log(error)
     }
@@ -240,21 +288,46 @@ function Header() {
           </Link>
 
           <button
-            type='button'
-            data-dropdown-toggle='notification-dropdown'
-            className={`${
-              isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
-            } lg:p-[12px] p-[10px] rounded-full`}
+            className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'} py-3 rounded-full`}
           >
-            <span className='sr-only'>View notifications</span>
-            <svg
-              className='lg:size-6 size-5'
-              fill='currentColor'
-              viewBox='0 0 20 20'
-              xmlns='http://www.w3.org/2000/svg'
-            >
-              <path d='M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z' />
-            </svg>
+            <PopupState popupId='demo-popup-popover'>
+              {(popupState) => (
+                <div>
+                  <Button {...bindTrigger(popupState)}>
+                    <svg
+                      className='lg:size-6 size-5 text-black'
+                      fill='currentColor'
+                      viewBox='0 0 20 20'
+                      xmlns='http://www.w3.org/2000/svg'
+                    >
+                      <path d='M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z' />
+                    </svg>{' '}
+                  </Button>
+                  <Popover
+                    {...bindPopover(popupState)}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'center'
+                    }}
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'center'
+                    }}
+                  >
+                    <Typography sx={{ p: 2 }}>
+                      <div className='max-h-64'>
+                        <div className='text-3xl font-semibold mb-3'>Notifications</div>
+                        {notificationRead.map((notificationReads) => (
+                          <div className='' key={notificationReads.id}>
+                            <div className=''>{notificationReads.title}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </Typography>
+                  </Popover>
+                </div>
+              )}
+            </PopupState>{' '}
           </button>
 
           <div>

@@ -81,7 +81,7 @@ function Reminders() {
         'https://koicaresystemv2.azurewebsites.net/api/reminders/create',
         {
           title: data.title,
-          dateTime: data.dateTime + ':20',
+          dateTime: data.dateTime,
           repeatInterval: data.interval
         },
         {
@@ -164,7 +164,7 @@ function Reminders() {
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] max-h-[800px]'>
             <TopLayout text='Reminders' links='/member/reminders' />
-            <div className='grid grid-cols-3 gap-10 mt-10'>
+            <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10 mt-10'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
@@ -348,6 +348,7 @@ function Reminders() {
                       </label>
                       <input
                         type='datetime-local'
+                        min={new Date().toISOString().slice(0, 16)}
                         className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
@@ -463,6 +464,7 @@ function Reminders() {
                       </label>
                       <input
                         type='datetime-local'
+                        min={new Date().toISOString().slice(0, 16)}
                         className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
