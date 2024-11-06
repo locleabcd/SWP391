@@ -113,7 +113,12 @@ function ShopNews() {
       )
     },
     { field: 'blogTitle', headerName: 'Blog Title', width: 200 },
-    { field: 'blogContent', headerName: 'Blog Content', flex: 1 },
+    {
+      field: 'blogContent',
+      headerName: 'Blog Content',
+      flex: 1,
+      renderCell: (params) => <div>{params.value.replace(/<[^>]+>/g, '')}</div>
+    },
     { field: 'blogDate', headerName: 'Date', width: 150 },
     {
       field: 'tags',

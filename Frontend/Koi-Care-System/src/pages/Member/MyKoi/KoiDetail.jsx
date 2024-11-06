@@ -569,7 +569,6 @@ function KoiDetails() {
       reset()
       getPond()
       setIsEditFormVisible(false)
-      setIsDialogOpen(false)
       navigate('/member/myKoi')
     } catch (error) {
       toast.error('Delete Koi Fail!')
@@ -1142,7 +1141,7 @@ function KoiDetails() {
                   </div>
                 </form>
                 <div className='flex justify-center items-center'>
-                  <button className='mx-auto' onClick={() => deleteKoi()}>
+                  <button className='mx-auto' onClick={() => deleteKoi(koi.id)}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
