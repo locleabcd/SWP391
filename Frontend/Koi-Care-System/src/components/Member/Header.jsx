@@ -109,8 +109,9 @@ function Header() {
           Authorization: `Bearer ${token}`
         }
       })
-      setNotificationRead(res.data.data)
-      console.log('abc', res.data.data)
+      const notificationSort = res.data.data.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
+      setNotificationRead(notificationSort)
+      console.log('abc', notificationSort)
     } catch (error) {
       console.error('Error fetching users:', error)
     }
@@ -132,8 +133,9 @@ function Header() {
           Authorization: `Bearer ${token}`
         }
       })
-      setNotificationUnRead(res.data.data)
-      console.log('abcd', res.data.data)
+      const notificationSort = res.data.data.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
+      setNotificationUnRead(notificationSort)
+      console.log('abcd', notificationSort)
     } catch (error) {
       console.error('Error fetching users:', error)
     }
@@ -173,6 +175,25 @@ function Header() {
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen)
+  }
+
+  function getRelativeTime(dateTime) {
+    const now = new Date()
+    const past = new Date(dateTime)
+    const diffInSeconds = Math.floor((now - past) / 1000)
+
+    if (diffInSeconds < 60) {
+      return `${diffInSeconds} seconds ago`
+    } else if (diffInSeconds < 3600) {
+      const minutes = Math.floor(diffInSeconds / 60)
+      return `${minutes} min${minutes > 1 ? 's' : ''} ago`
+    } else if (diffInSeconds < 86400) {
+      const hours = Math.floor(diffInSeconds / 3600)
+      return `${hours} hour${hours > 1 ? 's' : ''} ago`
+    } else {
+      const days = Math.floor(diffInSeconds / 86400)
+      return `${days} day${days > 1 ? 's' : ''} ago`
+    }
   }
 
   const filteredPaths = memberPathInfor.filter((item) => item.name.toLowerCase().includes(searchTerm.toLowerCase()))
@@ -233,7 +254,6 @@ function Header() {
               isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
             } lg:p-[12px] p-[10px] rounded-full relative`}
           >
-            <span className='sr-only'>View notifications</span>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -264,7 +284,6 @@ function Header() {
               isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'
             } lg:p-[12px] p-[10px] rounded-full relative`}
           >
-            <span className='sr-only'>WishList</span>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               fill='none'
@@ -287,22 +306,23 @@ function Header() {
             )}
           </Link>
 
-          <button className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'}`}>
+          <button
+            className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'} lg:p-[12px] p-[10px] rounded-full`}
+          >
             <PopupState popupId='demo-popup-popover'>
               {(popupState) => (
                 <div
-                  className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'} py-4 rounded-full`}
+                  className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'}  rounded-full`}
                 >
-                  <Button {...bindTrigger(popupState)}>
-                    <svg
-                      className='lg:size-6 size-5 text-black'
-                      fill='currentColor'
-                      viewBox='0 0 20 20'
-                      xmlns='http://www.w3.org/2000/svg'
-                    >
-                      <path d='M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z' />
-                    </svg>{' '}
-                  </Button>
+                  <svg
+                    className='lg:size-6 size-5 text-black'
+                    fill='currentColor'
+                    viewBox='0 0 20 20'
+                    xmlns='http://www.w3.org/2000/svg'
+                    {...bindTrigger(popupState)}
+                  >
+                    <path d='M10 2a6 6 0 00-6 6v3.586l-.707.707A1 1 0 004 14h12a1 1 0 00.707-1.707L16 11.586V8a6 6 0 00-6-6zM10 18a3 3 0 01-3-3h6a3 3 0 01-3 3z' />
+                  </svg>{' '}
                   <Popover
                     {...bindPopover(popupState)}
                     anchorOrigin={{
@@ -314,13 +334,20 @@ function Header() {
                       horizontal: 'center'
                     }}
                   >
-                    <Typography sx={{ p: 1 }}>
-                      <div className='max-h-64 max-w-96'>
-                        <div className='text-3xl font-semibold mb-3 mt-3'>Notifications</div>
+                    <Typography sx={{ p: 2 }}>
+                      <div className='max-h-[500px] max-w-96'>
+                        <div className='text-3xl font-semibold border-b border-gray-200 py-3 p-2'>Notifications</div>
                         {notificationRead.map((notificationReads) => (
                           <div className='p-2 hover:bg-gray-200' key={notificationReads.id}>
-                            <div className=''>{notificationReads.title}</div>
-                            <div className=''>{notificationReads.dateTime}</div>
+                            <div className='lg:text-lg text-base'>
+                              <span className='font-bold'>{notificationReads.title}</span> mentioned you in a comment in{' '}
+                              <span className='font-semibold'>{notificationReads.title}</span> ·{' '}
+                              <span className='italic'>{notificationReads.title}</span>. Please remember the reminder
+                              above.
+                            </div>
+                            <div className='lg:text-base text-sm text-gray-500'>
+                              {getRelativeTime(notificationReads.dateTime)}
+                            </div>
                           </div>
                         ))}
                       </div>
