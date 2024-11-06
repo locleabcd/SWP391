@@ -139,6 +139,14 @@ const Chat = () => {
       }
     })
   }
+  const backToDefaultRoom = async () => {
+    const token = localStorage.getItem('token')
+    await axios.get(`${baseUrl}/messages/${nickname}/defaultRoom`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
 
   const fetchAndDisplayStaffChat = async (userId) => {
     const token = localStorage.getItem('token')
@@ -189,12 +197,15 @@ const Chat = () => {
     }
   }
 
-  const onLogout = () => {
+  const onLogout = async () => {
+    console.log(`************** ${userRole} ********************** ${nickname}`)
+    if (userRole === 'MEMBER') {
+      await backToDefaultRoom()
+    }
     if (stompClient) {
       stompClient.send('/app/user.disconnectUser', {}, JSON.stringify({ nickname: nickname, status: 'OFFLINE' }))
       stompClient.disconnect()
     }
-
     setSelectedUserId(null)
     setChatMessages([])
     setConnectedUsers([])
@@ -351,6 +362,19 @@ const Chat = () => {
                         placeholder='Aa'
                         required
                       />
+                      <button
+                        type='button'
+                        className='bg-gray-50 border-r text-black px-2 py-2'
+                        onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+                      >
+                        😊
+                      </button>
+
+                      {showEmojiPicker && (
+                        <div className='absolute bottom-12 right-0'>
+                          <EmojiPicker onEmojiClick={handleEmojiClick} />
+                        </div>
+                      )}
                       <button className='bg-gray-50 border-r text-black px-2 py-2'>
                         <svg
                           xmlns='http://www.w3.org/2000/svg'

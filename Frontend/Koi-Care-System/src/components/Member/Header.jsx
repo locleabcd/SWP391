@@ -41,7 +41,6 @@ function Header() {
       if (!token) {
         throw new Error('No token found')
       }
-
       const response = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/carts/cart/${cartId}/my-cart`, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -73,27 +72,27 @@ function Header() {
     getCartId()
   }, [])
 
-  const getUser = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const id = localStorage.getItem('id')
-      if (!token) {
-        throw new Error('No token found')
-      }
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/profile/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      setUser(res.data.data)
-    } catch (error) {
-      console.error('Error fetching users:', error)
-    }
-  }
+  // const getUser = async () => {
+  //   try {
+  //     const token = localStorage.getItem('token')
+  //     const id = localStorage.getItem('id')
+  //     if (!token) {
+  //       throw new Error('No token found')
+  //     }
+  //     const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/profile/${id}`, {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`
+  //       }
+  //     })
+  //     setUser(res.data.data)
+  //   } catch (error) {
+  //     console.error('Error fetching users:', error)
+  //   }
+  // }
 
-  useEffect(() => {
-    getUser()
-  }, [])
+  // useEffect(() => {
+  //   getUser()
+  // }, [])
 
   const getNotificationRead = async () => {
     try {
@@ -397,11 +396,11 @@ function Header() {
           <div className='my-account'>
             <button onClick={toggleList} className='lg:flex lg:items-center lg:p-2 lg:rounded-md lg:space-x-2 hidden'>
               <div className='flex flex-col'>
-                <p className='text-sm font-medium'>{user.name}</p>
-                <p className='text-xs text-gray-500'>{user.role}</p>
+                <p className='text-sm font-medium'>{name}</p>
+                <p className='text-xs text-gray-500'>{role}</p>
               </div>
               <div className='ml-auto flex items-center space-x-1'>
-                <img src={user.avatar} className='w-12 h-12 rounded-full object-cover' />
+                <img src={avt} className='w-12 h-12 rounded-full object-cover' />
               </div>
             </button>
             {isOpen && (
