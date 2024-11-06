@@ -19,6 +19,7 @@ import Chat from '../../../components/Chat/Chat'
 import { FaSpinner } from 'react-icons/fa'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material'
 import * as XLSX from 'xlsx'
+import Swal from 'sweetalert2'
 function WaterParameters() {
   const { isDarkMode } = useDarkMode()
   const [ponds, setPonds] = useState([])
@@ -43,9 +44,6 @@ function WaterParameters() {
   const [saltStyle, setSaltStyle] = useState({})
   const [totalChlorineStyle, setTotalChlorineStyle] = useState({})
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-
-  const handleOpenDialog = () => setIsDialogOpen(true)
-  const handleCloseDialog = () => setIsDialogOpen(false)
 
   const [showInfo, setShowInfo] = useState({
     nitrate: false,
@@ -226,6 +224,20 @@ function WaterParameters() {
   }
   const deleteParameter = async (waterId) => {
     setIsLoading(true)
+    const { isConfirmed } = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
+
+    if (!isConfirmed) {
+      setIsLoading(false)
+      return
+    }
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -3053,7 +3065,7 @@ function WaterParameters() {
                   </div>
                 </form>
                 <div className='w-full flex flex-col justify-center'>
-                  <button className='mx-auto' onClick={handleOpenDialog}>
+                  <button className='mx-auto' onClick={() => deleteParameter()}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'

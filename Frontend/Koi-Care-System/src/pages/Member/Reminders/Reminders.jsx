@@ -9,6 +9,7 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import { Switch } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { FaSpinner } from 'react-icons/fa'
+import Swal from 'sweetalert2'
 
 function Reminders() {
   const { isDarkMode } = useDarkMode()
@@ -81,7 +82,7 @@ function Reminders() {
         'https://koicaresystemv2.azurewebsites.net/api/reminders/create',
         {
           title: data.title,
-          dateTime: data.dateTime + ':20',
+          dateTime: data.dateTime,
           repeatInterval: data.interval
         },
         {
@@ -130,6 +131,20 @@ function Reminders() {
 
   const deleteReminder = async () => {
     setIsLoading(true)
+    const { isConfirmed } = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
+
+    if (!isConfirmed) {
+      setIsLoading(false)
+      return
+    }
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -164,7 +179,7 @@ function Reminders() {
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] max-h-[800px]'>
             <TopLayout text='Reminders' links='/member/reminders' />
-            <div className='grid grid-cols-3 gap-10 mt-10'>
+            <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10 mt-10'>
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
@@ -348,6 +363,7 @@ function Reminders() {
                       </label>
                       <input
                         type='datetime-local'
+                        min={new Date().toISOString().slice(0, 16)}
                         className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
@@ -463,6 +479,7 @@ function Reminders() {
                       </label>
                       <input
                         type='datetime-local'
+                        min={new Date().toISOString().slice(0, 16)}
                         className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
@@ -496,14 +513,7 @@ function Reminders() {
                     </div>
                   </div>
                   <div className='w-full flex flex-col justify-center'>
-                    <button
-                      className='mx-auto'
-                      onClick={() => {
-                        if (window.confirm('Are you sure you want to delete this pond log?')) {
-                          deleteReminder()
-                        }
-                      }}
-                    >
+                    <button className='mx-auto' onClick={() => deleteReminder()}>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'

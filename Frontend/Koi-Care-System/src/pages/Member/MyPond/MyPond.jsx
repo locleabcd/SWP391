@@ -15,7 +15,7 @@ import TopLayout from '../../../layouts/TopLayout'
 import { motion } from 'framer-motion'
 import 'aos/dist/aos.css'
 import '../../../index.css'
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material'
+import Swal from 'sweetalert2'
 
 function MyPond() {
   const { isDarkMode } = useDarkMode()
@@ -31,9 +31,6 @@ function MyPond() {
   const [issue, setIssue] = useState([])
   const [showButtons, setShowButtons] = useState(false)
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-
-  const handleOpenDialog = () => setIsDialogOpen(true)
-  const handleCloseDialog = () => setIsDialogOpen(false)
 
   const getIssue = async (koipondId) => {
     try {
@@ -244,6 +241,20 @@ function MyPond() {
 
   const deletePond = async (id) => {
     setIsLoading(true)
+    const { isConfirmed } = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
+
+    if (!isConfirmed) {
+      setIsLoading(false)
+      return
+    }
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -1047,7 +1058,7 @@ function MyPond() {
                     </div>
                   </form>
                   <div className='w-full flex flex-col justify-center'>
-                    <button className='mx-auto' onClick={handleOpenDialog}>
+                    <button className='mx-auto' onClick={() => deletePond()}>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
@@ -1065,31 +1076,6 @@ function MyPond() {
                     </button>
 
                     <p className='text-center font-semibold'>Delete this pond</p>
-                    <Dialog
-                      open={isDialogOpen}
-                      onClose={handleCloseDialog}
-                      className={isDarkMode ? 'dark-mode-dialog' : ''}
-                      sx={{
-                        '& .MuiDialog-paper': {
-                          backgroundColor: isDarkMode ? 'rgb(36,48,63)' : 'white',
-                          color: isDarkMode ? 'white' : 'black',
-                          boxShadow: isDarkMode ? '0px 4px 20px rgba(0, 0, 0, 0.5)' : '0px 4px 20px rgba(0, 0, 0, 0.1)'
-                        }
-                      }}
-                    >
-                      <DialogTitle>Confirm delete this pond</DialogTitle>
-                      <DialogContent>
-                        <DialogContentText>Are you sure you want to delete this pond?</DialogContentText>
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={handleCloseDialog} color='primary'>
-                          No
-                        </Button>
-                        <Button onClick={() => deletePond(currentPond.id)} color='error' disabled={isLoading}>
-                          Yes
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
                   </div>
                 </div>
               </div>

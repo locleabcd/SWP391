@@ -20,6 +20,7 @@ function Recommendations() {
   const [bought, setBought] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [count, setCount] = useState(1)
+  const [countComment, setCountComment] = useState(0)
   const [active, setActive] = useState('description')
   const [feedback, setFeedback] = useState([])
   const [feedbackUser, setFeedbackUser] = useState([])
@@ -181,6 +182,7 @@ function Recommendations() {
       })
 
       getFeedback()
+      setCountComment(countComment + 1)
     } catch (err) {
       console.log(err)
     }
@@ -210,6 +212,7 @@ function Recommendations() {
       setRating(0)
       setComment('')
       setHoveredRating(0)
+      setCountComment(countComment + 1)
     } catch (error) {
       console.error('Error details:', error)
     }
@@ -543,7 +546,7 @@ function Recommendations() {
               </div>
             </div>
 
-            {bought[0] !== '0001-01-01' ? (
+            {bought[0] !== '0001-01-01' && feedbackUser === false && countComment !== 1 ? (
               <div className='lg:mt-20 mt-10 lg:border lg:border-gray-200 rounded-xl lg:px-10 lg:py-5'>
                 <div className='lg:text-3xl text-xl'>Post Reviews</div>
                 <div className='flex items-center lg:mt-6 mt-3'>
@@ -581,7 +584,7 @@ function Recommendations() {
                   className='mt-5 lg:px-5 lg:py-3 py-2 px-3 lg:text-base text-sm bg-blue-400 hover:bg-blue-500 rounded-lg text-white'
                   onClick={editableFeedback ? updateFeedback : createFeedback}
                 >
-                  {editableFeedback ? 'Edit Review' : 'Post Review'}
+                  Post Review
                 </button>
 
                 {isEditing && (
