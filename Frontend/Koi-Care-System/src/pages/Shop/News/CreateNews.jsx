@@ -11,6 +11,8 @@ import TopLayout from '../../../layouts/TopLayoutShop'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select'
 import makeAnimated from 'react-select/animated'
+import ReactQuill from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
 const animatedComponents = makeAnimated()
 
@@ -21,6 +23,7 @@ function CreateNews() {
   const navigate = useNavigate()
   const [tags, setTags] = useState([])
   const [selectedTags, setSelectedTags] = useState([])
+  const [blogContent, setBlogContent] = useState('')
 
   const {
     register,
@@ -72,7 +75,7 @@ function CreateNews() {
 
       // Append all fields to formData
       formData.append('blogTitle', data.blogTitle)
-      formData.append('blogContent', data.blogContent)
+      formData.append('blogContent', blogContent)
       formData.append('blogImage', data.blogImage)
       selectedTags.forEach((tag) => {
         formData.append('tagIds', tag.value) // Use tag.value for selected tag ID
@@ -190,15 +193,22 @@ function CreateNews() {
                 <label htmlFor='blogContent' className='block text-sm font-medium mb-2'>
                   Blog Content
                 </label>
-                <textarea
-                  id='blogContent'
-                  className={`w-full p-2 border rounded-md ${
-                    isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
-                  } ${errors.blogContent ? 'border-red-500' : 'border-gray-300'}`}
-                  {...register('blogContent', { required: 'Blog Content is required' })}
-                  rows={10}
+                <ReactQuill
+                  theme='snow'
+                  value={blogContent}
+                  onChange={setBlogContent}
+                  className={`mb-20 ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
+                  modules={{
+                    toolbar: [
+                      [{ header: '1' }, { header: '2' }, { font: [] }],
+                      [{ list: 'ordered' }, { list: 'bullet' }],
+                      ['bold', 'italic', 'underline'],
+                      [{ align: [] }],
+                      ['link']
+                    ]
+                  }}
+                  style={{ height: '200px' }}
                 />
-                {errors.blogContent && <p className='text-red-500 text-xs mt-1'>{errors.blogContent.message}</p>}
               </div>
 
               <div className='blog-image-hidden'>

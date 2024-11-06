@@ -56,14 +56,14 @@ function ReminderMB() {
           <div key={index} className='notification'>
             <div className='inset-0 fixed bg-gray-800 bg-opacity-50 flex items-center justify-center z-40'>
               <div className='bg-white p-4 rounded shadow-lg'>
-                <div className='flex gap-2'>
+                <div className='flex gap-4 items-center'>
                   <svg
                     xmlns='http://www.w3.org/2000/svg'
                     fill='none'
                     viewBox='0 0 24 24'
                     strokeWidth={1.5}
                     stroke='currentColor'
-                    className='size-6'
+                    className='lg:size-16 size-10 bg-yellow-500 rounded-full text-white'
                   >
                     <path
                       strokeLinecap='round'
@@ -72,7 +72,7 @@ function ReminderMB() {
                     />
                   </svg>
 
-                  <h2 className='text-yellow-500 font-bold'>Reminder to</h2>
+                  <h2 className='text-yellow-500 font-bold lg:text-3xl text-xl'>Reminder to</h2>
                 </div>
                 <p className='mt-2'>It has been a while since you last updated the prices</p>
                 <ul className='list-disc ml-4 mt-2'>{notification}</ul>

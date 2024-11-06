@@ -18,6 +18,7 @@ import 'aos/dist/aos.css'
 import { FaSpinner } from 'react-icons/fa'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material'
 import * as XLSX from 'xlsx'
+import Swal from 'sweetalert2'
 function WaterParameters() {
   const { isDarkMode } = useDarkMode()
   const [ponds, setPonds] = useState([])
@@ -42,9 +43,6 @@ function WaterParameters() {
   const [saltStyle, setSaltStyle] = useState({})
   const [totalChlorineStyle, setTotalChlorineStyle] = useState({})
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-
-  const handleOpenDialog = () => setIsDialogOpen(true)
-  const handleCloseDialog = () => setIsDialogOpen(false)
 
   const [showInfo, setShowInfo] = useState({
     nitrate: false,
@@ -225,6 +223,20 @@ function WaterParameters() {
   }
   const deleteParameter = async (waterId) => {
     setIsLoading(true)
+    const { isConfirmed } = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
+
+    if (!isConfirmed) {
+      setIsLoading(false)
+      return
+    }
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -3051,7 +3063,7 @@ function WaterParameters() {
                   </div>
                 </form>
                 <div className='w-full flex flex-col justify-center'>
-                  <button className='mx-auto' onClick={handleOpenDialog}>
+                  <button className='mx-auto' onClick={() => deleteParameter()}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -3069,31 +3081,6 @@ function WaterParameters() {
                   </button>
 
                   <p className='text-center font-semibold'>Delete this parameter</p>
-                  <Dialog
-                    open={isDialogOpen}
-                    onClose={handleCloseDialog}
-                    className={isDarkMode ? 'dark-mode-dialog' : ''}
-                    sx={{
-                      '& .MuiDialog-paper': {
-                        backgroundColor: isDarkMode ? 'rgb(36,48,63)' : 'white',
-                        color: isDarkMode ? 'white' : 'black',
-                        boxShadow: isDarkMode ? '0px 4px 20px rgba(0, 0, 0, 0.5)' : '0px 4px 20px rgba(0, 0, 0, 0.1)'
-                      }
-                    }}
-                  >
-                    <DialogTitle>Confirm delete this parameter</DialogTitle>
-                    <DialogContent>
-                      <DialogContentText>Are you sure you want to delete this parameter?</DialogContentText>
-                    </DialogContent>
-                    <DialogActions>
-                      <Button onClick={handleCloseDialog} color='primary'>
-                        No
-                      </Button>
-                      <Button onClick={() => deleteParameter(currentParameter.id)} color='error' disabled={isLoading}>
-                        Yes
-                      </Button>
-                    </DialogActions>
-                  </Dialog>
                 </div>
               </div>
             </div>
