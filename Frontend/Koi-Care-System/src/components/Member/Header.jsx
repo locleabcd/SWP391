@@ -224,6 +224,41 @@ function Header() {
       <ReminderMB />
       <div className='flex items-center justify-end ml-4'>
         <div className='mr-4 flex justify-center items-center gap-2'>
+          {isSearchOpen && (
+            <div
+              className={`absolute top-16 left-[8vh] md:top-[80px] md:left-[110vh] z-50 mt-2 ${
+                isDarkMode ? ' text-gray-200' : ' text-gray-800'
+              }`}
+            >
+              <input
+                type='text'
+                placeholder='Search Here'
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={`p-2 rounded-lg border ${isDarkMode ? ' bg-gray-800 text-gray-200' : ' bg-white text-gray-800'}`}
+              />
+              {filteredPaths.length > 0 && (
+                <ul
+                  className={`absolute z-50 border border-gray-300 rounded mt-1 w-full max-h-40 overflow-x-auto no-scroll-bar ${
+                    isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
+                  }`}
+                >
+                  {filteredPaths.map((item) => (
+                    <li key={item.id}>
+                      <NavLink
+                        to={item.link}
+                        className={`block px-4 py-2 rounded ${
+                          isDarkMode ? 'text-gray-200 hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-200'
+                        }`}
+                      >
+                        {item.name}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
           <button
             onClick={toggleSearch}
             className={`${
@@ -779,41 +814,6 @@ function Header() {
           </div>
         </div>
       </div>
-      {isSearchOpen && (
-        <div
-          className={`absolute top-16 left-[8vh] md:top-[2vh] md:left-[118vh] z-50 mt-2 ${
-            isDarkMode ? ' text-gray-200' : ' text-gray-800'
-          }`}
-        >
-          <input
-            type='text'
-            placeholder='Search Here'
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className={`p-2 rounded-lg border ${isDarkMode ? ' bg-gray-800 text-gray-200' : ' bg-white text-gray-800'}`}
-          />
-          {filteredPaths.length > 0 && (
-            <ul
-              className={`absolute z-50 border border-gray-300 rounded mt-1 w-full max-h-40 overflow-x-auto no-scroll-bar ${
-                isDarkMode ? 'bg-gray-800 text-gray-200' : 'bg-white text-gray-800'
-              }`}
-            >
-              {filteredPaths.map((item) => (
-                <li key={item.id}>
-                  <NavLink
-                    to={item.link}
-                    className={`block px-4 py-2 rounded ${
-                      isDarkMode ? 'text-gray-200 hover:bg-gray-700' : 'text-gray-800 hover:bg-gray-200'
-                    }`}
-                  >
-                    {item.name}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
     </div>
   )
 }

@@ -621,7 +621,7 @@ function Header() {
 
       {isSearchOpen && (
         <div
-          className={`absolute top-16 left-[8vh] md:top-[2vh] md:left-[134vh] z-50 mt-2 ${
+          className={`absolute top-16 left-[8vh] md:top-[80px] md:left-[120vh] z-50 mt-2 ${
             isDarkMode ? ' text-gray-200' : ' text-gray-800'
           }`}
         >

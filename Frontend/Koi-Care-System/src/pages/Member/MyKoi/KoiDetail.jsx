@@ -358,6 +358,7 @@ function KoiDetails() {
   }
 
   const getKoi = async () => {
+    setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -374,6 +375,8 @@ function KoiDetails() {
     } catch (error) {
       console.error('Error fetching koi:', error)
       alert('Failed to load koi details, please try again later.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
