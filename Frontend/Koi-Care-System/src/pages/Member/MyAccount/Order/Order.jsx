@@ -9,6 +9,7 @@ import { FaUser, FaPhoneAlt, FaRegAddressCard } from 'react-icons/fa'
 import { BsFillCalendarDateFill } from 'react-icons/bs'
 import { GrNotes } from 'react-icons/gr'
 import { MdPendingActions } from 'react-icons/md'
+import { FaSpinner } from 'react-icons/fa'
 
 function Order() {
   const { isDarkMode } = useDarkMode()
@@ -19,6 +20,9 @@ function Order() {
   const [currentPage, setCurrentPage] = useState(1)
   const totalPages = Math.ceil(orders.length / pageSize)
   const displayedOrders = orders.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  const [sortStatus, setSortStatus] = useState('')
+  const [sortedOrders, setSortedOrders] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const getPaymentUrl = async (orderId) => {
     try {
       const token = localStorage.getItem('token')
@@ -35,6 +39,7 @@ function Order() {
   }
 
   const getOrders = async () => {
+    setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('id')
@@ -42,12 +47,25 @@ function Order() {
         headers: { Authorization: `Bearer ${token}` }
       })
 
-      const sortedOrders = res.data.data.sort((a, b) => b.id - a.id)
-      setOrders(sortedOrders)
+      let ordersData = res.data.data
+
+      if (sortStatus) {
+        ordersData = ordersData.filter((order) => order.status === sortStatus).sort((a, b) => b.id - a.id)
+      } else {
+        ordersData = ordersData.sort((a, b) => b.id - a.id)
+      }
+      setOrders(ordersData)
+      setSortedOrders(ordersData)
     } catch (error) {
       console.error(error)
       toast.error('Failed to get orders')
+    } finally {
+      setIsLoading(false)
     }
+  }
+
+  const handleSortChange = (event) => {
+    setSortStatus(event.target.value)
   }
 
   const toggleOrderDetails = (orderId) => {
@@ -59,7 +77,7 @@ function Order() {
 
   useEffect(() => {
     getOrders()
-  }, [])
+  }, [sortStatus])
 
   return (
     <div className='h-screen flex'>
@@ -70,23 +88,38 @@ function Order() {
         <Header />
         <div className='p-6 rounded-lg shadow-md'>
           <h1 className='text-2xl font-bold mb-6 text-center'>My Orders Summary</h1>
-          <select
-            value={pageSize}
-            onChange={(e) => {
-              setPageSize(Number(e.target.value))
-              setCurrentPage(1)
-            }}
-            className='my-4 p-2 border rounded'
-          >
-            <option value={5}>5</option>
-            <option value={10}>10</option>
-            <option value={20}>20</option>
-            <option value={50}>50</option>
-          </select>
+
+          <div className='mb-4 flex justify-between'>
+            <select
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value))
+                setCurrentPage(1)
+              }}
+              className='p-2 border rounded'
+            >
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={50}>50</option>
+            </select>
+            <select onChange={handleSortChange} value={sortStatus} className='p-2 rounded border'>
+              <option value=''>Sort by Status</option>
+              <option value='PENDING'>PENDING</option>
+              <option value='PROCESSING'>PROCESSING</option>
+              <option value='CANCELLED'>CANCELLED</option>
+              <option value='DELIVERED'>DELIVERED</option>
+            </select>
+          </div>
+          {isLoading && (
+            <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+              <FaSpinner className='animate-spin text-green-500 text-6xl' />
+            </div>
+          )}
           {displayedOrders?.length > 0 ? (
             <div className='space-y-6'>
               {displayedOrders.map((order) => (
-                <div key={order.id} className='border rounded-lg p-6 shadow-lg hover:shadow-2xl transition-shadow'>
+                <div key={order.id} className='border rounded-lg p-6 shadow-lg  transition-shadow'>
                   <h2 className='text-xl font-semibold mb-4 flex justify-between items-center'>
                     Order ID: {order.id}
                     <button onClick={() => toggleOrderDetails(order.id)} className='text-gray-500 hover:text-gray-700'>
@@ -127,7 +160,7 @@ function Order() {
                   </div>
 
                   {expandedOrders[order.id] && (
-                    <div className='mt-4 p-4 text-gray-600 shadow-lg rounded-lg'>
+                    <div className='mt-4 p-4 text-gray-600  rounded-lg'>
                       <div className='text-lg font-semibold text-gray-700 mb-4'>Order Details</div>
                       <div className='space-y-2'>
                         <p className='flex items-center gap-2'>
@@ -161,17 +194,19 @@ function Order() {
                         <span className='text-lg text-blue-600'>{order.totalAmount.toLocaleString()}đ</span>
                       </div>
 
-                      <button
-                        onClick={async () => {
-                          await getPaymentUrl(order.id)
-                          if (paymentUrl) {
-                            window.location.href = paymentUrl
-                          }
-                        }}
-                        className='mt-6 w-full py-2 rounded bg-blue-500 text-white font-semibold hover:bg-blue-600 transition'
-                      >
-                        Payment
-                      </button>
+                      {order.status === 'PENDING' && (
+                        <button
+                          onClick={async () => {
+                            await getPaymentUrl(order.id)
+                            if (paymentUrl) {
+                              window.location.href = paymentUrl
+                            }
+                          }}
+                          className='mt-6 w-full py-2 rounded bg-blue-500 text-white font-semibold hover:bg-blue-600 transition'
+                        >
+                          Payment
+                        </button>
+                      )}
                     </div>
                   )}
                 </div>

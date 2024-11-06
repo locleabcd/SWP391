@@ -64,12 +64,13 @@ function Login() {
         localStorage.setItem('role', user.role)
         localStorage.setItem('id', user.id)
         localStorage.setItem('name', user.username)
+        localStorage.setItem('avt', user.avatar)
 
         const role = user.role
 
         switch (role) {
           case 'ADMIN':
-            navigate('/admin')
+            navigate('/admin/dashboard')
             break
           case 'SHOP':
             navigate('/shop/dashboard')

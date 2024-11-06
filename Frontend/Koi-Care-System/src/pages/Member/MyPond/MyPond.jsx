@@ -250,6 +250,7 @@ function MyPond() {
     }
     try {
       const token = localStorage.getItem('token')
+      const id = localStorage.getItem('pondId')
       if (!token) {
         throw new Error('No token found')
       }
@@ -1051,7 +1052,7 @@ function MyPond() {
                     </div>
                   </form>
                   <div className='w-full flex flex-col justify-center'>
-                    <button className='mx-auto' onClick={() => deletePond(currentPond.id)}>
+                    <button className='mx-auto' onClick={() => deletePond()}>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'

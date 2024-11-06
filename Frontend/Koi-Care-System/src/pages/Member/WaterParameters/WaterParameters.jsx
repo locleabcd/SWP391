@@ -227,6 +227,11 @@ function WaterParameters() {
     }
   }
   const deleteParameter = async (waterId) => {
+    if (!waterId) {
+      console.error('waterId is undefined or null. Cannot delete.')
+      return
+    }
+
     setIsLoading(true)
     const { isConfirmed } = await Swal.fire({
       title: 'Are you sure?',
@@ -242,29 +247,39 @@ function WaterParameters() {
       setIsLoading(false)
       return
     }
+
     try {
       const token = localStorage.getItem('token')
       if (!token) {
-        throw new Error('no token found')
+        throw new Error('No token found')
       }
+
+      console.log('Deleting water parameter with ID:', waterId) // Kiểm tra waterId
       await axios.delete(`https://koicaresystemv2.azurewebsites.net/api/water-parameters/delete/${waterId}`, {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
-      setIsDialogOpen(false)
+
       setIsEditFormVisible(false)
       toast.success('Parameter deleted successfully')
+
       const userId = localStorage.getItem('id')
-      getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
+      if (userId) {
+        getParameter(userId) // Gọi lại getParameter để cập nhật dữ liệu mới
+      } else {
+        console.error('User ID not found in localStorage.')
+      }
+
       reset()
     } catch (error) {
-      console.error('Error deleting paramter:', error)
-      toast.error('Error deleting paramter')
+      console.error('Error deleting parameter:', error)
+      toast.error('Error deleting parameter')
     } finally {
       setIsLoading(false)
     }
   }
+
   const onSubmit = async (data) => {
     if (currentParameter) {
       updateParameter(data, currentParameter.id)

@@ -47,7 +47,7 @@ function Reminders() {
   const getReminder = async () => {
     const token = localStorage.getItem('token')
     try {
-      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/reminders/list', {
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/reminders/list/user', {
         headers: {
           Authorization: `Bearer ${token}`
         }
