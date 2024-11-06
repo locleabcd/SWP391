@@ -706,7 +706,6 @@ function Header() {
               </div>
             </NavLink>
 
-            {/* sidebar items  */}
             <NavLink
               to={path.news}
               className={({ isActive }) => {
@@ -765,15 +764,13 @@ function Header() {
           >
             <div className='card-content flex items-center '>
               <img
-                src={avt || 'default-avatar.png'}
+                src={avt}
                 alt='User Avatar'
                 className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
               />
               <div className='ml-3'>
-                <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'text-black'}`}>
-                  {user.name || 'User Name'}
-                </p>
-                <p className='text-sm text-gray-500'>{user.role || 'User Role'}</p>
+                <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'text-black'}`}>{name}</p>
+                <p className='text-sm text-gray-500'>{role}</p>
               </div>
             </div>
             <Link onClick={handleLogout} to='/login'>
