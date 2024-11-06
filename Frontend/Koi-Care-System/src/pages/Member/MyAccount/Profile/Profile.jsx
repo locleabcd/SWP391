@@ -110,8 +110,9 @@ function Profile() {
       const res = await axios.patch(
         'https://koicaresystemv2.azurewebsites.net/api/users/changePassword',
         {
-          currentPassword,
-          newPassword
+          currentPassword: currentPassword,
+          newPassword: newPassword,
+          confirmationPassword: confirmPassword
         },
         {
           headers: {
