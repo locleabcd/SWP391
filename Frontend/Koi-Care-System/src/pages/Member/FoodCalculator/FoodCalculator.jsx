@@ -33,30 +33,36 @@ function FoodCalculator() {
       })
       const ponds = res.data.data
 
-      // Lấy thông tin salt của từng hồ koi từ API thứ hai
       const pondsWithTemp = await Promise.all(
         ponds.map(async (pond) => {
-          const tempRes = await axios.get(
-            `https://koicaresystemv2.azurewebsites.net/api/water-parameters/getLatestByKoiPondId/${pond.id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`
+          try {
+            const tempRes = await axios.get(
+              `https://koicaresystemv2.azurewebsites.net/api/water-parameters/getLatestByKoiPondId/${pond.id}`,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`
+                }
               }
+            )
+            return {
+              ...pond,
+              temperature: tempRes.data.data?.temperature
             }
-          )
-          return {
-            ...pond,
-            temperature: tempRes.data.data?.temperature // lấy thông tin salt nếu có
+          } catch (err) {
+            if (err.response && err.response.status === 404) {
+              console.warn(`Water parameters not found for pond with ID ${pond.id}`)
+              return { ...pond, temperature: null } // Set null if water data not found
+            } else {
+              throw err // Re-throw other errors
+            }
           }
         })
       )
 
-      // Lưu danh sách hồ koi kèm thông tin salt vào state
       setPonds(pondsWithTemp)
       console.log(pondsWithTemp)
     } catch (error) {
-      console.error('Error fetching water parameters:', error.response ? error.response.data : error.message)
-      console.error('Error fetching ponds:', error)
+      console.error('Error fetching ponds or water parameters:', error.response ? error.response.data : error.message)
     }
   }
 
@@ -310,9 +316,10 @@ Over 28°C is not a good temperature to feed at!`
               {selectedPond && (
                 <div className='mt-4'>
                   <strong>Tempurate:</strong>{' '}
-                  {selectedPond.temperature ? `${selectedPond.temperature}°C` : 'No data available'}
+                  {selectedPond.temperature ? `${selectedPond.temperature}°C` : 'No water parameters in pond'}
                 </div>
               )}
+
               {selectedPond && (
                 <div>
                   <div className='mt-4 lg:p-4 grid lg:grid-cols-3 grid-cols-1 space-x-2'>
