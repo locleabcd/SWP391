@@ -1476,7 +1476,7 @@ function WaterParameters() {
                       <input
                         type='number'
                         id='nitrite'
-                        step='0.01'
+                        step='0.001'
                         placeholder='mg/l'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
@@ -1753,8 +1753,6 @@ function WaterParameters() {
                         type='number'
                         placeholder='°C'
                         step='0.01'
-                        min={0}
-                        max={100}
                         id='temperature'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
@@ -1809,8 +1807,6 @@ function WaterParameters() {
                         type='number'
                         id='phValue'
                         step='0.01'
-                        min={0}
-                        max={14}
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
                         }`}
@@ -1866,6 +1862,7 @@ function WaterParameters() {
                       <input
                         type='number'
                         placeholder='°dH'
+                        step='0.01'
                         id='carbonHardness'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
@@ -2153,6 +2150,7 @@ function WaterParameters() {
                         type='number'
                         placeholder='g'
                         id='amountFed'
+                        step='0.01'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black text-white' : 'bg-white border-black '
                         }`}
@@ -2387,7 +2385,7 @@ function WaterParameters() {
                       <input
                         type='number'
                         id='nitrite'
-                        step='0.01'
+                        step='0.001'
                         placeholder='mg/l'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
@@ -2720,8 +2718,6 @@ function WaterParameters() {
                         type='number'
                         id='phValue'
                         step='0.01'
-                        min={0}
-                        max={14}
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
                         }`}
@@ -2777,6 +2773,7 @@ function WaterParameters() {
                       <input
                         type='number'
                         placeholder='°dH'
+                        step='0.01'
                         id='carbonHardness'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
@@ -3068,6 +3065,7 @@ function WaterParameters() {
                         type='number'
                         placeholder='g'
                         id='amountFed'
+                        step='0.01'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black text-white' : 'bg-white border-black '
                         }`}
