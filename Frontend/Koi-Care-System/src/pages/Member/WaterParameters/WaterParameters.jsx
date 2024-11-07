@@ -2251,7 +2251,7 @@ function WaterParameters() {
                   </div>
 
                   <h3 className='mb-5 text-2xl font-bold'>Edit Parameter</h3>
-                  <div className='text-black grid grid-cols-2 grid-rows-4 gap-4'>
+                  <div className='text-black grid grid-cols-2 grid-rows-4 lg:gap-8 gap-6'>
                     <div className='relative col-span-1'>
                       <label
                         className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
