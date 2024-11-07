@@ -1201,8 +1201,8 @@ function WaterParameters() {
                               >
                                 {parameter.carbonHardness}
                               </td>
-                              <td className='border px-4 py-2'>&gt;= 40</td>
-                              <td className='border px-4 py-2'>mg/l</td>
+                              <td className='border px-4 py-2'>&gt;=4</td>
+                              <td className='border px-4 py-2'>°dH</td>
                             </tr>
                             <tr>
                               <td className='border px-4 py-2'>CO₂</td>
@@ -1851,7 +1851,7 @@ function WaterParameters() {
                         title='Carbon Hardness Information'
                         content={
                           <>
-                            <strong>Optimal Range: &gt;= 40 °dH</strong>
+                            <strong>Optimal Range: &gt;= 4 °dH</strong>
                             <br />
                             To achieve a carbonate hardness (KH) of at least 4 °dH, water changes are necessary. Use tap
                             water for this! Also measure the KH value of the water coming from the tap. If this is also
@@ -2762,7 +2762,7 @@ function WaterParameters() {
                         title='Carbon Hardness Information'
                         content={
                           <>
-                            <strong>Optimal Range: &gt;= 40 °dH</strong>
+                            <strong>Optimal Range: &gt;= 4 °dH</strong>
                             <br />
                             To achieve a carbonate hardness (KH) of at least 4 °dH, water changes are necessary. Use tap
                             water for this! Also measure the KH value of the water coming from the tap. If this is also
