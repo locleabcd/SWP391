@@ -1091,7 +1091,7 @@ function WaterParameters() {
                               >
                                 {parameter.nitrite}
                               </td>
-                              <td className='border px-4 py-2'>0.1 - 0.3</td>
+                              <td className='border px-4 py-2'>0 - 0.1</td>
                               <td className='border px-4 py-2'>mg/l</td>
                             </tr>
                             <tr>
