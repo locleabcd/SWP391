@@ -11,8 +11,8 @@ function SaltCalculator() {
   const { isDarkMode } = useDarkMode()
   const [ponds, setPonds] = useState([])
   const [selectedPond, setSelectedPond] = useState(null)
-  const [desiredSalinity, setDesiredSalinity] = useState(0.01) // Nồng độ mong muốn
-  const [currentSalinity, setCurrentSalinity] = useState(0.01) // Nồng độ hiện tại
+  const [desiredSalinity, setDesiredSalinity] = useState(0.001) // Nồng độ mong muốn
+  const [currentSalinity, setCurrentSalinity] = useState(0.001) // Nồng độ hiện tại
   const [saltNeeded, setSaltNeeded] = useState(0) // Kết quả: lượng muối cần thêm
   const [waterChangePercent, setWaterChangePercent] = useState(100) // Phần trăm thay đổi nước
   const [refillAmount, setRefillAmount] = useState(0) // Lượng nước cần bổ sung
@@ -218,9 +218,9 @@ function SaltCalculator() {
                       Current Salinity (%):
                       <input
                         type='range'
-                        min='0.01'
+                        min='0.001'
                         max='2'
-                        step='0.01'
+                        step='0.001'
                         value={currentSalinity}
                         onChange={(e) => setCurrentSalinity(e.target.value)}
                         className='slider-thumb'
@@ -235,9 +235,9 @@ function SaltCalculator() {
                       Desired Salinity (%):
                       <input
                         type='range'
-                        min='0.01'
+                        min='0.001'
                         max='2'
-                        step='0.01'
+                        step='0.001'
                         value={desiredSalinity}
                         onChange={(e) => setDesiredSalinity(e.target.value)}
                         className='slider-thumb'
