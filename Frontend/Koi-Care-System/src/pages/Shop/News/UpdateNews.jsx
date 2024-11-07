@@ -223,7 +223,7 @@ function UpdateNews() {
                   className={`w-full  rounded-md ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'} ${errors.blogContent ? 'border-red-500' : 'border-gray-300'}`}
                   modules={{
                     toolbar: [
-                      [{ header: '1' }, { header: '2' }, { font: [] }],
+                      [{ header: '1' }, { header: '2' }, { font: [] }, { size: [] }],
                       [{ list: 'ordered' }, { list: 'bullet' }],
                       ['bold', 'italic', 'underline'],
                       [{ align: [] }],

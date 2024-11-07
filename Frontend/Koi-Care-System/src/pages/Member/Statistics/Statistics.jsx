@@ -35,7 +35,8 @@ function Statistics() {
   const navigate = useNavigate()
   const [selectedPond, setSelectedPond] = useState(null)
   const [dateFilter, setDateFilter] = useState('Day')
-  const [growthHistoryData, setGrowthHistoryData] = useState([])
+  const [koiByPondData, setKoiByPondData] = useState([])
+  const [koiGrowthData, setKoiGrowthData] = useState([])
   const [opacity, setOpacity] = useState({
     nitrite: 1,
     nitrate: 1,
@@ -59,6 +60,7 @@ function Statistics() {
     if (pond) {
       setSelectedPond(pond)
       getWater(pondId)
+      getKoiByPond(pondId)
     } else {
       setSelectedPond(null)
     }
@@ -151,6 +153,47 @@ function Statistics() {
 
   useEffect(() => {
     getKoi()
+  }, [])
+
+  const getKoiByPond = async (pondId) => {
+    // Define pondId as a parameter here
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
+      }
+
+      // Fetch all koi in the selected pond
+      const koiResponse = await axios.get(
+        `https://koicaresystemv2.azurewebsites.net/api/koifishs/koipond/${pondId}/allKoi`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      )
+      const kois = koiResponse.data.data
+      setKoiByPondData(kois)
+
+      // Fetch growth history for each koi and aggregate it
+      const growthPromises = kois.map((koi) =>
+        axios
+          .get(`https://koicaresystemv2.azurewebsites.net/api/growth-history/list/${koi.id}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+          .then((response) => ({
+            koiName: koi.name,
+            growthData: response.data.data
+          }))
+      )
+
+      const growthData = await Promise.all(growthPromises)
+      setKoiGrowthData(growthData) // Store aggregated growth data
+    } catch (error) {
+      console.error('Error fetching koi or growth history by pond:', error)
+    }
+  }
+
+  useEffect(() => {
+    getKoiByPond()
   }, [])
 
   const getGrowthHistory = async (koifishId) => {
@@ -357,6 +400,34 @@ function Statistics() {
     return value ? value.toFixed(2) : value
   }
 
+  const aggregateKoiGrowthData = () => {
+    const lengthDataMap = {}
+    const weightDataMap = {}
+
+    koiGrowthData.forEach((koi) => {
+      koi.growthData.forEach((entry) => {
+        const date = new Date(entry.createDate).toLocaleDateString()
+
+        if (!lengthDataMap[date]) {
+          lengthDataMap[date] = { date }
+        }
+        if (!weightDataMap[date]) {
+          weightDataMap[date] = { date }
+        }
+
+        lengthDataMap[date][koi.koiName] = entry.length
+        weightDataMap[date][koi.koiName] = entry.weight
+      })
+    })
+
+    return {
+      lengthChartData: Object.values(lengthDataMap),
+      weightChartData: Object.values(weightDataMap)
+    }
+  }
+
+  const { lengthChartData, weightChartData } = aggregateKoiGrowthData()
+
   return (
     <div>
       <div className='h-screen flex'>
@@ -397,7 +468,6 @@ function Statistics() {
                 <option value='Last year'>Last year</option>
               </select>
             </div>
-
             <motion.div
               initial='hidden'
               animate='visible'
@@ -550,7 +620,6 @@ function Statistics() {
                 </ResponsiveContainer>
               </motion.div>
             </motion.div>
-
             <motion.div
               initial='hidden'
               animate='visible'
@@ -632,7 +701,78 @@ function Statistics() {
                 </ResponsiveContainer>
               </motion.div>
             </motion.div>
+            <motion.div
+              initial='hidden'
+              animate='visible'
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.3
+                  }
+                }
+              }}
+              className='grid lg:grid-cols-2 grid-cols-1 gap-7 mt-10'
+            >
+              <motion.div className='py-5 mt-10 rounded-lg border border-gray-200 shadow-lg'>
+                <div className='text-xl mb-4 text-center'>Koi Length Growth History in Pond</div>
+                <ResponsiveContainer width='100%' height={300}>
+                  <LineChart
+                    data={lengthChartData}
+                    className='w-full mx-auto'
+                    margin={{
+                      top: 5,
+                      right: 60
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='date' />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    {koiGrowthData.map((koi, index) => (
+                      <Line
+                        key={index}
+                        type='monotone'
+                        dataKey={koi.koiName}
+                        stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
+                        activeDot={{ r: 8 }}
+                        name={`${koi.koiName} - Length`}
+                      />
+                    ))}
+                  </LineChart>
+                </ResponsiveContainer>
+              </motion.div>
 
+              <motion.div className='py-5 mt-10 rounded-lg border border-gray-200 shadow-lg'>
+                <div className='text-xl mb-4 text-center'>Koi Weight Growth History in Pond</div>
+                <ResponsiveContainer width='100%' height={300}>
+                  <LineChart
+                    data={weightChartData}
+                    className='w-full mx-auto'
+                    margin={{
+                      top: 5,
+                      right: 60
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray='3 3' />
+                    <XAxis dataKey='date' />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    {koiGrowthData.map((koi, index) => (
+                      <Line
+                        key={index}
+                        type='monotone'
+                        dataKey={koi.koiName}
+                        stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
+                        activeDot={{ r: 8 }}
+                        name={`${koi.koiName} - Weight`}
+                      />
+                    ))}
+                  </LineChart>
+                </ResponsiveContainer>
+              </motion.div>
+            </motion.div>
             <div className='pb-6 mt-10 text-lg flex justify-between items-center'>
               <select
                 id='kois'
@@ -651,7 +791,6 @@ function Statistics() {
                 )}
               </select>
             </div>
-
             <motion.div
               initial='hidden'
               animate='visible'

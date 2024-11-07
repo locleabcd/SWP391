@@ -144,6 +144,7 @@ function MyKoi() {
   }
 
   const getKoi = async () => {
+    setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       const id = localStorage.getItem('id')
@@ -165,6 +166,8 @@ function MyKoi() {
       setKois(sortedKois)
     } catch (error) {
       console.error('Error fetching koi:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
