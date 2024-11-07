@@ -76,11 +76,6 @@ function ViewNews() {
       }
     }
   }
-  const stripHtmlTags = (htmlContent) => {
-    const tempDiv = document.createElement('div')
-    tempDiv.innerHTML = htmlContent
-    return tempDiv.textContent || tempDiv.innerText || ''
-  }
 
   useEffect(() => {
     getBlogDetail()
@@ -185,8 +180,9 @@ function ViewNews() {
                   </a>
                 </div>
               </div>
-
-              <QuillContentRenderer content={newDetail.blogContent} />
+              <div className='p-6 border-none'>
+                <QuillContentRenderer content={newDetail.blogContent} />
+              </div>
 
               <div className='flex border-b py-4 border-gray-300 items-center gap-2 px-6'>
                 <img
