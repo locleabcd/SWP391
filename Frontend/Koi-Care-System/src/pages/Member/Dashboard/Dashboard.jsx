@@ -11,7 +11,6 @@ import { IoIosWater } from 'react-icons/io'
 import { LuAlarmClock } from 'react-icons/lu'
 import { MdOutlinePayments } from 'react-icons/md'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import Chat from '../../../components/Chat/Chat'
 
 function Dashboard() {
   const { isDarkMode } = useDarkMode()

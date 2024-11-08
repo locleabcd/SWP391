@@ -30,7 +30,6 @@ import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
 import CssBaseline from '@mui/material/CssBaseline'
 import dayjs from 'dayjs'
-import Chat from '../../../components/Chat/Chat'
 
 function Dashboard() {
   const { isDarkMode } = useDarkMode()
