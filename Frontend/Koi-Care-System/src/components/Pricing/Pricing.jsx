@@ -211,7 +211,7 @@ function Pricing() {
                   </ul>
                 </div>
                 <div
-                  onClick={() => createPayment()}
+                  onClick={() => navigate('/member/recommendations/1')}
                   className='rounded-lg bg-blue-400 px-5 cursor-pointer py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
                 >
                   Buy Now
@@ -380,12 +380,12 @@ function Pricing() {
                     </li>
                   </ul>
                 </div>
-                <Link
-                  href='#freelancer'
-                  className='rounded-lg bg-blue-400 px-5 py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
+                <div
+                  onClick={() => navigate('/member/recommendations/2')}
+                  className='rounded-lg bg-blue-400 px-5 cursor-pointer py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
                 >
                   Buy Now
-                </Link>
+                </div>
               </div>
               <div className='flex flex-col rounded-lg  p-6 shadow border border-gray-200 xl:p-8'>
                 <div className='flex-1'>
@@ -554,12 +554,12 @@ function Pricing() {
                     </li>
                   </ul>
                 </div>
-                <Link
-                  href='#freelancer'
-                  className='rounded-lg bg-blue-400 px-5 py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
+                <div
+                  onClick={() => navigate('/member/recommendations/3')}
+                  className='rounded-lg bg-blue-400 px-5 cursor-pointer py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
                 >
                   Buy Now
-                </Link>
+                </div>
               </div>
             </section>
           </div>
