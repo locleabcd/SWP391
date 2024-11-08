@@ -1016,7 +1016,7 @@ function WaterParameters() {
                   id='pageSize'
                   value={pageSize}
                   onChange={(e) => setPageSize(parseInt(e.target.value))}
-                  className='p-1 border rounded'
+                  className={`p-1 ${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'} border rounded`}
                 >
                   <option value={2}>2</option>
                   <option value={5}>5</option>

@@ -255,7 +255,7 @@ const CartList = () => {
                               <input
                                 type='text'
                                 value={item.quantity}
-                                className={`outline-none lg:w-10 w-5 text-center text-xl text-blue-400 ${isDarkMode} ? 'bg-custom-dark' : ''}`}
+                                className={`outline-none lg:w-10 w-5 text-center text-xl text-blue-400 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                               />
 
                               <button

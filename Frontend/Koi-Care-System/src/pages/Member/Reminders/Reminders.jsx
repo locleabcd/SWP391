@@ -522,9 +522,8 @@ function Reminders() {
                         <option value='DAILY'>DAILY</option>
                         <option value='WEEKLY'>WEEKLY</option>
                       </select>
-                      <input />
                     </div>
-                    <div className='relative col-span-2'>
+                    <div className='relative col-span-2 lg:mt-4'>
                       <label
                         className={`absolute lg:text-lg text-sm -top-[12px] left-3 text-red-500 ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
