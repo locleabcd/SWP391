@@ -624,10 +624,6 @@ function App() {
     {
       path: path.newsView,
       element: <NewsView />
-    },
-    {
-      path: path.chat,
-      element: <Chat2 />
     }
   ])
 
