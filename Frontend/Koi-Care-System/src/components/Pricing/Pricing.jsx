@@ -9,29 +9,29 @@ function Pricing() {
   const { isDarkMode } = useDarkMode()
   const navigate = useNavigate()
 
-  const createPayment = async () => {
-    const userId = localStorage.getItem('id')
-    try {
-      const token = localStorage.getItem('token')
+  // const createPayment = async () => {
+  //   const userId = localStorage.getItem('id')
+  //   try {
+  //     const token = localStorage.getItem('token')
 
-      await axios.post(
-        'https://koicaresystemv2.azurewebsites.net/api/orders/order/premium',
-        {
-          userId: userId,
-          time: '1MONTH'
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      )
-      navigate('/member/payment')
-      localStorage.setItem('totalPrice', 299999)
-    } catch (error) {
-      console.error('Error details:', error)
-    }
-  }
+  //     await axios.post(
+  //       'https://koicaresystemv2.azurewebsites.net/api/orders/order/premium',
+  //       {
+  //         userId: userId,
+  //         time: '1MONTH'
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`
+  //         }
+  //       }
+  //     )
+  //     navigate('/member/payment')
+  //     localStorage.setItem('totalPrice', 299999)
+  //   } catch (error) {
+  //     console.error('Error details:', error)
+  //   }
+  // }
 
   return (
     <div>
