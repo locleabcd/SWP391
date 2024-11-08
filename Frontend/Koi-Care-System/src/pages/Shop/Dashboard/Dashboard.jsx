@@ -28,9 +28,8 @@ import { MdCategory } from 'react-icons/md'
 import { FaNewspaper } from 'react-icons/fa6'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
-import CssBaseline from '@mui/material/CssBaseline'
+
 import dayjs from 'dayjs'
-import Chat from '../../../components/Chat/Chat'
 
 function Dashboard() {
   const { isDarkMode } = useDarkMode()
@@ -428,7 +427,7 @@ function Dashboard() {
                   <option value='year'>Year</option>
                 </select>
               </div>
-              <ResponsiveContainer className={`p-6`} width='100%' height={400}>
+              <ResponsiveContainer className={`p-5`} width='100%' height={400}>
                 <AreaChart data={chartData}>
                   <defs>
                     <linearGradient id='colorUv' x1='0' y1='0' x2='0' y2='1'>

@@ -90,7 +90,7 @@ import UpdateSupplierAD from './pages/Admin/Supplier/UpdateSupplierAD'
 import ManagePay from './pages/Admin/ManageReport/ManagePay'
 import NewsAD from './pages/Admin/News/NewsAD'
 import NewsView from './pages/Admin/News/NewsView'
-import Chat2 from './components/Chat/Chat2'
+
 import ReminderMB from './pages/Member/Reminders/ReminderMB'
 
 function App() {
@@ -624,10 +624,6 @@ function App() {
     {
       path: path.newsView,
       element: <NewsView />
-    },
-    {
-      path: path.chat,
-      element: <Chat2 />
     }
   ])
 

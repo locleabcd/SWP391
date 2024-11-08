@@ -127,6 +127,7 @@ function MyPond() {
   }
 
   const getPond = async () => {
+    setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       const id = localStorage.getItem('id')
@@ -141,6 +142,8 @@ function MyPond() {
       setPonds(res.data.data)
     } catch (error) {
       console.error('An unexpected error occurred:', error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
