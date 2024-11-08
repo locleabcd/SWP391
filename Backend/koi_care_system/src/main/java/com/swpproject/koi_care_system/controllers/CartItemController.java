@@ -5,7 +5,6 @@ import com.swpproject.koi_care_system.payload.request.AddItemToCartRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateItemRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.cart.ICartItemService;
-import com.swpproject.koi_care_system.service.cart.ICartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

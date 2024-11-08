@@ -32,6 +32,7 @@ public class IssueController {
                 .data(issueService.getIssue(waterParametersId))
                 .build());
     }
+
     @GetMapping("/latest/{koipondId}")
     public ResponseEntity<ApiResponse> getCurrentIssueByKoiPondId(@PathVariable Long koipondId){
             long waterId = waterParameters.getLatestWaterParametersByKoiPondId(koipondId).getId();
@@ -40,6 +41,7 @@ public class IssueController {
                     .data(issueService.getIssue(waterId))
                     .build());
     }
+
     @GetMapping("/issueType/all")
     public ResponseEntity<ApiResponse> getAllIssuesType(){
         return ResponseEntity.ok(ApiResponse.builder()

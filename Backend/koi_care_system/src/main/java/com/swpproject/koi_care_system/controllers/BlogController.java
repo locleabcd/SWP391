@@ -5,7 +5,6 @@ import com.swpproject.koi_care_system.payload.request.BlogCreateRequest;
 import com.swpproject.koi_care_system.payload.request.BlogUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.Blog.IBlogService;
-import com.swpproject.koi_care_system.service.imageBlobStorage.ImageStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +21,6 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 public class BlogController {
 
     private final IBlogService blogService;
-    private final ImageStorage imageStorage;
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createBlog(@ModelAttribute BlogCreateRequest blogCreateRequest, Authentication authentication){

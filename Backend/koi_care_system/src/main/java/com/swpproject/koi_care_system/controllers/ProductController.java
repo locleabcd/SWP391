@@ -25,7 +25,7 @@ public class ProductController {
 
     @GetMapping("/all")
     public ResponseEntity<ApiResponse> getAllProducts() {
-        List<Product> products = productService.getAllProducts();
+        List<Product> products = productService.getAllProductsUpdate();
         List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
         return  ResponseEntity.ok(new ApiResponse("success", convertedProducts));
     }

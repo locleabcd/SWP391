@@ -3,7 +3,6 @@ package com.swpproject.koi_care_system.mapper;
 import com.swpproject.koi_care_system.dto.KoiPondDto;
 import com.swpproject.koi_care_system.models.KoiPond;
 import com.swpproject.koi_care_system.payload.request.AddKoiPondRequest;
-import com.swpproject.koi_care_system.payload.request.KoiFishUpdateRequest;
 import com.swpproject.koi_care_system.payload.request.KoiPondUpdateRequest;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

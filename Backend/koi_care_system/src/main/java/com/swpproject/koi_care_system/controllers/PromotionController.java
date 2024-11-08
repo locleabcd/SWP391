@@ -8,8 +8,6 @@ import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.promotion.IPromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -2,20 +2,15 @@ package com.swpproject.koi_care_system.controllers;
 
 import com.swpproject.koi_care_system.dto.PaymentDto;
 import com.swpproject.koi_care_system.dto.VnPayDto;
-import com.swpproject.koi_care_system.enums.OrderStatus;
 import com.swpproject.koi_care_system.payload.request.PaymentStoreRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.payment.IPaymentService;
 import com.swpproject.koi_care_system.service.vnpay.VnPayService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.net.URI;
 import java.time.LocalDateTime;

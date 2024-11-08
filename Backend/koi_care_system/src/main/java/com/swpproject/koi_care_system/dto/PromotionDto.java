@@ -2,7 +2,6 @@ package com.swpproject.koi_care_system.dto;
 
 import lombok.Data;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data

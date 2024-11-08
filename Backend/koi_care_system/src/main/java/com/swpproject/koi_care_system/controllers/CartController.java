@@ -2,7 +2,6 @@ package com.swpproject.koi_care_system.controllers;
 
 import com.swpproject.koi_care_system.dto.CartDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
-import com.swpproject.koi_care_system.models.Cart;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.cart.ICartService;
 import lombok.RequiredArgsConstructor;
