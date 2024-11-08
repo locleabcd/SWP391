@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.models;
 
+import com.swpproject.koi_care_system.enums.ProfileStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;

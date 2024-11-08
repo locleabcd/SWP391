@@ -29,6 +29,9 @@ public enum ErrorCode {
     PASSWORD_NOT_MATCH(1018, "Password are not the same", HttpStatus.BAD_REQUEST),
     WATER_NOT_FOUND(1019, "Water Parameter Not Found", HttpStatus.NOT_FOUND),
     KOI_POND_NOT_FOUND(1020, "Koi Pond Not Found", HttpStatus.NOT_FOUND);
+    ;
+
+
     private int code;
     private String message;
     private HttpStatus status;

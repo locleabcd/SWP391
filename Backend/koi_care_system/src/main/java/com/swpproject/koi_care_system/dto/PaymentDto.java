@@ -1,15 +1,21 @@
 package com.swpproject.koi_care_system.dto;
 
-import lombok.Data;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@Builder
 public class PaymentDto {
-    private LocalDateTime createDate;
-    private Long amount;
-    private String status;
-    private String invoiceCode;
-    private String transactionCode;
-    private Long orderId;
+    LocalDateTime createDate;
+    Double amount;
+    String status;
+    String invoiceCode;
+    String transactionCode;
+    Long orderId;
 }

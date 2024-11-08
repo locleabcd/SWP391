@@ -1,6 +1,6 @@
 package com.swpproject.koi_care_system.config;
 
-import com.swpproject.koi_care_system.utils.VNPayUtil;
+import com.swpproject.koi_care_system.utils.VNPayUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
@@ -31,7 +31,8 @@ public class VnPayConfig {
         vnpParamsMap.put("vnp_Command", this.vnp_Command);
         vnpParamsMap.put("vnp_TmnCode", this.vnp_TmnCode);
         vnpParamsMap.put("vnp_CurrCode", "VND");
-        vnpParamsMap.put("vnp_TxnRef", VNPayUtil.getRandomNumber(8));
+        vnpParamsMap.put("vnp_TxnRef", VNPayUtils.getRandomNumber(8));
+        vnpParamsMap.put("vnp_OrderInfo", "Thanh toan don hang:" + VNPayUtils.getRandomNumber(8));
         vnpParamsMap.put("vnp_OrderType", this.orderType);
         vnpParamsMap.put("vnp_Locale", "vn");
         vnpParamsMap.put("vnp_ReturnUrl", this.vnp_ReturnUrl);

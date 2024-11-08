@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface IssueTypeRepository extends JpaRepository<IssueType, Long> {
+public interface IssueTypeRepository extends JpaRepository<com.swpproject.koi_care_system.models.IssueType, Long> {
     IssueType findByParameterTypeAndConditionType(RangeParameter parameter, String high);
 
     @NotNull List<IssueType> findAll();

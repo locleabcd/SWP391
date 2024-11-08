@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @RestController
 @RequestMapping("/log")
@@ -22,8 +23,8 @@ public class LogController {
                 .data(logService.createLog(logCreateRequest, logCreateRequest.getKoiPondId()))
                 .message("Log has been created")
                 .build());
-
     }
+
     @PutMapping("/update/{logId}")
     public ResponseEntity<ApiResponse> updateLog(@PathVariable int logId, @RequestBody @Valid LogUpdateRequest logUpdateRequest) {
         return ResponseEntity.ok(ApiResponse.builder()

@@ -2,12 +2,13 @@ package com.swpproject.koi_care_system.controllers;
 
 import com.swpproject.koi_care_system.dto.PromotionDto;
 import com.swpproject.koi_care_system.payload.request.AddPromotionRequest;
-import com.swpproject.koi_care_system.payload.request.AdminConfirmPromotionRequest;
 import com.swpproject.koi_care_system.payload.request.PromotionUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.promotion.IPromotionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,15 +35,6 @@ public class PromotionController {
     public ResponseEntity<ApiResponse> updatePromotion(@PathVariable Long id, @RequestBody PromotionUpdateRequest promotionUpdateRequest){
         try{
             PromotionDto promotionDto = promotionService.updatePromotion(id,promotionUpdateRequest);
-            return ResponseEntity.ok(new ApiResponse("Update promotion success", promotionDto));
-        }catch (Exception e){
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
-        }
-    }
-    @PutMapping("/promotion/confirm")
-    public ResponseEntity<ApiResponse> confirmPromotion(@RequestBody AdminConfirmPromotionRequest request){
-        try{
-            PromotionDto promotionDto = promotionService.verifyByAdmin(request);
             return ResponseEntity.ok(new ApiResponse("Update promotion success", promotionDto));
         }catch (Exception e){
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
@@ -76,25 +68,13 @@ public class PromotionController {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(),null));
         }
     }
-
-    @GetMapping("/promotion/request")
-    public ResponseEntity<ApiResponse> getPromotionRequest(){
-        try {
-            List<PromotionDto> promotionDtoList = promotionService.getAllPromotionsRequest();
-            return ResponseEntity.ok(new ApiResponse("Found",promotionDtoList));
-        }catch (Exception e){
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(),null));
-        }
-    }
-
-    @GetMapping("/{promotionId}/products/view")
-    public ResponseEntity<ApiResponse> getAllProductByPromotionId(@PathVariable Long promotionId) {
+    @PostMapping("/{promotionId}/products")
+    public ResponseEntity<ApiResponse> addProductsToPromotion(@PathVariable Long promotionId, @RequestParam List<Long> productIds) {
         try{
-            return ResponseEntity.ok(new ApiResponse("Get product by promotion success",promotionService.getAllProductByPromotionId(promotionId)));
+            promotionService.addProductsToPromotion(promotionId, productIds);
+            return ResponseEntity.ok(new ApiResponse("Add products to promotion success",null));
         }catch (Exception e) {
             return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), null));
         }
     }
-
-
 }

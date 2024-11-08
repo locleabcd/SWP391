@@ -10,6 +10,6 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
 public class VnPayDto {
-    public String message;
-    public String paymentUrl;
+     String message;
+     String paymentUrl;
 }

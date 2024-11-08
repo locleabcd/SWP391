@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.service.Blog;
+package com.swpproject.koi_care_system.service.blog;
 
 import com.swpproject.koi_care_system.dto.BlogDto;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
@@ -40,23 +40,24 @@ public class BlogService implements IBlogService {
         }
         Blog blog = blogMapper.mapToBlog(blogCreateRequest);
         if(blogCreateRequest.getFile()!=null)
-            blog.setBlogImage(!blogCreateRequest.getFile().isEmpty() ? imageStorage.uploadImage(blogCreateRequest.getFile()) : "https://koicaresystemv4.blob.core.windows.net/koicarestorage/defaultBlog.png");
+            blog.setBlogImage(!blogCreateRequest.getFile().isEmpty() ? imageStorage.uploadImage(blogCreateRequest.getFile()) : "https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
         else
-            blog.setBlogImage("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultBlog.png");
+            blog.setBlogImage("https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg");
+
+        Set<Tag> tags = new HashSet<>();
         if (blogCreateRequest.getTagIds() == null || blogCreateRequest.getTagIds().isEmpty()) {
             throw new RuntimeException("Tags cannot be null");
         }
-        blog.setBlogDate(java.time.LocalDate.now());
-        Set<Tag> tags = new HashSet<>();
         for (int tagId : blogCreateRequest.getTagIds()) {
             Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new RuntimeException("Tag not found"));
             tags.add(tag);
         }
+        blog.setBlogDate(java.time.LocalDate.now());
         blog.setTags(tags);
         blog.setUser(userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found")));
-
         return blogMapper.mapToBlogDto(blogRepository.save(blog));
     }
+
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public BlogDto updateBlog(int id, BlogUpdateRequest blogUpdateRequest) {
@@ -66,21 +67,23 @@ public class BlogService implements IBlogService {
                 throw new RuntimeException("Blog title already exists");
             }
         }
+        if (blogUpdateRequest.getTagIds() == null || blogUpdateRequest.getTagIds().isEmpty()) {
+            throw new RuntimeException("Tags cannot be null");
+        }
         if(blogUpdateRequest.getFile()!=null)
             if(!blogUpdateRequest.getFile().isEmpty()){
                 try{
-                    if (!blog.getBlogImage().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultBlog.png"))
+                    if(!blog.getBlogImage().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultBlog.jpg"))
                         imageStorage.deleteImage(blog.getBlogImage());
                     blog.setBlogImage(imageStorage.uploadImage(blogUpdateRequest.getFile()));
                 }catch (Exception e){
                     throw new RuntimeException(e);
                 }
             }
-        if (blogUpdateRequest.getTagIds() == null || blogUpdateRequest.getTagIds().isEmpty()) {
-            throw new RuntimeException("Tags cannot be null");
-        }
+
         blogMapper.updateBlog(blog, blogUpdateRequest);
         Set<Tag> tags = new HashSet<>();
+        //TODO:check null tags
         for (int tagId : blogUpdateRequest.getTagIds()) {
             Tag tag = tagRepository.findById(tagId).orElseThrow(() -> new RuntimeException("Tag not found"));
             tags.add(tag);
@@ -92,16 +95,7 @@ public class BlogService implements IBlogService {
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deleteBlog(int id) {
-        blogRepository.findById(id).ifPresentOrElse(blog -> {
-            if (!blog.getBlogImage().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultBlog.png")) {
-                try {
-                    imageStorage.deleteImage(blog.getBlogImage());
-                }catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
-                blogRepository.delete(blog);
-            }
-        },()->{
+        blogRepository.findById(id).ifPresentOrElse(blogRepository::delete,()->{
             throw new ResourceNotFoundException("Blog not found!");
         });
     }

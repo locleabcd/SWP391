@@ -30,6 +30,7 @@ public class IssueService implements IIssueService {
         }
         for (RangeParameter parameter : RangeParameter.values()) {
             double value = getParameterValue(waterParameters, parameter);
+
             if (parameter.isLow(value) || parameter.isHigh(value)) {
                 String conditionType = parameter.isLow(value) ? "LOW" : "HIGH";
                 createIssue(conditionType, parameter, waterParameters);
@@ -55,23 +56,38 @@ public class IssueService implements IIssueService {
         return issueRepository.findByWaterParametersId(waterParametersId).stream().map(issueMapper::mapToIssueDto).toList();
     }
 
+
     private double getParameterValue(WaterParameters waterParameters, RangeParameter parameter) {
-        return switch (parameter) {
-            case NO2 -> waterParameters.getNitrite();
-            case NO3 -> waterParameters.getNitrate();
-            case PO4 -> waterParameters.getPhosphate();
-            case NH4 -> waterParameters.getAmmonium();
-            case GH -> waterParameters.getHardness();
-            case O2 -> waterParameters.getOxygen();
-            case TEMPERATURE -> waterParameters.getTemperature();
-            case PH -> waterParameters.getPhValue();
-            case KH -> waterParameters.getCarbonHardness();
-            case CO2 -> waterParameters.getCarbonDioxide();
-            case SALT -> waterParameters.getSalt();
-            case CHLORINE -> waterParameters.getTotalChlorine();
-            case OUTDOORTEMP -> waterParameters.getTemp();
-            default -> throw new IllegalArgumentException("Unknown parameter: " + parameter);
-        };
+        switch (parameter) {
+            case NO2:
+                return waterParameters.getNitrite();
+            case NO3:
+                return waterParameters.getNitrate();
+            case PO4:
+                return waterParameters.getPhosphate();
+            case NH4:
+                return waterParameters.getAmmonium();
+            case GH:
+                return waterParameters.getHardness();
+            case O2:
+                return waterParameters.getOxygen();
+            case TEMPERATURE:
+                return waterParameters.getTemperature();
+            case PH:
+                return waterParameters.getPhValue();
+            case KH:
+                return waterParameters.getCarbonHardness();
+            case CO2:
+                return waterParameters.getCarbonDioxide();
+            case SALT:
+                return waterParameters.getSalt();
+            case CHLORINE:
+                return waterParameters.getTotalChlorine();
+            case OUTDOORTEMP:
+                return waterParameters.getTemp();
+            default:
+                throw new IllegalArgumentException("Unknown parameter: " + parameter);
+        }
     }
 
     private String getDescription(RangeParameter parameter, String conditionType) {

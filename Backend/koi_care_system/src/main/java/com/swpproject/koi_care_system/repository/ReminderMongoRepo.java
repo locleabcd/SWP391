@@ -9,9 +9,8 @@ import java.util.List;
 
 @Repository
 public interface ReminderMongoRepo extends MongoRepository<ReminderMongo, Long> {
-    @Query("{ 'dateTime': { $regex: '^?0' } }")
-    List<ReminderMongo> findDueRemindersBetween(String startTime);
-
     List<ReminderMongo> findByDateTimeBetween(String startTime, String endTime);
 
+    @Query("{ 'dateTime': { $regex: '^?0' } }")
+    List<ReminderMongo> findDueRemindersBetween(String startTime);
 }

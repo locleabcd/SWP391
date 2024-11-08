@@ -9,8 +9,6 @@ import java.util.List;
 
 @Repository
 public interface IssueRepository extends JpaRepository<Issue, Long> {
-    Issue findByWaterParametersAndName(WaterParameters waterParameters, String name);
-
     boolean existsByWaterParametersAndDescription(WaterParameters waterParameters, String description);
 
     List<Issue> findByWaterParametersId(Long waterParametersId);

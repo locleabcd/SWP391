@@ -5,6 +5,7 @@ import com.swpproject.koi_care_system.payload.request.AddItemToCartRequest;
 import com.swpproject.koi_care_system.payload.request.UpdateItemRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.cart.ICartItemService;
+import com.swpproject.koi_care_system.service.cart.ICartService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RequestMapping("/cartItems")
 public class CartItemController {
     private final ICartItemService cartItemService;
-
+    private final ICartService cartService;
     @PostMapping("/item/add")
     public ResponseEntity<ApiResponse> addItemToCart(@RequestBody @Valid AddItemToCartRequest request) {
         try {

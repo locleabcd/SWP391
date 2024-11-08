@@ -31,11 +31,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 ),
                 @Server(
                         description = "Deloy Server",
-                        url = "https://koicaresystemv2.azurewebsites.net/api"
-                ),
-                @Server(
-                        description = "Deloy Digital Server",
-                        url = "http://146.190.84.154:8080"
+                        url = "https://koicaresystemv3.azurewebsites.net/api"
                 )
         }
 )

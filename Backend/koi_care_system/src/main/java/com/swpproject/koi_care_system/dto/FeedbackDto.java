@@ -12,7 +12,6 @@ public class FeedbackDto {
     private int star;
     private String comment;
     private String username;
-    private String imageUrl;
     private Long userId;
     private Long product_id;
 }

@@ -1,7 +1,6 @@
 package com.swpproject.koi_care_system.service.subscribe;
 
 import com.swpproject.koi_care_system.dto.SubscribePlanDto;
-import com.swpproject.koi_care_system.models.Order;
 import com.swpproject.koi_care_system.models.SubscribePlan;
 import com.swpproject.koi_care_system.payload.request.UpgradePremiumRequest;
 
@@ -13,8 +12,6 @@ public interface ISubscribePlanService {
     String upgradePremium(UpgradePremiumRequest request);
 
     List<SubscribePlanDto> getAllCustomer();
-
-    void upgradePremiumAuto(Order order);
 
 
 }

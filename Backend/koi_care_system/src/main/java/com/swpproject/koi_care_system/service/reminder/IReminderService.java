@@ -15,7 +15,7 @@ public interface IReminderService {
 
     List<ReminderDto> getListReminder();
 
-    List<ReminderDto> getListReminderByUser(Principal connectedUser);
-
     void checkReminders();
+
+    List<ReminderDto> getListReminderByUser(Principal connectedUser);
 }

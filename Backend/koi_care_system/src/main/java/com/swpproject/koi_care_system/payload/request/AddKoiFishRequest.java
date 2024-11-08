@@ -1,7 +1,9 @@
 package com.swpproject.koi_care_system.payload.request;
 
+import com.swpproject.koi_care_system.models.KoiPond;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
+import reactor.util.annotation.Nullable;
 
 import java.time.LocalDate;
 

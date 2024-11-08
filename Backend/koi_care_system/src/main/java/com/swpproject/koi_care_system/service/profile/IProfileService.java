@@ -17,7 +17,6 @@ public interface IProfileService {
 
     List<UserProfileDto> getAllProfile();
 
-    List<UserProfileDto> getAllMemberProfile();
-
     UserProfile createProfileOauth(User user, String imageUrl);
+
 }

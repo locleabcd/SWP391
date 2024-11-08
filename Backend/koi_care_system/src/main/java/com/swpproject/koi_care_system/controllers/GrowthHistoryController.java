@@ -4,6 +4,7 @@ import com.swpproject.koi_care_system.payload.request.GrowthCreateRequest;
 import com.swpproject.koi_care_system.payload.request.GrowthUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
 import com.swpproject.koi_care_system.service.growthhistory.IGrowthHistoryService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -40,9 +40,6 @@ public class KoiFish {
     @OneToMany(mappedBy = "koiFish",cascade = CascadeType.ALL,orphanRemoval = true)
     List<Remark> remarkList;
 
-    @OneToOne(mappedBy = "koiFish",cascade = CascadeType.ALL,orphanRemoval = true)
-    private OriginStateOfFish originStateOfFish;
-
     public KoiFish(Long id,String name, String physique, int age, Double length, Double weight, String gender, String variety, LocalDate pondDate, String breeder, Double price, KoiPond koiPond, String imageUrl) {
         this.id = id;
         this.name = name;

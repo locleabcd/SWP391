@@ -16,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -26,70 +25,57 @@ public class KoiPondService implements IKoiPondService {
     KoiPondRepository koiPondRepository;
     KoiPondMapper koiPondMapper;
     ImageStorage imageStorage;
+
     @Override
     @PreAuthorize("hasRole('MEMBER')")
     public KoiPondDto addKoiPond(AddKoiPondRequest addKoiPondRequest) throws IOException {
         if (koiPondRepository.existsByNameAndUserId(addKoiPondRequest.getName(), addKoiPondRequest.getUser().getId())) {
             throw new AlreadyExistsException("Koi Pond with name " + addKoiPondRequest.getName() + " already exists!");
         }
-        KoiPond koiPond = koiPondMapper.mapToKoiPond(addKoiPondRequest);
-        if(addKoiPondRequest.getFile()!=null)
-            koiPond.setImageUrl(!addKoiPondRequest.getFile().isEmpty() ? imageStorage.uploadImage(addKoiPondRequest.getFile()) : "https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg");
+        if (addKoiPondRequest.getFile() != null)
+            addKoiPondRequest.setImageUrl(!addKoiPondRequest.getFile().isEmpty() ? imageStorage.uploadImage(addKoiPondRequest.getFile()) : "https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg");
         else
-            koiPond.setImageUrl("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg");
-        return koiPondMapper.toDto(koiPondRepository.save(koiPond));
+            addKoiPondRequest.setImageUrl("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg");
+        return koiPondMapper.toDto(koiPondRepository.save(koiPondMapper.mapToKoiPond(addKoiPondRequest)));
     }
+
     @Override
     @PreAuthorize("hasRole('MEMBER')")
     public KoiPondDto getKoiPondById(Long id) {
         return koiPondMapper.toDto(koiPondRepository.findKoiPondsById(id));
     }
+
     @Override
     @PreAuthorize("hasRole('MEMBER')")
     public List<KoiPondDto> getKoiPondByUserID(Long userID) {
-        return  koiPondRepository.findByUserId(userID).stream().map(koiPondMapper::toDto).toList();
+        return koiPondRepository.findByUserId(userID).stream().map(koiPondMapper::toDto).toList();
     }
+
     @Override
     @PreAuthorize("hasRole('MEMBER')")
     public void deleteKoiPond(Long id) {
         koiPondRepository.findById(id)
-                .ifPresentOrElse(koiPond -> {
-                    if (!koiPond.getImageUrl().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg")) {
-                        try {
-                            imageStorage.deleteImage(koiPond.getImageUrl());
-                        }catch (Exception e){
-                            throw new RuntimeException(e);
-                        }
-                    }
-                    koiPondRepository.delete(koiPond);
-                },()-> {
+                .ifPresentOrElse(koiPondRepository::delete, () -> {
                     throw new ResourceNotFoundException("Koi Pond not found!");
                 });
     }
+
     @Override
     @PreAuthorize("hasRole('MEMBER')")
     public KoiPondDto updateKoiPond(KoiPondUpdateRequest koiPondUpdateRequest, Long koiPondId) {
 
         KoiPond oldKoiPond = koiPondRepository.findKoiPondsById(koiPondId);
-        if(koiPondUpdateRequest.getFile()!=null) {
-            if(!koiPondUpdateRequest.getFile().isEmpty())
+        if (koiPondUpdateRequest.getFile() != null) {
+            if (!koiPondUpdateRequest.getFile().isEmpty())
                 try {
-                    if (!oldKoiPond.getImageUrl().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg"))
+                    if (!oldKoiPond.getImageUrl().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg"))
                         imageStorage.deleteImage(oldKoiPond.getImageUrl());
                     oldKoiPond.setImageUrl(imageStorage.uploadImage(koiPondUpdateRequest.getFile()));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
         }
-        koiPondMapper.updateToKoiPond(oldKoiPond,koiPondUpdateRequest);
+        koiPondMapper.updateToKoiPond(oldKoiPond, koiPondUpdateRequest);
         return koiPondMapper.toDto(koiPondRepository.save(oldKoiPond));
-    }
-
-    @Override
-    public List<KoiPondDto> getKoiPondByUserIdWithCurrentDate(Long userId, LocalDate date){
-        return  koiPondRepository.findKoiPondsByUserId(userId)
-                .stream().map(koiPondMapper::toDto)
-                .filter(koiPondDto -> koiPondDto.getCreateDate().equals(date))
-                .toList();
     }
 }
