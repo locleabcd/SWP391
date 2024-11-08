@@ -10,7 +10,6 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface GrowthHistoryMapper {
-    @Mapping(target = "imageUrl", ignore = true)
     @Mapping(target = "koiFish", ignore = true)
     @Mapping(target = "id", ignore = true)
     GrowthHistory mapToGrowthHistory(GrowthCreateRequest growthCreateRequest);

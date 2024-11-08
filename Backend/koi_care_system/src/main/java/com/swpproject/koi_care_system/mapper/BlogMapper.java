@@ -10,7 +10,6 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface BlogMapper {
-    @Mapping(target = "blogImage", ignore = true)
     @Mapping(target = "blogId", ignore = true)
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "blogDate", ignore = true)

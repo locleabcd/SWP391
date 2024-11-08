@@ -17,6 +17,7 @@ import com.swpproject.koi_care_system.utils.JwtUtils;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,7 @@ public class UserService implements IUserService {
     IEmailService emailService;
     JwtUtils jwtUtils;
 
+    @Override
     public UserDTO createUser(CreateUserRequest request) {
         if (userRepo.existsByUsername(request.getUsername())) {
             throw new AppException(ErrorCode.USER_EXISTED);
@@ -52,22 +54,23 @@ public class UserService implements IUserService {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @Override
     public List<UserDTO> getListUser() {
         return userRepo.findAll().stream()
                 .map(userMapper::maptoUserDTO).toList();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostAuthorize("returnObject.username == authentication.name")
+    @Override
     public UserDTO findUserByID(Long userID) {
-        return userMapper.maptoUserDTO(userRepo.findById(userID).orElseThrow(() -> new RuntimeException("User Not Found")));
+        return userMapper.maptoUserDTO(userRepo.findById(userID).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED)));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @Override
     public UserDTO updateUserByID(Long id, UpdateUserRequest request) {
         User user = userRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-        if (!user.getUsername().equals(request.getUsername()))
-            throw new AppException(ErrorCode.USER_EXISTED);
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));
         if (!request.getPassword().isEmpty()) {
             request.setPassword(passwordEncoder.encode(request.getPassword()));
         }
@@ -76,6 +79,7 @@ public class UserService implements IUserService {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @Override
     public void deleteUserByID(Long id) {
         User user = userRepo.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_EXISTED));

@@ -55,12 +55,11 @@ public class SecurityConfig {
                         // Allow access to Google login page without authentication
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/verifyEmail",
-                                "/payment/vn-pay-return",
                                 "/v3/api-docs",
                                 "/v3/api-docs/**",
+                                "/swagger-ui.html",
                                 "/oauth2/**",
                                 "/ws/**",
-                                "/swagger-ui.html",
                                 "/swagger-ui/**").permitAll()
                         .anyRequest().authenticated()
                 );
@@ -69,11 +68,10 @@ public class SecurityConfig {
                         .loginPage("/login")
                         .permitAll())
                 .oauth2Login(oauth -> oauth
-                        .loginPage("https://koi-care-system.vercel.app/login")
+                        .loginPage("http://localhost:5173/login")
                         .successHandler(oAuth2LoginHandler)
-                        .failureUrl("https://koi-care-system.vercel.app/login?error=true")
+                        .failureUrl("http://localhost:5173/login?error=true")
                 );
-
 
 
         // Configure JWT-based security
@@ -83,17 +81,13 @@ public class SecurityConfig {
                                 .jwtAuthenticationConverter(jwtAuthenticationConverter()))
         );
 
-        // Enable CORS for all domains
-
         return httpSecurity.build();
     }
+
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
-                "https://koi-care-system.vercel.app",
-                "http://localhost:5173"
-        ));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
@@ -101,7 +95,6 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
 
     @Bean
     JwtAuthenticationConverter jwtAuthenticationConverter() {

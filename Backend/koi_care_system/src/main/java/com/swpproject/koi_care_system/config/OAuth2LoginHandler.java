@@ -59,7 +59,7 @@ public class OAuth2LoginHandler extends SavedRequestAwareAuthenticationSuccessHa
             String username = user.getUsername();
             long id = user.getId();
 
-            this.setDefaultTargetUrl("https://koi-care-system.vercel.app/login?token=" + jwtToken + "&role=" + role + "&username=" + username + "&id=" + id);
+            this.setDefaultTargetUrl("http://localhost:5173/login?token=" + jwtToken + "&role=" + role + "&username=" + username + "&id=" + id);
             this.setAlwaysUseDefaultTargetUrl(true);
         }
 

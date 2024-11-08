@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-public class VNPayUtil {
+public class VNPayUtils {
     public static String hmacSHA512(final String key, final String data) {
         try {
             if (key == null || data == null) {

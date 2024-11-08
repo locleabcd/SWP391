@@ -3,7 +3,6 @@ package com.swpproject.koi_care_system.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Data
 public class PromotionDto {
@@ -11,7 +10,7 @@ public class PromotionDto {
     private String name;
     private Double discountRate;
     private String description;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     private String status;
 }

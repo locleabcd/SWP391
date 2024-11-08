@@ -23,8 +23,8 @@ public class LogController {
                 .data(logService.createLog(logCreateRequest, logCreateRequest.getKoiPondId()))
                 .message("Log has been created")
                 .build());
-
     }
+
     @PutMapping("/update/{logId}")
     public ResponseEntity<ApiResponse> updateLog(@PathVariable int logId, @RequestBody @Valid LogUpdateRequest logUpdateRequest) {
         return ResponseEntity.ok(ApiResponse.builder()

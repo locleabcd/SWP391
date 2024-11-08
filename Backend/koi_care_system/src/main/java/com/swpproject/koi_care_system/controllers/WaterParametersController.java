@@ -3,8 +3,9 @@ package com.swpproject.koi_care_system.controllers;
 import com.swpproject.koi_care_system.payload.request.ParametersCreateRequest;
 import com.swpproject.koi_care_system.payload.request.ParametersUpdateRequest;
 import com.swpproject.koi_care_system.payload.response.ApiResponse;
-import com.swpproject.koi_care_system.service.waterparameter.WaterParameterService;
+import com.swpproject.koi_care_system.service.waterparameter.IWaterParametersService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("water-parameters")
 @RequiredArgsConstructor
 public class WaterParametersController {
-    private final WaterParameterService waterParameterService;
+    private final IWaterParametersService waterParameterService;
 
     @PostMapping("/create")
     public ResponseEntity<ApiResponse> createWaterParameters(@RequestBody ParametersCreateRequest request) {
-        return ResponseEntity.ok(ApiResponse.builder()
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.builder()
                 .message("Water parameters created")
                 .data(waterParameterService.createWaterParameters(request))
                 .build());
@@ -33,7 +34,7 @@ public class WaterParametersController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteWaterParameters(@PathVariable long id) {
         waterParameterService.deleteWaterParameters(id);
-        return ResponseEntity.ok(ApiResponse.builder()
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(ApiResponse.builder()
                 .message("Water parameters deleted")
                 .build());
     }
@@ -69,8 +70,9 @@ public class WaterParametersController {
                 .build()
         );
     }
+
     @GetMapping("/getLatestByKoiPondId/{koiPondId}")
-    public ResponseEntity<ApiResponse> getLatestWaterParametersByKoiPondId(@PathVariable Long koiPondId){
+    public ResponseEntity<ApiResponse> getLatestWaterParametersByKoiPondId(@PathVariable Long koiPondId) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .message("Water parameters found")
                 .data(waterParameterService.getLatestWaterParametersByKoiPondId(koiPondId))

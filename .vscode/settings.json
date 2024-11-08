@@ -1,8 +1,0 @@
-{
-<<<<<<< HEAD
-  "java.compile.nullAnalysis.mode": "automatic"
-=======
-  "java.compile.nullAnalysis.mode": "automatic",
-  "cSpell.words": ["svgr"]
->>>>>>> c1cfaa9bafcae6a4297b0c958b7039c37801d749
-}

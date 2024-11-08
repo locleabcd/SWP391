@@ -1,5 +1,7 @@
 package com.swpproject.koi_care_system.service.product;
-import com.swpproject.koi_care_system.dto.*;
+import com.swpproject.koi_care_system.dto.ImageDto;
+import com.swpproject.koi_care_system.dto.ProductDto;
+import com.swpproject.koi_care_system.dto.PromotionDto;
 import com.swpproject.koi_care_system.enums.PromotionStatus;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.mapper.ImageMapper;
@@ -8,12 +10,8 @@ import com.swpproject.koi_care_system.models.*;
 import com.swpproject.koi_care_system.payload.request.AddProductRequest;
 import com.swpproject.koi_care_system.payload.request.ProductUpdateRequest;
 import com.swpproject.koi_care_system.repository.*;
-import com.swpproject.koi_care_system.service.order.IOrderService;
 import com.swpproject.koi_care_system.service.promotion.IPromotionService;
-import com.swpproject.koi_care_system.service.promotion.PromotionService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,12 +19,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.concurrent.atomic.AtomicInteger; // Add this import
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -38,8 +35,8 @@ public class ProductService implements IProductService {
     private final ImageMapper imageMapper;
     private final SupplierRepository supplierRepository;
     private final IPromotionService promotionService;
-    private final PromotionRepository promotionRepository;
     private final IssueTypeRepository issueTypeRepository;
+
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public Product addProduct(AddProductRequest request) {
@@ -85,8 +82,13 @@ public class ProductService implements IProductService {
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deleteProductById(Long id) {
-        Product product = productRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Not found "));
-        productRepository.delete(product);
+        productRepository.findById(id)
+                .map(existingProduct -> {
+                    existingProduct.setStatus(false);
+                    return existingProduct;
+                })
+                .map(productRepository::save)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
     }
 
     @Override
@@ -120,22 +122,29 @@ public class ProductService implements IProductService {
 
     }
     @Override
-    public List<Product> getAllProducts() {
-        promotionService.upToDate();
-        List<Product> productsTmp = productRepository.findAll();
-        productsTmp.forEach(product->{
-            updateProductRating(product);
-            product.getPromotions().forEach(promotion -> {
-                if(promotion.getStatus().equals(PromotionStatus.REJECTED)||promotion.getStatus().equals(PromotionStatus.ENDED)){
-                    product.getPromotions().remove(promotion);
-                    promotion.getProducts().remove(product);
-                }
+    public List<Product> getAllProducts(int pageNumber, int pageSize, String sortBy, String sortDir) {
+        Sort sort = ("Asc".equalsIgnoreCase(sortDir)) ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
 
-            });
-        });
-        List<Product> products = productRepository.findAll();
-        return products.stream().toList();
+        // Ensure promotions are up-to-date.
+        promotionService.upToDate();
+
+        // Fetch available products with pagination.
+        Page<Product> productsPage = productRepository.findAllAvailable(pageable);
+        //TODO:check quantity and status to get ALl
+
+        // Update product ratings and filter out ended promotions.
+        List<Product> products = productsPage.stream().peek(product -> {
+            updateProductRating(product);
+            product.setPromotions(
+                    product.getPromotions().stream()
+                            .filter(promotion -> !promotion.getStatus().equals(PromotionStatus.ENDED))
+                            .collect(Collectors.toSet())
+            );
+        }).toList();
+        return products;
     }
+
     @Override
     public List<Product> getProductsByCategory(String category) {
         return productRepository.findByCategoryName(category);
@@ -175,7 +184,6 @@ public class ProductService implements IProductService {
     public List<ProductDto> getConvertedProducts(List<Product> products) {
         return products.stream().map(this::convertToDto).toList();
     }
-
     @Override
     public ProductDto convertToDto(Product product) {
         ProductDto productDto = productMapper.mapToProductDto(product);
@@ -202,5 +210,4 @@ public class ProductService implements IProductService {
         product.updateRating();
         productRepository.save(product);
     }
-
 }

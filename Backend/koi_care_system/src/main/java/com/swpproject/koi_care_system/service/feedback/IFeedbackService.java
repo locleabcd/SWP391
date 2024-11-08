@@ -13,10 +13,8 @@ public interface IFeedbackService {
 
     List<FeedbackDto> findFeedbackByProductId(Long productID);
 
-    Boolean isPushedFeedback(Long productId, Long userId);
-
     void deleteFeedback(Long feedbackId);
 
-    List<FeedbackDto> findFeedbackByUserId(Long userId);
+
 
 }

@@ -26,5 +26,4 @@ public class UserProfileDto {
     LocalDate createdDate;
     ProfileStatus status;
     String role;
-    Long userId;
 }

@@ -9,6 +9,6 @@ public interface KoiFishRepository extends JpaRepository<KoiFish,Long> {
 
     KoiFish findKoiFishById(Long id);
     List<KoiFish> findByKoiPondId(Long koiPondId);
-    KoiFish findKoiFishByName(String name);
 
+    boolean existsByName(String name);
 }

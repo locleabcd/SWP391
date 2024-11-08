@@ -22,6 +22,9 @@ public interface ReminderMapper {
     ReminderMongo mapToReminderMongo(Reminder reminder);
 
     @Mapping(target = "user", ignore = true)
+    Reminder mapToReminderFromMongo(ReminderMongo reminderMongo);
+
+    @Mapping(target = "user", ignore = true)
     @Mapping(target = "id", ignore = true)
     void updateReminderFromRequest(@MappingTarget Reminder reminder, ReminderRequest request);
 
@@ -31,7 +34,4 @@ public interface ReminderMapper {
     @Mapping(target = "message", source = "reminder.title")
     @Mapping(target = "delivered", source = "isDelivered")
     NotificationRequest mapToNotificationRequest(ReminderMongo reminder, boolean isDelivered);
-
-    @Mapping(target = "user", ignore = true)
-    Reminder mapToReminderFromMongo(ReminderMongo reminder);
 }

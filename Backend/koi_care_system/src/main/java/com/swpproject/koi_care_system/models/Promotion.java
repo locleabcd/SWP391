@@ -8,7 +8,6 @@ import lombok.Setter;
 
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,8 +23,8 @@ public class Promotion {
     private String name;
     private Double discountRate;
     private String description;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
+    private LocalDate startDate;
+    private LocalDate endDate;
     @Enumerated(EnumType.STRING)
     private PromotionStatus status;
 

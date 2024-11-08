@@ -10,7 +10,6 @@ import com.swpproject.koi_care_system.repository.FeedbackRepository;
 import com.swpproject.koi_care_system.repository.ProductRepository;
 import com.swpproject.koi_care_system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -63,24 +62,11 @@ public class FeedbackService implements IFeedbackService {
                 .map(this::convertToDto)
                 .collect(Collectors.toList());
     }
-
-    @Override
-    public Boolean isPushedFeedback(Long productId, Long userId) {
-        return !this.findFeedbackByProductId(productId).stream().filter(feedbackDto -> feedbackDto.getUserId().equals(userId)).toList().isEmpty();
-    }
-
-
     @Override
     public void deleteFeedback(Long feedbackId) {
         feedbackRepository.findById(feedbackId).ifPresentOrElse(feedbackRepository::delete,()->{
             throw new RuntimeException("Feedback not found");
         });
-    }
-
-    @Override
-    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
-    public List<FeedbackDto> findFeedbackByUserId(Long userId) {
-        return feedbackRepository.findFeedbackByUserId(userId).stream().map(this::convertToDto).collect(Collectors.toList());
     }
 
     private FeedbackDto convertToDto(Feedback feedback) {
@@ -89,7 +75,6 @@ public class FeedbackService implements IFeedbackService {
         dto.setStar(feedback.getStar());
         dto.setComment(feedback.getComment());
         dto.setUsername(feedback.getUser().getUsername());
-        dto.setImageUrl(feedback.getUser().getUserProfile().getAvatar());
         dto.setProduct_id(feedback.getProduct().getId());
         dto.setUserId(feedback.getUser().getId());
         return dto;

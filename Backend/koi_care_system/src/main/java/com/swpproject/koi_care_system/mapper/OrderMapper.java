@@ -10,7 +10,15 @@ public interface OrderMapper {
 
     @Mapping(target = "id", source = "orderId")
     @Mapping(target = "userId", source = "user.id")
+    @Mapping(target = "orderDate", expression = "java(order.getOrderDate() != null ? order.getOrderDate().atStartOfDay() : null)")
     @Mapping(target = "status", source = "orderStatus")
     @Mapping(target = "items", source = "orderItems")
     OrderDto toDto(Order order);
+
+    @Mapping(target = "orderId", source = "id")
+    @Mapping(target = "user.id", source = "userId")
+    @Mapping(target = "orderDate", expression = "java(orderDto.getOrderDate() != null ? orderDto.getOrderDate().toLocalDate() : null)")
+    @Mapping(target = "orderStatus", source = "status")
+    @Mapping(target = "orderItems", source = "items")
+    Order toEntity(OrderDto orderDto);
 }

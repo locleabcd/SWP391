@@ -2,15 +2,14 @@ package com.swpproject.koi_care_system.payload.request;
 
 import lombok.Data;
 
-import java.time.LocalDateTime;
-import java.util.List;
+import java.time.LocalDate;
 
 @Data
 public class AddPromotionRequest {
+    private Long id;
     private String name;
     private Double discountRate;
     private String description;
-    private LocalDateTime startDate;
-    private LocalDateTime endDate;
-    private List<Long> productIds;
+    private LocalDate startDate;
+    private LocalDate endDate;
 }
