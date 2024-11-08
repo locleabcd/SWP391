@@ -341,7 +341,6 @@ function Dashboard() {
         } overflow-y-auto flex-1 flex-col overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
-        <Chat />
 
         <div className='py-5 px-[30px] max-w-[1750px] mx-auto'>
           <TopLayout text='Dashboard' links='shop/dashboard' />

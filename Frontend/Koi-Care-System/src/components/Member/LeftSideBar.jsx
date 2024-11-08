@@ -61,7 +61,6 @@ function LeftSideBar() {
 
   return (
     <div className=''>
-      <Chat />
       <div className='relative'>
         {isClosed ? (
           <button
