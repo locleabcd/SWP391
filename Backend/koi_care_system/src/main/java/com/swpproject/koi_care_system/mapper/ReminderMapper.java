@@ -31,7 +31,6 @@ public interface ReminderMapper {
     @Mapping(target = "username", ignore = true)
     void updateReminderMongo(@MappingTarget ReminderMongo reminderMongo, Reminder reminder);
 
-    @Mapping(target = "message", source = "reminder.title")
     @Mapping(target = "delivered", source = "isDelivered")
     NotificationRequest mapToNotificationRequest(ReminderMongo reminder, boolean isDelivered);
 }
