@@ -96,14 +96,18 @@ function Order() {
                 setPageSize(Number(e.target.value))
                 setCurrentPage(1)
               }}
-              className='p-2 border rounded'
+              className={`p-2 border rounded ${isDarkMode ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-black border-gray-300'}`}
             >
               <option value={5}>5</option>
               <option value={10}>10</option>
               <option value={20}>20</option>
               <option value={50}>50</option>
             </select>
-            <select onChange={handleSortChange} value={sortStatus} className='p-2 rounded border'>
+            <select
+              onChange={handleSortChange}
+              value={sortStatus}
+              className={`p-2 border rounded ${isDarkMode ? 'bg-gray-700 text-white border-gray-600' : 'bg-white text-black border-gray-300'}`}
+            >
               <option value=''>Sort by Status</option>
               <option value='PENDING'>PENDING</option>
               <option value='PROCESSING'>PROCESSING</option>
