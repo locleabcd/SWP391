@@ -57,7 +57,6 @@ function Header() {
         }
       })
       setUser(res.data.data)
-      localStorage.setItem('avt', res.data.data.avatar)
       console.log(res.data.data)
     } catch (error) {
       console.error('Error fetching users:', error)
@@ -603,9 +602,7 @@ function Header() {
                 className='w-12 h-12 rounded-full object-cover border-2 border-gray-300'
               />
               <div className='ml-3'>
-                <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'textblack'}`}>
-                  {user.name || 'User Name'}
-                </p>
+                <p className={`font-semibold text-lg ${isDarkMode ? 'text-white ' : 'text-black'}`}>{name}</p>
                 <p className='text-sm text-gray-500'>{role}</p>
               </div>
             </div>

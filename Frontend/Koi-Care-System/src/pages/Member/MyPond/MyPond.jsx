@@ -38,7 +38,6 @@ function MyPond() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
       setIssue((prevData) => ({
         ...prevData,
         [koipondId]: res.data.data
@@ -139,7 +138,6 @@ function MyPond() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
       setPonds(res.data.data)
     } catch (error) {
       console.error('An unexpected error occurred:', error)

@@ -27,8 +27,13 @@ function Reminders() {
 
   const openEditForm = (reminder) => {
     localStorage.setItem('reminderId', reminder.id)
-    reset(reminder)
-    toggleEditFormVisibility(true)
+    const createDate = new Date(reminder.dateTime)
+    const currentDate = new Date()
+
+    if (createDate >= currentDate) {
+      reset(reminder)
+      setIsEditFormVisible(true)
+    }
   }
 
   const toggleCloseForm = () => {
@@ -38,10 +43,6 @@ function Reminders() {
       dateTime: '',
       interval: reminder.repeatInterval
     })
-  }
-
-  const toggleEditFormVisibility = () => {
-    setIsEditFormVisible(true)
   }
 
   const getReminder = async () => {
@@ -263,7 +264,7 @@ function Reminders() {
                       <div className='text-xl font-semibold'>{reminders.repeatInterval}</div>
                     </div>
                   </div>
-                  <FormControlLabel
+                  {/* <FormControlLabel
                     value='end'
                     control={<Switch color='primary' />}
                     onClick={(e) => e.stopPropagation()}
@@ -276,7 +277,7 @@ function Reminders() {
                         fontWeight: 'bold'
                       }
                     }}
-                  />
+                  /> */}
                 </div>
               ))}
             </div>
