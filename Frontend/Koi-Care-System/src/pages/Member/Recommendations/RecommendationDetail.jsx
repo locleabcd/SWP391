@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Member/Header'
 import LeftSideBar from '../../../components/Member/LeftSideBar'
@@ -20,7 +20,6 @@ function Recommendations() {
   const [bought, setBought] = useState([])
   const [currentIndex, setCurrentIndex] = useState(0)
   const [count, setCount] = useState(1)
-  const [countComment, setCountComment] = useState(0)
   const [active, setActive] = useState('description')
   const [feedback, setFeedback] = useState([])
   const [feedbackUser, setFeedbackUser] = useState([])
@@ -182,7 +181,7 @@ function Recommendations() {
       })
 
       getFeedback()
-      setCountComment(countComment + 1)
+      setFeedbackUser(false)
     } catch (err) {
       console.log(err)
     }
@@ -208,11 +207,10 @@ function Recommendations() {
         }
       )
       getFeedback()
-      getProductId()
+      setFeedbackUser(true)
       setRating(0)
       setComment('')
       setHoveredRating(0)
-      setCountComment(countComment + 1)
     } catch (error) {
       console.error('Error details:', error)
     }
@@ -546,7 +544,7 @@ function Recommendations() {
               </div>
             </div>
 
-            {bought[0] !== '0001-01-01' && feedbackUser === false && countComment !== 1 ? (
+            {bought[0] !== '0001-01-01' && feedbackUser === false ? (
               <div className='lg:mt-20 mt-10 lg:border lg:border-gray-200 rounded-xl lg:px-10 lg:py-5'>
                 <div className='lg:text-3xl text-xl'>Post Reviews</div>
                 <div className='flex items-center lg:mt-6 mt-3'>
@@ -585,6 +583,61 @@ function Recommendations() {
                   onClick={editableFeedback ? updateFeedback : createFeedback}
                 >
                   Post Review
+                </button>
+
+                {isEditing && (
+                  <button
+                    type='button'
+                    className='lg:px-5 lg:py-3 py-2 px-3 lg:text-base text-sm bg-red-400 hover:bg-red-500 rounded-lg ml-5 text-white'
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
+            ) : (
+              ''
+            )}
+
+            {editableFeedback ? (
+              <div className='lg:mt-20 mt-10 lg:border lg:border-gray-200 rounded-xl lg:px-10 lg:py-5'>
+                <div className='lg:text-3xl text-xl'>Edit Reviews</div>
+                <div className='flex items-center lg:mt-6 mt-3'>
+                  {[...Array(5)].map((_, index) => (
+                    <svg
+                      key={index}
+                      xmlns='http://www.w3.org/2000/svg'
+                      fill={index < (hoveredRating || rating) ? 'gold' : 'none'}
+                      viewBox='0 0 24 24'
+                      strokeWidth={1.5}
+                      stroke='currentColor'
+                      className='lg:size-8 size-6 cursor-pointer hover:scale-110 text-yellow-400 transition-transform duration-200'
+                      onMouseEnter={() => setHoveredRating(index + 1)}
+                      onMouseLeave={() => setHoveredRating(0)}
+                      onClick={() => setRating(index + 1)}
+                    >
+                      <path
+                        strokeLinecap='round'
+                        strokeLinejoin='round'
+                        d='M12 3.5l2.715 5.451 6.027.488-4.373 3.751 1.331 5.551L12 15.902l-5.7 3.839 1.331-5.551-4.373-3.751 6.027-.488L12 3.5z'
+                      />
+                    </svg>
+                  ))}
+                </div>
+                <textarea
+                  type='text'
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  className={`mt-5 rounded-xl w-full lg:h-32 h-20 text-black px-5 py-2 focus:border ${
+                    isDarkMode ? 'bg-custom-dark text-white' : ''
+                  } focus:border-blue-400 text-start flex outline-none border border-gray-200`}
+                />
+                <button
+                  type='submit'
+                  className='mt-5 lg:px-5 lg:py-3 py-2 px-3 lg:text-base text-sm bg-blue-400 hover:bg-blue-500 rounded-lg text-white'
+                  onClick={editableFeedback ? updateFeedback : ''}
+                >
+                  Edit Review
                 </button>
 
                 {isEditing && (
