@@ -13,8 +13,9 @@ import { useDispatch } from 'react-redux'
 import { AddToWishlist, RemoveFromWishlist } from '../../../redux/store/wishList'
 import { addToCartList } from '../../../redux/store/cartList'
 import { motion } from 'framer-motion'
-
+import { FaSpinner } from 'react-icons/fa'
 function Recommendations() {
+  const [isLoading, setIsLoading] = useState(false)
   const { isDarkMode } = useDarkMode()
   const [category, setCategory] = useState([])
   const [product, setProduct] = useState([])
@@ -113,6 +114,7 @@ function Recommendations() {
   }
 
   const getProduct = async () => {
+    setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -127,6 +129,8 @@ function Recommendations() {
       setProduct(response.data.data)
     } catch (error) {
       console.log(error)
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -863,6 +867,11 @@ function Recommendations() {
           </div>
         </div>
       </div>
+      {isLoading && (
+        <div className='fixed inset-0 px-4 py-2 flex items-center justify-center z-50'>
+          <FaSpinner className='animate-spin text-green-500 text-6xl' />
+        </div>
+      )}
     </div>
   )
 }

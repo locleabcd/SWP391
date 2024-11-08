@@ -28,9 +28,8 @@ import { MdCategory } from 'react-icons/md'
 import { FaNewspaper } from 'react-icons/fa6'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
-import CssBaseline from '@mui/material/CssBaseline'
+
 import dayjs from 'dayjs'
-import Chat from '../../../components/Chat/Chat'
 
 function Dashboard() {
   const { isDarkMode } = useDarkMode()
@@ -251,7 +250,7 @@ function Dashboard() {
   const columnsOrder = [
     { field: 'id', headerName: 'ID', width: 50 },
     { field: 'orderDate', headerName: 'Date', flex: 1, renderCell: (params) => formatDateTime(params.row.orderDate) },
-    { field: 'recipientName', headerName: 'Name', width: 100 },
+    { field: 'recipientName', headerName: 'Name', flex: 1 },
     {
       field: 'status',
       headerName: 'Status',
@@ -341,7 +340,6 @@ function Dashboard() {
         } overflow-y-auto flex-1 flex-col overflow-x-hidden duration-200 ease-linear`}
       >
         <Header />
-        <Chat />
 
         <div className='py-5 px-[30px] max-w-[1750px] mx-auto'>
           <TopLayout text='Dashboard' links='shop/dashboard' />
@@ -429,7 +427,7 @@ function Dashboard() {
                   <option value='year'>Year</option>
                 </select>
               </div>
-              <ResponsiveContainer className={`p-5`} width='100%' height={400}>
+              <ResponsiveContainer className='p-5' width='100%' height={400}>
                 <AreaChart data={chartData}>
                   <defs>
                     <linearGradient id='colorUv' x1='0' y1='0' x2='0' y2='1'>
