@@ -429,7 +429,7 @@ function Dashboard() {
                   <option value='year'>Year</option>
                 </select>
               </div>
-              <ResponsiveContainer className={`p-6`} width='100%' height={400}>
+              <ResponsiveContainer className={`p-5`} width='100%' height={400}>
                 <AreaChart data={chartData}>
                   <defs>
                     <linearGradient id='colorUv' x1='0' y1='0' x2='0' y2='1'>
