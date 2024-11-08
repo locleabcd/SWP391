@@ -195,13 +195,13 @@ function Header() {
             </label>
           </div>
           <div className='my-account'>
-            <button onClick={toggleList} className='flex items-center p-2 rounded-md space-x-2'>
+            <button onClick={toggleList} className='lg:flex lg:items-center lg:p-2 lg:rounded-md lg:space-x-2 hidden'>
               <div className='flex flex-col'>
-                <p className='text-sm font-medium'>{user.name}</p>
-                <p className='text-xs text-gray-500'>{user.name}</p>
+                <p className='text-sm font-medium'>{name}</p>
+                <p className='text-xs text-gray-500'>{role}</p>
               </div>
               <div className='ml-auto flex items-center space-x-1'>
-                <img src={user.avatar} className='w-12 h-12 rounded-full object-cover' />
+                <img src={avt} className='w-12 h-12 rounded-full object-cover' />
               </div>
             </button>
             {isOpen && (
