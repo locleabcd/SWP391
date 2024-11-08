@@ -91,8 +91,6 @@ import ManagePay from './pages/Admin/ManageReport/ManagePay'
 import NewsAD from './pages/Admin/News/NewsAD'
 import NewsView from './pages/Admin/News/NewsView'
 
-import ReminderMB from './pages/Member/Reminders/ReminderMB'
-
 function App() {
   const isAuthenticated = Boolean(localStorage.getItem('token'))
 

@@ -338,14 +338,10 @@ function Header() {
             )}
           </Link>
 
-          <button
-            className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'} lg:p-[12px] p-[10px] rounded-full`}
-          >
+          <button className={`${isDarkMode ? 'bg-custom-dark' : 'bg-white'} lg:p-[12px] p-[10px] rounded-full`}>
             <PopupState popupId='demo-popup-popover'>
               {(popupState) => (
-                <div
-                  className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'}  rounded-full`}
-                >
+                <div className={`${isDarkMode ? 'bg-custom-dark' : 'bg-white'}  rounded-full`}>
                   <svg
                     className='lg:size-6 size-5 text-black'
                     fill='currentColor'
