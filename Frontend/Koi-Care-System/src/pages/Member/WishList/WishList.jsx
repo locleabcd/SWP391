@@ -51,50 +51,50 @@ const WishList = () => {
               ) : (
                 <div className='relative overflow-x-auto'>
                   <table className='min-w-full divide-y divide-gray-200'>
-                    <thead className='bg-gray-50'>
+                    <thead className={`${isDarkMode ? 'bg-custom-layout-dark' : 'bg-white'}`}>
                       <tr className=''>
                         <th
                           scope='col'
-                          className='lg:px-6 lg:py-3 px-3 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                          className='lg:px-6 lg:py-3 px-3 py-2 text-center text-xs border font-medium uppercase tracking-wider'
                         >
                           Remove
                         </th>
                         <th
                           scope='col'
-                          className='lg:px-6 lg:py-3 px-8 py-2 text-center text-xs font-medium text-gray-500 uppercase tracking-wider'
+                          className='lg:px-6 lg:py-3 px-8 py-2 text-center text-xs border font-medium uppercase tracking-wider'
                         >
                           Product
                         </th>
                         <th
                           scope='col'
-                          className='lg:px-6 lg:py-3 px-3 py-2 text-center border border-gray-200 text-xs font-medium text-gray-500 uppercase tracking-wider'
+                          className='lg:px-6 lg:py-3 px-3 py-2 text-center text-xs border font-medium uppercase tracking-wider'
                         >
                           Name
                         </th>
                         <th
                           scope='col'
-                          className='lg:px-6 lg:py-3 px-3 py-2 text-center border border-gray-200 text-xs font-medium text-gray-500 uppercase tracking-wider'
+                          className='lg:px-6 lg:py-3 px-3 py-2 text-center text-xs border font-medium uppercase tracking-wider'
                         >
                           Price
                         </th>
                         <th
                           scope='col'
-                          className='lg:px-6 lg:py-3 px-3 py-2 text-center border border-gray-200 text-xs font-medium text-gray-500 uppercase tracking-wider'
+                          className='lg:px-6 lg:py-3 px-3 py-2 text-center text-xs border font-medium uppercase tracking-wider'
                         >
                           Quantity
                         </th>
                         <th
                           scope='col'
-                          className='lg:px-6 lg:py-3 px-8 py-2 text-center border border-gray-200 text-xs font-medium text-gray-500 uppercase tracking-wider'
+                          className='lg:px-6 lg:py-3 px-8 py-2 text-center text-xs border font-medium uppercase tracking-wider'
                         >
                           Add to cart
                         </th>
                       </tr>
                     </thead>
-                    <tbody className='bg-white divide-y divide-gray-200'>
+                    <tbody className={`${isDarkMode ? 'bg-custom-layout-dark' : 'bg-white'} border`}>
                       {wishlist.map((item) => (
                         <tr key={item.id}>
-                          <td className='lg:px-6 px-3 py-2 lg:py-4 whitespace-nowrap text-center border border-gray-200'>
+                          <td className='lg:px-6 px-3 py-2 lg:py-4 whitespace-nowrap text-center border'>
                             <button
                               onClick={() => dispatch(RemoveFromWishlist(item))}
                               className='text-red-500 hover:text-red-700 transition duration-200'
@@ -126,11 +126,11 @@ const WishList = () => {
                           </td>
 
                           <td className='lg:px-6 px-3 py-2 lg:py-4 text-center border border-gray-200 whitespace-nowrap'>
-                            <div className='font-medium lg:text-lg text-sm text-gray-900'>{item.name}</div>
+                            <div className='font-medium lg:text-lg text-sm'>{item.name}</div>
                           </td>
 
                           <td className='lg:px-6 px-3 py-2 lg:py-4 text-center border border-gray-200 whitespace-nowrap'>
-                            <div className='text-gray-600'>
+                            <div className=''>
                               {' '}
                               {item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                             </div>
@@ -157,7 +157,7 @@ const WishList = () => {
                                   value={count}
                                   readOnly
                                   className={`outline-none lg:w-10 w-5 text-center text-xl text-blue-400 ${
-                                    isDarkMode ? 'bg-custom-dark' : ''
+                                    isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'
                                   }`}
                                 />
                                 <button className='border-l border-blue-400 lg:p-2 p-1' onClick={increment}>

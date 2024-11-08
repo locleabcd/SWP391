@@ -15,7 +15,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { IoPowerOutline } from 'react-icons/io5'
 import '../../components/Member/animation.css'
-import Chat from '../Chat/Chat'
+
 function LeftSideBar() {
   const { isDarkMode } = useDarkMode()
   const [isClosed, setClosed] = useState(() => {
@@ -61,7 +61,6 @@ function LeftSideBar() {
 
   return (
     <div className=''>
-      <Chat />
       <div className='relative'>
         {isClosed ? (
           <button

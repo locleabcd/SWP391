@@ -218,7 +218,7 @@ function Checkout() {
                       type='text'
                       onChange={(e) => setName(e.target.value)}
                       placeholder='Name'
-                      className='border lg:px-4 px-3 lg:mt-3 lg:text-lg text-base mt-5 rounded-lg lg:py-3 py-1 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
+                      className={`border ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} lg:px-4 px-3 lg:mt-3 lg:text-lg text-base mt-5 rounded-lg lg:py-3 py-1 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400`}
                     ></input>
                     {nameError && <p className='text-red-500 lg:text-base text-xs mt-3'>{nameError}</p>}
                   </div>
@@ -227,14 +227,14 @@ function Checkout() {
                       type='text'
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder='Phone'
-                      className='border lg:px-4 px-3 lg:mt-3 lg:text-lg text-base mt-5 rounded-lg lg:py-3 py-1 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
+                      className={`border ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} lg:px-4 px-3 lg:mt-3 lg:text-lg text-base mt-5 rounded-lg lg:py-3 py-1 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400`}
                     ></input>
                     {phoneError && <p className='text-red-500 lg:text-base text-xs'>{phoneError}</p>}
                   </div>
                 </div>
                 <div className='flex flex-col lg:flex-row lg:gap-7 gap-2 lg:mt-7 mt-5'>
                   <select
-                    className='border border-gray-200 lg:py-3 lg:px-4 px-3 py-1 rounded-lg'
+                    className={`border ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} border-gray-200 lg:py-3 lg:px-4 px-3 py-1 rounded-lg`}
                     id='tinh'
                     name='tinh'
                     value={selectedTinh}
@@ -250,7 +250,7 @@ function Checkout() {
                   </select>
 
                   <select
-                    className='border border-gray-200 lg:py-3 lg:px-4 px-3 py-1 lg:mt-0 mt-3 rounded-lg'
+                    className={`border ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} border-gray-200 lg:py-3 lg:px-4 px-3 py-1 lg:mt-0 mt-3 rounded-lg`}
                     id='quan'
                     name='quan'
                     value={selectedQuan}
@@ -267,7 +267,7 @@ function Checkout() {
                   </select>
 
                   <select
-                    className='border border-gray-200 lg:py-3 lg:px-4 px-3 py-1 lg:mt-0 mt-3 rounded-lg'
+                    className={`border ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} border-gray-200 lg:py-3 lg:px-4 px-3 py-1 lg:mt-0 mt-3 rounded-lg`}
                     id='phuong'
                     name='phuong'
                     value={selectedPhuong}
@@ -288,7 +288,7 @@ function Checkout() {
                     type='text'
                     onChange={(e) => setAddress(e.target.value)}
                     placeholder='Address'
-                    className='border lg:px-4 px-4 py-1 lg:mt-3 rounded-lg lg:text-lg text-base lg:py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
+                    className={`border lg:px-4 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} px-4 py-1 lg:mt-3 rounded-lg lg:text-lg text-base lg:py-3 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400`}
                   ></input>
                   {addressError && <p className='text-red-500 lg:text-base text-xs'>{addressError}</p>}
                 </div>
@@ -297,7 +297,7 @@ function Checkout() {
                     type='text'
                     onChange={(e) => setNote(e.target.value)}
                     placeholder='Note'
-                    className='border lg:px-4 px-4 py-1 lg:mt-3 rounded-lg lg:text-lg text-base lg:py-6 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400'
+                    className={`border lg:px-4 ${isDarkMode ? 'bg-custom-dark' : 'bg-white'} px-4 py-1 lg:mt-3 rounded-lg lg:text-lg text-base lg:py-6 border-gray-200 outline-none focus:ring-2 focus:ring-blue-400`}
                   ></textarea>
                 </div>
               </div>

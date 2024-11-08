@@ -372,8 +372,8 @@ function Header() {
                         {notificationRead.map((notificationReads) => (
                           <div className='p-2 hover:bg-gray-200' key={notificationReads.id}>
                             <div className='lg:text-lg text-base'>
-                              <span className='font-bold'>{notificationReads.title}</span> mentioned you in a comment in{' '}
-                              <span className='font-semibold'>{notificationReads.title}</span> ·{' '}
+                              <span className='font-bold'>{notificationReads.title}</span> mentioned you in{' '}
+                              <span className='font-semibold'>{notificationReads.description}</span>
                               <span className='italic'>{notificationReads.title}</span>. Please remember the reminder
                               above.
                             </div>

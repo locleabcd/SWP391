@@ -44,13 +44,7 @@ function MyPondLog() {
 
   const openEditForm = (log) => {
     localStorage.setItem('logId', log.logId)
-    reset({
-      logTitle: log.logTitle,
-      logDate: log.logDate,
-      category: log.category,
-      note: log.note,
-      koiPondId: log.koiPondName
-    })
+    reset()
     setIsEditFormVisible(true)
   }
 
@@ -108,7 +102,7 @@ function MyPondLog() {
           Authorization: `Bearer ${token}`
         }
       })
-      toast.success('Delete Pond Log Fail')
+      toast.success('Delete Pond Log Successfully')
       pondLog()
       toggleCloseForm()
     } catch (error) {
@@ -170,6 +164,7 @@ function MyPondLog() {
           }
         }
       )
+      console.log(data.koiPondName)
       toast.success('Create Pond Log Successfully')
       pondLog()
       toggleAddFormVisibility(false)
@@ -208,7 +203,9 @@ function MyPondLog() {
       toggleCloseForm()
     } catch (error) {
       toast.error('Update Pond Log Fail')
-      console.error('Error details:', error)
+      console.log(data.dateTime)
+      console.log(error)
+      console.error(data.koiPondName)
     } finally {
       setIsLoading(false)
     }
@@ -379,10 +376,10 @@ function MyPondLog() {
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg lg:text-lg text-sm focus:outline-none transition-colors duration-200`}
-                          {...register('logDate', { required: 'Date Time is required' })}
+                          {...register('dateTime', { required: 'Date Time is required' })}
                         />
-                        {errors.logDate && (
-                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.logDate.message}</p>
+                        {errors.dateTime && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.dateTime.message}</p>
                         )}
                       </div>
 
@@ -424,7 +421,7 @@ function MyPondLog() {
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg lg:text-lg text-sm focus:outline-none transition-colors duration-200`}
-                          {...register('koiPondName')}
+                          {...register('koiPondName', { required: 'Pond is required' })}
                         >
                           {ponds.map((pond) => (
                             <option key={pond.id} value={pond.id}>
@@ -541,10 +538,10 @@ function MyPondLog() {
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('logDate', { required: 'Date Time is required' })}
+                          {...register('dateTime', { required: 'Date Time is required' })}
                         />
-                        {errors.logDate && (
-                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.logDate.message}</p>
+                        {errors.dateTime && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.dateTime.message}</p>
                         )}
                       </div>
 

@@ -157,7 +157,7 @@ function Payment() {
                           />
                           <label htmlFor='intcard'>
                             <h6 className='lg:text-lg text-sm font-semibold'>INTCARD Card Payment</h6>
-                            <p className='lg:text-lg text-sm mt-3 lg:mt-0 text-gray-600'>
+                            <p className='lg:text-lg text-sm mt-3 lg:mt-0'>
                               We support payments through INTCARD, enabling you to make secure and convenient
                               transactions.
                             </p>
@@ -385,7 +385,7 @@ function Payment() {
                           />
                           <label htmlFor='credit_card' className='pr-12'>
                             <h6 className='lg:text-lg text-sm font-semibold'>Domestic Bank Transfer</h6>
-                            <p className='lg:text-lg text-sm text-gray-600'>
+                            <p className='lg:text-lg text-sm'>
                               We support payments through major domestic banks: Vietcombank, BIDV, Techcombank,
                               Agribank, ACB, NCB
                             </p>
@@ -438,7 +438,7 @@ function Payment() {
                           />
                           <label>
                             <h6 className='lg:text-lg text-sm font-semibold'>VNPAY QR Payment</h6>
-                            <p className='lg:text-lg text-sm text-gray-600'>
+                            <p className='lg:text-lg text-sm'>
                               We support payments through VNPAY QR, allowing you to make quick and secure transactions
                               using your mobile device.
                             </p>

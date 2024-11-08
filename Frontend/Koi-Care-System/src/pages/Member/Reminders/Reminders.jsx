@@ -27,13 +27,8 @@ function Reminders() {
 
   const openEditForm = (reminder) => {
     localStorage.setItem('reminderId', reminder.id)
-    const createDate = new Date(reminder.dateTime)
-    const currentDate = new Date()
-
-    if (createDate >= currentDate) {
-      reset(reminder)
-      setIsEditFormVisible(true)
-    }
+    reset(reminder)
+    setIsEditFormVisible(true)
   }
 
   const toggleCloseForm = () => {
@@ -41,6 +36,7 @@ function Reminders() {
     reset({
       title: '',
       dateTime: '',
+      description: '',
       interval: reminder.repeatInterval
     })
   }
@@ -80,7 +76,8 @@ function Reminders() {
         {
           title: data.title,
           dateTime: data.dateTime,
-          repeatInterval: data.interval
+          repeatInterval: data.interval,
+          description: data.description
         },
         {
           headers: {
@@ -109,7 +106,8 @@ function Reminders() {
         {
           title: data.title,
           dateTime: data.dateTime,
-          repeatInterval: data.interval
+          repeatInterval: data.interval,
+          description: data.description
         },
         {
           headers: {
@@ -391,6 +389,25 @@ function Reminders() {
                         <option value='WEEKLY'>WEEKLY</option>
                       </select>
                     </div>
+
+                    <div className='relative col-span-2 lg:mt-4 mb-4'>
+                      <label
+                        className={`absolute lg:text-lg text-sm -top-[12px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        } font-semibold`}
+                      >
+                        Description:
+                      </label>
+                      <textarea
+                        className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                        {...register('description', { required: 'Description is required' })}
+                      />
+                      {errors.description && (
+                        <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.description.message}</p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </form>
@@ -486,7 +503,7 @@ function Reminders() {
                       )}
                     </div>
 
-                    <div className='relative col-span-1'>
+                    <div className='relative col-span-1 lg:mt-4 '>
                       <label
                         htmlFor='drainCount'
                         className={`absolute -top-[12px] lg:text-lg text-sm left-3 text-red-500 ${
@@ -505,7 +522,24 @@ function Reminders() {
                         <option value='DAILY'>DAILY</option>
                         <option value='WEEKLY'>WEEKLY</option>
                       </select>
-                      <input />
+                    </div>
+                    <div className='relative col-span-2 lg:mt-4'>
+                      <label
+                        className={`absolute lg:text-lg text-sm -top-[12px] left-3 text-red-500 ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        } font-semibold`}
+                      >
+                        Description:
+                      </label>
+                      <textarea
+                        className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
+                          isDarkMode ? 'bg-custom-dark' : 'bg-white'
+                        } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
+                        {...register('description', { required: 'Description is required' })}
+                      />
+                      {errors.description && (
+                        <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.description.message}</p>
+                      )}
                     </div>
                   </div>
                   <div className='w-full flex flex-col justify-center'>

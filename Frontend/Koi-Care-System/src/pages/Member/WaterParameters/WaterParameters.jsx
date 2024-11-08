@@ -15,7 +15,6 @@ import InfoBox from '../../../components/WaterParam/InfoBox'
 import { motion } from 'framer-motion'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
 import 'aos/dist/aos.css'
-import Chat from '../../../components/Chat/Chat'
 import { FaSpinner } from 'react-icons/fa'
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material'
 import * as XLSX from 'xlsx'
@@ -1016,7 +1015,7 @@ function WaterParameters() {
                   id='pageSize'
                   value={pageSize}
                   onChange={(e) => setPageSize(parseInt(e.target.value))}
-                  className='p-1 border rounded'
+                  className={`p-1 ${isDarkMode ? 'bg-custom-layout-dark' : 'bg-custom-layout-light'} border rounded`}
                 >
                   <option value={2}>2</option>
                   <option value={5}>5</option>
