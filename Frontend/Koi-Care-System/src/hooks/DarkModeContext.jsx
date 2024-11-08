@@ -21,7 +21,6 @@ export function DarkModeProvider({ children }) {
     document.body.className = isDarkMode ? 'dark-mode' : 'light-mode'
   }, [isDarkMode])
 
-  // Define light and dark themes
   const lightTheme = createTheme({
     palette: {
       mode: 'light'

@@ -235,7 +235,7 @@ const Chat = () => {
 
   return (
     <Draggable>
-      <div className='fixed bottom-4 left-1/5 z-50'>
+      <div className='fixed bottom-20 left-1/5 z-50'>
         {userRole === 'SHOP' ? (
           <div className={`${isJoined ? 'opacity-0' : 'opacity-100'}`}>
             <form onSubmit={connect} className='space-y-4'>

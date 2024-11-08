@@ -29,7 +29,6 @@ function MyPond() {
   const [selectedFile, setSelectedFile] = useState(null)
   const [issue, setIssue] = useState([])
   const [showButtons, setShowButtons] = useState(false)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
   const getIssue = async (koipondId) => {
     try {
@@ -39,7 +38,6 @@ function MyPond() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
       setIssue((prevData) => ({
         ...prevData,
         [koipondId]: res.data.data
@@ -140,7 +138,6 @@ function MyPond() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
       setPonds(res.data.data)
     } catch (error) {
       console.error('An unexpected error occurred:', error)
@@ -270,7 +267,6 @@ function MyPond() {
       getPond()
       toast.success('Delete success!!')
       setIsEditFormVisible(false)
-      setIsDialogOpen(false)
     } catch (error) {
       toast.error('Delete Pond Fail')
       setIsEditFormVisible(false)

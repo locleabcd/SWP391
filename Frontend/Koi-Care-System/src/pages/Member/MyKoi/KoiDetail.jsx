@@ -358,6 +358,7 @@ function KoiDetails() {
   }
 
   const getKoi = async () => {
+    setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
       if (!token) {
@@ -374,6 +375,8 @@ function KoiDetails() {
     } catch (error) {
       console.error('Error fetching koi:', error)
       alert('Failed to load koi details, please try again later.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -411,7 +414,6 @@ function KoiDetails() {
       getGrowthHistory()
       getKoi()
       setIsEditGrowthFormVisible(false)
-      setIsDialogOpen(false)
     } catch (error) {
       toast.error('Growth History delete fail!')
       console.error('Error deleting growth history:', error)
@@ -450,7 +452,6 @@ function KoiDetails() {
       reset()
       getRemark()
       setIsEditRemarkFormVisible(false)
-      setIsDialogOpen(false)
     } catch (error) {
       toast.error('Remark delete fail!')
       console.error('Error deleting remark:', error)
@@ -1565,7 +1566,7 @@ function KoiDetails() {
                 </form>
 
                 <div className='flex justify-center items-center'>
-                  <button className='mx-auto' onClick={() => deleteGrowth()}>
+                  <button className='mx-auto' onClick={() => deleteGrowth(currentGrowth.id)}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'
@@ -1785,7 +1786,7 @@ function KoiDetails() {
                 </form>
 
                 <div className='flex justify-center items-center'>
-                  <button className='mx-auto' onClick={() => deleteRemark()}>
+                  <button className='mx-auto' onClick={() => deleteRemark(currentRemark.id)}>
                     <svg
                       xmlns='http://www.w3.org/2000/svg'
                       fill='none'

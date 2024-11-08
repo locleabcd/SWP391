@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDarkMode } from '../../../hooks/DarkModeContext'
@@ -11,18 +10,9 @@ import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutAD'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
-
-import {
-  Modal,
-  Button,
-  TextField,
-  Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle
-} from '@mui/material'
+import Swal from 'sweetalert2'
+import { Modal, Button, TextField, Box } from '@mui/material'
+// eslint-disable-next-line no-unused-vars
 import { FaUser, FaMoneyBillWave, FaEdit, FaTrash, FaInfoCircle, FaEye, FaCircle } from 'react-icons/fa'
 
 function ShopAD() {
@@ -33,8 +23,7 @@ function ShopAD() {
   const [password, setPassword] = useState('defaultpassword') // Set default password
   const [email, setEmail] = useState('') // Optional email
   const [isFormOpen, setIsFormOpen] = useState(false)
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false) // Dialog state
-  const [selectedUserId, setSelectedUserId] = useState(null) // Store ID for deletion
+  const [isLoading, setIsLoading] = useState(true)
   const navigate = useNavigate()
 
   const getUsers = async () => {
@@ -50,7 +39,7 @@ function ShopAD() {
       })
       const shopUsers = res.data.data.filter((user) => user.role === 'SHOP')
       setManageShops(shopUsers)
-      console.log('Updated shop users:', shopUsers)
+      console.log(shopUsers)
     } catch (error) {
       console.log('Error fetching promotions:', error)
     }
@@ -59,41 +48,42 @@ function ShopAD() {
   useEffect(() => {
     getUsers()
   }, [])
-  const handleOpenDeleteDialog = (id) => {
-    setSelectedUserId(id)
-    setDeleteDialogOpen(true)
-  }
-
-  const handleCloseDeleteDialog = () => {
-    setDeleteDialogOpen(false)
-    setSelectedUserId(null)
-  }
-
-  const handleConfirmDelete = async () => {
-    setDeleteDialogOpen(false)
-    if (selectedUserId) {
-      try {
-        const token = localStorage.getItem('token')
-        if (!token) {
-          throw new Error('No token found')
-        }
-        await axios.put(
-          `https://koicaresystemv2.azurewebsites.net/api/users/delete/${selectedUserId}`,
-          { status: false },
-          {
-            headers: {
-              Authorization: `Bearer ${token}`
-            }
-          }
-        )
-        toast.success('User deactivated successfully')
-        await getUsers()
-      } catch (error) {
-        console.error(error)
-        toast.error('Failed to deactivate user')
-      } finally {
-        setSelectedUserId(null)
+  const handleDeleteStaff = async (id) => {
+    const { isConfirmed } = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, deactive it!'
+    })
+    if (!isConfirmed) {
+      return
+    }
+    setIsLoading(true)
+    try {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        throw new Error('No token found')
       }
+
+      // API to update status to inactive (set to false)
+      await axios.put(
+        `https://koicaresystemv2.azurewebsites.net/api/users/delete/${id}`,
+        { status: false }, // Assuming the API accepts a status field to set active/inactive
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+
+      toast.success('User deactivated successfully')
+      getUsers() // Refresh the user list after status update
+    } catch (error) {
+      console.error(error)
+      toast.error('Failed to deactivate user')
     }
   }
   const columns = [
@@ -146,7 +136,7 @@ function ShopAD() {
           {/* Icon Delete */}
           <button
             className='p-1 text-red-500 hover:bg-red-500 hover:text-white rounded-full'
-            onClick={() => handleOpenDeleteDialog(params.row.id)}
+            onClick={() => handleDeleteStaff(params.row.id)}
           >
             <FaTrash className='size-5' />
           </button>
@@ -154,42 +144,41 @@ function ShopAD() {
       )
     }
   ]
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email)
-  }
-
   const handleCreateStaff = async () => {
-    if (!username) {
-      toast.error('Username is required')
-      return
-    }
-
-    // Validate email only if it is provided
-    if (email && !isValidEmail(email)) {
-      toast.error('Please enter a valid email address')
-      return
-    }
-
+    console.log('onSubmit:', { username, email })
     setIsSubmitting(true)
     try {
       const token = localStorage.getItem('token')
       if (!token) {
         throw new Error('No token found')
       }
-      const requestBody = { username, password: 'defaultpassword' }
+      if (!username) {
+        throw new Error('Username is required')
+      }
+      const requestBody = {
+        username: username,
+        password: 'defaultpassword' // Bổ sung lại mật khẩu mặc định nếu cần
+      }
       if (email) {
         requestBody.email = email
       }
-      await axios.post(`https://koicaresystemv2.azurewebsites.net/api/users/register/staff`, requestBody, {
-        headers: { Authorization: `Bearer ${token}` }
+      const res = await axios.post(`https://koicaresystemv2.azurewebsites.net/api/users/register/staff`, requestBody, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       })
       toast.success('Staff created successfully!')
       setIsFormOpen(false)
+
+      // Gọi lại danh sách user để cập nhật
       getUsers()
     } catch (error) {
       console.log(error)
-      toast.error('Failed to create staff.')
+      if (error.response && error.response.data && error.response.data.message) {
+        toast.error(`Failed to create staff: ${error.response.data.message}`)
+      } else {
+        toast.error('Failed to create staff.')
+      }
     } finally {
       setIsSubmitting(false)
     }
@@ -254,22 +243,7 @@ function ShopAD() {
                 </div>
               </Box>
             </Modal>
-            <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-              <DialogTitle>Confirm Deletion</DialogTitle>
-              <DialogContent>
-                <DialogContentText>
-                  Are you sure you want to deactivate this user? This action cannot be undone.
-                </DialogContentText>
-              </DialogContent>
-              <DialogActions>
-                <Button onClick={handleCloseDeleteDialog} color='primary'>
-                  Cancel
-                </Button>
-                <Button onClick={handleConfirmDelete} color='error'>
-                  Confirm
-                </Button>
-              </DialogActions>
-            </Dialog>
+
             <Paper sx={{ height: 670 }}>
               <DataGrid
                 rows={manageShops}

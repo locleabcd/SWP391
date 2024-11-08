@@ -11,7 +11,7 @@ import TopLayout from '../../../layouts/TopLayoutAD'
 import * as XLSX from 'xlsx'
 import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
-
+import Swal from 'sweetalert2'
 function NewsAD() {
   const { isDarkMode } = useDarkMode()
   // eslint-disable-next-line no-unused-vars
@@ -68,7 +68,15 @@ function NewsAD() {
   }, [])
 
   const deleteBlog = async (blogId) => {
-    const isConfirmed = window.confirm('Are you sure to delete blog')
+    const { isConfirmed } = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    })
     if (!isConfirmed) {
       return
     }

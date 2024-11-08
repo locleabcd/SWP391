@@ -610,7 +610,7 @@ function DashboardAD() {
 
             {/* Card 4: Sessions */}
             <div className='bg-red-500 text-white rounded-lg shadow-lg p-4 min-h-[200px] sm:min-h-[250px] md:min-h-[300px]'>
-              <h2 className='text-3xl font-semibold'>{totalPaymentAmount}</h2>
+              <h2 className='text-3xl font-semibold'>{formatCurrency(totalPaymentAmount)}</h2>
               <p className='text-sm flex items-center'>
                 <span className='text-lg mr-1'>{formatPercentage(percentageChange)}</span>
                 <span className={`text-${percentageChange > 0 ? 'green' : 'red'}-300`}>

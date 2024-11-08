@@ -99,7 +99,6 @@ function Recommendations() {
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response?.status === 401) {
-          console.error('Unauthorized access - Token expired or invalid. Logging out...')
           localStorage.removeItem('token')
           localStorage.removeItem('id')
           toast.error('Token expired navigate to login')
@@ -126,7 +125,6 @@ function Recommendations() {
         }
       })
       setProduct(response.data.data)
-      console.log(response.data.data)
     } catch (error) {
       console.log(error)
     }

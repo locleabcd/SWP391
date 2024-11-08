@@ -374,7 +374,7 @@ function WaterParameters() {
     // Thay đổi style dựa vào loại và giá trị
     switch (type) {
       case 'nitrate':
-        if (numericValue < 0 || numericValue > 500) {
+        if (numericValue < 0 || numericValue > 500 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
           newStyle = { border: '1px solid blue', color: 'blue' }
         } else if (numericValue <= 20) {
           newStyle = { border: '1px solid green', color: 'green' }
@@ -386,7 +386,7 @@ function WaterParameters() {
         break
 
       case 'nitrite':
-        if (numericValue < 0 || numericValue > 50) {
+        if (numericValue < 0 || numericValue > 50 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
           newStyle = { border: '1px solid blue', color: 'blue' }
         } else if (numericValue <= 0.1) {
           newStyle = { border: '1px solid green', color: 'green' }
@@ -398,7 +398,7 @@ function WaterParameters() {
         break
 
       case 'phosphate':
-        if (numericValue < 0 || numericValue > 50) {
+        if (numericValue < 0 || numericValue > 50 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
           newStyle = { border: '1px solid blue', color: 'blue' }
         } else if (numericValue <= 0.035) {
           newStyle = { border: '1px solid green', color: 'green' }
@@ -410,7 +410,7 @@ function WaterParameters() {
         break
 
       case 'ammonium':
-        if (numericValue < 0 || numericValue > 50) {
+        if (numericValue < 0 || numericValue > 50 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
           newStyle = { border: '1px solid blue', color: 'blue' }
         } else if (numericValue <= 0.1) {
           newStyle = { border: '1px solid green', color: 'green' }
@@ -422,7 +422,7 @@ function WaterParameters() {
         break
 
       case 'hardness':
-        if (numericValue < 0 || numericValue > 50) {
+        if (numericValue < 0 || numericValue > 50 || !/^\d+(\.\d{1,1})?$/.test(numericValue)) {
           newStyle = { border: '1px solid blue', color: 'blue' }
         } else if (numericValue <= 21) {
           newStyle = { border: '1px solid green', color: 'green' }
@@ -432,7 +432,7 @@ function WaterParameters() {
         break
 
       case 'oxygen':
-        if (numericValue < 0 || numericValue > 50) {
+        if (numericValue < 0 || numericValue > 50 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
           newStyle = { border: '1px solid blue', color: 'blue' }
         } else if (numericValue > 6.5) {
           newStyle = { border: '1px solid green', color: 'green' }
@@ -444,7 +444,7 @@ function WaterParameters() {
         break
 
       case 'temperature':
-        if (numericValue < 0 || numericValue > 100) {
+        if (numericValue < 0 || numericValue > 100 || !/^\d+(\.\d{1,2})?$/.test(numericValue)) {
           newStyle = { border: '1px solid blue', color: 'blue' }
         } else if (numericValue > 4 && numericValue <= 26) {
           newStyle = { border: '1px solid green', color: 'green' }
@@ -456,7 +456,7 @@ function WaterParameters() {
         break
 
       case 'phValue':
-        if (numericValue < 0 || numericValue > 14) {
+        if (numericValue < 0 || numericValue > 14 || !/^\d+(\.\d{1,2})?$/.test(numericValue)) {
           newStyle = { border: '1px solid blue', color: 'blue' }
         } else if (numericValue >= 6.9 && numericValue <= 8) {
           newStyle = { border: '1px solid green', color: 'green' }
@@ -466,7 +466,7 @@ function WaterParameters() {
         break
 
       case 'carbonHardness':
-        if (numericValue < 0 || numericValue > 50) {
+        if (numericValue < 0 || numericValue > 50 || !/^\d+(\.\d{1,2})?$/.test(numericValue)) {
           newStyle = { border: '1px solid blue', color: 'blue' }
         } else if (numericValue >= 4 && numericValue <= 49) {
           newStyle = { border: '1px solid green', color: 'green' }
@@ -478,7 +478,7 @@ function WaterParameters() {
         break
 
       case 'carbonDioxide':
-        if (numericValue < 0 || numericValue > 99999999) {
+        if (numericValue < 0 || numericValue > 99999999 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
           newStyle = { border: '1px solid blue', color: 'blue' }
         } else if (numericValue > 4 && numericValue <= 35) {
           newStyle = { border: '1px solid green', color: 'green' }
@@ -490,7 +490,7 @@ function WaterParameters() {
         break
 
       case 'salt':
-        if (numericValue < 0 || numericValue > 1.5) {
+        if (numericValue < 0 || numericValue > 1.5 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
           newStyle = { border: '1px solid blue', color: 'blue' }
         } else if (numericValue <= 0.1) {
           newStyle = { border: '1px solid green', color: 'green' }
@@ -502,7 +502,7 @@ function WaterParameters() {
         break
 
       case 'totalChlorine':
-        if (numericValue < 0 || numericValue > 5) {
+        if (numericValue < 0 || numericValue > 5 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
           newStyle = { border: '1px solid blue', color: 'blue' }
         } else if (numericValue > 0 && numericValue <= 0.001) {
           newStyle = { border: '1px solid green', color: 'green' }
@@ -543,7 +543,7 @@ function WaterParameters() {
       // Change styles based on input value
       switch (type) {
         case 'nitrate':
-          if (numericValue < 0 || numericValue > 500) {
+          if (numericValue < 0 || numericValue > 500 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
             newStyle = {
               border: '1px solid blue',
               color: 'blue'
@@ -566,7 +566,7 @@ function WaterParameters() {
           }
           break
         case 'nitrite':
-          if (numericValue < 0 || numericValue > 50) {
+          if (numericValue < 0 || numericValue > 50 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
             newStyle = {
               border: '1px solid blue',
               color: 'blue'
@@ -589,7 +589,7 @@ function WaterParameters() {
           }
           break
         case 'phosphate':
-          if (numericValue < 0 || numericValue > 50) {
+          if (numericValue < 0 || numericValue > 50 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
             newStyle = {
               border: '1px solid blue',
               color: 'blue'
@@ -612,7 +612,7 @@ function WaterParameters() {
           }
           break
         case 'ammonium':
-          if (numericValue < 0 || numericValue > 50) {
+          if (numericValue < 0 || numericValue > 50 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
             newStyle = {
               border: '1px solid blue',
               color: 'blue'
@@ -635,7 +635,7 @@ function WaterParameters() {
           }
           break
         case 'hardness':
-          if (numericValue < 0 || numericValue > 50) {
+          if (numericValue < 0 || numericValue > 50 || !/^\d+(\.\d{1,1})?$/.test(numericValue)) {
             newStyle = {
               border: '1px solid blue',
               color: 'blue'
@@ -653,7 +653,7 @@ function WaterParameters() {
           }
           break
         case 'oxygen':
-          if (numericValue < 0 || numericValue > 50) {
+          if (numericValue < 0 || numericValue > 50 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
             newStyle = {
               border: '1px solid blue',
               color: 'blue'
@@ -676,7 +676,7 @@ function WaterParameters() {
           }
           break
         case 'temperature':
-          if (numericValue < 0 || numericValue > 100) {
+          if (numericValue < 0 || numericValue > 100 || !/^\d+(\.\d{1,2})?$/.test(numericValue)) {
             newStyle = {
               border: '1px solid blue',
               color: 'blue'
@@ -699,7 +699,7 @@ function WaterParameters() {
           }
           break
         case 'phValue':
-          if (numericValue < 0 || numericValue > 14) {
+          if (numericValue < 0 || numericValue > 14 || !/^\d+(\.\d{1,2})?$/.test(numericValue)) {
             newStyle = {
               border: '1px solid blue',
               color: 'blue'
@@ -717,7 +717,7 @@ function WaterParameters() {
           }
           break
         case 'carbonHardness':
-          if (numericValue < 0 || numericValue > 50) {
+          if (numericValue < 0 || numericValue > 50 || !/^\d+(\.\d{1,2})?$/.test(numericValue)) {
             newStyle = {
               border: '1px solid blue',
               color: 'blue'
@@ -740,7 +740,7 @@ function WaterParameters() {
           }
           break
         case 'carbonDioxide':
-          if (numericValue < 0 || numericValue > 99999999) {
+          if (numericValue < 0 || numericValue > 99999999 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
             newStyle = {
               border: '1px solid blue',
               color: 'blue'
@@ -763,7 +763,7 @@ function WaterParameters() {
           }
           break
         case 'salt':
-          if (numericValue < 0 || numericValue > 1.5) {
+          if (numericValue < 0 || numericValue > 1.5 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
             newStyle = {
               border: '1px solid blue',
               color: 'blue'
@@ -786,7 +786,7 @@ function WaterParameters() {
           }
           break
         case 'totalChlorine':
-          if (numericValue < 0 || numericValue > 5) {
+          if (numericValue < 0 || numericValue > 5 || !/^\d+(\.\d{1,3})?$/.test(numericValue)) {
             newStyle = {
               border: '1px solid blue',
               color: 'blue'
@@ -1091,7 +1091,7 @@ function WaterParameters() {
                               >
                                 {parameter.nitrite}
                               </td>
-                              <td className='border px-4 py-2'>0.1 - 0.3</td>
+                              <td className='border px-4 py-2'>0 - 0.1</td>
                               <td className='border px-4 py-2'>mg/l</td>
                             </tr>
                             <tr>
@@ -1201,8 +1201,8 @@ function WaterParameters() {
                               >
                                 {parameter.carbonHardness}
                               </td>
-                              <td className='border px-4 py-2'>&gt;= 40</td>
-                              <td className='border px-4 py-2'>mg/l</td>
+                              <td className='border px-4 py-2'>&gt;=4</td>
+                              <td className='border px-4 py-2'>°dH</td>
                             </tr>
                             <tr>
                               <td className='border px-4 py-2'>CO₂</td>
@@ -1426,7 +1426,8 @@ function WaterParameters() {
                         {...register('nitrate', {
                           required: 'Nitrate is required',
                           min: { value: 0, message: 'Nitrate value cannot be below 0 mg/l' },
-                          max: { value: 500, message: 'Nitrate value cannot exceed 500 mg/l' }
+                          max: { value: 500, message: 'Nitrate value cannot exceed 500 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={nitrateStyle}
                         onChange={(e) => handleChange(e, 'nitrate')}
@@ -1476,7 +1477,7 @@ function WaterParameters() {
                       <input
                         type='number'
                         id='nitrite'
-                        step='0.01'
+                        step='0.001'
                         placeholder='mg/l'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
@@ -1484,7 +1485,8 @@ function WaterParameters() {
                         {...register('nitrite', {
                           required: 'Nitrite is required',
                           min: { value: 0, message: 'Nitrite value cannot be below 0 mg/l' },
-                          max: { value: 50, message: 'Nitrite value cannot exceed 50 mg/l' }
+                          max: { value: 50, message: 'Nitrite value cannot exceed 50 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={nitriteStyle}
                         onChange={(e) => handleChange(e, 'nitrite')}
@@ -1540,7 +1542,8 @@ function WaterParameters() {
                         {...register('phosphate', {
                           required: 'Phosphate is required',
                           min: { value: 0, message: 'Phosphate value cannot be below 0 mg/l' },
-                          max: { value: 50, message: 'Phosphate value cannot exceed 50 mg/l' }
+                          max: { value: 50, message: 'Phosphate value cannot exceed 50 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={phosphateStyle}
                         onChange={(e) => handleChange(e, 'phosphate')}
@@ -1597,7 +1600,8 @@ function WaterParameters() {
                         {...register('ammonium', {
                           required: 'Ammonium is required',
                           min: { value: 0, message: 'Ammonium value cannot be below 0 mg/l' },
-                          max: { value: 50, message: 'Ammonium value cannot exceed 50 mg/l' }
+                          max: { value: 50, message: 'Ammonium value cannot exceed 50 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={ammoniumStyle}
                         onChange={(e) => handleChange(e, 'ammonium')}
@@ -1652,7 +1656,8 @@ function WaterParameters() {
                         {...register('hardness', {
                           required: 'Hardness is required',
                           min: { value: 0, message: 'Hardness value cannot be below 0 °dH' },
-                          max: { value: 50, message: 'Hardness value cannot exceed 50 °dH' }
+                          max: { value: 50, message: 'Hardness value cannot exceed 50 °dH' },
+                          validate: (value) => /^\d+(\.\d{1,1})?$/.test(value) || 'Only have up to 1 decimal places'
                         })}
                         style={hardnessStyle}
                         onChange={(e) => handleChange(e, 'hardness')}
@@ -1706,7 +1711,8 @@ function WaterParameters() {
                         {...register('oxygen', {
                           required: 'Oxygen is required',
                           min: { value: 0, message: 'Oxygen value cannot be below 0 mg/l' },
-                          max: { value: 50, message: 'Oxygen value cannot exceed 50 mg/l' }
+                          max: { value: 50, message: 'Oxygen value cannot exceed 50 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={oxygenStyle}
                         onChange={(e) => handleChange(e, 'oxygen')}
@@ -1753,8 +1759,6 @@ function WaterParameters() {
                         type='number'
                         placeholder='°C'
                         step='0.01'
-                        min={0}
-                        max={100}
                         id='temperature'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
@@ -1762,7 +1766,8 @@ function WaterParameters() {
                         {...register('temperature', {
                           required: 'Temperature is required',
                           min: { value: 0, message: 'Temperature value cannot be below 0 °C' },
-                          max: { value: 100, message: 'Temperature value cannot exceed 100 °C' }
+                          max: { value: 100, message: 'Temperature value cannot exceed 100 °C' },
+                          validate: (value) => /^\d+(\.\d{1,2})?$/.test(value) || 'Only have up to 2 decimal places'
                         })}
                         style={temperatureStyle}
                         onChange={(e) => handleChange(e, 'temperature')}
@@ -1809,15 +1814,14 @@ function WaterParameters() {
                         type='number'
                         id='phValue'
                         step='0.01'
-                        min={0}
-                        max={14}
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
                         }`}
                         {...register('phValue', {
                           required: 'pH Value is required',
                           min: { value: 0, message: 'pH Value cannot be below 0' },
-                          max: { value: 14, message: 'pH Value cannot exceed 14' }
+                          max: { value: 14, message: 'pH Value cannot exceed 14' },
+                          validate: (value) => /^\d+(\.\d{1,2})?$/.test(value) || 'Only have up to 2 decimal places'
                         })}
                         style={phValueStyle}
                         onChange={(e) => handleChange(e, 'phValue')}
@@ -1851,7 +1855,7 @@ function WaterParameters() {
                         title='Carbon Hardness Information'
                         content={
                           <>
-                            <strong>Optimal Range: &gt;= 40 °dH</strong>
+                            <strong>Optimal Range: &gt;= 4 °dH</strong>
                             <br />
                             To achieve a carbonate hardness (KH) of at least 4 °dH, water changes are necessary. Use tap
                             water for this! Also measure the KH value of the water coming from the tap. If this is also
@@ -1866,6 +1870,7 @@ function WaterParameters() {
                       <input
                         type='number'
                         placeholder='°dH'
+                        step='0.01'
                         id='carbonHardness'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
@@ -1873,7 +1878,8 @@ function WaterParameters() {
                         {...register('carbonHardness', {
                           required: 'Carbon Hardness is required',
                           min: { value: 0, message: 'Carbon Hardness cannot be below 0 °dH' },
-                          max: { value: 50, message: 'Carbon Hardness cannot exceed 50 °dH' }
+                          max: { value: 50, message: 'Carbon Hardness cannot exceed 50 °dH' },
+                          validate: (value) => /^\d+(\.\d{1,2})?$/.test(value) || 'Only have up to 2 decimal places'
                         })}
                         style={carbonHardnessStyle}
                         onChange={(e) => handleChange(e, 'carbonHardness')}
@@ -1932,7 +1938,8 @@ function WaterParameters() {
                         {...register('carbonDioxide', {
                           required: 'Carbon Dioxide is required',
                           min: { value: 0, message: 'CO₂ value cannot be below 0 mg/l' },
-                          max: { value: 99999999, message: 'CO₂ value cannot exceed 99999999 mg/l' }
+                          max: { value: 99999999, message: 'CO₂ value cannot exceed 99999999 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={carbonDioxideStyle}
                         onChange={(e) => handleChange(e, 'carbonDioxide')}
@@ -1990,7 +1997,8 @@ function WaterParameters() {
                         {...register('salt', {
                           required: 'Salt is required',
                           min: { value: 0, message: 'Salt value cannot be below 0%' },
-                          max: { value: 1.5, message: 'Salt value cannot exceed 1.5%' }
+                          max: { value: 1.5, message: 'Salt value cannot exceed 1.5%' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={saltStyle}
                         onChange={(e) => handleChange(e, 'salt')}
@@ -2046,7 +2054,8 @@ function WaterParameters() {
                         {...register('totalChlorine', {
                           required: 'Total Chlorine is required',
                           min: { value: 0, message: 'Total Chlorine value cannot be below 0 mg/l' },
-                          max: { value: 5, message: 'Total Chlorine value cannot exceed 5 mg/l' }
+                          max: { value: 5, message: 'Total Chlorine value cannot exceed 5 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={totalChlorineStyle}
                         onChange={(e) => handleChange(e, 'totalChlorine')}
@@ -2108,7 +2117,8 @@ function WaterParameters() {
                           max: {
                             value: 100,
                             message: 'Outdoor temp. value cannot exceed 100 °C'
-                          }
+                          },
+                          validate: (value) => /^\d+(\.\d{1,2})?$/.test(value) || 'Only have up to 2 decimal places'
                         })}
                       />
                       {errors.temp && (
@@ -2153,6 +2163,7 @@ function WaterParameters() {
                         type='number'
                         placeholder='g'
                         id='amountFed'
+                        step='0.01'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black text-white' : 'bg-white border-black '
                         }`}
@@ -2165,7 +2176,8 @@ function WaterParameters() {
                           max: {
                             value: 999999,
                             message: 'Total chlorines value cannot exceed 999999 g'
-                          }
+                          },
+                          validate: (value) => /^\d+(\.\d{1,2})?$/.test(value) || 'Only have up to 2 decimal places'
                         })}
                       />
                       {errors.amountFed && (
@@ -2239,7 +2251,7 @@ function WaterParameters() {
                   </div>
 
                   <h3 className='mb-5 text-2xl font-bold'>Edit Parameter</h3>
-                  <div className='text-black grid grid-cols-2 grid-rows-4 gap-4'>
+                  <div className='text-black grid grid-cols-2 grid-rows-4 lg:gap-8 gap-6'>
                     <div className='relative col-span-1'>
                       <label
                         className={`absolute lg:text-lg text-sm font-medium -top-[8px] left-3 text-red-500 ${
@@ -2338,7 +2350,8 @@ function WaterParameters() {
                         {...register('nitrate', {
                           required: 'Nitrate is required',
                           min: { value: 0, message: 'Nitrate value cannot be below 0 mg/l' },
-                          max: { value: 500, message: 'Nitrate value cannot exceed 500 mg/l' }
+                          max: { value: 500, message: 'Nitrate value cannot exceed 500 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={nitrateStyle}
                         onChange={(e) => handleChange(e, 'nitrate')}
@@ -2387,7 +2400,7 @@ function WaterParameters() {
                       <input
                         type='number'
                         id='nitrite'
-                        step='0.01'
+                        step='0.001'
                         placeholder='mg/l'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
@@ -2395,7 +2408,8 @@ function WaterParameters() {
                         {...register('nitrite', {
                           required: 'Nitrite is required',
                           min: { value: 0, message: 'Nitrite value cannot be below 0 mg/l' },
-                          max: { value: 50, message: 'Nitrite value cannot exceed 50 mg/l' }
+                          max: { value: 50, message: 'Nitrite value cannot exceed 50 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={nitriteStyle}
                         onChange={(e) => handleChange(e, 'nitrite')}
@@ -2451,7 +2465,8 @@ function WaterParameters() {
                         {...register('phosphate', {
                           required: 'Phosphate is required',
                           min: { value: 0, message: 'Phosphate value cannot be below 0 mg/l' },
-                          max: { value: 50, message: 'Phosphate value cannot exceed 50 mg/l' }
+                          max: { value: 50, message: 'Phosphate value cannot exceed 50 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={phosphateStyle}
                         onChange={(e) => handleChange(e, 'phosphate')}
@@ -2499,8 +2514,6 @@ function WaterParameters() {
                         type='number'
                         id='ammonium'
                         step='0.001'
-                        min={0}
-                        max={50}
                         placeholder='mg/l'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
@@ -2508,7 +2521,8 @@ function WaterParameters() {
                         {...register('ammonium', {
                           required: 'Ammonium is required',
                           min: { value: 0, message: 'Ammonium value cannot be below 0 mg/l' },
-                          max: { value: 50, message: 'Ammonium value cannot exceed 50 mg/l' }
+                          max: { value: 50, message: 'Ammonium value cannot exceed 50 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={ammoniumStyle}
                         onChange={(e) => handleChange(e, 'ammonium')}
@@ -2562,7 +2576,8 @@ function WaterParameters() {
                         {...register('hardness', {
                           required: 'Hardness is required',
                           min: { value: 0, message: 'Hardness value cannot be below 0 °dH' },
-                          max: { value: 50, message: 'Hardness value cannot exceed 50 °dH' }
+                          max: { value: 50, message: 'Hardness value cannot exceed 50 °dH' },
+                          validate: (value) => /^\d+(\.\d{1,1})?$/.test(value) || 'Only have up to 1 decimal places'
                         })}
                         style={hardnessStyle}
                         onChange={(e) => handleChange(e, 'hardness')}
@@ -2616,7 +2631,8 @@ function WaterParameters() {
                         {...register('oxygen', {
                           required: 'Oxygen is required',
                           min: { value: 0, message: 'Oxygen value cannot be below 0 mg/l' },
-                          max: { value: 50, message: 'Oxygen value cannot exceed 50 mg/l' }
+                          max: { value: 50, message: 'Oxygen value cannot exceed 50 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={oxygenStyle}
                         onChange={(e) => handleChange(e, 'oxygen')}
@@ -2664,8 +2680,6 @@ function WaterParameters() {
                         type='number'
                         placeholder='°C'
                         step='0.01'
-                        min={0}
-                        max={100}
                         id='temperature'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
@@ -2673,7 +2687,8 @@ function WaterParameters() {
                         {...register('temperature', {
                           required: 'Temperature is required',
                           min: { value: 0, message: 'Temperature value cannot be below 0 °C' },
-                          max: { value: 100, message: 'Temperature value cannot exceed 100 °C' }
+                          max: { value: 100, message: 'Temperature value cannot exceed 100 °C' },
+                          validate: (value) => /^\d+(\.\d{1,2})?$/.test(value) || 'Only have up to 2 decimal places'
                         })}
                         style={temperatureStyle}
                         onChange={(e) => handleChange(e, 'temperature')}
@@ -2720,15 +2735,14 @@ function WaterParameters() {
                         type='number'
                         id='phValue'
                         step='0.01'
-                        min={0}
-                        max={14}
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
                         }`}
                         {...register('phValue', {
                           required: 'pH Value is required',
                           min: { value: 0, message: 'pH Value cannot be below 0' },
-                          max: { value: 14, message: 'pH Value cannot exceed 14' }
+                          max: { value: 14, message: 'pH Value cannot exceed 14' },
+                          validate: (value) => /^\d+(\.\d{1,2})?$/.test(value) || 'Only have up to 2 decimal places'
                         })}
                         style={phValueStyle}
                         onChange={(e) => handleChange(e, 'phValue')}
@@ -2762,7 +2776,7 @@ function WaterParameters() {
                         title='Carbon Hardness Information'
                         content={
                           <>
-                            <strong>Optimal Range: &gt;= 40 °dH</strong>
+                            <strong>Optimal Range: &gt;= 4 °dH</strong>
                             <br />
                             To achieve a carbonate hardness (KH) of at least 4 °dH, water changes are necessary. Use tap
                             water for this! Also measure the KH value of the water coming from the tap. If this is also
@@ -2777,6 +2791,7 @@ function WaterParameters() {
                       <input
                         type='number'
                         placeholder='°dH'
+                        step='0.01'
                         id='carbonHardness'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black' : 'bg-white border-black '
@@ -2784,7 +2799,8 @@ function WaterParameters() {
                         {...register('carbonHardness', {
                           required: 'Carbon Hardness is required',
                           min: { value: 0, message: 'Carbon Hardness cannot be below 0 °dH' },
-                          max: { value: 50, message: 'Carbon Hardness cannot exceed 50 °dH' }
+                          max: { value: 50, message: 'Carbon Hardness cannot exceed 50 °dH' },
+                          validate: (value) => /^\d+(\.\d{1,2})?$/.test(value) || 'Only have up to 2 decimal places'
                         })}
                         style={carbonHardnessStyle}
                         onChange={(e) => handleChange(e, 'carbonHardness')}
@@ -2843,7 +2859,8 @@ function WaterParameters() {
                         {...register('carbonDioxide', {
                           required: 'Carbon Dioxide is required',
                           min: { value: 0, message: 'CO₂ value cannot be below 0 mg/l' },
-                          max: { value: 99999999, message: 'CO₂ value cannot exceed 99999999 mg/l' }
+                          max: { value: 99999999, message: 'CO₂ value cannot exceed 99999999 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={carbonDioxideStyle}
                         onChange={(e) => handleChange(e, 'carbonDioxide')}
@@ -2901,7 +2918,8 @@ function WaterParameters() {
                         {...register('salt', {
                           required: 'Salt is required',
                           min: { value: 0, message: 'Salt value cannot be below 0%' },
-                          max: { value: 1.5, message: 'Salt value cannot exceed 1.5%' }
+                          max: { value: 1.5, message: 'Salt value cannot exceed 1.5%' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={saltStyle}
                         onChange={(e) => handleChange(e, 'salt')}
@@ -2959,7 +2977,8 @@ function WaterParameters() {
                         {...register('totalChlorine', {
                           required: 'Total Chlorine is required',
                           min: { value: 0, message: 'Total Chlorine value cannot be below 0 mg/l' },
-                          max: { value: 5, message: 'Total Chlorine value cannot exceed 5 mg/l' }
+                          max: { value: 5, message: 'Total Chlorine value cannot exceed 5 mg/l' },
+                          validate: (value) => /^\d+(\.\d{1,3})?$/.test(value) || 'Only have up to 3 decimal places'
                         })}
                         style={totalChlorineStyle}
                         onChange={(e) => handleChange(e, 'totalChlorine')}
@@ -3021,7 +3040,8 @@ function WaterParameters() {
                           max: {
                             value: 100,
                             message: 'Outdoor temp. value cannot exceed 100 °C'
-                          }
+                          },
+                          validate: (value) => /^\d+(\.\d{1,2})?$/.test(value) || 'Only have up to 2 decimal places'
                         })}
                       />
                       {errors.temp && (
@@ -3068,6 +3088,7 @@ function WaterParameters() {
                         type='number'
                         placeholder='g'
                         id='amountFed'
+                        step='0.01'
                         className={`mt-1 block border outline-none w-full p-3 pr-10 rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark border-black text-white' : 'bg-white border-black '
                         }`}
@@ -3080,7 +3101,8 @@ function WaterParameters() {
                           max: {
                             value: 999999,
                             message: 'Total chlorines value cannot exceed 999999 g'
-                          }
+                          },
+                          validate: (value) => /^\d+(\.\d{1,2})?$/.test(value) || 'Only have up to 2 decimal places'
                         })}
                       />
                       {errors.amountFed && (

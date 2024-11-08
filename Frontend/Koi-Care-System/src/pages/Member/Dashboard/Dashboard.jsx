@@ -21,6 +21,7 @@ function Dashboard() {
   const [orders, setOrders] = useState([])
   const [report, setReport] = useState([])
   const [payment, setPayment] = useState([])
+  const [reminder, setReminder] = useState([])
   const [orderUser, setOrderUser] = useState([])
   const [selectedorder, setSelectedOrder] = useState(null)
 
@@ -45,6 +46,25 @@ function Dashboard() {
 
   useEffect(() => {
     getPayments()
+  }, [])
+
+  const getReminder = async () => {
+    const token = localStorage.getItem('token')
+    try {
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/reminders/list/user', {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+
+      setReminder(res.data.data)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  useEffect(() => {
+    getReminder()
   }, [])
 
   function getSurroundingDates() {
@@ -270,7 +290,7 @@ function Dashboard() {
               <div className='flex flex-col rounded-lg items-center py-8 justify-center bg-orange-100'>
                 <LuAlarmClock className='size-20 p-5 rounded-full text-white bg-orange-500' />
                 <div className={`${isDarkMode ? 'text-black' : ''} text-2xl mt-3`}>Reminders</div>
-                <div className={`text-2xl mt-1 ${isDarkMode ? 'text-black' : ''}`}>0</div>
+                <div className={`text-2xl mt-1 ${isDarkMode ? 'text-black' : ''}`}>{reminder?.length}</div>
               </div>
 
               <div className='flex flex-col rounded-lg border border-gray-200 bg-green-100 items-center py-8 justify-center'>
