@@ -26,7 +26,8 @@ function UpdatePromotion() {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
+    watch
   } = useForm()
   const fetchProductDetails = async (id) => {
     try {
@@ -155,6 +156,14 @@ function UpdatePromotion() {
   }
 
   const onSubmit = (data) => {
+    const startDate = new Date(data.startDate)
+    const endDate = new Date(data.endDate)
+
+    if (startDate > endDate) {
+      toast.error('Start date cannot be after end date.')
+      setIsSubmitting(false)
+      return
+    }
     updatePromotions(data)
   }
   const handleProductSelect = (selectedOptions) => {
@@ -260,6 +269,7 @@ function UpdatePromotion() {
                     required: 'Start Date is required'
                   })}
                   min={new Date().toISOString().split('T')[0]} // Không cho chọn ngày quá khứ
+                  max={watch('endDate') ? new Date(watch('endDate')).toISOString().split('T')[0] : undefined}
                 />
                 {errors.startDate && <p className='text-red-500 text-xs mt-1'>{errors.startDate.message}</p>}
               </div>
@@ -277,7 +287,7 @@ function UpdatePromotion() {
                   {...register('endDate', {
                     required: 'End Date is required'
                   })}
-                  min={new Date().toISOString().split('T')[0]} // Ngăn không cho chọn ngày trong quá khứ
+                  min={watch('startDate') ? new Date(watch('startDate')).toISOString().split('T')[0] : undefined}
                 />
                 {errors.endDate && <p className='text-red-500 text-xs mt-1'>{errors.endDate.message}</p>}
               </div>
