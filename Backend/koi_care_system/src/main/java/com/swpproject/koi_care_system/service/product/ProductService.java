@@ -38,7 +38,6 @@ public class ProductService implements IProductService {
     private final ImageMapper imageMapper;
     private final SupplierRepository supplierRepository;
     private final IPromotionService promotionService;
-    private final PromotionRepository promotionRepository;
     private final IssueTypeRepository issueTypeRepository;
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
@@ -79,7 +78,11 @@ public class ProductService implements IProductService {
     @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Product not found!"));
+                .map(product -> {
+                    updateProductRating(product);
+                    return product;
+                })
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found!"));
     }
 
     @Override
@@ -121,21 +124,24 @@ public class ProductService implements IProductService {
     }
     @Override
     public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
+    @Override
+    public List<Product> getAllProductsUpdate() {
         promotionService.upToDate();
         List<Product> productsTmp = productRepository.findAll();
         productsTmp.forEach(product->{
-            updateProductRating(product);
             product.getPromotions().forEach(promotion -> {
                 if(promotion.getStatus().equals(PromotionStatus.REJECTED)||promotion.getStatus().equals(PromotionStatus.ENDED)){
                     product.getPromotions().remove(promotion);
                     promotion.getProducts().remove(product);
                 }
-
             });
         });
-        List<Product> products = productRepository.findAll();
-        return products.stream().toList();
+        return productsTmp;
     }
+
     @Override
     public List<Product> getProductsByCategory(String category) {
         return productRepository.findByCategoryName(category);
@@ -185,7 +191,6 @@ public class ProductService implements IProductService {
                 .map(imageMapper::mapToImageDto)
                 .toList();
         productDto.setImages(imageDtos);
-
         List<PromotionDto> promotionDtos = product.getPromotions().stream()
                 .map(productMapper::mapToPromotionDto)
                 .toList();
@@ -202,5 +207,4 @@ public class ProductService implements IProductService {
         product.updateRating();
         productRepository.save(product);
     }
-
 }
