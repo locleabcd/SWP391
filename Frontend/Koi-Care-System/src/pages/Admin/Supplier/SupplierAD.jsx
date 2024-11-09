@@ -31,7 +31,6 @@ function SupplierAD() {
       })
 
       setSuppliers(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching tags:', error)
     }

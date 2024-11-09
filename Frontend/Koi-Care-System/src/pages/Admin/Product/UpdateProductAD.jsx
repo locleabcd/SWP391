@@ -41,7 +41,6 @@ function UpdateProductAD() {
       })
 
       setCategories(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching category:', error)
     }
@@ -65,7 +64,6 @@ function UpdateProductAD() {
       })
 
       setSuppliers(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching tags:', error)
     }
@@ -86,7 +84,7 @@ function UpdateProductAD() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setProducts(res.data.data)
       reset(res.data.data)
     } catch (error) {
