@@ -126,12 +126,14 @@ function SaltCalculator() {
       }
 
       // Tính toán lượng nước cần thay
-      const calculateWater = actualVolume * desiredSalinity
+      const calculateWater = actualVolume * desiredSalinity * 10
       setRefillAmount(calculateWater) // Cập nhật lượng nước cần bổ sung
     }
   }, [selectedPond, desiredSalinity, currentSalinity, waterChangePercent])
-  const saltNeededForLowRange = selectedPond ? 0.001 * selectedPond.volume * 10 : 0
-  const saltNeededForHighRange = selectedPond ? 0.003 * selectedPond.volume * 10 : 0
+  const saltNeededForLowRange =
+    selectedPond && selectedPond.salt !== null ? (0.1 - selectedPond.salt) * selectedPond.volume * 10 : 0
+  const saltNeededForHighRange =
+    selectedPond && selectedPond.salt !== null ? (0.3 - selectedPond.salt) * selectedPond.volume * 10 : 0
   return (
     <div>
       <div className='h-screen flex'>
