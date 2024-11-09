@@ -61,7 +61,7 @@ function UpdatePromotion() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setPromotions(res.data.data)
       // setSelectedProducts(res.data.data.products.map(product => ({ value: product.productId, label: product.productName })))
     } catch (error) {

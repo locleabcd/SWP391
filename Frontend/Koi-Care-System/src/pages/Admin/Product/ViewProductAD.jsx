@@ -67,7 +67,7 @@ function ViewProductAD() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setProductId(res.data.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -123,7 +123,6 @@ function ViewProductAD() {
         }
       })
 
-      console.log(res.data.data)
       setFeedback(res.data.data)
     } catch (error) {
       console.log(error)

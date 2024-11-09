@@ -76,7 +76,7 @@ function Promotion() {
           headers: { Authorization: `Bearer ${token}` }
         }
       )
-      console.log(res.data.data)
+
       console.log('Product details response:', res.data) // Kiểm tra phản hồi từ API
       if (res.data && res.data.data) {
         setProductDetails(res.data.data) // Cập nhật danh sách sản phẩm

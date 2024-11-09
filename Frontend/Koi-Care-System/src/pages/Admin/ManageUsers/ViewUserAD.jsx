@@ -70,7 +70,6 @@ function ViewUserAD() {
       })
 
       setUser(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching user:', error)
     }
@@ -93,7 +92,6 @@ function ViewUserAD() {
       })
 
       setPayment(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching payment:', error)
     }
@@ -116,7 +114,6 @@ function ViewUserAD() {
       })
 
       setOrder(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching order:', error)
     }
