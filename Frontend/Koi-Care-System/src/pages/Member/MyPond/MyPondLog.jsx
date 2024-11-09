@@ -72,7 +72,6 @@ function MyPondLog() {
         }
       })
 
-      console.log(res.data.data)
       setLog(res.data.data)
     } catch (error) {
       console.log('err', error)
@@ -131,7 +130,7 @@ function MyPondLog() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setPonds(res.data.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {

@@ -48,7 +48,6 @@ function UpdateUserAD() {
         email: res.data.data.email,
         password: '' // Đặt password là chuỗi trống
       })
-      console.log(res.data.data)
     } catch (error) {
       console.error('Error fetching users:', error)
       toast.error('Failed to fetch users details.')

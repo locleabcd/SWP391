@@ -29,7 +29,7 @@ function CustomerAD() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setUsers(res.data.data)
     } catch (error) {
       console.log('Error fetching users:', error)
@@ -58,8 +58,6 @@ function CustomerAD() {
           'Content-Type': 'application/json'
         }
       })
-
-      console.log('Response:', response.data)
 
       if (response.status === 200) {
         toast.success('Subscription upgraded successfully')
