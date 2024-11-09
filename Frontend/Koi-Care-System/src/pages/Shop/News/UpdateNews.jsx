@@ -224,7 +224,7 @@ function UpdateNews() {
                   modules={{
                     toolbar: [
                       [{ header: '1' }, { header: '2' }, { font: [] }, { size: [] }],
-                      [{ list: 'ordered' }, { list: 'bullet' }],
+                      [{ list: 'ordered' }],
                       ['bold', 'italic', 'underline'],
                       [{ align: [] }],
                       ['link']
