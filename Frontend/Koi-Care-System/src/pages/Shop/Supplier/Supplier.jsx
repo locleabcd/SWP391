@@ -31,7 +31,6 @@ function Supplier() {
       })
 
       setSuppliers(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching suppliers:', error)
     }

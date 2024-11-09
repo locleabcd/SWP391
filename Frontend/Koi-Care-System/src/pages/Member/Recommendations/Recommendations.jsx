@@ -95,7 +95,6 @@ function Recommendations() {
         }
       })
 
-      console.log(res.data.data)
       setCategory(res.data.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {

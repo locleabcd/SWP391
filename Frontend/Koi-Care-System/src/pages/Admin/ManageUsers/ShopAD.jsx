@@ -39,7 +39,6 @@ function ShopAD() {
       })
       const shopUsers = res.data.data.filter((user) => user.role === 'SHOP')
       setManageShops(shopUsers)
-      console.log(shopUsers)
     } catch (error) {
       console.log('Error fetching promotions:', error)
     }
@@ -145,7 +144,6 @@ function ShopAD() {
     }
   ]
   const handleCreateStaff = async () => {
-    console.log('onSubmit:', { username, email })
     setIsSubmitting(true)
     try {
       const token = localStorage.getItem('token')

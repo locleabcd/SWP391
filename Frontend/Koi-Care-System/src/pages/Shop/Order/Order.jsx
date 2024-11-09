@@ -18,6 +18,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import Paper from '@mui/material/Paper'
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Swal from 'sweetalert2'
 
 function Order() {
   const { isDarkMode } = useDarkMode()
@@ -63,7 +64,6 @@ function Order() {
         }
       })
       setOrders(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching Orders:', error)
     }
@@ -80,7 +80,16 @@ function Order() {
       toast.warning('You can only update delivery for orders with the status PROCESSING.')
       return
     }
-    const isConfirmed = window.confirm('Are you sure to update status delivery')
+    const { isConfirmed } = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, update delivery!'
+    })
+
     if (!isConfirmed) {
       return
     }

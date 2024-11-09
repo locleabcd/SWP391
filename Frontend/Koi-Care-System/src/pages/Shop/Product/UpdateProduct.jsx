@@ -51,7 +51,6 @@ function UpdateProduct() {
           label: `${issue.parameterType} - ${issue.conditionType}`
         }))
       )
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching issue type:', error)
     }
@@ -75,7 +74,6 @@ function UpdateProduct() {
       })
 
       setCategories(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching category:', error)
     }
@@ -99,7 +97,6 @@ function UpdateProduct() {
       })
 
       setSuppliers(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching tags:', error)
     }
@@ -120,7 +117,7 @@ function UpdateProduct() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setProducts(res.data.data)
       reset(res.data.data)
       // setSelectedIssues(res.data.data.issues.map((issue) => ({ value: issue.id, label: issue.parameterType })))
