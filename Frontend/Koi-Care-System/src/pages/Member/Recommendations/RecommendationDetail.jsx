@@ -76,7 +76,6 @@ function Recommendations() {
         }
       )
       setFeedbackUser(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.error('An unexpected error occurred:', error)
     }
@@ -164,7 +163,6 @@ function Recommendations() {
       })
 
       setFeedback(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log(error)
     }

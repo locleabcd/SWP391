@@ -34,7 +34,6 @@ function NewsAD() {
       })
 
       setTags(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching tags:', error)
     }
@@ -58,7 +57,6 @@ function NewsAD() {
       })
 
       setBlogs(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching blogs:', error)
     }

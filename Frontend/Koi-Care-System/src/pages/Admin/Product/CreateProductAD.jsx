@@ -39,7 +39,6 @@ export default function CreateProductAD() {
       })
 
       setCategories(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching category:', error)
     }
@@ -63,7 +62,6 @@ export default function CreateProductAD() {
       })
 
       setSuppliers(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching tags:', error)
     }
@@ -74,7 +72,6 @@ export default function CreateProductAD() {
   }, [])
 
   const onSubmit = async (data) => {
-    console.log('onSubmit:', data)
     setIsLoading(true)
     setIsSubmitting(true)
     try {

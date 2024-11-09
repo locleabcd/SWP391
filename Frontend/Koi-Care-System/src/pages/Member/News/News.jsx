@@ -36,7 +36,6 @@ function News() {
       })
 
       setTags(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching tags:', error)
     }
@@ -52,7 +51,6 @@ function News() {
       })
 
       setBlogs(res.data.data)
-      console.log(res.data.data)
 
       // Lấy userId của từng bài blog và gọi getProfile để lấy avatar
       res.data.data.forEach((blog) => {

@@ -36,7 +36,6 @@ function ProductAD() {
       })
 
       setProducts(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching products:', error)
     }
