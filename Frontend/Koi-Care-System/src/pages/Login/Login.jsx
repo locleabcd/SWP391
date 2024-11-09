@@ -22,9 +22,12 @@ function Login() {
       const role = urlParams.get('role')
       const id = urlParams.get('id')
       const name = urlParams.get('username')
+      const avt = urlParams.get('avatar')
       console.log(token)
       console.log(id)
       console.log(name)
+      console.log(avt)
+
       if (token) {
         localStorage.setItem('token', token)
         localStorage.setItem('role', role)
