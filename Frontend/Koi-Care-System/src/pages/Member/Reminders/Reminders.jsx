@@ -56,6 +56,7 @@ function Reminders() {
         return { ...reminder, date, time }
       })
 
+      reminders.sort((a, b) => new Date(a.dateTime) - new Date(b.dateTime))
       setReminder(reminders)
       console.log(reminders)
     } catch (err) {

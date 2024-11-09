@@ -35,7 +35,7 @@ function Dashboard() {
         }
       })
 
-      const topPayments = res.data.data.slice(0, 5)
+      const topPayments = res.data.data.slice(-5)
       setPayment(topPayments)
       console.log(topPayments)
     } catch (error) {
@@ -331,10 +331,10 @@ function Dashboard() {
                         {index !== payment.slice(0, 5).length - 1 && <span className='w-0.5 h-12 bg-gray-300' />}
                       </div>
                       <div className='flex flex-col'>
-                        <div className='lg:text-lg text-xs'>Transaction Code: {payments.transactionCode}</div>
+                        <div className='lg:text-lg text-xs'>Transaction Code: {payments.invoiceCode}</div>
                         <div className='lg:text-lg text-xs'>
                           Amount:{' '}
-                          {(payments?.amount ?? 0).toLocaleString('vi-VN', {
+                          {payments?.amount.toLocaleString('vi-VN', {
                             style: 'currency',
                             currency: 'VND'
                           })}
