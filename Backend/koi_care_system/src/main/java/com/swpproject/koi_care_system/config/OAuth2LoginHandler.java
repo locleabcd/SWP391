@@ -58,8 +58,9 @@ public class OAuth2LoginHandler extends SavedRequestAwareAuthenticationSuccessHa
             String role = user.getRole().toString();
             String username = user.getUsername();
             long id = user.getId();
+            String avatar = user.getUserProfile().getAvatar();
 
-            this.setDefaultTargetUrl("http://localhost:5173/login?token=" + jwtToken + "&role=" + role + "&username=" + username + "&id=" + id);
+            this.setDefaultTargetUrl("http://localhost:5173/login?token=" + jwtToken + "&role=" + role + "&username=" + username + "&id=" + id + "&avatar=" + avatar);
             this.setAlwaysUseDefaultTargetUrl(true);
         }
 
