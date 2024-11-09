@@ -150,7 +150,6 @@ function Dashboard() {
         }
       })
       setOrderUser(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.error('Error fetching water parameters:', error)
     }

@@ -84,7 +84,7 @@ function Statistics() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setPonds(res.data.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -121,7 +121,6 @@ function Statistics() {
       )
 
       setWater(res.data.data)
-      console.log(res.data.data)
     } catch (err) {
       console.log(err)
     }
@@ -144,7 +143,7 @@ function Statistics() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setKois(res.data.data)
     } catch (error) {
       console.error('Error fetching koi:', error)
@@ -207,7 +206,7 @@ function Statistics() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setGrowths(res.data.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {

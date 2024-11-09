@@ -3,11 +3,9 @@ import { useDarkMode } from '../../../hooks/DarkModeContext'
 import Header from '../../../components/Shop/Header'
 import LeftSideBar from '../../../components/Shop/LeftSideBar'
 import axios from 'axios'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import { useParams } from 'react-router-dom'
 import 'react-toastify/dist/ReactToastify.css'
 import TopLayout from '../../../layouts/TopLayoutShop'
-import { useForm } from 'react-hook-form'
 import { FaUser } from 'react-icons/fa'
 import { IoMail } from 'react-icons/io5'
 import { FaPhoneAlt } from 'react-icons/fa'
@@ -27,7 +25,6 @@ function UserDetail() {
   const [user, setUser] = useState(null)
   const [order, setOrder] = useState(null)
   const [payment, setPayment] = useState(null)
-  //   const [showButtons, setShowButtons] = useState(false)
   const [activeTable, setActiveTable] = useState('payment')
   const { id } = useParams()
   const [selectedOrder, setSelectedOrder] = useState(null)
@@ -70,7 +67,6 @@ function UserDetail() {
       })
 
       setUser(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching user:', error)
     }
@@ -93,7 +89,6 @@ function UserDetail() {
       })
 
       setPayment(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching payment:', error)
     }
@@ -116,7 +111,6 @@ function UserDetail() {
       })
 
       setOrder(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching order:', error)
     }

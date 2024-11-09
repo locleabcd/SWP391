@@ -71,7 +71,6 @@ function Dashboard() {
       const chartData = Object.values(groupedData)
       setUsersData(chartData)
       setUsers(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching users:', error)
     }
@@ -90,7 +89,6 @@ function Dashboard() {
         }
       })
       setOrders(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching Orders:', error)
     }
@@ -110,7 +108,6 @@ function Dashboard() {
       })
 
       setCategories(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching category:', error)
     }
@@ -128,7 +125,6 @@ function Dashboard() {
       })
 
       setProducts(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching products:', error)
     }
@@ -148,7 +144,6 @@ function Dashboard() {
       })
 
       setBlogs(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching blogs:', error)
     }
@@ -167,7 +162,6 @@ function Dashboard() {
         }
       })
       setPayments(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching Payments:', error)
     }
@@ -187,7 +181,6 @@ function Dashboard() {
       })
 
       setSuppliers(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching tags:', error)
     }

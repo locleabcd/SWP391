@@ -48,7 +48,6 @@ function CreateProduct() {
           label: `${issue.parameterType} - ${issue.conditionType}`
         }))
       )
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching issue type:', error)
     }
@@ -72,7 +71,6 @@ function CreateProduct() {
       })
 
       setCategories(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching category:', error)
     }
@@ -96,7 +94,6 @@ function CreateProduct() {
       })
 
       setSuppliers(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching tags:', error)
     }

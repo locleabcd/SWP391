@@ -64,7 +64,7 @@ function MyPondIssue() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setIssue(res.data.data)
     } catch (err) {
       console.log(err)
