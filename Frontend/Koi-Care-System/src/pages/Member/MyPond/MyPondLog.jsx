@@ -44,7 +44,13 @@ function MyPondLog() {
 
   const openEditForm = (log) => {
     localStorage.setItem('logId', log.logId)
-    reset()
+    reset({
+      logTitle: log.logTitle,
+      logDate: log.dateTime,
+      category: log.category,
+      note: log.note,
+      koiPondId: log.koiPondName
+    })
     setIsEditFormVisible(true)
   }
 
@@ -153,7 +159,7 @@ function MyPondLog() {
         'https://koicaresystemv2.azurewebsites.net/api/log/create',
         {
           logTitle: data.logTitle,
-          logDate: data.logDate,
+          logDate: data.dateTime,
           category: data.category,
           note: data.note,
           koiPondId: data.koiPondName

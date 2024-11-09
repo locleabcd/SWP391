@@ -634,7 +634,6 @@ function MyPond() {
                           </label>
                         )}
                       </div>
-                      {/* {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>} */}
                       <div className='lg:mb-4 relative col-span-1'>
                         <label
                           htmlFor='name'
@@ -677,7 +676,10 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('volume', { required: 'Volume is required' })}
+                          {...register('volume', {
+                            required: 'Volume is required',
+                            min: { value: 0, message: 'Volume is must more than 0' }
+                          })}
                         />
                         {errors.volume && (
                           <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.volume.message}</p>
@@ -700,7 +702,10 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('depth', { required: 'Depth is required' })}
+                          {...register('depth', {
+                            required: 'Depth is required',
+                            min: { value: 0, message: 'Depth is must more than 0' }
+                          })}
                         />
                         {errors.depth && (
                           <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.depth.message}</p>
@@ -723,7 +728,10 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('drainCount', { required: 'Drain Count is required' })}
+                          {...register('drainCount', {
+                            required: 'Drain Count is required',
+                            min: { value: 0, message: 'Drain count is must more than 0' }
+                          })}
                         />
                         {errors.drainCount && (
                           <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.drainCount.message}</p>
@@ -746,7 +754,10 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('skimmer', { required: 'Skimmer is required' })}
+                          {...register('skimmer', {
+                            required: 'Skimmer is required',
+                            min: { value: 0, message: 'Skimmer count count is must more than 0' }
+                          })}
                         />
                         {errors.skimmer && (
                           <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.skimmer.message}</p>
@@ -769,7 +780,10 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('pumpCapacity', { required: 'Pump Capacity is required' })}
+                          {...register('pumpCapacity', {
+                            required: 'Pump Capacity is required',
+                            min: { value: 0, message: 'Pump Capacity is must more than 0' }
+                          })}
                         />
                         {errors.pumpCapacity && (
                           <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.pumpCapacity.message}</p>
@@ -908,7 +922,6 @@ function MyPond() {
                           </label>
                         )}
                       </div>
-                      {/* {errors.image && <p className='text-red-500 text-sm'>{errors.image.message}</p>} */}
                       <div className='lg:mb-4 relative col-span-1'>
                         <label
                           htmlFor='name'
@@ -926,7 +939,8 @@ function MyPond() {
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('name', {
-                            required: 'Name is required'
+                            required: 'Name is required',
+                            validate: (value) => !isNameDuplicate(value) || 'Name already exists'
                           })}
                         />
                         {errors.name && (
@@ -950,7 +964,10 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('volume', { required: 'Volume is required' })}
+                          {...register('volume', {
+                            required: 'Volume is required',
+                            min: { value: 0, message: 'Volume is must more than 0' }
+                          })}
                         />
                         {errors.volume && (
                           <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.volume.message}</p>
@@ -973,7 +990,10 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('depth', { required: 'Depth is required' })}
+                          {...register('depth', {
+                            required: 'Depth is required',
+                            min: { value: 0, message: 'Depth is must more than 0' }
+                          })}
                         />
                         {errors.depth && (
                           <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.depth.message}</p>
@@ -996,7 +1016,10 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('drainCount', { required: 'Drain Count is required' })}
+                          {...register('drainCount', {
+                            required: 'Drain Count is required',
+                            min: { value: 0, message: 'Drain Count Capacity is must more than 0' }
+                          })}
                         />
                         {errors.drainCount && (
                           <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.drainCount.message}</p>
@@ -1019,7 +1042,10 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('skimmer', { required: 'Skimmer is required' })}
+                          {...register('skimmer', {
+                            required: 'Skimmer is required',
+                            min: { value: 0, message: 'Skimmer Count Capacity is must more than 0' }
+                          })}
                         />
                         {errors.skimmer && (
                           <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.skimmer.message}</p>
@@ -1042,7 +1068,10 @@ function MyPond() {
                           className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('pumpCapacity', { required: 'Pump Capacity is required' })}
+                          {...register('pumpCapacity', {
+                            required: 'Pump Capacity is required',
+                            min: { value: 0, message: 'Pump Capacity Capacity is must more than 0' }
+                          })}
                         />
                         {errors.pumpCapacity && (
                           <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.pumpCapacity.message}</p>

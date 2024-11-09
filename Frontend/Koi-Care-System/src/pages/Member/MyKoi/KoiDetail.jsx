@@ -1053,6 +1053,7 @@ function KoiDetails() {
                         id='pondDate'
                         className={`mt-1 block w-full lg:p-3 px-2 py-1 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark' : 'bg-white'}`}
                         defaultValue={koi.pondDate}
+                        max={new Date().toISOString().split('T')[0]}
                         {...register('pondDate')}
                       />
                     </div>
@@ -1283,6 +1284,7 @@ function KoiDetails() {
                         className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${
                           isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'
                         }`}
+                        max={new Date().toISOString().slice(0, 16)}
                         {...register('createDate', { required: 'Date is required' })}
                       />
                       {errors.createDate && (
@@ -1505,6 +1507,7 @@ function KoiDetails() {
                       <input
                         type='datetime-local'
                         id='growthDate'
+                        max={new Date().toISOString().slice(0, 16)}
                         className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                         {...register('createDate')}
                         defaultValue={koi.pondDate}
@@ -1675,6 +1678,7 @@ function KoiDetails() {
                       <input
                         type='datetime-local'
                         id='createDate'
+                        max={new Date().toISOString().slice(0, 16)}
                         className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                         {...register('createDate', { required: false })}
                       />
@@ -1778,6 +1782,7 @@ function KoiDetails() {
                       <input
                         type='datetime-local'
                         id='createDate'
+                        max={new Date().toISOString().slice(0, 16)}
                         className={`mt-1 block w-full lg:p-3 py-1 px-2 border border-black rounded-md shadow-sm ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                         {...register('createDate', { required: false })}
                       />
