@@ -90,7 +90,7 @@ function DashboardAD() {
       setUsersData(chartData)
       setUsers(res.data.data)
     } catch (error) {
-      console.log('Error fetching users:', error)
+      return error
     }
   }
 

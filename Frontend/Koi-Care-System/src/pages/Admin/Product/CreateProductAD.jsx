@@ -72,7 +72,6 @@ export default function CreateProductAD() {
   }, [])
 
   const onSubmit = async (data) => {
-    console.log('onSubmit:', data)
     setIsLoading(true)
     setIsSubmitting(true)
     try {

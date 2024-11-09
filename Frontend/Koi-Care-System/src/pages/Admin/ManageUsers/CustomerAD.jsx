@@ -59,8 +59,6 @@ function CustomerAD() {
         }
       })
 
-      console.log('Response:', response.data)
-
       if (response.status === 200) {
         toast.success('Subscription upgraded successfully')
 
