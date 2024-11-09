@@ -250,7 +250,7 @@ function Dashboard() {
   const columnsOrder = [
     { field: 'id', headerName: 'ID', width: 50 },
     { field: 'orderDate', headerName: 'Date', flex: 1, renderCell: (params) => formatDateTime(params.row.orderDate) },
-    { field: 'recipientName', headerName: 'Name', width: 100 },
+    { field: 'recipientName', headerName: 'Name', flex: 1 },
     {
       field: 'status',
       headerName: 'Status',
@@ -427,7 +427,7 @@ function Dashboard() {
                   <option value='year'>Year</option>
                 </select>
               </div>
-              <ResponsiveContainer className={`p-5`} width='100%' height={400}>
+              <ResponsiveContainer className='p-5' width='100%' height={400}>
                 <AreaChart data={chartData}>
                   <defs>
                     <linearGradient id='colorUv' x1='0' y1='0' x2='0' y2='1'>

@@ -108,7 +108,7 @@ function MyPondLog() {
           Authorization: `Bearer ${token}`
         }
       })
-      toast.success('Delete Pond Log Fail')
+      toast.success('Delete Pond Log Successfully')
       pondLog()
       toggleCloseForm()
     } catch (error) {

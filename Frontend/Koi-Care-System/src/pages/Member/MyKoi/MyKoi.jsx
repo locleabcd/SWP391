@@ -672,10 +672,11 @@ function MyKoi() {
                   <input
                     type='date'
                     id='pondDate'
+                    max={new Date().toISOString().split('T')[0]}
                     defaultValue={new Date().toISOString().split('T')[0]}
                     className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                       isDarkMode ? 'bg-custom-dark' : 'bg-white'
-                    } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
+                    } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
                     {...register('pondDate')}
                   />
                 </div>
