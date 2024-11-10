@@ -126,7 +126,7 @@ function Order() {
                 <div key={order.id} className='border rounded-lg p-6 shadow-lg  transition-shadow'>
                   <h2 className='text-xl font-semibold mb-4 flex justify-between items-center'>
                     Order ID: {order.id}
-                    <button onClick={() => toggleOrderDetails(order.id)} className='text-gray-500 hover:text-gray-700'>
+                    <button onClick={() => toggleOrderDetails(order.id)} className=' hover:text-gray-700'>
                       {expandedOrders[order.id] ? <FaChevronUp /> : <FaChevronDown />}
                     </button>
                   </h2>
@@ -147,10 +147,10 @@ function Order() {
                               <p className='font-medium text-lg'>{item.productName}</p>
                             </td>
                             <td className='py-3 px-6'>
-                              <p className='text-lg text-gray-500'>{item.category}</p>
+                              <p className='text-lg '>{item.category}</p>
                             </td>
                             <td className='py-3 px-6'>
-                              <p className='text-lg text-gray-500'>Quantity: {item.quantity}</p>
+                              <p className='text-lg '>Quantity: {item.quantity}</p>
                             </td>
                             <td className='py-3 px-6'>
                               <p className='font-semibold text-blue-500'>
@@ -164,8 +164,8 @@ function Order() {
                   </div>
 
                   {expandedOrders[order.id] && (
-                    <div className='mt-4 p-4 text-gray-600  rounded-lg'>
-                      <div className='text-lg font-semibold text-gray-700 mb-4'>Order Details</div>
+                    <div className='mt-4 p-4   rounded-lg'>
+                      <div className='text-lg font-semibold  mb-4'>Order Details</div>
                       <div className='space-y-2'>
                         <p className='flex items-center gap-2'>
                           <FaUser className='text-xl text-blue-500' />
@@ -217,7 +217,7 @@ function Order() {
               ))}
             </div>
           ) : (
-            <p className='text-center text-gray-500'>No orders found.</p>
+            <p className='text-center '>No orders found.</p>
           )}
           <div className='flex justify-center items-center mt-4 gap-4'>
             <button

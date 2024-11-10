@@ -44,7 +44,13 @@ function MyPondLog() {
 
   const openEditForm = (log) => {
     localStorage.setItem('logId', log.logId)
-    reset()
+    reset({
+      logTitle: log.logTitle,
+      logDate: log.dateTime,
+      category: log.category,
+      note: log.note,
+      koiPondId: log.koiPondName
+    })
     setIsEditFormVisible(true)
   }
 
@@ -66,7 +72,6 @@ function MyPondLog() {
         }
       })
 
-      console.log(res.data.data)
       setLog(res.data.data)
     } catch (error) {
       console.log('err', error)
@@ -102,7 +107,7 @@ function MyPondLog() {
           Authorization: `Bearer ${token}`
         }
       })
-      toast.success('Delete Pond Log Fail')
+      toast.success('Delete Pond Log Successfully')
       pondLog()
       toggleCloseForm()
     } catch (error) {
@@ -125,7 +130,7 @@ function MyPondLog() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setPonds(res.data.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -153,7 +158,7 @@ function MyPondLog() {
         'https://koicaresystemv2.azurewebsites.net/api/log/create',
         {
           logTitle: data.logTitle,
-          logDate: data.logDate,
+          logDate: data.dateTime,
           category: data.category,
           note: data.note,
           koiPondId: data.koiPondName

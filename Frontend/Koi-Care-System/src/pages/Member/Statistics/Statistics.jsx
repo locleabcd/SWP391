@@ -84,7 +84,7 @@ function Statistics() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setPonds(res.data.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -121,7 +121,6 @@ function Statistics() {
       )
 
       setWater(res.data.data)
-      console.log(res.data.data)
     } catch (err) {
       console.log(err)
     }
@@ -144,7 +143,7 @@ function Statistics() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setKois(res.data.data)
     } catch (error) {
       console.error('Error fetching koi:', error)
@@ -207,7 +206,7 @@ function Statistics() {
           Authorization: `Bearer ${token}`
         }
       })
-      console.log(res.data.data)
+
       setGrowths(res.data.data)
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -400,29 +399,61 @@ function Statistics() {
     return value ? value.toFixed(2) : value
   }
 
+  const formatDateKoi = (date) => {
+    const parsedDate = new Date(date)
+    if (dateFilter === 'Day') {
+      return parsedDate.toLocaleDateString()
+    } else if (dateFilter === 'Last month') {
+      return parsedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
+    } else if (dateFilter === 'Last year') {
+      return parsedDate.getFullYear()
+    }
+  }
+
   const aggregateKoiGrowthData = () => {
     const lengthDataMap = {}
     const weightDataMap = {}
 
     koiGrowthData.forEach((koi) => {
       koi.growthData.forEach((entry) => {
-        const date = new Date(entry.createDate).toLocaleDateString()
+        const date = formatDateKoi(entry.createDate)
 
         if (!lengthDataMap[date]) {
-          lengthDataMap[date] = { date }
+          lengthDataMap[date] = { date, lengthTotal: 0, count: 0 }
         }
         if (!weightDataMap[date]) {
-          weightDataMap[date] = { date }
+          weightDataMap[date] = { date, weightTotal: 0, count: 0 }
         }
+
+        lengthDataMap[date].lengthTotal += entry.length
+        weightDataMap[date].weightTotal += entry.weight
+        lengthDataMap[date].count += 1
+        weightDataMap[date].count += 1
 
         lengthDataMap[date][koi.koiName] = entry.length
         weightDataMap[date][koi.koiName] = entry.weight
       })
     })
 
+    const lengthChartData = Object.values(lengthDataMap)
+      .map((entry) => ({
+        date: entry.date,
+        avgLength: entry.lengthTotal / entry.count,
+        ...entry
+      }))
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
+
+    const weightChartData = Object.values(weightDataMap)
+      .map((entry) => ({
+        date: entry.date,
+        avgWeight: entry.weightTotal / entry.count,
+        ...entry
+      }))
+      .sort((a, b) => new Date(a.date) - new Date(b.date))
+
     return {
-      lengthChartData: Object.values(lengthDataMap),
-      weightChartData: Object.values(weightDataMap)
+      lengthChartData,
+      weightChartData
     }
   }
 

@@ -9,29 +9,29 @@ function Pricing() {
   const { isDarkMode } = useDarkMode()
   const navigate = useNavigate()
 
-  const createPayment = async () => {
-    const userId = localStorage.getItem('id')
-    try {
-      const token = localStorage.getItem('token')
+  // const createPayment = async () => {
+  //   const userId = localStorage.getItem('id')
+  //   try {
+  //     const token = localStorage.getItem('token')
 
-      await axios.post(
-        'https://koicaresystemv2.azurewebsites.net/api/orders/order/premium',
-        {
-          userId: userId,
-          time: '1MONTH'
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      )
-      navigate('/member/payment')
-      localStorage.setItem('totalPrice', 299999)
-    } catch (error) {
-      console.error('Error details:', error)
-    }
-  }
+  //     await axios.post(
+  //       'https://koicaresystemv2.azurewebsites.net/api/orders/order/premium',
+  //       {
+  //         userId: userId,
+  //         time: '1MONTH'
+  //       },
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`
+  //         }
+  //       }
+  //     )
+  //     navigate('/member/payment')
+  //     localStorage.setItem('totalPrice', 299999)
+  //   } catch (error) {
+  //     console.error('Error details:', error)
+  //   }
+  // }
 
   return (
     <div>
@@ -126,28 +126,7 @@ function Pricing() {
                         Access the salt calculator to maintain optimal health in your koi pond.
                       </span>
                     </li>
-                    <li className='flex space-x-3'>
-                      <svg
-                        stroke='currentColor'
-                        fill='currentColor'
-                        strokeWidth={0}
-                        viewBox='0 0 20 20'
-                        aria-hidden='true'
-                        className='h-5 w-5 shrink-0 text-green-400'
-                        height='1em'
-                        width='1em'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <path
-                          fillRule='evenodd'
-                          d='M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z'
-                          clipRule='evenodd'
-                        />
-                      </svg>
-                      <span className='text-base font-normal text-gray-500 dark:text-gray-400'>
-                        24/7 phone, chat, and email support.
-                      </span>
-                    </li>
+
                     <li className='flex space-x-3 line-through decoration-gray-500'>
                       <svg
                         stroke='currentColor'
@@ -211,7 +190,7 @@ function Pricing() {
                   </ul>
                 </div>
                 <div
-                  onClick={() => navigate('/member/recommendations/1')}
+                  onClick={() => navigate('/member/recommendations')}
                   className='rounded-lg bg-blue-400 px-5 cursor-pointer py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
                 >
                   Buy Now
@@ -296,28 +275,7 @@ function Pricing() {
                         Access the salt calculator to maintain optimal health in your koi pond.
                       </span>
                     </li>
-                    <li className='flex space-x-3'>
-                      <svg
-                        stroke='currentColor'
-                        fill='currentColor'
-                        strokeWidth={0}
-                        viewBox='0 0 20 20'
-                        aria-hidden='true'
-                        className='h-5 w-5 shrink-0 text-green-400'
-                        height='1em'
-                        width='1em'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <path
-                          fillRule='evenodd'
-                          d='M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z'
-                          clipRule='evenodd'
-                        />
-                      </svg>
-                      <span className='text-base font-normal text-gray-500 dark:text-gray-400'>
-                        24/7 phone, chat, and email support.
-                      </span>
-                    </li>
+
                     <li className='flex space-x-3'>
                       <svg
                         stroke='currentColor'
@@ -381,7 +339,7 @@ function Pricing() {
                   </ul>
                 </div>
                 <div
-                  onClick={() => navigate('/member/recommendations/2')}
+                  onClick={() => navigate('/member/recommendations')}
                   className='rounded-lg bg-blue-400 px-5 cursor-pointer py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
                 >
                   Buy Now
@@ -392,7 +350,7 @@ function Pricing() {
                   <h3 className='mb-4 text-2xl font-semibold '>Premium Gold</h3>
                   <div className='mb-4 flex items-baseline'>
                     <span className='text-3xl font-semibold'>đ</span>
-                    <span className='text-5xl font-extrabold tracking-tight ml-2'>1.999.000</span>
+                    <span className='text-5xl font-extrabold tracking-tight ml-2'>1.799.000</span>
                     <span className='ml-1 text-2xl font-normal text-gray-500 dark:text-gray-400'>/year</span>
                   </div>
                   <p className='text-lg font-normal'>
@@ -466,28 +424,7 @@ function Pricing() {
                         Access the salt calculator to maintain optimal health in your koi pond.
                       </span>
                     </li>
-                    <li className='flex space-x-3'>
-                      <svg
-                        stroke='currentColor'
-                        fill='currentColor'
-                        strokeWidth={0}
-                        viewBox='0 0 20 20'
-                        aria-hidden='true'
-                        className='h-5 w-5 shrink-0 text-green-400'
-                        height='1em'
-                        width='1em'
-                        xmlns='http://www.w3.org/2000/svg'
-                      >
-                        <path
-                          fillRule='evenodd'
-                          d='M10 18a8 8 0 100-16 8 8 0 000 16zM7 9a1 1 0 100-2 1 1 0 000 2zm7-1a1 1 0 11-2 0 1 1 0 012 0zm-.464 5.535a1 1 0 10-1.415-1.414 3 3 0 01-4.242 0 1 1 0 00-1.415 1.414 5 5 0 007.072 0z'
-                          clipRule='evenodd'
-                        />
-                      </svg>
-                      <span className='text-base font-normal text-gray-500 dark:text-gray-400'>
-                        24/7 phone, chat, and email support.
-                      </span>
-                    </li>
+
                     <li className='flex space-x-3'>
                       <svg
                         stroke='currentColor'
@@ -555,7 +492,7 @@ function Pricing() {
                   </ul>
                 </div>
                 <div
-                  onClick={() => navigate('/member/recommendations/3')}
+                  onClick={() => navigate('/member/recommendations')}
                   className='rounded-lg bg-blue-400 px-5 cursor-pointer py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
                 >
                   Buy Now

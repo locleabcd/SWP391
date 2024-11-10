@@ -100,7 +100,7 @@ function WaterParameters() {
           }
         }
       )
-      console.log(res.data.data)
+
       const sortedData = res.data.data.sort((a, b) => new Date(b.createDateTime) - new Date(a.createDateTime))
       setParameters(sortedData)
     } catch (error) {

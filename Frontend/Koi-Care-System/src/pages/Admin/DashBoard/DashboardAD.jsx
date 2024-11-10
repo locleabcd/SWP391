@@ -711,8 +711,8 @@ function DashboardAD() {
                   <option value='year'>Year</option>
                 </select>
               </div>
-              <ResponsiveContainer className={`p-6`} width='100%' height={400}>
-                <AreaChart data={chartData}>
+              <ResponsiveContainer width='100%' height={400}>
+                <AreaChart data={chartData} margin={{ left: 50, right: 20, top: 20, bottom: 20 }}>
                   <defs>
                     <linearGradient id='colorUv' x1='0' y1='0' x2='0' y2='1'>
                       <stop offset='5%' stopColor='#8884d8' stopOpacity={0.8} />
