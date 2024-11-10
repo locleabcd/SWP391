@@ -338,10 +338,14 @@ function Header() {
             )}
           </Link>
 
-          <button className={`${isDarkMode ? 'bg-custom-dark' : 'bg-white'} lg:p-[12px] p-[10px] rounded-full`}>
+          <button
+            className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'} lg:p-[12px] p-[10px] rounded-full`}
+          >
             <PopupState popupId='demo-popup-popover'>
               {(popupState) => (
-                <div className={`${isDarkMode ? 'bg-custom-dark' : 'bg-white'}  rounded-full`}>
+                <div
+                  className={`${isDarkMode ? 'bg-gray-500 bg-opacity-50' : 'bg-gray-100 bg-opacity-50'} lg:p-[2px]  rounded-full`}
+                >
                   <svg
                     className='lg:size-6 size-5 text-black'
                     fill='currentColor'
@@ -365,13 +369,24 @@ function Header() {
                     <Typography sx={{ p: 2 }}>
                       <div className='max-h-[500px] max-w-96'>
                         <div className='text-3xl font-semibold border-b border-gray-200 py-3 p-2'>Notifications</div>
+                        {notificationUnRead.map((notificationReads) => (
+                          <div className='p-2 hover:bg-gray-200' key={notificationReads.id}>
+                            <div className='lg:text-lg text-base'>
+                              Koi Care System mentioned you{' '}
+                              <span className='font-semibold'>{notificationReads.description}</span> Please remember
+                              perform.
+                            </div>
+                            <div className='lg:text-base text-sm text-gray-500'>
+                              {getRelativeTime(notificationReads.dateTime)}
+                            </div>
+                          </div>
+                        ))}
                         {notificationRead.map((notificationReads) => (
                           <div className='p-2 hover:bg-gray-200' key={notificationReads.id}>
                             <div className='lg:text-lg text-base'>
-                              <span className='font-bold'>{notificationReads.title}</span> mentioned you in{' '}
-                              <span className='font-semibold'>{notificationReads.description}</span>
-                              <span className='italic'>{notificationReads.title}</span>. Please remember the reminder
-                              above.
+                              Koi Care System mentioned you{' '}
+                              <span className='font-semibold'>{notificationReads.description}</span> Please remember the
+                              perform.
                             </div>
                             <div className='lg:text-base text-sm text-gray-500'>
                               {getRelativeTime(notificationReads.dateTime)}
