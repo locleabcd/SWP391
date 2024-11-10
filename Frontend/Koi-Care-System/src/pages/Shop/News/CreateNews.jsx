@@ -200,7 +200,7 @@ function CreateNews() {
                   className={`mb-20 ${isDarkMode ? 'bg-custom-dark text-white' : 'bg-white text-black'}`}
                   modules={{
                     toolbar: [
-                      [{ header: '1' }, { header: '2' }, { font: [] }],
+                      [{ header: '1' }, { header: '2' }, { font: [] }, { size: [] }],
                       [{ list: 'ordered' }],
                       ['bold', 'italic', 'underline'],
                       [{ align: [] }],

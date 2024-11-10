@@ -82,8 +82,8 @@ function CreatePromotion() {
           Authorization: `Bearer ${token}`
         }
       })
-
-      setProducts(res.data.data)
+      const filteredProducts = res.data.data.filter((product) => product.id > 3)
+      setProducts(filteredProducts)
     } catch (error) {
       console.log('Error fetching products:', error)
     }

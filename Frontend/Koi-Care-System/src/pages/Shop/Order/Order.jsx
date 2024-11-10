@@ -63,7 +63,8 @@ function Order() {
           Authorization: `Bearer ${token}`
         }
       })
-      setOrders(res.data.data)
+      const sortedOrders = res.data.data.sort((a, b) => b.id - a.id)
+      setOrders(sortedOrders)
     } catch (error) {
       console.log('Error fetching Orders:', error)
     }

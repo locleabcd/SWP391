@@ -53,6 +53,31 @@ function Statistics() {
     amountFed: 1
   })
 
+  const basicColors = [
+    '#B22222', // Firebrick (đỏ đậm)
+    '#228B22', // Forest Green (xanh lá đậm)
+    '#00008B', // Dark Blue
+    '#FFD700', // Gold
+    '#8B008B', // Dark Magenta
+    '#008B8B', // Dark Cyan
+    '#2F4F4F', // Dark Slate Gray
+    '#8B0000', // Dark Red
+    '#556B2F', // Dark Olive Green
+    '#006400', // Dark Green
+    '#4B0082', // Indigo
+    '#483D8B', // Dark Slate Blue
+    '#FF4500', // Orange Red
+    '#A52A2A', // Brown
+    '#DC143C', // Crimson (đỏ tươi đậm)
+    '#8B4513', // Saddle Brown
+    '#4682B4', // Steel Blue
+    '#D2691E', // Chocolate
+    '#9932CC', // Dark Orchid
+    '#191970' // Midnight Blue
+  ]
+
+  let availableColors = [...basicColors]
+
   const handlePondChange = (e) => {
     const pondId = e.target.value
     const pond = ponds.find((p) => p.id === parseInt(pondId))
@@ -760,16 +785,21 @@ function Statistics() {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    {koiGrowthData.map((koi, index) => (
-                      <Line
-                        key={index}
-                        type='monotone'
-                        dataKey={koi.koiName}
-                        stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
-                        activeDot={{ r: 8 }}
-                        name={`${koi.koiName} - Length`}
-                      />
-                    ))}
+                    {koiGrowthData.map((koi, index) => {
+                      const colorIndex = Math.floor(Math.random() * availableColors.length)
+                      const color = availableColors[colorIndex]
+                      availableColors.splice(colorIndex, 1)
+                      return (
+                        <Line
+                          key={index}
+                          type='monotone'
+                          dataKey={koi.koiName}
+                          stroke={color}
+                          activeDot={{ r: 8 }}
+                          name={`${koi.koiName}`}
+                        />
+                      )
+                    })}
                   </LineChart>
                 </ResponsiveContainer>
               </motion.div>
@@ -790,16 +820,22 @@ function Statistics() {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    {koiGrowthData.map((koi, index) => (
-                      <Line
-                        key={index}
-                        type='monotone'
-                        dataKey={koi.koiName}
-                        stroke={`#${Math.floor(Math.random() * 16777215).toString(16)}`}
-                        activeDot={{ r: 8 }}
-                        name={`${koi.koiName} - Weight`}
-                      />
-                    ))}
+                    {koiGrowthData.map((koi, index) => {
+                      const colorIndex = Math.floor(Math.random() * availableColors.length)
+                      const color = availableColors[colorIndex]
+                      availableColors.splice(colorIndex, 1)
+
+                      return (
+                        <Line
+                          key={index}
+                          type='monotone'
+                          dataKey={koi.koiName}
+                          stroke={color}
+                          activeDot={{ r: 8 }}
+                          name={`${koi.koiName}`}
+                        />
+                      )
+                    })}
                   </LineChart>
                 </ResponsiveContainer>
               </motion.div>
