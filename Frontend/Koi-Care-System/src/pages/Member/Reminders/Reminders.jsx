@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form'
 import { FaSpinner } from 'react-icons/fa'
 import Swal from 'sweetalert2'
 import { toast } from 'react-toastify'
+import { motion } from 'framer-motion'
 
 function Reminders() {
   const { isDarkMode } = useDarkMode()
@@ -36,7 +37,7 @@ function Reminders() {
       title: '',
       dateTime: '',
       description: '',
-      interval: reminder.repeatInterval
+      repeatInterval: reminder.repeatInterval
     })
   }
 
@@ -76,7 +77,7 @@ function Reminders() {
         {
           title: data.title,
           dateTime: data.dateTime,
-          repeatInterval: data.interval,
+          repeatInterval: data.repeatInterval,
           description: data.description
         },
         {
@@ -107,7 +108,7 @@ function Reminders() {
         {
           title: data.title,
           dateTime: data.dateTime,
-          repeatInterval: data.interval,
+          repeatInterval: data.repeatInterval,
           description: data.description
         },
         {
@@ -177,7 +178,18 @@ function Reminders() {
           <Header />
           <div className='py-5 px-[30px] mx-auto max-w-[1750px] max-h-[800px]'>
             <TopLayout text='Reminders' links='/member/reminders' />
-            <div className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10 mt-10'>
+            <motion.div
+              initial='hidden'
+              animate='visible'
+              variants={{
+                visible: {
+                  transition: {
+                    staggerChildren: 0.3
+                  }
+                }
+              }}
+              className='grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10 mt-10'
+            >
               <svg
                 xmlns='http://www.w3.org/2000/svg'
                 fill='none'
@@ -196,8 +208,12 @@ function Reminders() {
                 />
               </svg>
 
-              {reminder.map((reminders) => (
-                <div
+              {reminder.map((reminders, index) => (
+                <motion.div
+                  variants={{
+                    hidden: { opacity: 0, x: 100 },
+                    visible: { opacity: 1, x: 0, transition: { delay: index * 0.3 } }
+                  }}
                   onClick={() => openEditForm(reminders)}
                   key={reminders.id}
                   className='border border-gray-200 rounded-3xl shadow-xl px-8 py-6 flex justify-between items-center'
@@ -279,9 +295,9 @@ function Reminders() {
                       }
                     }}
                   /> */}
-                </div>
+                </motion.div>
               ))}
-            </div>
+            </motion.div>
 
             {isAddFormVisible && (
               <form
@@ -385,7 +401,7 @@ function Reminders() {
                         className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                        {...register('interval', { required: 'Interval is required' })}
+                        {...register('repeatInterval', { required: 'Interval is required' })}
                       >
                         <option value='ONE_TIME'>ONE_TIME</option>
                         <option value='DAILY'>DAILY</option>
@@ -519,7 +535,7 @@ function Reminders() {
                         className={`w-full lg:p-3 px-2 py-1 lg:text-lg text-sm ${
                           isDarkMode ? 'bg-custom-dark' : 'bg-white'
                         } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                        {...register('interval', { required: 'Interval is required' })}
+                        {...register('repeatInterval', { required: 'Interval is required' })}
                       >
                         <option value='ONE_TIME'>ONE_TIME</option>
                         <option value='DAILY'>DAILY</option>

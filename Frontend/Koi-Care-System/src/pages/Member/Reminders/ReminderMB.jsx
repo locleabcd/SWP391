@@ -5,13 +5,13 @@ import Stomp from 'stompjs'
 
 function ReminderMB() {
   const [notifications, setNotifications] = useState([])
-  const stompClientRef = useRef(null)
   const [showReminder, setShowReminder] = useState(true)
 
   const closeReminder = () => {
     setShowReminder(false)
   }
 
+  const stompClientRef = useRef(null)
   useEffect(() => {
     if (!stompClientRef.current) {
       const sock = new SockJS('https://koicaresystemv2.azurewebsites.net/api/ws')
