@@ -17,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -33,17 +34,18 @@ public class GrowthHistoryService implements IGrowthHistoryService {
         KoiFish koiFish = koiFishRepository.findById(growthCreateRequest.getKoiFishId()).orElseThrow(() -> new AppException(ErrorCode.KOI_FISH_NOT_FOUND));
         GrowthHistory growthHistory = growthHistoryMapper.mapToGrowthHistory(growthCreateRequest);
         if (growthCreateRequest.getFile() != null) {
-            growthCreateRequest.setImageUrl(!growthCreateRequest.getFile().isEmpty() ? imageStorage.uploadImage(growthCreateRequest.getFile()) : "https://koicareimage.blob.core.windows.net/koicarestorage/defaultGrowthHistory.png");
+            growthHistory.setImageUrl(imageStorage.uploadImage(growthCreateRequest.getFile()));
         }
         else
-            growthCreateRequest.setImageUrl("https://koicareimage.blob.core.windows.net/koicarestorage/defaultGrowthHistory.png");
-        growthHistory.setKoiFish(koiFish);//relation between growHistory and koiFish
-        //If new growthHistory is the latest, update KoiFish
+            growthHistory.setImageUrl("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultGrowthHistory.png");
+        growthHistory.setKoiFish(koiFish);
         GrowthHistory savedGrowthHistory = growthHistoryRepository.save(growthHistory);
         long latestId = growthHistoryRepository.findLatestByKoiFishId(koiFish.getId());
         if (savedGrowthHistory.getId() == latestId) {
+            String imageUrl = (savedGrowthHistory.getImageUrl().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultGrowthHistory.png") ?
+                    koiFish.getImageUrl() : savedGrowthHistory.getImageUrl());
             //Update KoiFish
-            updateKoiFish(savedGrowthHistory);
+            updateKoiFish(savedGrowthHistory,imageUrl);
             koiFishRepository.save(koiFish);
         }
         return growthHistoryMapper.mapToGrowthHistoryDto(savedGrowthHistory);
@@ -54,21 +56,19 @@ public class GrowthHistoryService implements IGrowthHistoryService {
         GrowthHistory growthHistory = growthHistoryRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.GROWTH_HISTORY_NOT_FOUND));
         growthHistoryMapper.updateGrowthHistory(growthHistory, growthUpdateRequest);
         if (growthUpdateRequest.getFile() != null)
-            if(!growthUpdateRequest.getFile().isEmpty()){
-                try {
-                    if (!growthHistory.getImageUrl().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultGrowthHistory.png"))
-                        imageStorage.deleteImage(growthHistory.getImageUrl());
-                    growthHistory.setImageUrl(imageStorage.uploadImage(growthUpdateRequest.getFile()));
-                } catch (Exception e) {
-                    throw new RuntimeException(e);
-                }
+            try {
+                if (!growthHistory.getImageUrl().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultGrowthHistory.png"))
+                    imageStorage.deleteImage(growthHistory.getImageUrl());
+                growthHistory.setImageUrl(imageStorage.uploadImage(growthUpdateRequest.getFile()));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         GrowthHistory updatedGrowthHistory = growthHistoryRepository.save(growthHistory);
-        KoiFish koiFish = updatedGrowthHistory.getKoiFish();
+        KoiFish koiFish = growthHistory.getKoiFish();
         long latestId = growthHistoryRepository.findLatestByKoiFishId(koiFish.getId());
         //Update latest KoiFish
         GrowthHistory growthHistoryLatest = growthHistoryRepository.findById(latestId).orElseThrow(() -> new AppException(ErrorCode.GROWTH_HISTORY_NOT_FOUND));
-        updateKoiFish(growthHistoryLatest);
+        updateKoiFish(growthHistoryLatest, (growthHistoryLatest.getImageUrl().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultGrowthHistory.png") ? koiFish.getImageUrl() : growthHistoryLatest.getImageUrl()));
         koiFishRepository.save(koiFish);
 
         return growthHistoryMapper.mapToGrowthHistoryDto(updatedGrowthHistory);
@@ -82,13 +82,18 @@ public class GrowthHistoryService implements IGrowthHistoryService {
         if (growHistories.size() == 1) {
             throw new IllegalArgumentException("GrowHistory must be at least 1");
         }
-
+        if (!growthHistory.getImageUrl().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultGrowthHistory.png"))
+            try{
+                if(!koiFish.getImageUrl().equals(growthHistory.getImageUrl()))
+                    imageStorage.deleteImage(growthHistory.getImageUrl());
+            }catch (Exception e){
+                throw new RuntimeException(e);
+            }
         growthHistoryRepository.delete(growthHistory);
 
         long latestId = growthHistoryRepository.findLatestByKoiFishId(koiFish.getId());
         GrowthHistory growthHistoryLatest = growthHistoryRepository.findById(latestId).orElseThrow(() -> new AppException(ErrorCode.GROWTH_HISTORY_NOT_FOUND));
-
-        updateKoiFish(growthHistoryLatest);
+        updateKoiFish(growthHistoryLatest, growthHistoryLatest.getImageUrl().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultGrowthHistory.png") ? koiFish.getImageUrl() : growthHistoryLatest.getImageUrl());
         growthHistoryRepository.save(growthHistoryLatest);
     }
 
@@ -100,12 +105,12 @@ public class GrowthHistoryService implements IGrowthHistoryService {
     @Override
     public List<GrowthHistoryDto> getListGrowthHistory(long koiFishId) {
         List<GrowthHistory> growHistories = growthHistoryRepository.findAllByKoiFishId(koiFishId);
-        return growHistories.stream().map(growthHistoryMapper::mapToGrowthHistoryDto).toList();
+        return growHistories.stream().map(growthHistoryMapper::mapToGrowthHistoryDto).sorted(Comparator.comparing(GrowthHistoryDto::getCreateDate)).toList();
     }
 
-    private void updateKoiFish(GrowthHistory growthHistory) {
+    private void updateKoiFish(GrowthHistory growthHistory, String imageUrl) {
         KoiFish koiFish = growthHistory.getKoiFish();
-        koiFish.setImageUrl(growthHistory.getImageUrl());
+        koiFish.setImageUrl(imageUrl);
         koiFish.setPhysique(growthHistory.getPhysique());
         koiFish.setLength(growthHistory.getLength());
         koiFish.setWeight(growthHistory.getWeight());

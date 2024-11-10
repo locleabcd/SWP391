@@ -21,15 +21,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class WaterParameterService implements IWaterParametersService {
+public class WaterParameterService implements IWaterParameters {
     WaterParametersRepository waterParametersRepository;
     WaterParameterMapper waterParameterMapper;
     KoiPondRepository koiPondRepository;
@@ -42,7 +42,6 @@ public class WaterParameterService implements IWaterParametersService {
         WaterParameters waterParameters = waterParameterMapper.mapToWaterParameters(parametersCreateRequest);
         waterParameters.setKoiPond(koiPond);
         waterParametersRepository.save(waterParameters);
-        issueService.detectIssues(waterParameters);//check issue
         return waterParameterMapper.mapToWaterParameterDto(waterParameters);
     }
 
@@ -53,7 +52,6 @@ public class WaterParameterService implements IWaterParametersService {
         waterParameterMapper.updateWaterParameters(waterParameters, request);
         waterParameters.setKoiPond(koiPond);
         waterParametersRepository.save(waterParameters);
-        issueService.detectIssues(waterParameters);//check issue
         return waterParameterMapper.mapToWaterParameterDto(waterParameters);
     }
 
@@ -78,6 +76,7 @@ public class WaterParameterService implements IWaterParametersService {
                 .map(waterParameterMapper::mapToWaterParameterDto)
                 .orElseThrow(() -> new AppException(ErrorCode.WATER_NOT_FOUND));
     }
+
     @Override
     public List<WaterParameterDto> getAllWaterParametersByKoiPondId(Long koiPondId) {
         List<WaterParameters> waterParameters = waterParametersRepository.findByKoiPondId(koiPondId);
@@ -95,12 +94,19 @@ public class WaterParameterService implements IWaterParametersService {
     }
 
     @Override
+    public List<WaterParameterDto> getAllWaterParametersByUserIdAndCurrentDate(Long userId, LocalDate date) {
+        return this.getAllWaterParametersByUserId(userId).stream()
+                .filter(waterParameterDto -> waterParameterDto.getCreateDateTime().contains(date.toString()))
+                .toList();
+    }
+
+    @Override
     public WaterParameterDto getLatestWaterParametersByKoiPondId(Long koiPondId) {
         WaterParameters lastestWaterParameters = waterParametersRepository.findTopByKoiPondId(koiPondId);
         if (lastestWaterParameters == null) {
             throw new AppException(ErrorCode.WATER_NOT_FOUND);
         }
-        if (lastestWaterParameters.getIssueList() == null) {
+        if (lastestWaterParameters.getIssueList().isEmpty()) {
             issueService.detectIssues(lastestWaterParameters);
         }
         return waterParameterMapper.mapToWaterParameterDto(lastestWaterParameters);

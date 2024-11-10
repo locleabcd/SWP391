@@ -10,12 +10,14 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface BlogMapper {
+    @Mapping(target = "blogImage", ignore = true)
     @Mapping(target = "blogId", ignore = true)
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "blogDate", ignore = true)
     @Mapping(target = "user", ignore = true)
     Blog mapToBlog(BlogCreateRequest request);
 
+    @Mapping(target = "avatar", source = "user.userProfile.avatar")
     BlogDto mapToBlogDto(Blog blog);
 
     @Mapping(target = "blogId", ignore = true)

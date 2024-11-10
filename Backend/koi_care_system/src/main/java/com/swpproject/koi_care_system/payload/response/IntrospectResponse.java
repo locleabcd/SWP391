@@ -1,15 +1,13 @@
-package com.swpproject.koi_care_system.dto;
+package com.swpproject.koi_care_system.payload.response;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Builder
-public class VnPayDto {
-    public String message;
-    public String paymentUrl;
+public class IntrospectResponse {
+    boolean valid;
 }

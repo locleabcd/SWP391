@@ -32,7 +32,11 @@ public class ImageService implements IImageService {
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
     public void deleteImageById(Long id) {
-        imageRepository.findById(id).ifPresentOrElse(imageRepository::delete,() -> {
+        imageRepository.findById(id).ifPresentOrElse(image -> {
+            if(!image.getDownloadUrl().isEmpty())
+                imageStorage.deleteImage(image.getDownloadUrl());
+            imageRepository.delete(image);
+        },() -> {
             throw new ResourceNotFoundException("No image found with id: " + id);
         });
     }
@@ -46,7 +50,6 @@ public class ImageService implements IImageService {
         for (MultipartFile file : files) {
             try {
                 String imageUrl = imageStorage.uploadImage(file);
-
                 Image image = new Image();
                 image.setFileName(file.getOriginalFilename());
                 image.setFileType(file.getContentType());
@@ -72,6 +75,8 @@ public class ImageService implements IImageService {
     public void updateImage(MultipartFile file, Long imageId) {
         Image image = getImageById(imageId);
             String newImageUrl = imageStorage.uploadImage(file);
+            if(!image.getDownloadUrl().isEmpty())
+                imageStorage.deleteImage(image.getDownloadUrl());
             image.setFileName(file.getOriginalFilename());
             image.setFileType(file.getContentType());
             image.setDownloadUrl(newImageUrl);

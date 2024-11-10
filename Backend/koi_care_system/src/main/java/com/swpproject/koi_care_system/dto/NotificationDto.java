@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 public class NotificationDto {
     Long id;
     String title;
-    String message;
+    String description;
     boolean delivered;
     LocalDateTime dateTime;
 }

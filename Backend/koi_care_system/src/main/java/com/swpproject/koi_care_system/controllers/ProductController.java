@@ -20,18 +20,16 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+
     private final IProductService productService;
 
     @GetMapping("/all")
-    public ResponseEntity<ApiResponse> getAllProducts(@RequestParam(defaultValue = "0") int pageNumber,
-                                                      @RequestParam(defaultValue = "10") int pageSize,
-                                                      @RequestParam(defaultValue = "price") String sortBy,
-                                                      @RequestParam(defaultValue = "Asc") String sortDir) {
-        List<Product> products = productService.getAllProducts(pageNumber, pageSize, sortBy, sortDir);
+    public ResponseEntity<ApiResponse> getAllProducts() {
+        List<Product> products = productService.getAllProductsUpdate();
         List<ProductDto> convertedProducts = productService.getConvertedProducts(products);
         return  ResponseEntity.ok(new ApiResponse("success", convertedProducts));
     }
-    @GetMapping("product/{productId}/product")
+    @GetMapping("/product/{productId}/product")
     public ResponseEntity<ApiResponse> getProductById(@PathVariable Long productId) throws ResourceNotFoundException {
         Product product = productService.getProductById(productId);
         ProductDto productDto = productService.convertToDto(product);
@@ -160,6 +158,7 @@ public class ProductController {
             return ResponseEntity.ok(new ApiResponse(e.getMessage(), null));
         }
     }
+
     @GetMapping("/recommend/{issueTypeId}")
     public ResponseEntity<ApiResponse> getProductsByIssueType(@PathVariable Long issueTypeId) {
         try {
