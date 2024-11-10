@@ -89,7 +89,6 @@ function Dashboard() {
         }
       })
       setOrders(res.data.data)
-      console.log(res.data.data)
     } catch (error) {
       console.log('Error fetching Orders:', error)
     }
