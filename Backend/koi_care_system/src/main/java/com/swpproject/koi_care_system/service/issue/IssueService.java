@@ -23,8 +23,9 @@ public class IssueService implements IIssueService {
     IssueTypeRepository issueTypeRepository;
     IssueMapper issueMapper;
 
+    @Override
     public void detectIssues(WaterParameters waterParameters) {
-        List<Issue> existingIssues = issueRepository.findByWaterParametersKoiPondId(waterParameters.getKoiPond().getId());
+        List<Issue> existingIssues = issueRepository.findByWaterParametersId(waterParameters.getId());
         if (!existingIssues.isEmpty()) {
             issueRepository.deleteAll(existingIssues);
         }
@@ -40,18 +41,17 @@ public class IssueService implements IIssueService {
 
     private void createIssue(String conditionType, RangeParameter parameter, WaterParameters waterParameters) {
         IssueType issueType = issueTypeRepository.findByParameterTypeAndConditionType(parameter, conditionType);
-        boolean issueExist = issueRepository.existsByWaterParametersAndDescription(waterParameters, conditionType + " " + parameter.name());
 
-        if (!issueExist) {
             Issue issue = new Issue();
             issue.setName(parameter.getName());
             issue.setWaterParameters(waterParameters);
             issue.setIssueType(issueType);
             issue.setDescription(getDescription(parameter, conditionType));
             issueRepository.save(issue);
-        }
+
     }
 
+    @Override
     public List<IssueDto> getIssue(Long waterParametersId) {
         return issueRepository.findByWaterParametersId(waterParametersId).stream().map(issueMapper::mapToIssueDto).toList();
     }

@@ -28,8 +28,7 @@ public enum ErrorCode {
     WRONG_PASSWORD(1017, "Wrong Password", HttpStatus.BAD_REQUEST),
     PASSWORD_NOT_MATCH(1018, "Password are not the same", HttpStatus.BAD_REQUEST),
     WATER_NOT_FOUND(1019, "Water Parameter Not Found", HttpStatus.NOT_FOUND),
-    KOI_POND_NOT_FOUND(1020, "Koi Pond Not Found", HttpStatus.NOT_FOUND);
-    ;
+    KOI_POND_NOT_FOUND(1020, "Koi Pond Not Found", HttpStatus.NOT_FOUND), NOTIFICATION_ERROR(1021,"Notification can't send" ,HttpStatus.EXPECTATION_FAILED );
 
 
     private int code;

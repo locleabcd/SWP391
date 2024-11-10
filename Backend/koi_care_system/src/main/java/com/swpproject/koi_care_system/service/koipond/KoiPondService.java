@@ -66,14 +66,11 @@ public class KoiPondService implements IKoiPondService {
 
         KoiPond oldKoiPond = koiPondRepository.findKoiPondsById(koiPondId);
         if (koiPondUpdateRequest.getFile() != null) {
-            if (!koiPondUpdateRequest.getFile().isEmpty())
-                try {
-                    if (!oldKoiPond.getImageUrl().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg"))
-                        imageStorage.deleteImage(oldKoiPond.getImageUrl());
-                    oldKoiPond.setImageUrl(imageStorage.uploadImage(koiPondUpdateRequest.getFile()));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            if (!koiPondUpdateRequest.getFile().isEmpty()) {
+                if (!oldKoiPond.getImageUrl().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultKoiPond.jpg"))
+                    imageStorage.deleteImage(oldKoiPond.getImageUrl());
+                oldKoiPond.setImageUrl(imageStorage.uploadImage(koiPondUpdateRequest.getFile()));
+            }
         }
         koiPondMapper.updateToKoiPond(oldKoiPond, koiPondUpdateRequest);
         return koiPondMapper.toDto(koiPondRepository.save(oldKoiPond));

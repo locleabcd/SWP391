@@ -19,7 +19,7 @@ public class Category {
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL, orphanRemoval = false)
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL)
     private List<Product> products;
 
     public Category(String name) {

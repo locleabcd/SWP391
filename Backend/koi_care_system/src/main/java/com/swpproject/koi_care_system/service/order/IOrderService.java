@@ -1,7 +1,6 @@
 package com.swpproject.koi_care_system.service.order;
 
 import com.swpproject.koi_care_system.dto.OrderDto;
-import com.swpproject.koi_care_system.models.Order;
 import com.swpproject.koi_care_system.payload.request.PlaceOrderRequest;
 
 import java.util.List;

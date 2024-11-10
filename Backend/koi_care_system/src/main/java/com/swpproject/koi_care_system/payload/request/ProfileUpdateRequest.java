@@ -1,6 +1,5 @@
 package com.swpproject.koi_care_system.payload.request;
 
-import com.swpproject.koi_care_system.enums.ProfileStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;

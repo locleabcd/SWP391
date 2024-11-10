@@ -28,6 +28,6 @@ public class Promotion {
     @Enumerated(EnumType.STRING)
     private PromotionStatus status;
 
-    @ManyToMany(mappedBy = "promotions",cascade = CascadeType.ALL)
-    private Set<Product> products = new HashSet<Product>();
+    @ManyToMany(mappedBy = "promotions", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private Set<Product> products = new HashSet<>();
 }

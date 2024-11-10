@@ -1,6 +1,5 @@
 package com.swpproject.koi_care_system.payload.request;
 
-import jakarta.mail.Multipart;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.AccessLevel;

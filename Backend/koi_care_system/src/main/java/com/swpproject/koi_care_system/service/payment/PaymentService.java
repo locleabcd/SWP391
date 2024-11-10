@@ -46,9 +46,7 @@ public class PaymentService implements IPaymentService {
     public List<PaymentDto> getAllPaymentByUserId(Long userId) {
         List<Order> orderDtoList = orderRepository.findByUserId(userId);
         List<PaymentDto> paymentDtoList = new ArrayList<>();
-        orderDtoList.forEach(order -> {
-            paymentDtoList.addAll(paymentRepository.findPaymentsByOrder_OrderId(order.getOrderId()).stream().map(paymentMapper::mapToDto).toList());
-        });
+        orderDtoList.forEach(order -> paymentDtoList.addAll(paymentRepository.findPaymentsByOrder_OrderId(order.getOrderId()).stream().map(paymentMapper::mapToDto).toList()));
         return paymentDtoList;
     }
 }

@@ -23,7 +23,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -83,14 +82,12 @@ public class WaterParameterService implements IWaterParametersService {
         List<WaterParameters> waterParameters = waterParametersRepository.findByKoiPondId(koiPondId);
         return waterParameters.stream()
                 .map(waterParameterMapper::mapToWaterParameterDto)
-                .collect(Collectors.toList());
+                .toList();
     }
     @Override
     public List<WaterParameterDto> getAllWaterParametersByUserId(Long userId){
         List<WaterParameters> waterParameters = new ArrayList<>();
-        koiPondRepository.findKoiPondsByUserId(userId).forEach(koiPond -> {
-            waterParameters.addAll(waterParametersRepository.findByKoiPondId(koiPond.getId()));
-        });
+        koiPondRepository.findKoiPondsByUserId(userId).forEach(koiPond -> waterParameters.addAll(waterParametersRepository.findByKoiPondId(koiPond.getId())));
         return waterParameters.stream().map(waterParameterMapper::mapToWaterParameterDto).toList();
     }
 

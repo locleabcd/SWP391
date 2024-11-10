@@ -105,11 +105,9 @@ public class ReminderService implements IReminderService {
         String startDateTime = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm"));
 
         List<ReminderMongo> reminders = reminderMongoRepo.findDueRemindersBetween(startDateTime);
-        log.info("Found {} reminders due at {}", reminders.size(), now);
 
-        reminders.forEach(reminder -> {
-            processReminder(reminder, now);
-        });
+
+        reminders.forEach(reminder -> processReminder(reminder, now));
     }
 
     private LocalDateTime convertToLocalDateTime(String dateTimeString) {
@@ -163,17 +161,12 @@ public class ReminderService implements IReminderService {
                 messagingTemplate.convertAndSendToUser(username, "/notifications", message);
                 isDelivered = true;
             } catch (MessagingException e) {
-                isDelivered = false;
+                throw new AppException(ErrorCode.NOTIFICATION_ERROR);
             }
         } else {
             emailService.sendReminder(username, user.getEmail(), "Reminder: " + reminder.getTitle() + " is due!", reminderMapper.mapToReminderFromMongo(reminder));
-            log.info("Email sent to '{}'", user.getEmail());
-            log.info("reminder: {}", reminder.getTitle());
         }
         notificationService.createNotification(reminderMapper.mapToNotificationRequest(reminder, isDelivered));
-        log.info("user connected: {}", isConnection(username));
-        log.info("That user: {}", username);
-        log.info("Notification sent for reminder '{}'.", reminder.getTitle());
     }
 
     private boolean isConnection(String username) {

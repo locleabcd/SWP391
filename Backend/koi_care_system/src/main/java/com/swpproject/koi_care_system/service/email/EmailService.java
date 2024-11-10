@@ -53,7 +53,6 @@ public class EmailService implements IEmailService {
             mailSender.send(mimeMessage);
 
         } catch (MessagingException e) {
-            e.printStackTrace();
             throw new AppException(ErrorCode.SENDMAIL_FAILED);
         }
     }
@@ -80,7 +79,6 @@ public class EmailService implements IEmailService {
             mailSender.send(mimeMessage);
 
         } catch (MessagingException e) {
-            e.printStackTrace();
             throw new AppException(ErrorCode.SENDMAIL_FAILED);
         }
     }
@@ -106,7 +104,6 @@ public class EmailService implements IEmailService {
             mailSender.send(mimeMessage);
 
         } catch (MessagingException e) {
-            e.printStackTrace();
             throw new AppException(ErrorCode.SENDMAIL_FAILED);
         }
     }
@@ -139,7 +136,7 @@ public class EmailService implements IEmailService {
             mailSender.send(mimeMessage);
 
         } catch (MessagingException e) {
-            e.printStackTrace();
+
             throw new AppException(ErrorCode.SENDMAIL_FAILED);
         }
     }

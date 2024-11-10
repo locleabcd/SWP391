@@ -10,6 +10,7 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface WaterParameterMapper {
+    @Mapping(target = "issueList", ignore = true)
     @Mapping(target = "koiPond", ignore = true)
     @Mapping(target = "id", ignore = true)
     WaterParameters mapToWaterParameters(ParametersCreateRequest request);
@@ -17,6 +18,7 @@ public interface WaterParameterMapper {
     @Mapping(target = "koiPondName", source = "koiPond.name")
     WaterParameterDto mapToWaterParameterDto(WaterParameters waterParameters);
 
+    @Mapping(target = "issueList", ignore = true)
     @Mapping(target = "koiPond", ignore = true)
     @Mapping(target = "id", ignore = true)
     void updateWaterParameters(@MappingTarget WaterParameters waterParameters, ParametersUpdateRequest request);

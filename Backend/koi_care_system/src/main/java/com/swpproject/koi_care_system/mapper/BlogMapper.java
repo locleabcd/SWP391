@@ -18,6 +18,7 @@ public interface BlogMapper {
 
     BlogDto mapToBlogDto(Blog blog);
 
+    @Mapping(target = "blogImage", ignore = true)
     @Mapping(target = "blogId", ignore = true)
     @Mapping(target = "tags", ignore = true)
     @Mapping(target = "user", ignore = true)

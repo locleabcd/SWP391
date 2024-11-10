@@ -42,7 +42,7 @@ public class ProfileService implements IProfileService {
 
     @Override
     @PostAuthorize("returnObject.name == authentication.name")
-    public UserProfileDto updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) throws IOException {
+    public UserProfileDto updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) {
         UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.PROFILE_NOT_FOUND));
         if (profileUpdateRequest.getFile() != null) {
             if (!profileUpdateRequest.getFile().isEmpty()) {

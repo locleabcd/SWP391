@@ -9,8 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
-
 @RestController
 @RequestMapping("/log")
 @RequiredArgsConstructor

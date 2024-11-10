@@ -1,8 +1,6 @@
 package com.swpproject.koi_care_system.dto;
 
 import com.swpproject.koi_care_system.enums.ProfileStatus;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

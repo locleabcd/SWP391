@@ -11,7 +11,7 @@ import java.util.List;
 public interface IProfileService {
     UserProfile createProfile(User user);
 
-    UserProfileDto updateProfile(Long idProfile, ProfileUpdateRequest profileUpdateRequest) throws IOException;
+    UserProfileDto updateProfile(Long idProfile, ProfileUpdateRequest profileUpdateRequest);
 
     UserProfileDto getProfile(Long userId);
 

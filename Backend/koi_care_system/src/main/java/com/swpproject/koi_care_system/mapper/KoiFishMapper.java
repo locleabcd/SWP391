@@ -12,6 +12,7 @@ import org.mapstruct.MappingTarget;
 public interface KoiFishMapper {
     KoiFishDto toDto(KoiFish koiFish);
 
+    @Mapping(target = "imageUrl", ignore = true)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "koiPond", ignore = true)
     @Mapping(target = "status", ignore = true)

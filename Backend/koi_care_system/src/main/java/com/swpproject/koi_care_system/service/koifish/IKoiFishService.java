@@ -1,7 +1,6 @@
 package com.swpproject.koi_care_system.service.koifish;
 
 import com.swpproject.koi_care_system.dto.KoiFishDto;
-import com.swpproject.koi_care_system.models.KoiFish;
 import com.swpproject.koi_care_system.payload.request.AddKoiFishRequest;
 import com.swpproject.koi_care_system.payload.request.KoiFishUpdateRequest;
 

@@ -69,7 +69,7 @@ public class CartService implements ICartService{
     @Override
     public Long initializeNewCart(Long userId) {
         Cart newCart = new Cart();
-        newCart.setUser(userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found")));;
+        newCart.setUser(userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found")));
         Long newCartId = cartIdGenerator.incrementAndGet();
         newCart.setId(newCartId);
         return cartRepository.save(newCart).getId();
