@@ -74,7 +74,7 @@ function ReminderMB() {
 
                   <h2 className='text-yellow-500 font-bold lg:text-3xl text-xl'>Reminder to</h2>
                 </div>
-                <p className='mt-2'>It has been a while since you last updated the prices</p>
+                <p className='mt-2'>It has been a while since you last update</p>
                 <ul className='list-disc ml-4 mt-2'>{notification}</ul>
                 <p className='mt-4'>Please proceed to update.</p>
                 <button

@@ -119,7 +119,7 @@ function Reminders() {
       )
       getReminder()
       toast.success('Update reminder success')
-      toggleCloseForm()
+      setIsEditFormVisible(false)
     } catch (err) {
       console.log(err)
     } finally {
@@ -157,7 +157,7 @@ function Reminders() {
       })
       getReminder()
       toast.success('Delete reminder success')
-      toggleCloseForm()
+      setIsEditFormVisible(false)
     } catch (error) {
       console.log('err', error)
     } finally {
@@ -562,7 +562,7 @@ function Reminders() {
                     </div>
                   </div>
                   <div className='w-full flex flex-col justify-center'>
-                    <button className='mx-auto' onClick={() => deleteReminder()}>
+                    <div className='mx-auto' onClick={() => deleteReminder()}>
                       <svg
                         xmlns='http://www.w3.org/2000/svg'
                         fill='none'
@@ -577,7 +577,7 @@ function Reminders() {
                           d='m20.25 7.5-.625 10.632a2.25 2.25 0 0 1-2.247 2.118H6.622a2.25 2.25 0 0 1-2.247-2.118L3.75 7.5m6 4.125 2.25 2.25m0 0 2.25 2.25M12 13.875l2.25-2.25M12 13.875l-2.25 2.25M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125Z'
                         />
                       </svg>
-                    </button>
+                    </div>
 
                     <p className='text-center font-semibold'>Delete this log</p>
                   </div>
