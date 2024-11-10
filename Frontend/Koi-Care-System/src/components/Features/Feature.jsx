@@ -30,7 +30,7 @@ function Feature() {
       <div className='flex flex-col lg:flex-row mt-20'>
         <div className='lg:w-2/5 p-5 flex flex-col items-center justify-center'>
           <div className='flex flex-col justify-center py-10 px-5 font-medium'>
-            <h2 className='text-3xl text-center font-bold mb-12'>Manage and track your koi!</h2>
+            <h2 className='text-3xl text-center font-bold mb-12'>Manage your food calculator!</h2>
             <p className='text-justify text-xl'>
               Feeding your koi the right amount is key to their health and growth. With the Koi Care System Web, you can
               calculate the ideal feeding quantities based on each koi’s size, age, and activity level. Track daily

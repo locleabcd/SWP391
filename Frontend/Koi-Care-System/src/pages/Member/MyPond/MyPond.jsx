@@ -101,14 +101,15 @@ function MyPond() {
       depth: '',
       skimmer: '',
       pumpCapacity: '',
-      volume: ''
+      volume: '',
+      imageUrl: ''
     })
-    setBaseImage(null)
+    setSelectedFile(null)
   }
 
   const toggleCloseForm = () => {
     setIsEditFormVisible(false)
-    setBaseImage(null)
+    setSelectedFile(null)
   }
 
   const toggleEditFormVisibility = (pond) => {
@@ -121,8 +122,10 @@ function MyPond() {
       skimmer: pond.skimmer,
       pumpCapacity: pond.pumpCapacity,
       volume: pond.volume,
-      file: baseImage
+      imageUrl: pond.imageUrl
     })
+    setSelectedFile(null)
+    setBaseImage(null)
   }
 
   const getPond = async () => {
@@ -139,6 +142,7 @@ function MyPond() {
         }
       })
       setPonds(res.data.data)
+      console.log(res.data.data)
     } catch (error) {
       console.error('An unexpected error occurred:', error)
     } finally {
@@ -156,29 +160,29 @@ function MyPond() {
       const token = localStorage.getItem('token')
       const id = localStorage.getItem('pondId')
 
-      await axios.put(
-        `https://koicaresystemv2.azurewebsites.net/api/koiponds/koipond/${id}/update`,
-        {
-          name: data.name,
-          createDate: data.date,
-          drainCount: data.drainCount,
-          depth: data.depth,
-          skimmer: data.skimmer,
-          pumpCapacity: data.pumpCapacity,
-          volume: data.volume,
-          file: selectedFile || ''
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'multipart/form-data'
-          }
+      const formData = new FormData()
+      formData.append('name', data.name)
+      formData.append('drainCount', data.drainCount)
+      formData.append('depth', data.depth)
+      formData.append('skimmer', data.skimmer)
+      formData.append('pumpCapacity', data.pumpCapacity)
+      formData.append('volume', data.volume)
+      formData.append('imageUrl', data.imageUrl)
+      if (selectedFile) {
+        formData.append('file', selectedFile)
+      }
+      await axios.put(`https://koicaresystemv2.azurewebsites.net/api/koiponds/koipond/${id}/update`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data'
         }
-      )
+      })
       toast.success('Update Pond success!!')
       getPond()
       setIsAddFormVisible(false)
       setIsEditFormVisible(false)
+      reset()
+      setBaseImage(baseImage(null))
     } catch (error) {
       console.log('Error updating pond:', error)
     } finally {
@@ -202,6 +206,14 @@ function MyPond() {
     setIsLoading(true)
     try {
       const token = localStorage.getItem('token')
+      const formData = new FormData()
+      formData.append('name', data.name)
+      formData.append('drainCount', data.drainCount)
+      formData.append('depth', data.depth)
+      formData.append('skimmer', data.skimmer)
+      formData.append('pumpCapacity', data.pumpCapacity)
+      formData.append('volume', data.volume)
+      formData.append('file', selectedFile)
       await axios.post(
         'https://koicaresystemv2.azurewebsites.net/api/koiponds/create',
         {
@@ -212,7 +224,7 @@ function MyPond() {
           skimmer: data.skimmer,
           pumpCapacity: data.pumpCapacity,
           volume: data.volume,
-          file: selectedFile || ''
+          file: selectedFile
         },
         {
           headers: {
@@ -938,8 +950,7 @@ function MyPond() {
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black  rounded-lg focus:outline-none transition-colors duration-200`}
                           {...register('name', {
-                            required: 'Name is required',
-                            validate: (value) => !isNameDuplicate(value) || 'Name already exists'
+                            required: 'Name is required'
                           })}
                         />
                         {errors.name && (

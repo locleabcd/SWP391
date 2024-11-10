@@ -204,10 +204,6 @@ function Dashboard() {
   }
 
   useEffect(() => {
-    setKoi()
-  }, [])
-
-  useEffect(() => {
     getKoi()
   }, [])
 
@@ -246,12 +242,6 @@ function Dashboard() {
     setSelectedOrder(orderId)
     getOrders(orderId)
   }
-
-  useEffect(() => {
-    if (orders.length === 1) {
-      setSelectedOrder(ponds[0])
-    }
-  }, [orders])
 
   return (
     <div>
