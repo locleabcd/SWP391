@@ -2,36 +2,83 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useDarkMode } from '../../hooks/DarkModeContext'
 import Header from '../Member/Header'
 import LeftSideBar from '../Member/LeftSideBar'
-import { useState } from 'react'
 import axios from 'axios'
 
 function Pricing() {
   const { isDarkMode } = useDarkMode()
   const navigate = useNavigate()
 
-  // const createPayment = async () => {
-  //   const userId = localStorage.getItem('id')
-  //   try {
-  //     const token = localStorage.getItem('token')
+  const createPayment1 = async () => {
+    const userId = localStorage.getItem('id')
+    try {
+      const token = localStorage.getItem('token')
+      await axios.post(
+        'https://koicaresystemv2.azurewebsites.net/api/orders/order/premium',
+        {
+          userId: userId,
+          time: '1MONTH'
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      navigate('/member/payment')
+      localStorage.setItem('totalPrice', 299999)
+      localStorage.setItem('promotionTotal', 299999)
+    } catch (error) {
+      console.error('Error details:', error)
+    }
+  }
 
-  //     await axios.post(
-  //       'https://koicaresystemv2.azurewebsites.net/api/orders/order/premium',
-  //       {
-  //         userId: userId,
-  //         time: '1MONTH'
-  //       },
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${token}`
-  //         }
-  //       }
-  //     )
-  //     navigate('/member/payment')
-  //     localStorage.setItem('totalPrice', 299999)
-  //   } catch (error) {
-  //     console.error('Error details:', error)
-  //   }
-  // }
+  const createPayment2 = async () => {
+    const userId = localStorage.getItem('id')
+    try {
+      const token = localStorage.getItem('token')
+      await axios.post(
+        'https://koicaresystemv2.azurewebsites.net/api/orders/order/premium',
+        {
+          userId: userId,
+          time: '6MONTHS'
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      navigate('/member/payment')
+      localStorage.setItem('totalPrice', 999000)
+      localStorage.setItem('promotionTotal', 999000)
+    } catch (error) {
+      console.error('Error details:', error)
+    }
+  }
+
+  const createPayment3 = async () => {
+    const userId = localStorage.getItem('id')
+    try {
+      const token = localStorage.getItem('token')
+      await axios.post(
+        'https://koicaresystemv2.azurewebsites.net/api/orders/order/premium',
+        {
+          userId: userId,
+          time: '12MONTHS'
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+      navigate('/member/payment')
+      localStorage.setItem('totalPrice', 1799000)
+      localStorage.setItem('promotionTotal', 1799000)
+    } catch (error) {
+      console.error('Error details:', error)
+    }
+  }
 
   return (
     <div>
@@ -189,12 +236,12 @@ function Pricing() {
                     </li>
                   </ul>
                 </div>
-                <div
-                  onClick={() => navigate('/member/recommendations')}
+                <button
+                  onClick={() => createPayment1()}
                   className='rounded-lg bg-blue-400 px-5 cursor-pointer py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
                 >
                   Buy Now
-                </div>
+                </button>
               </div>
               <div className='flex flex-col rounded-lg  p-6 shadow border border-gray-200  xl:p-8'>
                 <div className='flex-1'>
@@ -339,7 +386,7 @@ function Pricing() {
                   </ul>
                 </div>
                 <div
-                  onClick={() => navigate('/member/recommendations')}
+                  onClick={() => createPayment2()}
                   className='rounded-lg bg-blue-400 px-5 cursor-pointer py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
                 >
                   Buy Now
@@ -492,7 +539,7 @@ function Pricing() {
                   </ul>
                 </div>
                 <div
-                  onClick={() => navigate('/member/recommendations')}
+                  onClick={() => createPayment3()}
                   className='rounded-lg bg-blue-400 px-5 cursor-pointer py-4 hover:bg-blue-500 text-center text-sm font-medium text-white'
                 >
                   Buy Now

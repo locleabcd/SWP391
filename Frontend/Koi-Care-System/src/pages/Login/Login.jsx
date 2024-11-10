@@ -22,14 +22,17 @@ function Login() {
       const role = urlParams.get('role')
       const id = urlParams.get('id')
       const name = urlParams.get('username')
+      const avatar = urlParams.get('avatar')
       console.log(token)
       console.log(id)
       console.log(name)
+      console.log(avatar)
       if (token) {
         localStorage.setItem('token', token)
         localStorage.setItem('role', role)
         localStorage.setItem('id', id)
         localStorage.setItem('name', name)
+        localStorage.setItem('avt', avatar)
         navigate('/member/dashboard')
       }
     }
