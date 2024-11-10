@@ -13,7 +13,6 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 
-
     @Mapping(target = "reminders", ignore = true)
     @Mapping(target = "notifications", ignore = true)
     @Mapping(target = "provider", constant = "LOCAL")
@@ -29,9 +28,6 @@ public interface UserMapper {
 
     UserDTO maptoUserDTO(User user);
 
-    @Mapping(target = "avatar", source = "user.userProfile.avatar")
-    LoginResponse maptoLoginResponse(User user, String token);
-
     @Mapping(target = "reminders", ignore = true)
     @Mapping(target = "notifications", ignore = true)
     @Mapping(target = "userProfile", ignore = true)
@@ -46,10 +42,12 @@ public interface UserMapper {
     @Mapping(target = "blogs", ignore = true)
     User maptoUserGoogle(String email, String username);
 
+    @Mapping(target = "avatar", source = "user.userProfile.avatar")
+    LoginResponse maptoLoginResponse(User user, String token);
+
     @Mapping(target = "reminders", ignore = true)
     @Mapping(target = "provider", ignore = true)
     @Mapping(target = "notifications", ignore = true)
-    @Mapping(target = "cart", ignore = true)
     @Mapping(target = "userProfile", ignore = true)
     @Mapping(target = "orders", ignore = true)
     @Mapping(target = "koiPondList", ignore = true)

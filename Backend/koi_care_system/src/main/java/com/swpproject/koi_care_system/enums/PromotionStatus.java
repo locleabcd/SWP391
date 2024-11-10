@@ -4,5 +4,6 @@ public enum PromotionStatus {
     PENDING,
     ACCEPTED,
     PROCESSING,
-    ENDED
+    ENDED,
+    REJECTED
 }

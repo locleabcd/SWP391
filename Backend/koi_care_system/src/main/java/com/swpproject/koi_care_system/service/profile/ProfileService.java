@@ -36,7 +36,7 @@ public class ProfileService implements IProfileService {
         userProfile.setCreatedDate(LocalDate.now());
         userProfileRepository.save(userProfile);
         userProfile.setSubscribePlan(subscribePlanService.initDefault(user.getId()));
-        userProfile.setAvatar("https://koicareimage.blob.core.windows.net/koicarestorage/defaultProfile.jpg");
+        userProfile.setAvatar("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultProfile.jpg");
         return userProfileRepository.save(userProfile);
     }
 
@@ -44,13 +44,13 @@ public class ProfileService implements IProfileService {
     @PostAuthorize("returnObject.name == authentication.name")
     public UserProfileDto updateProfile(Long userId, ProfileUpdateRequest profileUpdateRequest) throws IOException {
         UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.PROFILE_NOT_FOUND));
-        if (profileUpdateRequest.getFile() != null) {
-            if (!profileUpdateRequest.getFile().isEmpty()) {
-                try {
-                    if (!userProfile.getAvatar().equals("https://koicareimage.blob.core.windows.net/koicarestorage/defaultProfile.jpg"))
+        if(profileUpdateRequest.getFile()!=null){
+            if(!profileUpdateRequest.getFile().isEmpty()){
+                try{
+                    if (!userProfile.getAvatar().equals("https://koicaresystemv3.blob.core.windows.net/koicarestorage/defaultProfile.jpg"))
                         imageStorage.deleteImage(userProfile.getAvatar());
                     userProfile.setAvatar(imageStorage.uploadImage(profileUpdateRequest.getFile()));
-                } catch (Exception e) {
+                }catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
@@ -60,7 +60,6 @@ public class ProfileService implements IProfileService {
     }
 
     @Override
-    @PostAuthorize("returnObject.name == authentication.name")
     public UserProfileDto getProfile(Long userId) {
         UserProfile userProfile = userProfileRepository.findByUserId(userId).orElseThrow(() -> new AppException(ErrorCode.PROFILE_NOT_FOUND));
         return userProfileMapper.mapToUserProfileDto(userProfile);
@@ -68,8 +67,14 @@ public class ProfileService implements IProfileService {
 
     @Override
     @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
-    public List<UserProfileDto> getAllProfile() {
+    public List<UserProfileDto> getAllProfile(){
         return userProfileRepository.findAll().stream().map(userProfileMapper::mapToUserProfileDto).toList();
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SHOP')")
+    public List<UserProfileDto> getAllMemberProfile() {
+        return userProfileRepository.findUserProfileByRole("MEMBER").stream().map(userProfileMapper::mapToUserProfileDto).toList();
     }
 
     @Override
@@ -77,8 +82,9 @@ public class ProfileService implements IProfileService {
         UserProfile userProfile = userProfileMapper.mapToUserProfile(user);
         userProfile.setCreatedDate(LocalDate.now());
         userProfileRepository.save(userProfile);
-        userProfile.setSubscribePlan(subscribePlanService.initDefault(user.getId()));
         userProfile.setAvatar(imageUrl);
+        userProfile.setSubscribePlan(subscribePlanService.initDefault(user.getId()));
         return userProfileRepository.save(userProfile);
     }
+
 }

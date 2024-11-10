@@ -1,4 +1,4 @@
-package com.swpproject.koi_care_system.service.blog;
+package com.swpproject.koi_care_system.service.Blog;
 
 import com.swpproject.koi_care_system.dto.BlogDto;
 import com.swpproject.koi_care_system.payload.request.BlogCreateRequest;

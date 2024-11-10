@@ -8,4 +8,5 @@ public interface IEmailService {
     void sendOtp(String name, String to, String subject, String otp);
 
     void sendReminder(String name, String to, String subject, Reminder reminderDetail);
+
 }

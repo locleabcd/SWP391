@@ -30,7 +30,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -94,10 +93,9 @@ public class ReminderService implements IReminderService {
         return reminders.stream().map(reminderMapper::mapToReminderDto).toList();
     }
 
-
+    @Async
     @Scheduled(fixedRate = 60000)
     @Override
-    @Async
     public void checkReminders() {
         LocalDateTime now = LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"));
         LocalDateTime startTime = now.withSecond(0).withNano(0);
@@ -167,8 +165,7 @@ public class ReminderService implements IReminderService {
             }
         } else {
             emailService.sendReminder(username, user.getEmail(), "Reminder: " + reminder.getTitle() + " is due!", reminderMapper.mapToReminderFromMongo(reminder));
-            log.info("Email sent to '{}'", user.getEmail());
-            log.info("reminder: {}", reminder.getTitle());
+
         }
         notificationService.createNotification(reminderMapper.mapToNotificationRequest(reminder, isDelivered));
         log.info("user connected: {}", isConnection(username));

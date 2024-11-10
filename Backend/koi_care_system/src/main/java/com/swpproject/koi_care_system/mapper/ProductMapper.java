@@ -6,7 +6,7 @@ import com.swpproject.koi_care_system.models.Product;
 import com.swpproject.koi_care_system.models.Promotion;
 import org.mapstruct.Mapper;
 
-@Mapper()
+@Mapper(componentModel = "spring")
 public interface ProductMapper {
 
     ProductDto mapToProductDto(Product product);

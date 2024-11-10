@@ -1,6 +1,7 @@
 package com.swpproject.koi_care_system.service.product;
 
 import com.swpproject.koi_care_system.dto.ProductDto;
+import com.swpproject.koi_care_system.dto.ProductReportDto;
 import com.swpproject.koi_care_system.models.Product;
 import com.swpproject.koi_care_system.payload.request.AddProductRequest;
 import com.swpproject.koi_care_system.payload.request.ProductUpdateRequest;
@@ -12,7 +13,8 @@ public interface IProductService {
     Product getProductById(Long id);
     void deleteProductById(Long id);
     Product updateProduct(ProductUpdateRequest product, Long productId);
-    List<Product> getAllProducts(int pageNumber, int pageSize, String sortBy, String sortDir);
+    List<Product> getAllProducts();
+    List<Product> getAllProductsUpdate();
     List<Product> getProductsByCategory(String category);
     List<Product> getProductsByBrand(String brand);
     List<Product> getProductsByCategoryAndBrand(String category, String brand);

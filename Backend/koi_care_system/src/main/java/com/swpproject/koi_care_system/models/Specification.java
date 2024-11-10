@@ -11,17 +11,21 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Issue {
+public class Specification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    private String abbreviation;
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "water_parameters_id")
-    private WaterParameters waterParameters;
+    private Double minValue;
+    private Double maxValue;
 
     @ManyToOne
-    @JoinColumn(name = "issue_type_id")
-    private IssueType issueType;
+    @JoinColumn(name="waterParameters_id")
+    private WaterParameters waterParameters;
+
+    @OneToOne
+    @JoinColumn(name="issue_id")
+    private Issue issue;
 }

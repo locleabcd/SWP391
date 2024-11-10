@@ -43,14 +43,15 @@ public class AuthenticationController {
             @RequestParam String redirect) throws ParseException, JOSEException {
 
         boolean isVerified = jwtUtils.verificationToken(token);
+        String redirectUrl = redirect + "?status=" + (isVerified ? "success" : "failed");
+
         if (isVerified) {
             userService.verifyUser(email, token);
-            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(redirect)).build();
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(redirectUrl)).build();
         } else {
-            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(redirect)).build();
+            return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(redirectUrl)).build();
         }
     }
-
 
     @PostMapping("/forgotPassword/{email}")
     ResponseEntity<ApiResponse> forgotPassword(@PathVariable String email) {

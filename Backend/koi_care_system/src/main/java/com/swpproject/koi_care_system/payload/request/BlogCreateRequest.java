@@ -20,7 +20,6 @@ public class BlogCreateRequest {
     String blogTitle;
     @NotBlank
     String blogContent;
-    String blogImage;
     Set<Integer> tagIds;
     MultipartFile file;
 }

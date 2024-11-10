@@ -1,5 +1,6 @@
 package com.swpproject.koi_care_system.service.cart;
 
+import com.swpproject.koi_care_system.enums.PromotionStatus;
 import com.swpproject.koi_care_system.exceptions.ResourceNotFoundException;
 import com.swpproject.koi_care_system.models.Cart;
 import com.swpproject.koi_care_system.models.CartItem;
@@ -29,13 +30,18 @@ public class CartItemService  implements ICartItemService{
                 .stream()
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst().orElse(new CartItem());
+
         if (cartItem.getId() == null) {
+            if(quantity > product.getInventory())
+                throw new RuntimeException("The quantity in inventory is not enough for your order");
             cartItem.setCart(cart);
             cartItem.setProduct(product);
             cartItem.setQuantity(quantity);
             cartItem.setUnitPrice(calculateDiscountedPrice(product));
         }
         else {
+            if(cartItem.getQuantity()+quantity > product.getInventory())
+                throw new RuntimeException("The quantity in inventory is not enough for your order");
             cartItem.setQuantity(cartItem.getQuantity() + quantity);
         }
         cartItem.setTotalPrice();
@@ -47,6 +53,7 @@ public class CartItemService  implements ICartItemService{
     // Update the calculateDiscountedPrice method
     private BigDecimal calculateDiscountedPrice(Product product) {
         BigDecimal totalDiscountRate = product.getPromotions().stream()
+                .filter(promotion -> PromotionStatus.PROCESSING.equals(promotion.getStatus()))
                 .map(promotion -> BigDecimal.valueOf(promotion.getDiscountRate()))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
         BigDecimal tmp = new BigDecimal(100);
@@ -71,6 +78,8 @@ public class CartItemService  implements ICartItemService{
                 .filter(item -> item.getProduct().getId().equals(productId))
                 .findFirst()
                 .ifPresent(item -> {
+                    if(quantity > item.getProduct().getInventory())
+                        throw new RuntimeException("The quantity in inventory is not enough for your order");
                     item.setQuantity(quantity);
                     item.setUnitPrice(calculateDiscountedPrice(item.getProduct()));
                     item.setTotalPrice();

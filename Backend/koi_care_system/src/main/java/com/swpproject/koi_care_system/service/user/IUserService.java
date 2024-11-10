@@ -25,4 +25,5 @@ public interface IUserService {
     UserDTO createStaff(CreateUserRequest request);
 
     void changePassword(ChangePasswordRequest request, Principal connectedUser);
+
 }
