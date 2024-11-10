@@ -120,6 +120,7 @@ function Checkout() {
       .then((response) => {
         if (response.data.error === 0) {
           setTinh(response.data.data)
+          console.log(response.data.data)
         }
       })
       .catch((error) => console.error('Error fetching provinces:', error))

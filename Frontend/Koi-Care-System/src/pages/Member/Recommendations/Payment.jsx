@@ -1112,9 +1112,7 @@ function Payment() {
                 <div className='lg:text-2xl text-xl font-semibold'>Order Summary</div>
                 <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className=''>Sub Total</div>
-                  <div className=''>
-                    {(cart?.totalAmount ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-                  </div>
+                  <div className=''>{subTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</div>
                 </div>
 
                 <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
@@ -1133,7 +1131,7 @@ function Payment() {
                 <div className='flex mt-5 lg:mt-7 text-lg lg:text-xl justify-between'>
                   <div className='font-medium'>Total</div>
                   <div className=''>
-                    {(cart?.totalAmount ?? 0).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                    {promotionTotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                   </div>
                 </div>
               </div>

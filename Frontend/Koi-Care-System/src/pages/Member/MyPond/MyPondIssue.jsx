@@ -123,7 +123,6 @@ function MyPondIssue() {
             <TopLayout text='My Pond' textName='My Pond Issue' links='member/myPond' />
 
             <div className='border flex flex-col lg:flex-row border-gray-200 mt-10'>
-              {/* Sidebar */}
               <div className='flex-none w-full lg:w-[250px] border-r border-gray-200'>
                 <div className='px-4 py-5 border-b border-gray-200'>
                   <div className='font-semibold text-xl lg:text-2xl mt-2'>All Issues</div>
@@ -148,7 +147,6 @@ function MyPondIssue() {
                 </div>
               </div>
 
-              {/* Productand Description */}
               <div className='flex-auto'>
                 <div className='flex flex-col lg:flex-row'>
                   <div className='flex-none w-full lg:w-[800px] px-4 py-7 lg:px-7 lg:py-7 border-r border-gray-200'>

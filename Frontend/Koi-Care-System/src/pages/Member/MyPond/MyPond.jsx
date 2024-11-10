@@ -23,7 +23,6 @@ function MyPond() {
   const [isLoading, setIsLoading] = useState(false)
   const [isAddFormVisible, setIsAddFormVisible] = useState(false)
   const [isEditFormVisible, setIsEditFormVisible] = useState(false)
-  const [currentPond, setCurrentPond] = useState(null)
   const [baseImage, setBaseImage] = useState('')
   const [koiCounts, setKoiCounts] = useState({})
   const [selectedFile, setSelectedFile] = useState(null)
