@@ -97,9 +97,7 @@ public class WaterParameterService implements IWaterParametersService {
         if (lastestWaterParameters == null) {
             throw new AppException(ErrorCode.WATER_NOT_FOUND);
         }
-        if (lastestWaterParameters.getIssueList().isEmpty()) {
             issueService.detectIssues(lastestWaterParameters);
-        }
         return waterParameterMapper.mapToWaterParameterDto(lastestWaterParameters);
     }
 }
