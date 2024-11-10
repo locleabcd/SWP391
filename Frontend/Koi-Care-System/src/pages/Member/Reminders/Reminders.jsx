@@ -5,11 +5,10 @@ import TopLayout from '../../../layouts/TopLayout'
 import '../../../index.css'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
-import FormControlLabel from '@mui/material/FormControlLabel'
-import { Switch } from '@mui/material'
 import { useForm } from 'react-hook-form'
 import { FaSpinner } from 'react-icons/fa'
 import Swal from 'sweetalert2'
+import { toast } from 'react-toastify'
 
 function Reminders() {
   const { isDarkMode } = useDarkMode()
@@ -87,6 +86,7 @@ function Reminders() {
         }
       )
       console.log(data.dateTime)
+      toast.success('Create reminder success')
       getReminder()
       setIsAddFormVisible(false)
       reset()
@@ -117,6 +117,7 @@ function Reminders() {
         }
       )
       getReminder()
+      toast.success('Update reminder success')
       toggleCloseForm()
     } catch (err) {
       console.log(err)
@@ -154,6 +155,7 @@ function Reminders() {
         }
       })
       getReminder()
+      toast.success('Delete reminder success')
       toggleCloseForm()
     } catch (error) {
       console.log('err', error)

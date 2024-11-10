@@ -46,7 +46,7 @@ function MyPondLog() {
     localStorage.setItem('logId', log.logId)
     reset({
       logTitle: log.logTitle,
-      logDate: log.dateTime,
+      logDate: log.logDate,
       category: log.category,
       note: log.note,
       koiPondId: log.koiPondName
@@ -158,7 +158,7 @@ function MyPondLog() {
         'https://koicaresystemv2.azurewebsites.net/api/log/create',
         {
           logTitle: data.logTitle,
-          logDate: data.dateTime,
+          logDate: data.logDate,
           category: data.category,
           note: data.note,
           koiPondId: data.koiPondName
@@ -191,7 +191,7 @@ function MyPondLog() {
         `https://koicaresystemv2.azurewebsites.net/api/log/update/${logId}`,
         {
           logTitle: data.logTitle,
-          logDate: data.dateTime,
+          logDate: data.logDate,
           category: data.category,
           note: data.note,
           koiPondId: data.koiPondName
@@ -208,7 +208,7 @@ function MyPondLog() {
       toggleCloseForm()
     } catch (error) {
       toast.error('Update Pond Log Fail')
-      console.log(data.dateTime)
+      console.log(data.logDate)
       console.log(error)
       console.error(data.koiPondName)
     } finally {
@@ -381,10 +381,10 @@ function MyPondLog() {
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg lg:text-lg text-sm focus:outline-none transition-colors duration-200`}
-                          {...register('dateTime', { required: 'Date Time is required' })}
+                          {...register('logDate', { required: 'Date Time is required' })}
                         />
-                        {errors.dateTime && (
-                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.dateTime.message}</p>
+                        {errors.logDate && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.logDate.message}</p>
                         )}
                       </div>
 
@@ -543,10 +543,10 @@ function MyPondLog() {
                           className={`w-full lg:p-3 px-2 py-1 ${
                             isDarkMode ? 'bg-custom-dark' : 'bg-white'
                           } border border-black rounded-lg focus:outline-none transition-colors duration-200`}
-                          {...register('dateTime', { required: 'Date Time is required' })}
+                          {...register('logDate', { required: 'Date Time is required' })}
                         />
-                        {errors.dateTime && (
-                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.dateTime.message}</p>
+                        {errors.logDate && (
+                          <p className='text-red-500 absolute lg:text-lg text-sm'>{errors.logDate.message}</p>
                         )}
                       </div>
 
