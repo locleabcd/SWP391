@@ -24,13 +24,30 @@ function CustomerAD() {
         throw new Error('No token found')
       }
 
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/profile/all`, {
+      // Gọi API mới và lấy dữ liệu
+      const res = await axios.get('https://koicaresystemv2.azurewebsites.net/api/subscribe/all', {
         headers: {
           Authorization: `Bearer ${token}`
         }
       })
 
-      setUsers(res.data.data)
+      // Lưu trữ dữ liệu vào state `users`, ánh xạ lại cấu trúc dữ liệu từ `userProfileDto`
+      const updatedUsers = res.data.data.map((item) => ({
+        id: item.userProfileDto.id,
+        name: item.userProfileDto.name,
+        email: item.userProfileDto.email,
+        phone: item.userProfileDto.phone,
+        address: item.userProfileDto.address,
+        createdDate: item.userProfileDto.createdDate,
+        dateOfBirth: item.userProfileDto.dateOfBirth,
+        role: item.userProfileDto.role,
+        avatar: item.userProfileDto.avatar,
+        status: item.subscribe, // Trạng thái dựa trên trường `subscribe`
+        startDate: item.startDate, // Ngày bắt đầu từ dữ liệu bên ngoài `userProfileDto`
+        expiredDate: item.expiredDate // Ngày hết hạn từ dữ liệu bên ngoài `userProfileDto`
+      }))
+
+      setUsers(updatedUsers)
     } catch (error) {
       console.log('Error fetching users:', error)
     }
@@ -105,7 +122,6 @@ function CustomerAD() {
     { field: 'createdDate', headerName: 'Create Date', width: 120 },
     { field: 'dateOfBirth', headerName: 'Date of Birth', width: 120 },
     { field: 'role', headerName: 'Role', width: 80 },
-
     {
       field: 'status',
       headerName: 'Status',
@@ -128,6 +144,9 @@ function CustomerAD() {
         </div>
       )
     },
+    { field: 'startDate', headerName: 'Start Date', width: 120 },
+    { field: 'expiredDate', headerName: 'Expired Date', width: 120 },
+
     {
       field: 'duration',
       headerName: 'Duration',
@@ -139,9 +158,9 @@ function CustomerAD() {
           className='bg-white border border-gray-300  text-black rounded px-2 py-1'
         >
           <option value=''>Select Duration</option>
-          <option value='1 MONTH'>1 Month</option>
-          <option value='6 MONTHS'>6 Months</option>
-          <option value='12 MONTHS'>12 Months</option>
+          <option value='1MONTH'>1 Month</option>
+          <option value='6MONTHS'>6 Months</option>
+          <option value='12MONTHS'>12 Months</option>
         </select>
       )
     },

@@ -53,7 +53,10 @@ function Payment() {
           Authorization: `Bearer ${token}`
         }
       })
-      setPayments(res.data.data)
+      console.log(res.data.data)
+
+      const sortedPayments = res.data.data.sort((a, b) => b.orderId - a.orderId)
+      setPayments(sortedPayments)
     } catch (error) {
       console.log('Error fetching Payments:', error)
     }

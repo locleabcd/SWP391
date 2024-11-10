@@ -343,20 +343,27 @@ function Dashboard() {
                 <FaRegUser className='w-12 h-12 text-blue-700' />
                 <h2 className='text-xl text-blue-700 font-semibold pt-4'>Total Users</h2>
                 <p className='text-2xl text-blue-700'>{users.length}</p>
+                <p className='text-sm text-blue-700 mt-2'>
+                  Total Premium: {users.filter((user) => user.status === 'PREMIUM').length}
+                </p>
               </div>
 
               <div className='border flex flex-col justify-center items-center p-6 shadow rounded-lg bg-green-100'>
                 <FaCartArrowDown className='w-16 h-12 text-green-600' />
                 <h2 className='text-xl font-semibold pt-4 text-green-600'>Total Orders</h2>
                 <p className='text-2xl text-green-600'>{orders.length}</p>
-                {/* <p className='text-sm'>Total Amount: {formatCurrency(orders.length)}</p> */}
+                <p className='text-sm text-green-600 mt-2'>
+                  Total Amount: {formatCurrency(orders.reduce((acc, order) => acc + order.totalAmount, 0))}
+                </p>
               </div>
 
               <div className='border flex flex-col justify-center items-center p-6 shadow rounded-lg bg-yellow-100'>
                 <FaMoneyCheckAlt className='w-16 h-12 text-yellow-500' />
                 <h2 className='text-xl font-semibold pt-4 text-yellow-500'>Total Payments</h2>
                 <p className='text-2xl text-yellow-500'>{payments.length}</p>
-                {/* <p className='text-sm'>Total Amount: {formatCurrency(payments.length)}</p> */}
+                <p className='text-sm text-yellow-500 mt-2'>
+                  Total Amount: {formatCurrency(payments.reduce((acc, payment) => acc + payment.amount, 0))}
+                </p>
               </div>
 
               <div className='border flex flex-col justify-center items-center p-6 shadow rounded-lg bg-purple-100'>
