@@ -12,7 +12,7 @@ function Pricing() {
     const userId = localStorage.getItem('id')
     try {
       const token = localStorage.getItem('token')
-      await axios.get(
+      await axios.post(
         'https://koicaresystemv2.azurewebsites.net/api/orders/order/premium',
         {
           userId: userId,
@@ -36,7 +36,7 @@ function Pricing() {
     const userId = localStorage.getItem('id')
     try {
       const token = localStorage.getItem('token')
-      await axios.get(
+      await axios.post(
         'https://koicaresystemv2.azurewebsites.net/api/orders/order/premium',
         {
           userId: userId,
@@ -60,7 +60,7 @@ function Pricing() {
     const userId = localStorage.getItem('id')
     try {
       const token = localStorage.getItem('token')
-      await axios.get(
+      await axios.post(
         'https://koicaresystemv2.azurewebsites.net/api/orders/order/premium',
         {
           userId: userId,
