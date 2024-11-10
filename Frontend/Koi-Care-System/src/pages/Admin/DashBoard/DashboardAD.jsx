@@ -328,39 +328,38 @@ function DashboardAD() {
       })
 
       const paymentsData = res.data.data
-      setPayments(paymentsData)
 
-      // Tính tổng số tiền thanh toán
-      const totalAmount = paymentsData.reduce((sum, payment) => sum + payment.amount, 0)
+      // Filter payments with status 'COMPLETED'
+      const completedPayments = paymentsData.filter((payment) => payment.status === 'COMPLETED')
+      setPayments(completedPayments)
+
+      // Calculate total amount
+      const totalAmount = completedPayments.reduce((sum, payment) => sum + payment.amount, 0)
       setTotalPaymentAmount(totalAmount)
 
-      // Tính phần trăm tăng giảm
+      // Calculate percentage change
       if (previousTotal !== 0) {
         const change = ((totalAmount - previousTotal) / previousTotal) * 100
         setPercentageChange(change)
       }
       setPreviousTotal(totalAmount)
 
-      // Tính tổng số tiền theo tháng
+      // Calculate monthly totals for 'COMPLETED' payments
       const monthlyTotals = {}
-      paymentsData.forEach((payment) => {
-        const monthYear = dayjs(payment.date).format('YYYY-MM') // Giả sử mỗi thanh toán có thuộc tính 'date'
+      completedPayments.forEach((payment) => {
+        const monthYear = dayjs(payment.createDate).format('YYYY-MM') // Use 'createDate' for month calculation
         if (!monthlyTotals[monthYear]) {
           monthlyTotals[monthYear] = 0
         }
-        monthlyTotals[monthYear] += payment.amount // Cộng dồn số tiền theo tháng
+        monthlyTotals[monthYear] += payment.amount // Add up amounts for each month
       })
 
-      // Chuyển đổi dữ liệu thành mảng để biểu đồ
-      const labels = Object.keys(monthlyTotals)
-      const dataValues = Object.values(monthlyTotals)
-      setMonthlyTotals({ labels, data: dataValues })
+      // Convert monthly totals into an array for chart data
       const data = Object.keys(monthlyTotals).map((monthYear) => ({
         name: monthYear,
         uv: monthlyTotals[monthYear]
       }))
-      setMonthlyTotals(data)
-      // Kiểm tra dữ liệu cuối cùng cho biểu đồ
+      setMonthlyTotals(data) // Set data for chart
     } catch (error) {
       console.log('Error fetching Payments:', error)
     }
@@ -618,8 +617,9 @@ function DashboardAD() {
                 </span>
               </p>
               <p className='text-m mt-2'>Revenue</p>
-              <div className='h-20 w-10 mt-4'>
-                <ResponsiveContainer width='100%' height='100%'>
+              <div className='h-40 w-full mt-4'>
+                {/* Adjusted height for better visualization */}
+                <ResponsiveContainer width='100%' height='50%'>
                   <BarChart data={monthlyTotals}>
                     <Bar dataKey='uv' fill='#F8F8FF' />
                   </BarChart>
