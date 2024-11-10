@@ -27,7 +27,6 @@ function Header() {
   const [cartId, setCartId] = useState([])
   const [user, setUser] = useState([])
   const [notificationRead, setNotificationRead] = useState([])
-  const [notificationUnRead, setNotificationUnRead] = useState([])
   const dispatch = useDispatch()
   const [isSidebarOpen, setSidebarOpen] = useState(false)
   const sidebarRef = useRef(null)
@@ -72,28 +71,6 @@ function Header() {
     getCartId()
   }, [])
 
-  // const getUser = async () => {
-  //   try {
-  //     const token = localStorage.getItem('token')
-  //     const id = localStorage.getItem('id')
-  //     if (!token) {
-  //       throw new Error('No token found')
-  //     }
-  //     const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/profile/${id}`, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`
-  //       }
-  //     })
-  //     setUser(res.data.data)
-  //   } catch (error) {
-  //     console.error('Error fetching users:', error)
-  //   }
-  // }
-
-  // useEffect(() => {
-  //   getUser()
-  // }, [])
-
   const getNotificationRead = async () => {
     try {
       const token = localStorage.getItem('token')
@@ -116,30 +93,6 @@ function Header() {
 
   useEffect(() => {
     getNotificationRead()
-  }, [])
-
-  const getNotificationUnRead = async () => {
-    try {
-      const token = localStorage.getItem('token')
-      const userId = localStorage.getItem('id')
-      if (!token) {
-        throw new Error('No token found')
-      }
-      const res = await axios.get(`https://koicaresystemv2.azurewebsites.net/api/notifications/list-unread/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      const notificationSort = res.data.data.sort((a, b) => new Date(b.dateTime) - new Date(a.dateTime))
-      setNotificationUnRead(notificationSort)
-      console.log('abcd', notificationSort)
-    } catch (error) {
-      console.error('Error fetching users:', error)
-    }
-  }
-
-  useEffect(() => {
-    getNotificationUnRead()
   }, [])
 
   const getCart = async () => {
@@ -369,18 +322,6 @@ function Header() {
                     <Typography sx={{ p: 2 }}>
                       <div className='max-h-[500px] max-w-96'>
                         <div className='text-3xl font-semibold border-b border-gray-200 py-3 p-2'>Notifications</div>
-                        {notificationUnRead.map((notificationReads) => (
-                          <div className='p-2 hover:bg-gray-200' key={notificationReads.id}>
-                            <div className='lg:text-lg text-base'>
-                              Koi Care System mentioned you{' '}
-                              <span className='font-semibold'>{notificationReads.description}</span> Please remember
-                              perform.
-                            </div>
-                            <div className='lg:text-base text-sm text-gray-500'>
-                              {getRelativeTime(notificationReads.dateTime)}
-                            </div>
-                          </div>
-                        ))}
                         {notificationRead.map((notificationReads) => (
                           <div className='p-2 hover:bg-gray-200' key={notificationReads.id}>
                             <div className='lg:text-lg text-base'>
