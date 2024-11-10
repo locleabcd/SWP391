@@ -189,7 +189,7 @@ function FoodCalculator() {
 
   const generateNotes = () => {
     if (calculationMode === 'percent') {
-      return `You are in Percent Mode, We still recommend using the preset food calculator! Use the Percent Mode Mode only if you already have a lot of experience with koi and know what you are doing!`
+      return `You are in Percent Mode, We still recommend using the preset food calculator! Use the Percent Mode only if you already have a lot of experience with koi and know what you are doing!`
     } else {
       if (selectedTemperature === '6-8') {
         return `The koi should only receive the prescribed amount of food every two to three days.
@@ -329,7 +329,7 @@ Over 28°C is not a good temperature to feed at!`
                   {selectedPond.temperature && (
                     <p>
                       Follow on the current water parameters infomation We recommended the amount of food for their koi
-                      in pond {selectedPond.id}: <strong>{calculateFoodBasedOnTemperature()}</strong>
+                      in pond : <strong>{calculateFoodBasedOnTemperature()}</strong>
                     </p>
                   )}
                 </div>

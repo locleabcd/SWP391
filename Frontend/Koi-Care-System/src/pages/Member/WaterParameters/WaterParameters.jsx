@@ -253,7 +253,6 @@ function WaterParameters() {
         throw new Error('No token found')
       }
 
-      console.log('Deleting water parameter with ID:', waterId) // Kiểm tra waterId
       await axios.delete(`https://koicaresystemv2.azurewebsites.net/api/water-parameters/delete/${waterId}`, {
         headers: {
           Authorization: `Bearer ${token}`
@@ -2265,6 +2264,7 @@ function WaterParameters() {
                         className={`mt-1 block w-full p-3 border ${
                           isDarkMode ? 'bg-custom-dark text-white' : 'bg-white'
                         }  border-black rounded-md shadow-sm`}
+                        defaultValue={currentParameter ? currentParameter.koiPondId : ''}
                         {...register('pondId', { required: 'Please select a pond' })}
                       >
                         <option value='' disabled>
