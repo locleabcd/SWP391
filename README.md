@@ -70,7 +70,10 @@ The system uses a relational database schema with the following main tables:
 | DELETE | `/api/koi/{id}`               | Remove a Koi fish by ID            |
 | POST   | `/api/shop/products`          | Add a new product (Shop role only) |
 | GET    | `/api/shop/products`          | Get all products                   |
-## Contributing
-Contributions are welcome! Please follow the [contributing guidelines](CONTRIBUTING.md) for details.
+### Our Contributors ✨
+
+<a href="https://github.com/mfts/papermark/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=mfts/papermark" />
+</a>
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
