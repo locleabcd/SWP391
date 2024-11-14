@@ -72,8 +72,8 @@ The system uses a relational database schema with the following main tables:
 | GET    | `/api/shop/products`          | Get all products                   |
 ### Our Contributors ✨
 
-<a href="[https://github.com/mfts/papermark/graphs/contributors](https://github.com/locleabcd/SWP391/graphs/contributors)">
-  <img src="[https://contrib.rocks/image?repo=mfts/papermark](https://contrib.rocks/image?repo=locleabcd/SWP391)" />
+<a href="https://github.com/locleabcd/SWP391/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=locleabcd/SWP391" />
 </a>
 
 ## License
