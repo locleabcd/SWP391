@@ -49,11 +49,11 @@ function Login() {
   const onSubmit = async (data) => {
     setLoading(true)
 
-    // if (!captcha) {
-    //   toast.warn('Please complete reCAPTCHA')
-    //   setLoading(false)
-    //   return
-    // }
+    if (!captcha) {
+      toast.warn('Please complete reCAPTCHA')
+      setLoading(false)
+      return
+    }
 
     try {
       const response = await axios.post('https://koicaresystemv2.azurewebsites.net/api/auth/loginKoiCare', {
